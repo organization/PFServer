@@ -3,7 +3,7 @@
 *.war
 *.ear
 *.xml
-.idea
+/.idea
 build
 /.gradle
 /run

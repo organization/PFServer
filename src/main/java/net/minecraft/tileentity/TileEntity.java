@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import mgazul.PFServer.inventory.CatCustomInventory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
@@ -21,8 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.inventory.InventoryHolder;
-
-import mgazul.PFServer.inventory.CraftCustomContainer;
 import org.spigotmc.CustomTimingsHandler;
 
 import javax.annotation.Nullable;
@@ -554,7 +553,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
         {
             return (InventoryHolder) state;
         } else if (this instanceof IInventory) { // CatServer
-            return (InventoryHolder) new CraftCustomContainer(state.getBlock());
+            return (InventoryHolder) new CatCustomInventory((IInventory) this);
         }
         return null;
     }
