@@ -1,16 +1,10 @@
-!.gitignore
-
-# eclipse
-/eclipse
-
-# idea
-.idea
 *.iml
-
-# gradle
+*.jar
+*.war
+*.ear
+*.xml
+.idea
 build
-.gradle
-
-*.DS_Store
+/.gradle
 /run
 /out
