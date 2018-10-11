@@ -1,0 +1,7 @@
+/build
+/buildSrc
+/projects
+/eclipse
+/.gradle
+/run
+/out
