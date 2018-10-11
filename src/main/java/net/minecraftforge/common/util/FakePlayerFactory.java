@@ -24,6 +24,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.world.WorldServer;
 
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,12 +54,23 @@ public class FakePlayerFactory
      */
     public static FakePlayer get(WorldServer world, GameProfile username)
     {
-        if (!fakePlayers.containsKey(username))
+        if (username == null || username.getName() == null) return null;
+
+        for (Map.Entry<GameProfile, FakePlayer> mapEntry : fakePlayers.entrySet())
         {
-            FakePlayer fakePlayer = new FakePlayer(world, username);
-            fakePlayers.put(username, fakePlayer);
+            GameProfile gameprofile = mapEntry.getKey();
+            if (gameprofile.getName().equals(username.getName()))
+            {
+                return mapEntry.getValue();
+            }
         }
 
+        FakePlayer fakePlayer = new FakePlayer(world, username);
+        if (username.getId() == null) // GameProfile hashCode check will fail with a null ID
+        {
+            username = new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + username.getName()).getBytes(StandardCharsets.UTF_8)), username.getName()); // Create new GameProfile with offline UUID
+        }
+        fakePlayers.put(username, fakePlayer);
         return fakePlayers.get(username);
     }
 

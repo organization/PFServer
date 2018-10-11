@@ -19,6 +19,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -57,7 +59,9 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
             // Players
             if (entity instanceof EntityPlayer) {
                 if (entity instanceof EntityPlayerMP) { return new CraftPlayer(server, (EntityPlayerMP) entity); }
-                else { return new CraftHumanEntity(server, (EntityPlayer) entity); } // TODO add support fake player classes from mods( using FakePlayerFactory.class)
+                else { // CatServer -  support fake player classes from mods
+                    return new CraftPlayer(server, FakePlayerFactory.get(DimensionManager.getWorld(entity.world.provider.getDimension()), ((EntityPlayer) entity).getGameProfile()));
+                }
             }
             // Water Animals
             else if (entity instanceof EntityWaterMob) {
