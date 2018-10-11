@@ -1,7 +1,16 @@
-/build
-/buildSrc
-/projects
+!.gitignore
+
+# eclipse
 /eclipse
-/.gradle
+
+# idea
+.idea
+*.iml
+
+# gradle
+build
+.gradle
+
+*.DS_Store
 /run
 /out
