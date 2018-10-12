@@ -32,7 +32,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -63,14 +62,13 @@ public class ShapedOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
     protected int height = 0;
     protected boolean mirrored = true;
     protected ResourceLocation group;
-    private ShapedRecipes vanillaRecipe = null; // Cauldron - bukkit compatibility
+    private Recipe bukkitRecip;
 
     public ShapedOreRecipe(ResourceLocation group, Block     result, Object... recipe){ this(group, new ItemStack(result), recipe); }
     public ShapedOreRecipe(ResourceLocation group, Item      result, Object... recipe){ this(group, new ItemStack(result), recipe); }
     public ShapedOreRecipe(ResourceLocation group, @Nonnull ItemStack result, Object... recipe) { this(group, result, CraftingHelper.parseShaped(recipe)); }
     public ShapedOreRecipe(ResourceLocation group, @Nonnull ItemStack result, ShapedPrimer primer)
     {
-        
         this.group = group;
         output = result.copy();
         this.width = primer.width;
@@ -258,9 +256,9 @@ public class ShapedOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
 
     @Override
     public Recipe toBukkitRecipe() {
-        if(vanillaRecipe != null)
-            return vanillaRecipe.toBukkitRecipe();
-        return new CustomModRecipe(this);
+        if (bukkitRecip == null)
+            bukkitRecip = new CustomModRecipe(this, this.getRegistryName());
+        return this.bukkitRecip;
     }
 
     @Override

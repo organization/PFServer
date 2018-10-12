@@ -31,7 +31,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -52,7 +51,7 @@ public class ShapelessOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
     protected NonNullList<Ingredient> input = NonNullList.create();
     protected ResourceLocation group;
     protected boolean isSimple = true;
-    private ShapedRecipes vanillaRecipe = null; // Cauldron - bukkit compatibility
+    private Recipe bukkitRecip;
 
     public ShapelessOreRecipe(ResourceLocation group, Block result, Object... recipe){ this(group, new ItemStack(result), recipe); }
     public ShapelessOreRecipe(ResourceLocation group, Item  result, Object... recipe){ this(group, new ItemStack(result), recipe); }
@@ -164,9 +163,9 @@ public class ShapelessOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 
     @Override
     public Recipe toBukkitRecipe() {
-        if(vanillaRecipe != null)
-            return vanillaRecipe.toBukkitRecipe();
-        return new CustomModRecipe(this);
+        if (bukkitRecip == null)
+            bukkitRecip = new CustomModRecipe(this, this.getRegistryName());
+        return this.bukkitRecip;
     }
 
     @Override

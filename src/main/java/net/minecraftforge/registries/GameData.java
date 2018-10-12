@@ -20,6 +20,7 @@
 package net.minecraftforge.registries;
 
 import com.google.common.collect.*;
+import mgazul.PFServer.inventory.CustomModRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockObserver;
@@ -413,6 +414,7 @@ public class GameData
         {
             private static ItemStack result = new ItemStack(Items.DIAMOND, 64);
             private ResourceLocation name;
+            private Recipe bukkitRecip;
 
             @Override
             public IRecipe setRegistryName(ResourceLocation name) {
@@ -429,7 +431,9 @@ public class GameData
 
             @Override
             public Recipe toBukkitRecipe() {
-                throw new IllegalStateException("Cannot get bukkit-recipe from DummyRecipe!");
+                if (bukkitRecip == null)
+                    bukkitRecip = new CustomModRecipe(this, this.getRegistryName());
+                return this.bukkitRecip;
             }
 
             @Override
