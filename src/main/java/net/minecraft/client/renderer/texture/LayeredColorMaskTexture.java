@@ -72,8 +72,7 @@ public class LayeredColorMaskTexture extends AbstractTexture
 
                         if (s != null)
                         {
-                            iresource1 = resourceManager.getResource(new ResourceLocation(s));
-                            BufferedImage bufferedimage2 = TextureUtil.readBufferedImage(iresource1.getInputStream());
+                           BufferedImage bufferedimage2 = net.minecraftforge.client.MinecraftForgeClient.getImageLayer(new ResourceLocation(s), resourceManager);
 
                             if (bufferedimage2.getWidth() == bufferedimage.getWidth() && bufferedimage2.getHeight() == bufferedimage.getHeight() && bufferedimage2.getType() == 6)
                             {

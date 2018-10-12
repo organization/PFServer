@@ -23,15 +23,24 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class MinecraftForgeClient
 {
@@ -121,5 +130,22 @@ public class MinecraftForgeClient
     {
         regionCache.invalidateAll();
         regionCache.cleanUp();
+    }
+
+    private static HashMap<ResourceLocation, Supplier<BufferedImage>> bufferedImageSuppliers = new HashMap<ResourceLocation, Supplier<BufferedImage>>();
+    public static void registerImageLayerSupplier(ResourceLocation resourceLocation, Supplier<BufferedImage> supplier)
+    {
+        bufferedImageSuppliers.put(resourceLocation, supplier);
+    }
+
+    @Nonnull
+    public static BufferedImage getImageLayer(ResourceLocation resourceLocation, IResourceManager resourceManager) throws IOException
+    {
+        Supplier<BufferedImage> supplier = bufferedImageSuppliers.get(resourceLocation);
+        if (supplier != null)
+            return supplier.get();
+
+        IResource iresource1 = resourceManager.getResource(resourceLocation);
+        return TextureUtil.readBufferedImage(iresource1.getInputStream());
     }
 }
