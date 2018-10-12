@@ -90,12 +90,6 @@ public interface Villager extends Ageable, NPC, InventoryHolder, Merchant {
      */
     public enum Profession {
         /**
-         * Normal. <b>Reserved for Zombies.</b>
-         * @deprecated Unused
-         */
-        @Deprecated
-        NORMAL(true),
-        /**
          * Farmer profession. Wears a brown robe.
          */
         FARMER(false),
@@ -118,29 +112,13 @@ public interface Villager extends Ageable, NPC, InventoryHolder, Merchant {
         /**
          * Nitwit profession. Wears a green apron, cannot trade.
          */
-        NITWIT(false),
-        /**
-         * Husk. <b>Reserved for Zombies</b>
-         * @deprecated Unused
-         */
-        @Deprecated
-        HUSK(true);
+        NITWIT(false);
         private final boolean zombie;
 
         private Profession(boolean zombie) {
             this.zombie = zombie;
         }
 
-        /**
-         * Returns if this profession can only be used by zombies.
-         *
-         * @return zombie profession status
-         * @deprecated Unused
-         */
-        @Deprecated
-        public boolean isZombie() {
-            return zombie;
-        }
 
         /**
          * Get an immutable list of {@link Career} belonging to this Profession.
