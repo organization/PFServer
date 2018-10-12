@@ -134,38 +134,6 @@ public interface Team {
     void setCanSeeFriendlyInvisibles(boolean enabled) throws IllegalStateException;
 
     /**
-     * Gets the team's ability to see name tags
-     *
-     * @return the current name tag visibility for the team
-     * @throws IllegalArgumentException if this team has been unregistered
-     * @deprecated see {@link #getOption(org.bukkit.scoreboard.Team.Option)}
-     */
-    @Deprecated
-    NameTagVisibility getNameTagVisibility() throws IllegalArgumentException;
-
-    /**
-     * Set's the team's ability to see name tags
-     *
-     * @param visibility The nameTagVisibilty to set
-     * @throws IllegalArgumentException if this team has been unregistered
-     * @deprecated see
-     * {@link #setOption(org.bukkit.scoreboard.Team.Option, org.bukkit.scoreboard.Team.OptionStatus)}
-     */
-    @Deprecated
-    void setNameTagVisibility(NameTagVisibility visibility) throws IllegalArgumentException;
-
-    /**
-     * Gets the Set of players on the team
-     *
-     * @return players on the team
-     * @throws IllegalStateException if this team has been unregistered\
-     * @deprecated Teams can contain entries that aren't players
-     * @see #getEntries()
-     */
-    @Deprecated
-    Set<OfflinePlayer> getPlayers() throws IllegalStateException;
-
-    /**
      * Gets the Set of entries on the team
      *
      * @return entries on the team
@@ -190,20 +158,6 @@ public interface Team {
     Scoreboard getScoreboard();
 
     /**
-     * This puts the specified player onto this team for the scoreboard.
-     * <p>
-     * This will remove the player from any other team on the scoreboard.
-     *
-     * @param player the player to add
-     * @throws IllegalArgumentException if player is null
-     * @throws IllegalStateException if this team has been unregistered
-     * @deprecated Teams can contain entries that aren't players
-     * @see #addEntry(String)
-     */
-    @Deprecated
-    void addPlayer(OfflinePlayer player) throws IllegalStateException, IllegalArgumentException;
-
-    /**
      * This puts the specified entry onto this team for the scoreboard.
      * <p>
      * This will remove the entry from any other team on the scoreboard.
@@ -213,19 +167,6 @@ public interface Team {
      * @throws IllegalStateException if this team has been unregistered
      */
     void addEntry(String entry) throws IllegalStateException, IllegalArgumentException;
-
-    /**
-     * Removes the player from this team.
-     *
-     * @param player the player to remove
-     * @return if the player was on this team
-     * @throws IllegalArgumentException if player is null
-     * @throws IllegalStateException if this team has been unregistered
-     * @deprecated Teams can contain entries that aren't players
-     * @see #removeEntry(String)
-     */
-    @Deprecated
-    boolean removePlayer(OfflinePlayer player) throws IllegalStateException, IllegalArgumentException;
 
     /**
      * Removes the entry from this team.
@@ -244,18 +185,6 @@ public interface Team {
      */
     void unregister() throws IllegalStateException;
 
-    /**
-     * Checks to see if the specified player is a member of this team.
-     *
-     * @param player the player to search for
-     * @return true if the player is a member of this team
-     * @throws IllegalArgumentException if player is null
-     * @throws IllegalStateException if this team has been unregistered
-     * @deprecated Teams can contain entries that aren't players
-     * @see #hasEntry(String)
-     */
-    @Deprecated
-    boolean hasPlayer(OfflinePlayer player) throws IllegalArgumentException, IllegalStateException;
     /**
      * Checks to see if the specified entry is a member of this team.
      *

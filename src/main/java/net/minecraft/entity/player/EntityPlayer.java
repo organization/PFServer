@@ -1095,9 +1095,9 @@ public abstract class EntityPlayer extends EntityLivingBase
             }
         }
         if (this instanceof EntityPlayerMP) {
-            return !team.hasPlayer(((EntityPlayerMP) this).getBukkitEntity());
+            return !team.hasEntry(((EntityPlayerMP) this).getBukkitEntity().getName());
         }
-        return !team.hasPlayer(this.world.getServer().getOfflinePlayer(this.getName()));
+        return !team.hasEntry(this.world.getServer().getOfflinePlayer(this.getName()).getName());
     }
 
     protected void damageArmor(float damage)

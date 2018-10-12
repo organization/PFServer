@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Set;
@@ -22,57 +21,44 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
     }
 
     public String getName() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getName();
     }
 
     public String getDisplayName() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getDisplayName();
     }
 
     public void setDisplayName(String displayName) throws IllegalStateException {
         Validate.notNull(displayName, "Display name cannot be null");
         Validate.isTrue(displayName.length() <= 32, "Display name '" + displayName + "' is longer than the limit of 32 characters");
-        CraftScoreboard scoreboard = checkState();
 
         team.setDisplayName(displayName);
     }
 
     public String getPrefix() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getPrefix();
     }
 
     public void setPrefix(String prefix) throws IllegalStateException, IllegalArgumentException {
         Validate.notNull(prefix, "Prefix cannot be null");
         Validate.isTrue(prefix.length() <= 16, "Prefix '" + prefix + "' is longer than the limit of 16 characters");
-        CraftScoreboard scoreboard = checkState();
 
         team.setPrefix(prefix);
     }
 
     public String getSuffix() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getSuffix();
     }
 
     public void setSuffix(String suffix) throws IllegalStateException, IllegalArgumentException {
         Validate.notNull(suffix, "Suffix cannot be null");
         Validate.isTrue(suffix.length() <= 16, "Suffix '" + suffix + "' is longer than the limit of 16 characters");
-        CraftScoreboard scoreboard = checkState();
 
         team.setSuffix(suffix);
     }
 
     @Override
     public ChatColor getColor() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return CraftChatMessage.getColor(team.getColor());
     }
 
@@ -86,44 +72,30 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
     }
 
     public boolean allowFriendlyFire() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getAllowFriendlyFire();
     }
 
     public void setAllowFriendlyFire(boolean enabled) throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         team.setAllowFriendlyFire(enabled);
     }
 
     public boolean canSeeFriendlyInvisibles() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getSeeFriendlyInvisiblesEnabled();
     }
 
     public void setCanSeeFriendlyInvisibles(boolean enabled) throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         team.setSeeFriendlyInvisiblesEnabled(enabled);
     }
 
-    public NameTagVisibility getNameTagVisibility() throws IllegalArgumentException {
-        CraftScoreboard scoreboard = checkState();
-
+    public Team.OptionStatus getNameTagVisibility() throws IllegalArgumentException {
         return notchToBukkit(team.getNameTagVisibility());
     }
 
-    public void setNameTagVisibility(NameTagVisibility visibility) throws IllegalArgumentException {
-        CraftScoreboard scoreboard = checkState();
-
+    public void setNameTagVisibility(Team.OptionStatus visibility) throws IllegalArgumentException {
         team.setNameTagVisibility(bukkitToNotch(visibility));
     }
 
     public Set<OfflinePlayer> getPlayers() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         ImmutableSet.Builder<OfflinePlayer> players = ImmutableSet.builder();
         for (String playerName : team.getMembershipCollection()) {
             players.add(Bukkit.getOfflinePlayer(playerName));
@@ -133,8 +105,6 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
 
     @Override
     public Set<String> getEntries() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         ImmutableSet.Builder<String> entries = ImmutableSet.builder();
         for (String playerName: team.getMembershipCollection()){
             entries.add(playerName);
@@ -143,8 +113,6 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
     }
 
     public int getSize() throws IllegalStateException {
-        CraftScoreboard scoreboard = checkState();
-
         return team.getMembershipCollection().size();
     }
 
@@ -184,9 +152,6 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
 
     public boolean hasEntry(String entry) throws IllegalArgumentException, IllegalStateException {
         Validate.notNull("Entry cannot be null");
-
-        CraftScoreboard scoreboard = checkState();
-
         return team.getMembershipCollection().contains(entry);
     }
 
@@ -232,31 +197,31 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
         }
     }
 
-    public static EnumVisible bukkitToNotch(NameTagVisibility visibility) {
+    public static EnumVisible bukkitToNotch(Team.OptionStatus visibility) {
         switch (visibility) {
             case ALWAYS:
                 return EnumVisible.ALWAYS;
             case NEVER:
                 return EnumVisible.NEVER;
-            case HIDE_FOR_OTHER_TEAMS:
+            case FOR_OTHER_TEAMS:
                 return EnumVisible.HIDE_FOR_OTHER_TEAMS;
-            case HIDE_FOR_OWN_TEAM:
+            case FOR_OWN_TEAM:
                 return EnumVisible.HIDE_FOR_OWN_TEAM;
             default:
                 throw new IllegalArgumentException("Unknown visibility level " + visibility);
         }
     }
 
-    public static NameTagVisibility notchToBukkit(EnumVisible visibility) {
+    public static Team.OptionStatus notchToBukkit(EnumVisible visibility) {
         switch (visibility) {
             case ALWAYS:
-                return NameTagVisibility.ALWAYS;
+                return Team.OptionStatus.ALWAYS;
             case NEVER:
-                return NameTagVisibility.NEVER;
+                return Team.OptionStatus.NEVER;
             case HIDE_FOR_OTHER_TEAMS:
-                return NameTagVisibility.HIDE_FOR_OTHER_TEAMS;
+                return Team.OptionStatus.FOR_OTHER_TEAMS;
             case HIDE_FOR_OWN_TEAM:
-                return NameTagVisibility.HIDE_FOR_OWN_TEAM;
+                return Team.OptionStatus.FOR_OWN_TEAM;
             default:
                 throw new IllegalArgumentException("Unknown visibility level " + visibility);
         }
