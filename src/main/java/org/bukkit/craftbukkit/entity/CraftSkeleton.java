@@ -25,13 +25,4 @@ public class CraftSkeleton extends CraftMonster implements Skeleton {
         return EntityType.SKELETON;
     }
 
-    @Override
-    public SkeletonType getSkeletonType() {
-       return SkeletonType.NORMAL;
-    }
-
-    @Override
-    public void setSkeletonType(SkeletonType type) {
-        throw new UnsupportedOperationException("Not supported.");
-    }
 }

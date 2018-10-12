@@ -21,8 +21,4 @@ public class CraftWitherSkeleton extends CraftSkeleton implements WitherSkeleton
         return EntityType.WITHER_SKELETON;
     }
 
-    @Override
-    public SkeletonType getSkeletonType() {
-        return SkeletonType.WITHER;
-    }
 }
