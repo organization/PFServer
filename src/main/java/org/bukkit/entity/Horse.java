@@ -8,38 +8,6 @@ import org.bukkit.inventory.HorseInventory;
 public interface Horse extends AbstractHorse {
 
     /**
-     * @deprecated different variants are differing classes
-     */
-    @Deprecated
-    public enum Variant {
-        /**
-         * A normal horse
-         */
-        HORSE,
-        /**
-         * A donkey
-         */
-        DONKEY,
-        /**
-         * A mule
-         */
-        MULE,
-        /**
-         * An undead horse
-         */
-        UNDEAD_HORSE,
-        /**
-         * A skeleton horse
-         */
-        SKELETON_HORSE,
-        /**
-         * Not really a horse :)
-         */
-        LLAMA
-        ;
-    }
-
-    /**
      * Represents the base color that the horse has.
      */
     public enum Color {
@@ -142,20 +110,6 @@ public interface Horse extends AbstractHorse {
      * @param style a {@link Style} for this horse
      */
     public void setStyle(Style style);
-
-    /**
-     * @return carrying chest status
-     * @deprecated see {@link ChestedHorse}
-     */
-    @Deprecated
-    public boolean isCarryingChest();
-
-    /**
-     * @param chest
-     * @deprecated see {@link ChestedHorse}
-     */
-    @Deprecated
-    public void setCarryingChest(boolean chest);
 
     @Override
     public HorseInventory getInventory();

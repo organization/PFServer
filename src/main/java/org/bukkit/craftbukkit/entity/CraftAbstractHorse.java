@@ -6,7 +6,6 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryAbstractHorse;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Horse;
 import org.bukkit.inventory.AbstractHorseInventory;
 
 import java.util.UUID;
@@ -20,10 +19,6 @@ public abstract class CraftAbstractHorse extends CraftAnimals implements Abstrac
     @Override
     public net.minecraft.entity.passive.AbstractHorse getHandle() {
         return (net.minecraft.entity.passive.AbstractHorse) entity;
-    }
-
-    public void setVariant(Horse.Variant variant) {
-        throw new UnsupportedOperationException("Not supported.");
     }
 
     public int getDomestication() {
