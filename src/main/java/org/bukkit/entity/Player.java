@@ -336,8 +336,6 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * Send a sign change. This fakes a sign change packet for a user at
      * a certain location. This will not actually change the world in any way.
      * This method will use a sign at the location's block or a faked sign
-     * sent via {@link #sendBlockChange(org.bukkit.Location, int, byte)} or
-     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
      * <p>
      * If the client does not have a sign at the given location it will
      * display an error message to the user.
@@ -866,14 +864,6 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      */
     public void setAllowFlight(boolean flight);
 
-    /**
-     * Hides a player from this player
-     *
-     * @param player Player to hide
-     * @deprecated see {@link #hidePlayer(Plugin, Player)}
-     */
-    @Deprecated
-    public void hidePlayer(Player player);
 
     /**
      * Hides a player from this player
@@ -883,14 +873,6 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      */
     public void hidePlayer(Plugin plugin, Player player);
 
-    /**
-     * Allows this player to see a player that was previously hidden
-     *
-     * @param player Player to show
-     * @deprecated see {@link #showPlayer(Plugin, Player)}
-     */
-    @Deprecated
-    public void showPlayer(Player player);
 
     /**
      * Allows this player to see a player that was previously hidden. If
