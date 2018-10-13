@@ -13,7 +13,7 @@ public class CustomModRecipe implements Recipe, Keyed {
 
     private final IRecipe iRecipe;
     private final ItemStack output;
-    private final NamespacedKey key;
+    private NamespacedKey key;
 
     public CustomModRecipe(IRecipe iRecipe){
         this(iRecipe, null);
@@ -22,7 +22,11 @@ public class CustomModRecipe implements Recipe, Keyed {
     public CustomModRecipe(IRecipe iRecipe, ResourceLocation key){
         this.iRecipe = iRecipe;
         this.output = CraftItemStack.asCraftMirror(iRecipe.getRecipeOutput());
-        this.key = key != null ? CraftNamespacedKey.fromMinecraft(key) : NamespacedKey.randomKey();
+        try {
+            this.key = (key != null ? CraftNamespacedKey.fromMinecraft(key) : NamespacedKey.randomKey());
+        } catch (Exception e) {
+            this.key = NamespacedKey.randomKey();
+        }
     }
 
     @Override
