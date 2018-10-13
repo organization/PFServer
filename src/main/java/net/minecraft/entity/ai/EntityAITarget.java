@@ -90,7 +90,7 @@ public abstract class EntityAITarget extends EntityAIBase
                     }
                     else
                     {
-                        this.taskOwner.setAttackTarget(entitylivingbase, EntityTargetEvent.TargetReason.CLOSEST_ENTITY, true);
+                        this.taskOwner.setGoalTarget(entitylivingbase, EntityTargetEvent.TargetReason.CLOSEST_ENTITY, true);
                         return true;
                     }
                 }
@@ -113,7 +113,7 @@ public abstract class EntityAITarget extends EntityAIBase
 
     public void resetTask()
     {
-        this.taskOwner.setAttackTarget((EntityLivingBase)null, EntityTargetEvent.TargetReason.FORGOT_TARGET, true);
+        this.taskOwner.setGoalTarget((EntityLivingBase)null, EntityTargetEvent.TargetReason.FORGOT_TARGET, true);
         this.target = null;
     }
 

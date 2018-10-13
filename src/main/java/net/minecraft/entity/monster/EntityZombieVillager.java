@@ -212,7 +212,7 @@ public class EntityZombieVillager extends EntityZombie
             entityvillager.setAlwaysRenderNameTag(this.getAlwaysRenderNameTag());
         }
 
-        this.world.spawnEntity(entityvillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CURED);
+        this.world.addEntity(entityvillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CURED);
 
         if (this.converstionStarter != null)
         {

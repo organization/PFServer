@@ -308,7 +308,7 @@ public class EntityVex extends EntityMob
         public void startExecuting()
         {
             // EntityVex.this.setAttackTarget(EntityVex.this.owner.getAttackTarget());
-            EntityVex.this.setAttackTarget(EntityVex.this.owner.getAttackTarget(), EntityTargetEvent.TargetReason.OWNER_ATTACKED_TARGET, true);
+            EntityVex.this.setGoalTarget(EntityVex.this.owner.getAttackTarget(), EntityTargetEvent.TargetReason.OWNER_ATTACKED_TARGET, true);
             super.startExecuting();
         }
     }
