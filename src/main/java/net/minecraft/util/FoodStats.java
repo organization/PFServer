@@ -37,7 +37,7 @@ public class FoodStats
 
     public void addStats(ItemFood foodItem, ItemStack stack)
     {
-        if (entityhuman == null) 
+        if (entityhuman == null)
         {
             this.addStats(foodItem.getHealAmount(stack), foodItem.getSaturationModifier(stack));
         } else {
