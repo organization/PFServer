@@ -19,7 +19,7 @@ public class ServerEula
     public ServerEula(File eulaFile)
     {
         this.eulaFile = eulaFile;
-        this.acceptedEULA = true;
+        this.acceptedEULA = loadEULAFile(eulaFile);
     }
 
     private boolean loadEULAFile(File inFile)
@@ -32,7 +32,7 @@ public class ServerEula
             Properties properties = new Properties();
             fileinputstream = new FileInputStream(inFile);
             properties.load(fileinputstream);
-            flag = Boolean.parseBoolean(properties.getProperty("eula", "false"));
+            flag = Boolean.parseBoolean(properties.getProperty("eula", "true"));
         }
         catch (Exception var8)
         {
