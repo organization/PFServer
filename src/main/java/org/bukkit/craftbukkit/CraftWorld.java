@@ -372,7 +372,7 @@ public class CraftWorld implements World {
             entity = getEntity(EntityRegistry.entityClassMap.get(entityType.getName()), world);
             if (entity != null) {
                 entity.setLocationAndAngles(loc.getX(), loc.getY(), loc.getZ(), 0, 0);
-                world.spawnEntity(entity, SpawnReason.CUSTOM);
+                world.addEntity(entity, SpawnReason.CUSTOM);
                 return entity.getBukkitEntity();
             }
         }
