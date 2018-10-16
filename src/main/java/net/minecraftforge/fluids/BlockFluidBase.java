@@ -21,7 +21,7 @@ package net.minecraftforge.fluids;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import jline.internal.Nullable;
+import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockStairs;

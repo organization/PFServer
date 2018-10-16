@@ -111,7 +111,7 @@ public class CraftBlock implements Block {
         net.minecraft.world.World world = chunk.getHandle().getWorld();
         BlockPos position = new BlockPos(x, y, z);
         IBlockState blockData = world.getBlockState(position);
-        world.setBlockState(position, blockData.getBlock().getDefaultState(), flag);
+        world.setBlockState(position, blockData.getBlock().getStateFromMeta(data), flag);
     }
 
     private IBlockState getData0() {

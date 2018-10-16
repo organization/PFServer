@@ -2,20 +2,20 @@ package org.bukkit.plugin.java;
 
 import mgazul.PFServer.CatServer;
 import mgazul.PFServer.remapper.CatServerRemapper;
-import mgazul.PFServer.remapper.ClassInheritanceProvider;
 import mgazul.PFServer.remapper.MappingLoader;
 import mgazul.PFServer.remapper.ReflectionTransformer;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.provider.ClassLoaderProvider;
-import net.md_5.specialsource.provider.JointProvider;
 import net.md_5.specialsource.repo.RuntimeRepo;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -63,7 +63,7 @@ final class PluginClassLoader extends URLClassLoader {
 
         remapper = new CatServerRemapper(jarMapping);
 
-        ReflectionTransformer.init(jarMapping, remapper);
+        MappingLoader.addProvider(new ClassLoaderProvider(this));
 
         try {
             Class<?> jarClass;
