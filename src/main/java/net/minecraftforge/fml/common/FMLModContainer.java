@@ -119,10 +119,6 @@ public class FMLModContainer implements ModContainer
         {
             throw new IllegalArgumentException(String.format("The modId %s is longer than the maximum of 64 characters.", modid));
         }
-        if (!modid.equals(modid.toLowerCase(Locale.ENGLISH)))
-        {
-            throw new IllegalArgumentException(String.format("The modId %s must be all lowercase.", modid));
-        }
     }
 
     private ILanguageAdapter getLanguageAdapter()
