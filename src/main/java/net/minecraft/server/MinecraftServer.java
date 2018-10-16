@@ -916,6 +916,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         this.getFunctionManager().update();
         SpigotTimings.commandFunctionsTimer.stopTiming();// Spigot
         this.profiler.endStartSection("tickables");
+        SpigotTimings.tickablesTimer.startTiming();
 
         for (int k = 0; k < this.tickables.size(); ++k)
         {
