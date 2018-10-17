@@ -78,19 +78,19 @@ public class TimingsCommand extends BukkitCommand {
 
                 if ( paste )
                 {
-                    new PasteThread( sender, bout ).start();
+                    sender.sendMessage("Timings written to " + timings.getPath());
+                    sender.sendMessage( "Paste contents of file into form at http://www.spigotmc.org/go/timings to read results." );
                     return;
                 }
-
-                sender.sendMessage("Timings written to " + timings.getPath());
-                sender.sendMessage( "Paste contents of file into form at http://www.spigotmc.org/go/timings to read results." );
-
+                new PasteThread( sender, bout ).start();
             } catch (IOException e) {
+                return;
             } finally {
                 if (fileTimings != null) {
                     fileTimings.close();
                 }
             }
+            return;
         }
     }
     // Spigot end
