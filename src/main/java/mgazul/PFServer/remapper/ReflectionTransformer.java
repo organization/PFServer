@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 
 public class ReflectionTransformer {
+    public static final String DESC_ReflectionMethods = Type.getInternalName(ReflectionMethods.class);
     public static JarMapping jarMapping;
     public static JarRemapper remapper;
 
@@ -47,14 +48,42 @@ public class ReflectionTransformer {
         for (MethodNode method : node.methods) { // Taken from SpecialSource
             ListIterator<AbstractInsnNode> insnIterator = method.instructions.iterator();
             while (insnIterator.hasNext()) {
-                AbstractInsnNode insn = insnIterator.next();
+                AbstractInsnNode next = (AbstractInsnNode)insnIterator.next();
+                if (next instanceof MethodInsnNode) {
+                    MethodInsnNode insn = (MethodInsnNode)next;
                 switch (insn.getOpcode()) {
                     case Opcodes.INVOKEVIRTUAL:
                         remapVirtual(insn);
                         break;
                     case Opcodes.INVOKESTATIC:
                         remapForName(insn);
-                        break;
+                }
+                    if (insn.name.equals("getName") && insn.getOpcode() >= 182 && insn.getOpcode() <= 186) {
+                        if (insn.owner.equals("java/lang/reflect/Field")) {
+                            insn.owner = DESC_ReflectionMethods;
+                            insn.name = "demapField";
+                            insn.setOpcode(Opcodes.INVOKESTATIC);
+                            insn.desc = "(Ljava/lang/reflect/Field;)Ljava/lang/String;";
+                        } else if (insn.owner.equals("java/lang/reflect/Method")) {
+                            insn.owner = DESC_ReflectionMethods;
+                            insn.name = "demapMethod";
+                            insn.setOpcode(Opcodes.INVOKESTATIC);
+                            insn.desc = "(Ljava/lang/reflect/Method;)Ljava/lang/String;";
+                        }
+                    }
+
+                    if (insn.owner.equals("java/lang/ClassLoader") && insn.name.equals("loadClass")) {
+                        insn.owner = DESC_ReflectionMethods;
+                        insn.name = "getClass";
+                        insn.desc = "(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/Class;";
+                        insn.setOpcode(Opcodes.INVOKESTATIC);
+                    }
+
+                    if (insn.owner.equals("javax/script/ScriptEngineManager") && insn.desc.equals("()V") && insn.name.equals("<init>")) {
+                        insn.desc = "(Ljava/lang/ClassLoader;)V";
+                        method.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, "java/lang/ClassLoader", "getSystemClassLoader", "()Ljava/lang/ClassLoader;"));
+                        ++method.maxStack;
+                    }
                 }
             }
         }
@@ -67,7 +96,7 @@ public class ReflectionTransformer {
     public static void remapForName(AbstractInsnNode insn) {
         MethodInsnNode method = (MethodInsnNode) insn;
         if (!method.owner.equals("java/lang/Class") || !method.name.equals("forName")) return;
-        method.owner = "mgazul/PFServer/remapper/ReflectionMethods";
+        method.owner = DESC_ReflectionMethods;
     }
 
     public static void remapVirtual(AbstractInsnNode insn) {
@@ -85,7 +114,7 @@ public class ReflectionTransformer {
         args.addAll(Arrays.asList(Type.getArgumentTypes(method.desc)));
 
         method.setOpcode(Opcodes.INVOKESTATIC);
-        method.owner = "mgazul/PFServer/remapper/ReflectionMethods";
+        method.owner = DESC_ReflectionMethods;
         method.desc = Type.getMethodDescriptor(returnType, args.toArray(new Type[args.size()]));
     }
 }

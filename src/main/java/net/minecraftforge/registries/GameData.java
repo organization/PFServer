@@ -452,7 +452,7 @@ public class GameData
         reg.register(id, key, new EntityEntry(clazz, oldName));
     }
 
-    private static class EntityCallbacks implements IForgeRegistry.AddCallback<EntityEntry>, IForgeRegistry.ClearCallback<EntityEntry>, IForgeRegistry.CreateCallback<EntityEntry>
+    private static class EntityCallbacks implements IForgeRegistry.AddCallback<EntityEntry>, IForgeRegistry.ClearCallback<EntityEntry>
     {
         static final EntityCallbacks INSTANCE = new EntityCallbacks();
 
@@ -467,18 +467,16 @@ public class GameData
             {
                 EntityList.ENTITY_EGGS.put(entry.getRegistryName(), entry.getEgg());
             }
-            @SuppressWarnings("unchecked")
+
             Map<Class<? extends Entity>, EntityEntry> map = owner.getSlaveMap(ENTITY_CLASS_TO_ENTRY, Map.class);
             map.put(entry.getEntityClass(), entry);
         }
 
-        @Override
         public void onClear(IForgeRegistryInternal<EntityEntry> owner, RegistryManager stage)
         {
             owner.getSlaveMap(ENTITY_CLASS_TO_ENTRY, Map.class).clear();
         }
 
-        @Override
         public void onCreate(IForgeRegistryInternal<EntityEntry> owner, RegistryManager stage)
         {
             owner.setSlaveMap(ENTITY_CLASS_TO_ENTRY, new IdentityHashMap<>());
