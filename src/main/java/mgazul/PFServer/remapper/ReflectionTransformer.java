@@ -19,25 +19,14 @@ import java.util.ListIterator;
 
 public class ReflectionTransformer {
     public static final String DESC_ReflectionMethods = Type.getInternalName(ReflectionMethods.class);
-    public static JarMapping jarMapping;
-    public static JarRemapper remapper;
+    public static PFServerJarMapping jarMapping;
+    public static PFServerRemapper remapper;
 
     public static void init() {
         jarMapping = MappingLoader.loadMapping();
         JointProvider provider = new JointProvider();
         provider.add(new ClassInheritanceProvider());
-        remapper = new CatServerRemapper(jarMapping);
-    }
-
-    /**
-     * Remap code using the provided jarMapping and
-     * convert code from using Class.X methods to our remapped versions
-     */
-    public static byte[] transformSS(JarRemapper remapper, byte[] code) {
-        return remapper.remapClassFile(
-                transform(code),
-                RuntimeRepo.getInstance());
-
+        remapper = new PFServerRemapper(jarMapping);
     }
 
     /**

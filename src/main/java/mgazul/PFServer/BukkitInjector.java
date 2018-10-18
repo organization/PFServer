@@ -8,7 +8,9 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class BukkitInjector {
@@ -47,6 +49,19 @@ public class BukkitInjector {
                     FMLLog.log(Level.DEBUG, "Injected new Forge block material %s with ID %d.", material.name(), material.getId());
                 } else {
                     FMLLog.log(Level.DEBUG, "Inject block failure %s with ID %d.", materialName, Block.getIdFromBlock(block));
+                }
+            }
+        }
+    }
+
+    public static void injectBiomes() {
+        for(Map.Entry entry : ForgeRegistries.BIOMES.getEntries()){
+            String biomeName = entry.getKey().toString().toUpperCase(Locale.ENGLISH);
+            Biome[] var3 = Biome.values();
+            for(int var5 = 0; var5 < var3.length; ++var5) {
+                Biome biome = var3[var5];
+                if (biome.toString().equals(biomeName)) {
+                    EnumHelper.addEnum(Biome.class, biomeName, new Class[0]);
                 }
             }
         }

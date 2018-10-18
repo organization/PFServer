@@ -1,6 +1,7 @@
 package mgazul.PFServer.remapper;
 
 import mgazul.PFServer.CatServer;
+import org.objectweb.asm.Type;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -32,5 +33,31 @@ public class ReflectionMethods {
 
     public static Method getDeclaredMethod(Class<?> inst, String name, Class<?>... parameterTypes) throws NoSuchMethodException, SecurityException {
         return inst.getDeclaredMethod(RemapUtils.mapMethod(inst, name, parameterTypes), parameterTypes);
+    }
+
+    public static String demapField(Field pField) {
+        return !pField.getDeclaringClass().getName().startsWith("net/minecraft") ? pField.getName() : ReflectionTransformer.remapper.demapFieldName(Type.getInternalName(pField.getDeclaringClass()), pField.getName(), pField.getModifiers());
+    }
+
+    public static String demapMethod(Method pMethod) {
+        if (!pMethod.getDeclaringClass().getName().startsWith("net.minecraft")) {
+            return pMethod.getName();
+        } else {
+            try {
+                return ReflectionTransformer.remapper.demapMethodName(Type.getInternalName(pMethod.getDeclaringClass()), pMethod.getName(), Type.getMethodDescriptor(pMethod), pMethod.getModifiers());
+            } catch (Throwable var2) {
+                var2.printStackTrace();
+                return pMethod.getName();
+            }
+        }
+    }
+
+    public static Class getClass(String pClazzName) throws ClassNotFoundException {
+        return getClass((ClassLoader)null, pClazzName);
+    }
+
+    public static Class getClass(ClassLoader pLoader, String pClazzName) throws ClassNotFoundException {
+        String tMappedClass = ReflectionTransformer.jarMapping.mapClass(pClazzName.replace('.', '/')).replace('/', '.');
+        return pLoader == null ? Class.forName(tMappedClass) : pLoader.loadClass(tMappedClass);
     }
 }

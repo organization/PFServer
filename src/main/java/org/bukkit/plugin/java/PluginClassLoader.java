@@ -1,7 +1,7 @@
 package org.bukkit.plugin.java;
 
 import mgazul.PFServer.CatServer;
-import mgazul.PFServer.remapper.CatServerRemapper;
+import mgazul.PFServer.remapper.PFServerRemapper;
 import mgazul.PFServer.remapper.ClassInheritanceProvider;
 import mgazul.PFServer.remapper.MappingLoader;
 import mgazul.PFServer.remapper.ReflectionTransformer;
@@ -65,7 +65,7 @@ final class PluginClassLoader extends URLClassLoader {
         JointProvider provider = new JointProvider();
         provider.add(new ClassInheritanceProvider());
         provider.add(new ClassLoaderProvider(this));
-        remapper = new CatServerRemapper(jarMapping);
+        remapper = new PFServerRemapper(jarMapping);
 
         try {
             Class<?> jarClass;
