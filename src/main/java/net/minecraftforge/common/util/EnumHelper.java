@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.BlockPressurePlate.Sensitivity;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityPainting.EnumArt;
@@ -52,6 +53,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 public class EnumHelper
 {
@@ -78,7 +80,8 @@ public class EnumHelper
         {SleepResult.class},
         {ToolMaterial.class, int.class, int.class, float.class, float.class, int.class},
         {EnumRarity.class, TextFormatting.class, String.class},
-        {HorseArmorType.class, String.class, int.class}
+        {HorseArmorType.class, String.class, int.class},
+        {EntityLiving.SpawnPlacementType.class,BiPredicate.class}
     };
 
     @Nullable
@@ -146,7 +149,10 @@ public class EnumHelper
     {
         return addEnum(EnumRarity.class, name, color, displayName);
     }
-
+    @Nullable
+    public static EntityLiving.SpawnPlacementType addSpawnPlacementType(String name, BiPredicate predicate) {
+    return addEnum(EntityLiving.SpawnPlacementType.class, name, predicate);
+    }
     /**
      * 
      * @param name the name of the new {@code HorseArmorType}

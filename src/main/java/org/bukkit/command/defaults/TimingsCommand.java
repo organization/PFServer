@@ -76,7 +76,7 @@ public class TimingsCommand extends BukkitCommand {
                 fileTimings.println( Bukkit.spigot().getConfig().saveToString() );
                 fileTimings.println( "</spigotConfig>" );
 
-                if ( paste )
+                if (!paste )
                 {
                     sender.sendMessage("Timings written to " + timings.getPath());
                     sender.sendMessage( "Paste contents of file into form at http://www.spigotmc.org/go/timings to read results." );

@@ -452,7 +452,7 @@ public class GameData
         reg.register(id, key, new EntityEntry(clazz, oldName));
     }
 
-    private static class EntityCallbacks implements IForgeRegistry.AddCallback<EntityEntry>, IForgeRegistry.ClearCallback<EntityEntry>
+    private static class EntityCallbacks implements IForgeRegistry.AddCallback<EntityEntry>, IForgeRegistry.ClearCallback<EntityEntry>, IForgeRegistry.CreateCallback<EntityEntry>
     {
         static final EntityCallbacks INSTANCE = new EntityCallbacks();
 

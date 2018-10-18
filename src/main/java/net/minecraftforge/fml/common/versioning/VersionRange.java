@@ -231,7 +231,10 @@ public class VersionRange
     public static VersionRange createFromVersion( String version , ArtifactVersion existing) //Forge: Added existing argument
     {
         List<Restriction> restrictions = Collections.emptyList();
-        return new VersionRange(existing != null ? existing : new DefaultArtifactVersion( version ), restrictions );
+        if (existing == null) {
+            existing = new DefaultArtifactVersion(version);
+        }
+        return new VersionRange(existing, restrictions);
     }
 
     /**

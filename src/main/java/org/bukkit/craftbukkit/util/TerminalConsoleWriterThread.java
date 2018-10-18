@@ -3,8 +3,7 @@ package org.bukkit.craftbukkit.util;
 import com.mojang.util.QueueLogAppender;
 import jline.console.ConsoleReader;
 import org.bukkit.craftbukkit.Main;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Erase;
+import org.bukkit.craftbukkit.command.ColouredConsoleSender;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TerminalConsoleWriterThread implements Runnable {
+    private static final byte[] RESET_LINE = String.valueOf('\r').getBytes();
     final private ConsoleReader reader;
     final private OutputStream output;
 
@@ -32,9 +32,8 @@ public class TerminalConsoleWriterThread implements Runnable {
 
             try {
                 if (Main.useJline) {
-                    reader.print(Ansi.ansi().eraseLine(Erase.ALL).toString() + ConsoleReader.RESET_LINE);
-                    reader.flush();
-                    output.write(message.getBytes());
+                    this.output.write(RESET_LINE);
+                    this.output.write(ColouredConsoleSender.toAnsiStr(message).getBytes());
                     output.flush();
 
                     try {

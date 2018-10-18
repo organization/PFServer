@@ -893,7 +893,7 @@ public class CraftWorld implements World {
         EntityFallingBlock entity = new EntityFallingBlock(world, location.getX(), location.getY(), location.getZ(), CraftMagicNumbers.getBlock(material).getStateFromMeta(data));
         entity.ticksExisted = 1;
 
-        world.spawnEntity(entity, SpawnReason.CUSTOM);
+        world.addEntity(entity, SpawnReason.CUSTOM);
         return (FallingBlock) entity.getBukkitEntity();
     }
 
