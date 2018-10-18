@@ -14,7 +14,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import jline.console.ConsoleReader;
 import mgazul.PFServer.command.CraftSimpleCommandMap;
-import mgazul.PFServer.remapper.MappingLoader;
+import mgazul.PFServer.remapper.ReflectionTransformer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
@@ -236,7 +236,6 @@ public final class CraftServer implements Server {
         chunkGCPeriod = configuration.getInt("chunk-gc.period-in-ticks");
         chunkGCLoadThresh = configuration.getInt("chunk-gc.load-threshold");
         loadIcon();
-        MappingLoader.loadMapping(); // CatServr - Asynchronous loadMapping
     }
 
     public boolean getPermissionOverride(ICommandSender listener) {
@@ -275,6 +274,7 @@ public final class CraftServer implements Server {
     }
 
     public void loadPlugins() {
+        ReflectionTransformer.init();
         pluginManager.registerInterface(JavaPluginLoader.class);
 
         File pluginFolder = (File) console.options.valueOf("plugins");

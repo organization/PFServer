@@ -2,6 +2,7 @@ package mgazul.PFServer.remapper;
 
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;
+import net.md_5.specialsource.provider.JointProvider;
 import net.md_5.specialsource.repo.RuntimeRepo;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -21,9 +22,11 @@ public class ReflectionTransformer {
     public static JarMapping jarMapping;
     public static JarRemapper remapper;
 
-    public static void init(JarMapping mapping, JarRemapper remapper) {
-        if (ReflectionTransformer.jarMapping == null) ReflectionTransformer.jarMapping = mapping;
-        if (ReflectionTransformer.remapper == null) ReflectionTransformer.remapper = remapper;
+    public static void init() {
+        jarMapping = MappingLoader.loadMapping();
+        JointProvider provider = new JointProvider();
+        provider.add(new ClassInheritanceProvider());
+        remapper = new CatServerRemapper(jarMapping);
     }
 
     /**

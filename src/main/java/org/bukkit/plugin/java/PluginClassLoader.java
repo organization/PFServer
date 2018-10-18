@@ -2,11 +2,13 @@ package org.bukkit.plugin.java;
 
 import mgazul.PFServer.CatServer;
 import mgazul.PFServer.remapper.CatServerRemapper;
+import mgazul.PFServer.remapper.ClassInheritanceProvider;
 import mgazul.PFServer.remapper.MappingLoader;
 import mgazul.PFServer.remapper.ReflectionTransformer;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.provider.ClassLoaderProvider;
+import net.md_5.specialsource.provider.JointProvider;
 import net.md_5.specialsource.repo.RuntimeRepo;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang.Validate;
@@ -59,11 +61,11 @@ final class PluginClassLoader extends URLClassLoader {
         this.manifest = jar.getManifest();
         this.url = file.toURI().toURL();
 
-        jarMapping = MappingLoader.getJarMapping();
-
+        jarMapping = MappingLoader.loadMapping();
+        JointProvider provider = new JointProvider();
+        provider.add(new ClassInheritanceProvider());
+        provider.add(new ClassLoaderProvider(this));
         remapper = new CatServerRemapper(jarMapping);
-
-        MappingLoader.addProvider(new ClassLoaderProvider(this));
 
         try {
             Class<?> jarClass;
@@ -117,6 +119,10 @@ final class PluginClassLoader extends URLClassLoader {
                     if (result != null) {
                         loader.setClass(name, result);
                     }
+                }
+
+                if (result == null) {
+                    throw new ClassNotFoundException(name);
                 }
     
                 classes.put(name, result);
