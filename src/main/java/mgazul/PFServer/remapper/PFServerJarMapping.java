@@ -1,10 +1,6 @@
 package mgazul.PFServer.remapper;
 
 import com.google.common.base.Objects;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 import net.md_5.specialsource.InheritanceMap;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;
@@ -12,6 +8,10 @@ import net.md_5.specialsource.NodeType;
 import net.md_5.specialsource.provider.InheritanceProvider;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.objectweb.asm.Type;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class PFServerJarMapping extends JarMapping {
 
@@ -39,22 +39,19 @@ public class PFServerJarMapping extends JarMapping {
     public String trydeClimb(Map map, NodeType type, String owner, String name, String desc, int access) {
         Iterator var7 = map.entrySet().iterator();
 
-        while(var7.hasNext()) {
-            Entry sEntry = (Entry)var7.next();
-            if (((String)sEntry.getValue()).equals(name)) {
-                String tSign = (String)sEntry.getKey();
-                String tDesc = null;
-                if (type == NodeType.METHOD) {
-                    String[] tInfo = tSign.split(" ");
-                    tSign = tInfo[0];
-                    tDesc = tInfo.length > 1 ? this.remapDesc(tInfo[1]) : tDesc;
-                }
+        if (map.containsKey(name)) {
+            String tSign = (String)map.get(name);
+            String tDesc = null;
+            if (type == NodeType.METHOD) {
+                String[] tInfo = tSign.split(" ");
+                tSign = tInfo[0];
+                tDesc = tInfo.length > 1 ? this.remapDesc(tInfo[1]) : tDesc;
+            }
 
-                int tIndex = tSign.lastIndexOf(47);
-                String tOwner = this.mapClass(tSign.substring(0, tIndex == -1 ? tSign.length() : tIndex));
-                if (tOwner.equals(owner) && Objects.equal(desc, tDesc)) {
-                    return tSign.substring(tIndex == -1 ? 0 : tIndex + 1);
-                }
+            int tIndex = tSign.lastIndexOf(47);
+            String tOwner = this.mapClass(tSign.substring(0, tIndex == -1 ? tSign.length() : tIndex));
+            if (tOwner.equals(owner) && Objects.equal(desc, tDesc)) {
+                return tSign.substring(tIndex == -1 ? 0 : tIndex + 1);
             }
         }
 
