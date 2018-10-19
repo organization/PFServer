@@ -1,14 +1,13 @@
 package mgazul.PFServer.remapper;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Multimap;
 import mgazul.PFServer.CatServer;
 import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.NodeType;
 import org.objectweb.asm.Type;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 public class RemapUtils {
@@ -74,24 +73,33 @@ public class RemapUtils {
         return null;
     }
 
-    public static String trydeClimb(Map map, NodeType type, String owner, String name, String desc, int access) {
-        if (map.containsKey(name)) {
-            String tSign = (String)map.get(name);
-            String tDesc = null;
+    public static String trydeClimb(Multimap map, NodeType type, String owner, String name, String desc, int access) {
+        Collection colls = map.get(name);
+        Iterator var7 = colls.iterator();
+
+        String tSign;
+        String tDesc;
+        String tOwner;
+        int tIndex;
+        do {
+            if (!var7.hasNext()) {
+                return null;
+            }
+
+            String value = (String)var7.next();
+            tSign = value;
+            tDesc = null;
             if (type == NodeType.METHOD) {
-                String[] tInfo = tSign.split(" ");
+                String[] tInfo = value.split(" ");
                 tSign = tInfo[0];
                 tDesc = tInfo.length > 1 ? remapDesc(tInfo[1]) : tDesc;
             }
 
-            int tIndex = tSign.lastIndexOf(47);
-            String tOwner = mapClass(tSign.substring(0, tIndex == -1 ? tSign.length() : tIndex));
-            if (tOwner.equals(owner) && Objects.equal(desc, tDesc)) {
-                return tSign.substring(tIndex == -1 ? 0 : tIndex + 1);
-            }
-        }
+            tIndex = tSign.lastIndexOf(47);
+            tOwner = mapClass(tSign.substring(0, tIndex == -1 ? tSign.length() : tIndex));
+        } while(!tOwner.equals(owner) || !Objects.equal(desc, tDesc));
 
-        return null;
+        return tSign.substring(tIndex == -1 ? 0 : tIndex + 1);
     }
 
     public static String remapDesc(String pMethodDesc) {

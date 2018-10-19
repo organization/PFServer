@@ -1,6 +1,8 @@
 package mgazul.PFServer.remapper;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.provider.JointProvider;
 import org.objectweb.asm.ClassReader;
@@ -22,8 +24,8 @@ public class ReflectionTransformer {
     public static JarMapping jarMapping;
     public static PFServerRemapper remapper;
     public static final HashMap classDeMapping = Maps.newHashMap();
-    public static final HashMap methodDeMapping = Maps.newHashMap();
-    public static final HashMap fieldDeMapping = Maps.newHashMap();
+    public static final Multimap methodDeMapping = ArrayListMultimap.create();
+    public static final Multimap fieldDeMapping = ArrayListMultimap.create();
 
     public static void init() {
         jarMapping = MappingLoader.loadMapping();
@@ -34,10 +36,10 @@ public class ReflectionTransformer {
             String var10000 = (String)classDeMapping.put(v, k);
         });
         jarMapping.methods.forEach((k, v) -> {
-            String var10000 = (String)methodDeMapping.put(v, k);
+            methodDeMapping.put(v, k);
         });
         jarMapping.fields.forEach((k, v) -> {
-            String var10000 = (String)fieldDeMapping.put(v, k);
+            fieldDeMapping.put(v, k);
         });
     }
 
