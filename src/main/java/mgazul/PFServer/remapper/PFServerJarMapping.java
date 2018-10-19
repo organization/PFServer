@@ -47,7 +47,7 @@ public class PFServerJarMapping extends JarMapping {
                 if (type == NodeType.METHOD) {
                     String[] tInfo = tSign.split(" ");
                     tSign = tInfo[0];
-                    tDesc = tInfo.length > 1 ? this.rempaDesc(tInfo[1]) : tDesc;
+                    tDesc = tInfo.length > 1 ? this.remapDesc(tInfo[1]) : tDesc;
                 }
 
                 int tIndex = tSign.lastIndexOf(47);
@@ -61,7 +61,7 @@ public class PFServerJarMapping extends JarMapping {
         return null;
     }
 
-    public String rempaDesc(String pMethodDesc) {
+    public String remapDesc(String pMethodDesc) {
         Type[] tTypes = Type.getArgumentTypes(pMethodDesc);
 
         for(int i = tTypes.length - 1; i >= 0; --i) {
