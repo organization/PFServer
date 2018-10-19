@@ -65,6 +65,7 @@ final class PluginClassLoader extends URLClassLoader {
         JointProvider provider = new JointProvider();
         provider.add(new ClassInheritanceProvider());
         provider.add(new ClassLoaderProvider(this));
+        this.jarMapping.setFallbackInheritanceProvider(provider);
         remapper = new PFServerRemapper(jarMapping);
 
         try {
