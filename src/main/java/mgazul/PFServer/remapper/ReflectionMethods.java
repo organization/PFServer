@@ -43,6 +43,11 @@ public class ReflectionMethods {
         return !method.getDeclaringClass().getName().startsWith("net.minecraft") ? method.getName() : RemapUtils.demapMethodName(method);
     }
 
+    public static String getSimpleName(Class inst) {
+        String[] name = RemapUtils.reverseMapExternal(inst).split("\\.");
+        return name[name.length - 1];
+    }
+
     public static Class loadClass(String pClazzName) throws ClassNotFoundException {
         return loadClass((ClassLoader)null, pClazzName);
     }

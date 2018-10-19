@@ -111,7 +111,7 @@ public class ReflectionTransformer {
 
         if (!method.owner.equals("java/lang/Class") ||
                 !(method.name.equals("getField") || method.name.equals("getDeclaredField") ||
-                method.name.equals("getMethod") || method.name.equals("getDeclaredMethod")))
+                method.name.equals("getMethod") || method.name.equals("getDeclaredMethod"))|| method.name.equals("getSimpleName"))
             return;
 
         Type returnType = Type.getReturnType(method.desc);

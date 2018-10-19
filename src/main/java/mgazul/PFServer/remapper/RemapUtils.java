@@ -99,7 +99,7 @@ public class RemapUtils {
     public static String demapFieldName(Field field) {
         String name = field.getName();
         String match = reverseMap(field.getDeclaringClass());
-        Collection colls = ReflectionTransformer.methodDeMapping.get(name);
+        Collection colls = ReflectionTransformer.fieldDeMapping.get(name);
         Iterator var4 = colls.iterator();
 
         String value;
