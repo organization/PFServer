@@ -7,6 +7,8 @@ import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.NodeType;
 import org.objectweb.asm.Type;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -76,55 +78,6 @@ public class RemapUtils {
         return null;
     }
 
-    public static String trydeClimb(Multimap map, NodeType type, String owner, String name, String desc, int access) {
-        Collection colls = map.get(name);
-        Iterator var7 = colls.iterator();
-
-        String tSign;
-        String tDesc;
-        String tOwner;
-        int tIndex;
-        do {
-            if (!var7.hasNext()) {
-                return null;
-            }
-
-            String value = (String)var7.next();
-            tSign = value;
-            tDesc = null;
-            if (type == NodeType.METHOD) {
-                String[] tInfo = value.split(" ");
-                tSign = tInfo[0];
-                tDesc = tInfo.length > 1 ? remapDesc(tInfo[1]) : tDesc;
-            }
-
-            tIndex = tSign.lastIndexOf(47);
-            tOwner = mapClass(tSign.substring(0, tIndex == -1 ? tSign.length() : tIndex));
-        } while(!tOwner.equals(owner) || !Objects.equal(desc, tDesc));
-
-        return tSign.substring(tIndex == -1 ? 0 : tIndex + 1);
-    }
-
-    public static String remapDesc(String pMethodDesc) {
-        Type[] tTypes = Type.getArgumentTypes(pMethodDesc);
-
-        for(int i = tTypes.length - 1; i >= 0; --i) {
-            String tTypeDesc = tTypes[i].getDescriptor();
-            if (tTypeDesc.endsWith(";")) {
-                int tIndex = tTypeDesc.indexOf("L");
-                String tMappedName = mapClass(tTypeDesc.substring(tIndex + 1, tTypeDesc.length() - 1));
-                tMappedName = "L" + tMappedName + ";";
-                if (tIndex > 0 && tIndex != 0) {
-                    tMappedName = tTypeDesc.substring(0, tIndex);
-                }
-
-                tTypes[i] = Type.getType(tMappedName);
-            }
-        }
-
-        return Type.getMethodDescriptor(Type.getType(mapClass(getTypeDesc(Type.getReturnType(pMethodDesc)))), tTypes);
-    }
-
     public static String mapClass(String pBukkitClass) {
         String tRemapped = JarRemapper.mapTypeName(pBukkitClass, ReflectionTransformer.jarMapping.packages, ReflectionTransformer.jarMapping.classes, pBukkitClass);
         if (tRemapped.equals(pBukkitClass) && pBukkitClass.startsWith("net/minecraft/server/") && !pBukkitClass.contains(NMS_VERSION)) {
@@ -141,5 +94,45 @@ public class RemapUtils {
         } catch (NullPointerException var2) {
             return pType.toString();
         }
+    }
+
+    public static String demapFieldName(Field field) {
+        String name = field.getName();
+        String match = reverseMap(field.getDeclaringClass());
+        Collection colls = ReflectionTransformer.methodDeMapping.get(name);
+        Iterator var4 = colls.iterator();
+
+        String value;
+        do {
+            if (!var4.hasNext()) {
+                return name;
+            }
+
+            value = (String)var4.next();
+        } while(!value.startsWith(match));
+
+        String[] matched = value.split("\\/");
+        String rtr = matched[matched.length - 1];
+        return rtr;
+    }
+
+    public static String demapMethodName(Method method) {
+        String name = method.getName();
+        String match = reverseMap(method.getDeclaringClass());
+        Collection colls = ReflectionTransformer.methodDeMapping.get(name);
+        Iterator var4 = colls.iterator();
+
+        String value;
+        do {
+            if (!var4.hasNext()) {
+                return name;
+            }
+
+            value = (String)var4.next();
+        } while(!value.startsWith(match));
+
+        String[] matched = value.split("\\s+")[0].split("\\/");
+        String rtr = matched[matched.length - 1];
+        return rtr;
     }
 }

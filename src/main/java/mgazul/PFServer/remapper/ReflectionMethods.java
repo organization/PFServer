@@ -35,21 +35,12 @@ public class ReflectionMethods {
         return inst.getDeclaredMethod(RemapUtils.mapMethod(inst, name, parameterTypes), parameterTypes);
     }
 
-    public static String demapField(Field pField) {
-        return !pField.getDeclaringClass().getName().startsWith("net.minecraft") ? pField.getName() : ReflectionTransformer.remapper.demapFieldName(Type.getInternalName(pField.getDeclaringClass()), pField.getName(), pField.getModifiers());
+    public static String getName(Field field) {
+        return !field.getDeclaringClass().getName().startsWith("net.minecraft") ? field.getName() : RemapUtils.demapFieldName(field);
     }
 
-    public static String demapMethod(Method pMethod) {
-        if (!pMethod.getDeclaringClass().getName().startsWith("net.minecraft")) {
-            return pMethod.getName();
-        } else {
-            try {
-                return ReflectionTransformer.remapper.demapMethodName(Type.getInternalName(pMethod.getDeclaringClass()), pMethod.getName(), Type.getMethodDescriptor(pMethod), pMethod.getModifiers());
-            } catch (Throwable var2) {
-                var2.printStackTrace();
-                return pMethod.getName();
-            }
-        }
+    public static String getName(Method method) {
+        return !method.getDeclaringClass().getName().startsWith("net.minecraft") ? method.getName() : RemapUtils.demapMethodName(method);
     }
 
     public static Class loadClass(String pClazzName) throws ClassNotFoundException {
