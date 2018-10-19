@@ -52,12 +52,12 @@ public class ReflectionMethods {
         }
     }
 
-    public static Class getClass(String pClazzName) throws ClassNotFoundException {
-        return getClass((ClassLoader)null, pClazzName);
+    public static Class loadClass(String pClazzName) throws ClassNotFoundException {
+        return loadClass((ClassLoader)null, pClazzName);
     }
 
-    public static Class getClass(ClassLoader pLoader, String pClazzName) throws ClassNotFoundException {
-        String tMappedClass = ReflectionTransformer.jarMapping.mapClass(pClazzName.replace('.', '/')).replace('/', '.');
+    public static Class loadClass(ClassLoader pLoader, String pClazzName) throws ClassNotFoundException {
+        String tMappedClass = RemapUtils.mapClass(pClazzName.replace('.', '/')).replace('/', '.');
         return pLoader == null ? Class.forName(tMappedClass) : pLoader.loadClass(tMappedClass);
     }
 }

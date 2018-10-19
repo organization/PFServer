@@ -2,9 +2,7 @@ package mgazul.PFServer.remapper;
 
 import com.google.common.collect.Maps;
 import net.md_5.specialsource.JarMapping;
-import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.provider.JointProvider;
-import net.md_5.specialsource.repo.RuntimeRepo;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -21,7 +19,7 @@ import java.util.ListIterator;
 
 public class ReflectionTransformer {
     public static final String DESC_ReflectionMethods = Type.getInternalName(ReflectionMethods.class);
-    public static PFServerJarMapping jarMapping;
+    public static JarMapping jarMapping;
     public static PFServerRemapper remapper;
     public static final HashMap classDeMapping = Maps.newHashMap();
     public static final HashMap methodDeMapping = Maps.newHashMap();
@@ -80,7 +78,7 @@ public class ReflectionTransformer {
 
                     if (insn.owner.equals("java/lang/ClassLoader") && insn.name.equals("loadClass")) {
                         insn.owner = DESC_ReflectionMethods;
-                        insn.name = "getClass";
+                        insn.name = "loadClass";
                         insn.desc = "(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/Class;";
                         insn.setOpcode(Opcodes.INVOKESTATIC);
                     }

@@ -20,8 +20,8 @@ public class MappingLoader {
         jarMapping.loadMappings(new BufferedReader(new InputStreamReader(MappingLoader.class.getClassLoader().getResourceAsStream("mappings/" + obfVersion + "/cb2srg.srg"))), new MavenShade(relocations), (MappingTransformer)null, false);
     }
 
-    public static PFServerJarMapping loadMapping() {
-        PFServerJarMapping jarMapping = new PFServerJarMapping();
+    public static JarMapping loadMapping() {
+        JarMapping jarMapping = new JarMapping();
 
         try {
             jarMapping.packages.put(org_bukkit_craftbukkit + "/libs/com/google/gson", "com/google/gson");
