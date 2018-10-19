@@ -20,7 +20,6 @@
 package net.minecraftforge.advancements.critereon;
 
 import com.google.gson.JsonObject;
-import gnu.trove.map.hash.THashMap;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.util.ResourceLocation;
 

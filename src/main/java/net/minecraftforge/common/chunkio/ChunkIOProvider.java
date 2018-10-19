@@ -26,7 +26,6 @@ import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkDataEvent;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;

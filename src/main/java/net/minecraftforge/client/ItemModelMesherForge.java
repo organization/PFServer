@@ -19,13 +19,9 @@
 
 package net.minecraftforge.client;
 
-import java.util.Map;
-
 import com.google.common.collect.Maps;
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -38,6 +34,7 @@ import net.minecraftforge.registries.IRegistryDelegate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
 
 /**
  * Wrapper around ItemModeMesher that cleans up the internal maps to respect ID remapping.

@@ -7,10 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +23,7 @@ import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 final class FancyMissingModel implements IModel
@@ -73,6 +71,12 @@ final class FancyMissingModel implements IModel
     public Collection<ResourceLocation> getTextures()
     {
         return ImmutableList.of(font2);
+    }
+
+    @Override
+    public Optional<ModelBlock> asVanillaModel()
+    {
+        return missingModel.asVanillaModel();
     }
 
     @Override

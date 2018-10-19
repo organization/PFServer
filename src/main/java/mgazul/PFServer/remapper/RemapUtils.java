@@ -7,7 +7,10 @@ import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.NodeType;
 import org.objectweb.asm.Type;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 public class RemapUtils {

@@ -1,20 +1,18 @@
 package mgazul.PFServer;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import joptsimple.NonOptionArgumentSpec;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import joptsimple.NonOptionArgumentSpec;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 public class CatGradleStart {
     public static void main(String[] args) throws Throwable

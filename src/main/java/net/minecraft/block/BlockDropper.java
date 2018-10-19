@@ -3,7 +3,6 @@ package net.minecraft.block;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
@@ -12,8 +11,6 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 
 public class BlockDropper extends BlockDispenser
 {

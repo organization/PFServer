@@ -80,6 +80,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import javax.annotation.Nonnull;
 import javax.vecmath.Matrix3f;
@@ -97,8 +99,6 @@ import java.util.function.Predicate;
 import static net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType.BOSSINFO;
 import static net.minecraftforge.common.ForgeVersion.Status.BETA;
 import static net.minecraftforge.common.ForgeVersion.Status.BETA_OUTDATED;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 
 public class ForgeHooksClient
 {

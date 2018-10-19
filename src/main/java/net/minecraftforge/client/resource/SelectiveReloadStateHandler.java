@@ -19,10 +19,10 @@
 
 package net.minecraftforge.client.resource;
 
+import net.minecraftforge.common.ForgeModContainer;
+
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
-
-import net.minecraftforge.common.ForgeModContainer;
 
 /**
  * Handles reload parameters for selective loaders.

@@ -324,4 +324,9 @@ public abstract class CreativeTabs
     {
         return new net.minecraft.util.ResourceLocation("textures/gui/container/creative_inventory/tab_" + this.getBackgroundImageName());
     }
+
+    public int getLabelColor()
+    {
+        return 4210752;
+    }
 }

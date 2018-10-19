@@ -25,7 +25,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
 import net.minecraft.util.datafix.DataFixer;

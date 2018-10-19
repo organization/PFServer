@@ -19,8 +19,6 @@
 
 package net.minecraftforge.fml.common.network;
 
-import gnu.trove.map.hash.TByteObjectHashMap;
-import gnu.trove.map.hash.TObjectByteHashMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;

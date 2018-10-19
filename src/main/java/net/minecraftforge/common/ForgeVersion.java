@@ -19,26 +19,19 @@
 
 package net.minecraftforge.common;
 
-import com.google.common.io.ByteStreams;
-import com.google.gson.Gson;
 import net.minecraftforge.fml.common.InjectedModContainer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static net.minecraftforge.common.ForgeVersion.Status.*;
+import static net.minecraftforge.common.ForgeVersion.Status.PENDING;
 
 public class ForgeVersion
 {
@@ -51,7 +44,7 @@ public class ForgeVersion
     //This number is incremented every time a interface changes or new major feature is added, and reset every Minecraft version
     public static final int revisionVersion = 5;
     //This number is incremented every time Jenkins builds Forge, and never reset. Should always be 0 in the repo code.
-    public static final int buildVersion    = 2770;
+    public static final int buildVersion    = 2772;
     // This is the minecraft version we're building for - used in various places in Forge/FML code
     public static final String mcVersion = "1.12.2";
     // This is the MCP data version we're using

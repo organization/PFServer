@@ -1,6 +1,6 @@
 package mgazul.PFServer.inventory;
 
-import javax.annotation.Nullable;
+import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -11,7 +11,7 @@ import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.minecraft.inventory.IInventory;
+import javax.annotation.Nullable;
 
 public class CatCustomInventory implements InventoryHolder {
 

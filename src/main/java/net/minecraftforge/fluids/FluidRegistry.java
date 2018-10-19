@@ -20,7 +20,10 @@
 package net.minecraftforge.fluids;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.*;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
