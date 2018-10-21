@@ -519,12 +519,10 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
 
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        org.spigotmc.AsyncCatcher.catchOp( "block onPlace"); // Spigot
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        org.spigotmc.AsyncCatcher.catchOp( "block remove"); // Spigot
         if (hasTileEntity(state) && !(this instanceof BlockContainer))
         {
             worldIn.removeTileEntity(pos);
@@ -1598,7 +1596,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
      * particles, this is a server side method that spawns particles with
      * WorldServer.spawnParticle
      *
-     * @param world The current Server world
+     * @param worldObj The current Server world
      * @param blockPosition of the block that the entity landed on.
      * @param iblockstate State at the specific world/pos
      * @param entity the entity that hit landed on the block.
@@ -1634,7 +1632,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
      * texture sheets for different sides/locations in the world.
      *
      * @param state The current state
-     * @param world The current world
+     * @param worldObj The current world
      * @param target The target the player is looking at {x/y/z/side/sub}
      * @param manager A reference to the current particle manager.
      * @return True to prevent vanilla digging particles form spawning.
@@ -1815,7 +1813,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
     /**
      * Determines if this block can be used as the base of a beacon.
      *
-     * @param world The current world
+     * @param worldObj The current world
      * @param pos Block position in world
      * @param beacon Beacon position in world
      * @return True, to support the beacon, and make it active with this block.
