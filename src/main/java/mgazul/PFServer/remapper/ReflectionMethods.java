@@ -17,35 +17,37 @@ public class ReflectionMethods {
         return Class.forName(className, initialize, classLoader);
     }
 
-    // Get Fields
-    public static Field getField(Class<?> inst, String name) throws NoSuchFieldException, SecurityException {
-        return inst.getField(ReflectionTransformer.remapper.mapFieldName(RemapUtils.reverseMap(inst), name, null));
+    public static Field getField(Class inst, String name) throws NoSuchFieldException, SecurityException {
+        return !inst.getName().startsWith("net.minecraft.") ? inst.getField(name) : inst.getField(ReflectionTransformer.remapper.mapFieldName(RemapUtils.reverseMap(inst), name, (String)null));
     }
 
-    public static Field getDeclaredField(Class<?> inst, String name) throws NoSuchFieldException, SecurityException {
-        return inst.getDeclaredField(ReflectionTransformer.remapper.mapFieldName(RemapUtils.reverseMap(inst), name, null));
+    public static Field getDeclaredField(Class inst, String name) throws NoSuchFieldException, SecurityException {
+        return !inst.getName().startsWith("net.minecraft.") ? inst.getDeclaredField(name) : inst.getDeclaredField(ReflectionTransformer.remapper.mapFieldName(RemapUtils.reverseMap(inst), name, (String)null));
     }
 
-    // Get Methods
-    public static Method getMethod(Class<?> inst, String name, Class<?>... parameterTypes) throws NoSuchMethodException, SecurityException {
-        return inst.getMethod(RemapUtils.mapMethod(inst, name, parameterTypes), parameterTypes);
+    public static Method getMethod(Class inst, String name, Class... parameterTypes) throws NoSuchMethodException, SecurityException {
+        return !inst.getName().startsWith("net.minecraft.") ? inst.getMethod(name, parameterTypes) : inst.getMethod(RemapUtils.mapMethod(inst, name, parameterTypes), parameterTypes);
     }
 
-    public static Method getDeclaredMethod(Class<?> inst, String name, Class<?>... parameterTypes) throws NoSuchMethodException, SecurityException {
-        return inst.getDeclaredMethod(RemapUtils.mapMethod(inst, name, parameterTypes), parameterTypes);
+    public static Method getDeclaredMethod(Class inst, String name, Class... parameterTypes) throws NoSuchMethodException, SecurityException {
+        return !inst.getName().startsWith("net.minecraft.") ? inst.getDeclaredMethod(name, parameterTypes) : inst.getDeclaredMethod(RemapUtils.mapMethod(inst, name, parameterTypes), parameterTypes);
     }
 
     public static String getName(Field field) {
-        return !field.getDeclaringClass().getName().startsWith("net.minecraft") ? field.getName() : RemapUtils.demapFieldName(field);
+        return !field.getDeclaringClass().getName().startsWith("net.minecraft.") ? field.getName() : RemapUtils.demapFieldName(field);
     }
 
     public static String getName(Method method) {
-        return !method.getDeclaringClass().getName().startsWith("net.minecraft") ? method.getName() : RemapUtils.demapMethodName(method);
+        return !method.getDeclaringClass().getName().startsWith("net.minecraft.") ? method.getName() : RemapUtils.demapMethodName(method);
     }
 
     public static String getSimpleName(Class inst) {
-        String[] name = RemapUtils.reverseMapExternal(inst).split("\\.");
-        return name[name.length - 1];
+        if (!inst.getName().startsWith("net.minecraft.")) {
+            return inst.getSimpleName();
+        } else {
+            String[] name = RemapUtils.reverseMapExternal(inst).split("\\.");
+            return name[name.length - 1];
+        }
     }
 
     public static Class loadClass(String pClazzName) throws ClassNotFoundException {
@@ -53,7 +55,10 @@ public class ReflectionMethods {
     }
 
     public static Class loadClass(ClassLoader pLoader, String pClazzName) throws ClassNotFoundException {
-        String tMappedClass = RemapUtils.mapClass(pClazzName.replace('.', '/')).replace('/', '.');
-        return pLoader == null ? Class.forName(tMappedClass) : pLoader.loadClass(tMappedClass);
+        if (pClazzName.startsWith("net.minecraft.")) {
+            pClazzName = RemapUtils.mapClass(pClazzName.replace('.', '/')).replace('/', '.');
+        }
+
+        return pLoader == null ? Class.forName(pClazzName) : pLoader.loadClass(pClazzName);
     }
 }

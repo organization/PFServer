@@ -44,38 +44,49 @@ public class RemapUtils {
      * Recursive method for finding a method from superclasses/interfaces
      */
     public static String mapMethodInternal(Class<?> inst, String name, Class<?>... parameterTypes) {
-        String match = reverseMap(inst) + "/" + name + " ";
+        String match = reverseMap(inst) + "/" + name;
+        ReflectionTransformer.jarMapping.methods.entrySet();
+        Collection colls = ReflectionTransformer.methodFastMapping.get(match);
+        Iterator var5 = colls.iterator();
 
-        for (Entry<String, String> entry : ReflectionTransformer.jarMapping.methods.entrySet()) {
-            if (entry.getKey().startsWith(match)) {
-                // Check type to see if it matches
-                String[] str = entry.getKey().split("\\s+");
-                int i = 0;
-                for (Type type : Type.getArgumentTypes(str[1])) {
-                    String typename = type.getSort() == 9 ? type.getInternalName() : type.getClassName();
-                    if (i >= parameterTypes.length || !typename.equals(reverseMapExternal(parameterTypes[i]))) {
-                        i=-1;
-                        break;
+        String value;
+        int i;
+        do {
+            if (!var5.hasNext()) {
+                ArrayList parents = new ArrayList();
+                parents.add(inst.getSuperclass());
+                parents.addAll(Arrays.asList(inst.getInterfaces()));
+                Iterator var15 = parents.iterator();
+
+                while(var15.hasNext()) {
+                    Class superClass = (Class)var15.next();
+                    if (superClass != null) {
+                        mapMethodInternal(superClass, name, parameterTypes);
                     }
-                    i++;
                 }
 
-                if (i >= parameterTypes.length)
-                    return entry.getValue();
+                return null;
             }
-        }
 
-        // Search interfaces
-        ArrayList<Class<?>> parents = new ArrayList<Class<?>>();
-        parents.add(inst.getSuperclass());
-        parents.addAll(Arrays.asList(inst.getInterfaces()));
+            value = (String)var5.next();
+            String[] str = value.split("\\s+");
+            i = 0;
+            Type[] var9 = Type.getArgumentTypes(str[1]);
+            int var10 = var9.length;
 
-        for (Class<?> superClass : parents) {
-            if (superClass == null) continue;
-            mapMethodInternal(superClass, name, parameterTypes);
-        }
+            for(int var11 = 0; var11 < var10; ++var11) {
+                Type type = var9[var11];
+                String typename = type.getSort() == 9 ? type.getInternalName() : type.getClassName();
+                if (i >= parameterTypes.length || !typename.equals(reverseMapExternal(parameterTypes[i]))) {
+                    i = -1;
+                    break;
+                }
 
-        return null;
+                ++i;
+            }
+        } while(i < parameterTypes.length);
+
+        return (String)ReflectionTransformer.jarMapping.methods.get(value);
     }
 
     public static String mapClass(String pBukkitClass) {

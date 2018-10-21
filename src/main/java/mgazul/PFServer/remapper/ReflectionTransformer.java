@@ -26,6 +26,7 @@ public class ReflectionTransformer {
     public static final HashMap classDeMapping = Maps.newHashMap();
     public static final Multimap methodDeMapping = ArrayListMultimap.create();
     public static final Multimap fieldDeMapping = ArrayListMultimap.create();
+    public static final Multimap methodFastMapping = ArrayListMultimap.create();
 
     public static void init() {
         jarMapping = MappingLoader.loadMapping();
@@ -41,6 +42,9 @@ public class ReflectionTransformer {
         });
         jarMapping.fields.forEach((k, v) -> {
             fieldDeMapping.put(v, k);
+        });
+        jarMapping.methods.forEach((k, v) -> {
+            methodFastMapping.put(k.split("\\s+")[0], k);
         });
     }
 
