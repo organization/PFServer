@@ -75,7 +75,6 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
             if (entityplayermp == null)
             {
                 this.currentLoginState = LoginState.READY_TO_ACCEPT;
-                this.networkManager.channel();
                 net.minecraftforge.fml.common.network.internal.FMLNetworkHandler.fmlServerHandshake(this.server.getPlayerList(), this.networkManager, this.player);
                 this.player = null;
             }
@@ -180,7 +179,6 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
             if (entityplayermp != null)
             {
                 this.currentLoginState = LoginState.DELAY_ACCEPT;
-                this.networkManager.channel();
                 this.player = this.server.getPlayerList().createPlayerForUser(this.loginGameProfile, s);
             }
             else
