@@ -1,5 +1,7 @@
 package mgazul.PFServer;
 
+import net.minecraft.server.MinecraftServer;
+
 public class CatServer {
 	private static final String version = "0.0.1";
 	private static final String native_verson = "v1_12_R1";
@@ -11,4 +13,14 @@ public class CatServer {
     public static String getNativeVersion() {
         return native_verson;
     }
+
+	public static boolean asyncCatch(String reason) {
+		if (Thread.currentThread() != MinecraftServer.getServerInst().primaryThread) {
+			MinecraftServer.getServerInst();
+			MinecraftServer.LOGGER.warn("Try to asynchronously " + reason + ", caught!");
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

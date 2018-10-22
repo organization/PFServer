@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
+import mgazul.PFServer.inventory.CustomModRecipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -377,6 +378,7 @@ public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryE
 
     @Override
     public Recipe toBukkitRecipe() {
+        if (this.recipeHeight >= 1 && this.recipeHeight <= 3 && this.recipeWidth >= 1 && this.recipeWidth <= 3) {
         CraftItemStack result = CraftItemStack.asCraftMirror(this.recipeOutput);
         CraftShapedRecipe recipe = new CraftShapedRecipe(result, this);
         switch (this.recipeHeight) {
@@ -431,7 +433,10 @@ public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryE
             }
             c++;
         }
-        return recipe;
+         return recipe;
+         } else {
+             return new CustomModRecipe(this, this.getRegistryName());
+        }
     }
 
     @Override

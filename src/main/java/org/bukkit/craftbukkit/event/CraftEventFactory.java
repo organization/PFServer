@@ -2,6 +2,7 @@ package org.bukkit.craftbukkit.event;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import mgazul.PFServer.CatServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -819,27 +820,32 @@ public class CraftEventFactory {
     }
 
     public static Container callInventoryOpenEvent(EntityPlayerMP player, Container container, boolean cancelled) {
-        if (player.openContainer != player.inventoryContainer) { // fire INVENTORY_CLOSE if one already open
-            player.connection.processCloseWindow(new CPacketCloseWindow(player.openContainer.windowId));
-        }
+        if (CatServer.asyncCatch("call InventoryOpenEvent")) {
+            return container;
+        } else {
+            if (player.openContainer != player.inventoryContainer) { // fire INVENTORY_CLOSE if one already open
+                player.connection.processCloseWindow(new CPacketCloseWindow(player.openContainer.windowId));
+            }
 
-        CraftServer server = player.world.getServer();
-        CraftPlayer craftPlayer = player.getBukkitEntity();
-        try {
-            player.openContainer.transferTo(container, craftPlayer);
-        } catch (AbstractMethodError e) {
-            // do nothing
-        }
-        InventoryOpenEvent event = new InventoryOpenEvent(container.getBukkitView());
-        event.setCancelled(cancelled);
-        if (container.getBukkitView() != null) server.getPluginManager().callEvent(event); // CatServer - mods bypass
+            CraftServer server = player.world.getServer();
+            CraftPlayer craftPlayer = player.getBukkitEntity();
+            try {
+                player.openContainer.transferTo(container, craftPlayer);
+            } catch (AbstractMethodError e) {
+                // do nothing
+            }
+            InventoryOpenEvent event = new InventoryOpenEvent(container.getBukkitView());
+            event.setCancelled(cancelled);
+            if (container.getBukkitView() != null)
+                server.getPluginManager().callEvent(event); // CatServer - mods bypass
 
-        if (event.isCancelled()) {
-            container.transferTo(player.openContainer, craftPlayer);
-            return null;
+            if (event.isCancelled()) {
+                container.transferTo(player.openContainer, craftPlayer);
+                return null;
+            } else {
+                return container;
+            }
         }
-
-        return container;
     }
 
     public static ItemStack callPreCraftEvent(InventoryCrafting matrix, ItemStack result, InventoryView lastCraftView, boolean isRepair) {
@@ -960,9 +966,11 @@ public class CraftEventFactory {
     }
 
     public static void handleInventoryCloseEvent(EntityPlayer human) {
-        InventoryCloseEvent event = new InventoryCloseEvent(human.openContainer.getBukkitView());
-        if(human.openContainer.getBukkitView() != null) human.world.getServer().getPluginManager().callEvent(event); // CatServer - mods bypass
-        human.openContainer.transferTo(human.inventoryContainer, human.getBukkitEntity());
+        if (!CatServer.asyncCatch("call InventoryCloseEvent")) {
+            InventoryCloseEvent event = new InventoryCloseEvent(human.openContainer.getBukkitView());
+            if(human.openContainer.getBukkitView() != null) human.world.getServer().getPluginManager().callEvent(event); // CatServer - mods bypass
+             human.openContainer.transferTo(human.inventoryContainer, human.getBukkitEntity());
+        }
     }
 
     public static void handleEditBookEvent(EntityPlayerMP player, ItemStack newBookItem) {

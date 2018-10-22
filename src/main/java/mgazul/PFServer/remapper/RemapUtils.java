@@ -1,19 +1,13 @@
 package mgazul.PFServer.remapper;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Multimap;
 import mgazul.PFServer.CatServer;
 import net.md_5.specialsource.JarRemapper;
-import net.md_5.specialsource.NodeType;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map.Entry;
 
 public class RemapUtils {
     public static final String NMS_PREFIX = "net/minecraft/server/";
@@ -53,18 +47,6 @@ public class RemapUtils {
         int i;
         do {
             if (!var5.hasNext()) {
-                ArrayList parents = new ArrayList();
-                parents.add(inst.getSuperclass());
-                parents.addAll(Arrays.asList(inst.getInterfaces()));
-                Iterator var15 = parents.iterator();
-
-                while(var15.hasNext()) {
-                    Class superClass = (Class)var15.next();
-                    if (superClass != null) {
-                        mapMethodInternal(superClass, name, parameterTypes);
-                    }
-                }
-
                 return null;
             }
 

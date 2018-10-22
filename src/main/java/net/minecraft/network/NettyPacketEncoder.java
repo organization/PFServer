@@ -23,7 +23,7 @@ public class NettyPacketEncoder extends MessageToByteEncoder < Packet<? >>
 
     protected void encode(ChannelHandlerContext p_encode_1_, Packet<?> p_encode_2_, ByteBuf p_encode_3_) throws IOException, Exception
     {
-        EnumConnectionState enumconnectionstate = (EnumConnectionState)p_encode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get();
+        EnumConnectionState enumconnectionstate = p_encode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get();
 
         if (enumconnectionstate == null)
         {
@@ -37,7 +37,9 @@ public class NettyPacketEncoder extends MessageToByteEncoder < Packet<? >>
             {
                 LOGGER.debug(RECEIVED_PACKET_MARKER, "OUT: [{}:{}] {}", p_encode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get(), integer, p_encode_2_.getClass().getName());
             }
-
+            if (integer == null && (integer = enumconnectionstate.getPacketId(this.direction, p_encode_2_)) != null) {
+                LOGGER.warn("current state is {}, but send packet {}", enumconnectionstate, p_encode_2_.getClass().getSimpleName());
+            }
             if (integer == null)
             {
                 throw new IOException("Can't serialize unregistered packet");

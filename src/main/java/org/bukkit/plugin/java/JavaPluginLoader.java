@@ -358,6 +358,12 @@ public final class JavaPluginLoader implements PluginLoader {
                 for (String name : names) {
                     removeClass(name);
                 }
+                try {
+                    loader.close();
+                } catch (IOException var9) {
+                    this.server.getLogger().log(Level.WARNING, "Error closing the Plugin Class Loader for " + plugin.getDescription().getFullName());
+                    var9.printStackTrace();
+                }
             }
         }
     }

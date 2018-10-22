@@ -60,19 +60,14 @@ public class PermissibleBase implements Permissible {
     public boolean hasPermission(String inName) {
         if (inName == null) {
             throw new IllegalArgumentException("Permission name cannot be null");
-        }
-
-        String name = inName.toLowerCase(java.util.Locale.ENGLISH);
-
-        if (isPermissionSet(name)) {
-            return permissions.get(name).getValue();
         } else {
-            Permission perm = Bukkit.getServer().getPluginManager().getPermission(name);
-
-            if (perm != null) {
-                return perm.getDefault().getValue(isOp());
+            String name = inName.toLowerCase(Locale.ENGLISH);
+            PermissionAttachmentInfo info = this.permissions.get(name);
+            if (info != null) {
+                return info.getValue();
             } else {
-                return Permission.DEFAULT_PERMISSION.getValue(isOp());
+                Permission perm = Bukkit.getServer().getPluginManager().getPermission(name);
+                return perm != null ? perm.getDefault().getValue(this.isOp()) : Permission.DEFAULT_PERMISSION.getValue(this.isOp());
             }
         }
     }
@@ -80,14 +75,11 @@ public class PermissibleBase implements Permissible {
     public boolean hasPermission(Permission perm) {
         if (perm == null) {
             throw new IllegalArgumentException("Permission cannot be null");
+        } else {
+            String name = perm.getName().toLowerCase(Locale.ENGLISH);
+            PermissionAttachmentInfo info = this.permissions.get(name);
+            return info != null ? info.getValue() : perm.getDefault().getValue(this.isOp());
         }
-
-        String name = perm.getName().toLowerCase(java.util.Locale.ENGLISH);
-
-        if (isPermissionSet(name)) {
-            return permissions.get(name).getValue();
-        }
-        return perm.getDefault().getValue(isOp());
     }
 
     public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value) {
