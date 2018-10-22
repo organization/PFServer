@@ -1,6 +1,7 @@
 package mgazul.PFServer;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class CatServer {
 	private static final String version = "0.0.1";
@@ -16,8 +17,7 @@ public class CatServer {
 
 	public static boolean asyncCatch(String reason) {
 		if (Thread.currentThread() != MinecraftServer.getServerInst().primaryThread) {
-			MinecraftServer.getServerInst();
-			MinecraftServer.LOGGER.warn("Try to asynchronously " + reason + ", caught!");
+			FMLLog.bigWarning("Try to asynchronously " + reason + ", caught!");
 			return true;
 		} else {
 			return false;
