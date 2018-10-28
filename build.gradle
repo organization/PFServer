@@ -129,37 +129,16 @@ task jar_server(type: Jar) {
                 "Implementation-Version": "CraftBukkit-1.12.2",
                 "Main-Class": "net.minecraftforge.fml.relauncher.ServerLaunchWrapper",
                 "TweakClass": "net.minecraftforge.fml.common.launcher.FMLTweaker",
-                "Class-Path": project.getClassPath(),
+                "Class-Path": configurations.compile.collect { 'libraries/' + it.getName() }.join(' '),
         )
     }
-}
-
-import java.util.zip.*
-
-task dumpLibs() {
-    def tOutput=new ZipOutputStream(new FileOutputStream("$buildDir/libs/libraries.zip"))
-    configurations.compile.resolvedConfiguration.resolvedArtifacts.each { ita ->
-        def tId=ita.moduleVersion.id
-        def tEntry=new ZipEntry("libraries/"+tId.group.replace('.','/')+"/${tId.name}/${tId.version}/${ita.file.name}")
-        tOutput.putNextEntry(tEntry)
-        tOutput.write(ita.file.bytes)
-        tOutput.closeEntry()
-    }
-
-    tOutput.close()
 }
 
 artifacts {
     archives jar_server
 }
 
-def getClassPath() {
-    StringBuilder tPath = new StringBuilder()
-    configurations.compile.resolvedConfiguration.resolvedArtifacts.each { ita ->
-        def tId = ita.moduleVersion.id
-        tPath.append("libraries/")
-                .append("${tId.group}".replace('.', '/'))
-                .append("/${tId.name}/${tId.version}/${ita.file.name} ")
-    }
-    return tPath.toString()
+task dumpLibs(type: Copy) {
+    into "$buildDir/libraries"
+    from configurations.compile
 }
