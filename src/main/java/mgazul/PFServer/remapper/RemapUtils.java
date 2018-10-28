@@ -7,11 +7,8 @@ import org.objectweb.asm.Type;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class RemapUtils {
-    public static final String NMS_PREFIX = "net/minecraft/server/";
-    public static final String NMS_VERSION = CatServer.getNativeVersion();
     // Classes
     public static String reverseMapExternal(Class<?> name) {
         return reverseMap(name).replace('$', '.').replace('/', '.');
@@ -22,7 +19,7 @@ public class RemapUtils {
     }
 
     public static String reverseMap(String check) {
-        return (String)ReflectionTransformer.classDeMapping.getOrDefault(check, check);
+        return ReflectionTransformer.classDeMapping.getOrDefault(check, check);
     }
 
     // Methods
@@ -39,93 +36,86 @@ public class RemapUtils {
      */
     public static String mapMethodInternal(Class<?> inst, String name, Class<?>... parameterTypes) {
         String match = reverseMap(inst) + "/" + name;
-        ReflectionTransformer.jarMapping.methods.entrySet();
-        Collection colls = ReflectionTransformer.methodFastMapping.get(match);
-        Iterator var5 = colls.iterator();
 
-        String value;
-        int i;
-        do {
-            if (!var5.hasNext()) {
-                return null;
-            }
-
-            value = (String)var5.next();
+        Collection<String> colls = ReflectionTransformer.methodFastMapping.get(match);
+        for (String value : colls) {
             String[] str = value.split("\\s+");
-            i = 0;
-            Type[] var9 = Type.getArgumentTypes(str[1]);
-            int var10 = var9.length;
-
-            for(int var11 = 0; var11 < var10; ++var11) {
-                Type type = var9[var11];
-                String typename = type.getSort() == 9 ? type.getInternalName() : type.getClassName();
+            int i = 0;
+            for (Type type : Type.getArgumentTypes(str[1])) {
+                String typename = (type.getSort() == Type.ARRAY ? type.getInternalName() : type.getClassName());
                 if (i >= parameterTypes.length || !typename.equals(reverseMapExternal(parameterTypes[i]))) {
-                    i = -1;
+                    i=-1;
                     break;
                 }
-
-                ++i;
+                i++;
             }
-        } while(i < parameterTypes.length);
 
-        return (String)ReflectionTransformer.jarMapping.methods.get(value);
+            if (i >= parameterTypes.length)
+                return ReflectionTransformer.jarMapping.methods.get(value);
+        }
+
+        // Search superclass
+        Class superClass = inst.getSuperclass();
+        if (superClass != null) {
+            String superMethodName = mapMethodInternal(superClass, name, parameterTypes);
+            if (superMethodName != null) return superMethodName;
+        }
+
+        return null;
     }
+
+    public static final String NMS_PREFIX = "net/minecraft/server/";
+    public static final String NMS_VERSION = CatServer.getNativeVersion();
 
     public static String mapClass(String pBukkitClass) {
         String tRemapped = JarRemapper.mapTypeName(pBukkitClass, ReflectionTransformer.jarMapping.packages, ReflectionTransformer.jarMapping.classes, pBukkitClass);
-        if (tRemapped.equals(pBukkitClass) && pBukkitClass.startsWith("net/minecraft/server/") && !pBukkitClass.contains(NMS_VERSION)) {
-            String tNewClassStr = "net/minecraft/server/" + NMS_VERSION + "/" + pBukkitClass.substring("net/minecraft/server/".length());
+        if (tRemapped.equals(pBukkitClass) && pBukkitClass.startsWith(NMS_PREFIX) && !pBukkitClass.contains(NMS_VERSION)) {
+            String tNewClassStr = NMS_PREFIX + NMS_VERSION + "/" + pBukkitClass.substring(NMS_PREFIX.length());
             return JarRemapper.mapTypeName(tNewClassStr, ReflectionTransformer.jarMapping.packages, ReflectionTransformer.jarMapping.classes, pBukkitClass);
-        } else {
-            return tRemapped;
         }
+        return tRemapped;
     }
 
     public static String getTypeDesc(Type pType) {
         try {
             return pType.getInternalName();
-        } catch (NullPointerException var2) {
+        } catch (NullPointerException ignore) {
             return pType.toString();
+            // TODO: handle exception
         }
     }
 
     public static String demapFieldName(Field field) {
         String name = field.getName();
         String match = reverseMap(field.getDeclaringClass());
-        Collection colls = ReflectionTransformer.fieldDeMapping.get(name);
-        Iterator var4 = colls.iterator();
 
-        String value;
-        do {
-            if (!var4.hasNext()) {
-                return name;
+        Collection<String> colls = ReflectionTransformer.fieldDeMapping.get(name);
+
+        for (String value : colls) {
+            if (value.startsWith(match)) {
+                String[] matched = value.split("\\/");
+                String rtr =  matched[matched.length - 1];
+                return rtr;
             }
+        }
 
-            value = (String)var4.next();
-        } while(!value.startsWith(match));
-
-        String[] matched = value.split("\\/");
-        String rtr = matched[matched.length - 1];
-        return rtr;
+        return name;
     }
 
     public static String demapMethodName(Method method) {
         String name = method.getName();
         String match = reverseMap(method.getDeclaringClass());
-        Collection colls = ReflectionTransformer.methodDeMapping.get(name);
-        Iterator var4 = colls.iterator();
 
-        String value;
-        do {
-            if (!var4.hasNext()) {
-                return name;
+        Collection<String> colls = ReflectionTransformer.methodDeMapping.get(name);
+
+        for (String value : colls) {
+            if (value.startsWith(match)) {
+                String[] matched = value.split("\\s+")[0].split("\\/");
+                String rtr =  matched[matched.length - 1];
+                return rtr;
             }
+        }
 
-            value = (String)var4.next();
-        } while(!value.startsWith(match));
-
-        String[] matched = value.split("\\s+")[0].split("\\/");
-        String rtr = matched[matched.length - 1];
-        return rtr;
+        return name;
     }
 }

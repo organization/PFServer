@@ -378,7 +378,11 @@ public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryE
 
     @Override
     public Recipe toBukkitRecipe() {
-        if (this.recipeHeight >= 1 && this.recipeHeight <= 3 && this.recipeWidth >= 1 && this.recipeWidth <= 3) {
+        // CatServer start - handle special custom recipe
+        if (this.recipeHeight < 1 || this.recipeHeight > 3 || this.recipeWidth < 1 || this.recipeWidth > 3) {
+            return new CustomModRecipe((IRecipe) this, this.getRegistryName());
+        }
+        // CatServer end
         CraftItemStack result = CraftItemStack.asCraftMirror(this.recipeOutput);
         CraftShapedRecipe recipe = new CraftShapedRecipe(result, this);
         switch (this.recipeHeight) {
@@ -433,10 +437,7 @@ public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryE
             }
             c++;
         }
-         return recipe;
-         } else {
-             return new CustomModRecipe(this, this.getRegistryName());
-        }
+        return recipe;
     }
 
     @Override

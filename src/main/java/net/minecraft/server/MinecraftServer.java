@@ -136,7 +136,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     private final GameProfileRepository profileRepo;
     private final PlayerProfileCache profileCache;
     private long nanoTimeSinceStatusRefresh;
-    public final Queue < FutureTask<? >> futureTaskQueue = new java.util.concurrent.ConcurrentLinkedQueue<FutureTask<?>>(); // Spigot
+    public final Queue < FutureTask<? >> futureTaskQueue = new mgazul.PFServer.utils.CachedSizeConcurrentLinkedQueue<>(); // Paper - Make size() constant-time
     private Thread serverThread;
     public long currentTime = getCurrentTimeMillis();
     @SideOnly(Side.CLIENT)

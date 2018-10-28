@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.inventory.CraftShapelessRecipe;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.inventory.Recipe;
 
 import java.util.List;
@@ -151,8 +152,8 @@ public class ShapelessRecipes extends net.minecraftforge.registries.IForgeRegist
         for (Ingredient list : this.recipeItems) {
             if (list != null) { // CatServer - get recipe from OreDictionary
                 ItemStack[] matchingStacks = list.getMatchingStacks();
-                net.minecraft.item.ItemStack stack = matchingStacks[0];
-                recipe.addIngredient(org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(stack.getItem()), (matchingStacks.length) > 1 ? 32767 : stack.getMetadata());
+                ItemStack stack = matchingStacks[0];
+                recipe.addIngredient(CraftMagicNumbers.getMaterial(stack.getItem()), (matchingStacks.length) > 1 ? 32767 : stack.getMetadata());
             }
         }
         return recipe;

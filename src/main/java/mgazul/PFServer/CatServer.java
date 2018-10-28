@@ -17,7 +17,7 @@ public class CatServer {
 
 	public static boolean asyncCatch(String reason) {
 		if (Thread.currentThread() != MinecraftServer.getServerInst().primaryThread) {
-			FMLLog.bigWarning("Try to asynchronously " + reason + ", caught!");
+			FMLLog.warning("Try to asynchronously " + reason + ", caught!");
 			return true;
 		} else {
 			return false;

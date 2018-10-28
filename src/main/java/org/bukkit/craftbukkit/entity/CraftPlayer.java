@@ -517,7 +517,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (fromWorld == toWorld) {
             entity.connection.teleport(to);
         } else {
-            server.getHandle().recreatePlayerEntity(entity, toWorld.dimension, true, to, true);
+            server.getHandle().moveToWorld(entity, toWorld.dimension, true, to, true);
         }
         return true;
     }
@@ -1299,10 +1299,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         Validate.notNull(scoreboard, "Scoreboard cannot be null");
         NetHandlerPlayServer connection = getHandle().connection;
         if (connection == null) {
-            throw new IllegalStateException("Cannot set scoreboard yet");
+            return;
         }
         if (connection.isDisconnected()) {
-            throw new IllegalStateException("Cannot set scoreboard for invalid CraftPlayer");
+            // throw new IllegalStateException("Cannot set scoreboard for invalid CraftPlayer");
+            // Spigot - remove this as Mojang's semi asynchronous Netty implementation can lead to races
         }
 
         this.server.getScoreboardManager().setPlayerBoard(this, scoreboard);
@@ -1406,6 +1407,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+        if (getHandle().connection == null) return;
         SPacketTitle times = new SPacketTitle(fadeIn, stay, fadeOut);
         getHandle().connection.sendPacket(times);
 
@@ -1422,6 +1424,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public void resetTitle() {
+        if (getHandle().connection == null) return;
+
         SPacketTitle packetReset = new SPacketTitle(SPacketTitle.Type.RESET, null);
         getHandle().connection.sendPacket(packetReset);
     }
@@ -1483,6 +1487,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public <T> void spawnParticle(Particle particle, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data) {
+        if (getHandle().connection == null) return;
+
         if (data != null && !particle.getDataType().isInstance(data)) {
             throw new IllegalArgumentException("data should be " + particle.getDataType() + " got " + data.getClass());
         }
@@ -1532,7 +1538,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         {
             if ( getHealth() <= 0 && isOnline() )
             {
-                server.getServer().getPlayerList().recreatePlayerEntity( getHandle(), 0, false );
+                server.getServer().getPlayerList().moveToWorld( getHandle(), 0, false );
             }
         }
 

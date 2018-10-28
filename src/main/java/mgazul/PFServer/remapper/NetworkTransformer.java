@@ -32,6 +32,7 @@ public class NetworkTransformer implements IClassTransformer {
         mv.visitMethodInsn(INVOKESPECIAL, "net/minecraft/network/NetHandlerPlayServer", "func_147359_a", "(Lnet/minecraft/network/Packet;)V", true);
         mv.visitInsn(RETURN);
         mv.visitEnd();
+        classNode.access = ACC_SUPER + ACC_PUBLIC;
         classNode.accept(classWriter);
         return classWriter.toByteArray();
     }
