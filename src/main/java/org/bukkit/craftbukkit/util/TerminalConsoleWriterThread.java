@@ -34,7 +34,7 @@ public class TerminalConsoleWriterThread implements Runnable {
                 if (Main.useJline) {
                     this.output.write(RESET_LINE);
                     this.output.write(ColouredConsoleSender.toAnsiStr(message).getBytes());
-                    output.flush();
+                    this.output.flush();
 
                     try {
                         reader.drawLine();
