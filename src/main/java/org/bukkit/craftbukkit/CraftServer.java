@@ -1355,7 +1355,8 @@ public final class CraftServer implements Server {
     public File getWorldContainer() {
         if (DimensionManager.getWorld(0) != null) {
             return ((SaveHandler)DimensionManager.getWorld(0).getSaveHandler()).getWorldDirectory();
-        } else if (this.getServer().anvilFile != null) {
+        }
+        if (this.getServer().anvilFile != null) {
             return this.getServer().anvilFile;
         }
 
