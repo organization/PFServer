@@ -1765,7 +1765,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                         return;
                     }
 
-                    this.player = this.serverController.getPlayerList().recreatePlayerEntity(this.player, player.dimension, false);
+                    this.player = this.serverController.getPlayerList().moveToWorld(this.player, player.dimension, false);
 
                     if (this.serverController.isHardcore())
                     {
