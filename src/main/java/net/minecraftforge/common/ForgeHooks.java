@@ -816,6 +816,7 @@ public class ForgeHooks
                     entityPlayer.connection.sendPacket(pkt);
                 }
             }
+
             // Send other half of the door
             if (state.getBlock() instanceof BlockDoor) {
                 boolean bottom = state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER;
@@ -1099,7 +1100,7 @@ public class ForgeHooks
             // Revert variable back to true as it would have been set to false
             if (entity instanceof EntityMinecartContainer)
             {
-               ((EntityMinecartContainer) entity).dropContentsWhenDead = true;
+                ((EntityMinecartContainer) entity).dropContentsWhenDead = true;
             }
         }
         return !event.isCanceled();
@@ -1372,45 +1373,45 @@ public class ForgeHooks
     private static boolean loadAdvancements(Map<ResourceLocation, Advancement.Builder> map, ModContainer mod)
     {
         return CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + "/advancements", null,
-            (root, file) ->
-            {
-
-                String relative = root.relativize(file).toString();
-                if (!"json".equals(FilenameUtils.getExtension(file.toString())) || relative.startsWith("_"))
-                    return true;
-
-                String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
-                ResourceLocation key = new ResourceLocation(mod.getModId(), name);
-
-                if (!map.containsKey(key))
+                (root, file) ->
                 {
-                    BufferedReader reader = null;
 
-                    try
-                    {
-                        reader = Files.newBufferedReader(file);
-                        Advancement.Builder builder = JsonUtils.fromJson(AdvancementManager.GSON, reader, Advancement.Builder.class);
-                        map.put(key, builder);
-                    }
-                    catch (JsonParseException jsonparseexception)
-                    {
-                        FMLLog.log.error("Parsing error loading built-in advancement " + key, (Throwable)jsonparseexception);
-                        return false;
-                    }
-                    catch (IOException ioexception)
-                    {
-                        FMLLog.log.error("Couldn't read advancement " + key + " from " + file, (Throwable)ioexception);
-                        return false;
-                    }
-                    finally
-                    {
-                        IOUtils.closeQuietly(reader);
-                    }
-                }
+                    String relative = root.relativize(file).toString();
+                    if (!"json".equals(FilenameUtils.getExtension(file.toString())) || relative.startsWith("_"))
+                        return true;
 
-                return true;
-            },
-            true, true
+                    String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
+                    ResourceLocation key = new ResourceLocation(mod.getModId(), name);
+
+                    if (!map.containsKey(key))
+                    {
+                        BufferedReader reader = null;
+
+                        try
+                        {
+                            reader = Files.newBufferedReader(file);
+                            Advancement.Builder builder = JsonUtils.fromJson(AdvancementManager.GSON, reader, Advancement.Builder.class);
+                            map.put(key, builder);
+                        }
+                        catch (JsonParseException jsonparseexception)
+                        {
+                            FMLLog.log.error("Parsing error loading built-in advancement " + key, (Throwable)jsonparseexception);
+                            return false;
+                        }
+                        catch (IOException ioexception)
+                        {
+                            FMLLog.log.error("Couldn't read advancement " + key + " from " + file, (Throwable)ioexception);
+                            return false;
+                        }
+                        finally
+                        {
+                            IOUtils.closeQuietly(reader);
+                        }
+                    }
+
+                    return true;
+                },
+                true, true
         );
     }
 
@@ -1486,8 +1487,6 @@ public class ForgeHooks
         return modId;
     }
 
-
-
     public static boolean onFarmlandTrample(World world, BlockPos pos, IBlockState state, float fallDistance, Entity entity)
     {
         if (entity.canTrample(world, state.getBlock(), pos, fallDistance))
@@ -1498,5 +1497,4 @@ public class ForgeHooks
         }
         return false;
     }
-
 }

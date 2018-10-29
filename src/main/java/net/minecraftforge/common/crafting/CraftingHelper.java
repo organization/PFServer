@@ -646,68 +646,68 @@ public class CraftingHelper {
         JsonContext ctx = new JsonContext(mod.getModId());
 
         return findFiles(mod, "assets/" + mod.getModId() + "/recipes",
-            root ->
-            {
-                Path fPath = root.resolve("_constants.json");
-                if (fPath != null && Files.exists(fPath))
+                root ->
                 {
+                    Path fPath = root.resolve("_constants.json");
+                    if (fPath != null && Files.exists(fPath))
+                    {
+                        BufferedReader reader = null;
+                        try
+                        {
+                            reader = Files.newBufferedReader(fPath);
+                            JsonObject[] json = JsonUtils.fromJson(GSON, reader, JsonObject[].class);
+                            ctx.loadConstants(json);
+                        }
+                        catch (IOException e)
+                        {
+                            FMLLog.log.error("Error loading _constants.json: ", e);
+                            return false;
+                        }
+                        finally
+                        {
+                            IOUtils.closeQuietly(reader);
+                        }
+                    }
+                    return true;
+                },
+                (root, file) ->
+                {
+                    Loader.instance().setActiveModContainer(mod);
+
+                    String relative = root.relativize(file).toString();
+                    if (!"json".equals(FilenameUtils.getExtension(file.toString())) || relative.startsWith("_"))
+                        return true;
+
+                    String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
+                    ResourceLocation key = new ResourceLocation(ctx.getModId(), name);
+
                     BufferedReader reader = null;
                     try
                     {
-                        reader = Files.newBufferedReader(fPath);
-                        JsonObject[] json = JsonUtils.fromJson(GSON, reader, JsonObject[].class);
-                        ctx.loadConstants(json);
+                        reader = Files.newBufferedReader(file);
+                        JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+                        if (json.has("conditions") && !CraftingHelper.processConditions(JsonUtils.getJsonArray(json, "conditions"), ctx))
+                            return true;
+                        IRecipe recipe = CraftingHelper.getRecipe(json, ctx);
+                        ForgeRegistries.RECIPES.register(recipe.setRegistryName(key));
+                    }
+                    catch (JsonParseException e)
+                    {
+                        FMLLog.log.error("Parsing error loading recipe {}", key, e);
+                        return false;
                     }
                     catch (IOException e)
                     {
-                        FMLLog.log.error("Error loading _constants.json: ", e);
+                        FMLLog.log.error("Couldn't read recipe {} from {}", key, file, e);
                         return false;
                     }
                     finally
                     {
                         IOUtils.closeQuietly(reader);
                     }
-                }
-                return true;
-            },
-            (root, file) ->
-            {
-                Loader.instance().setActiveModContainer(mod);
-
-                String relative = root.relativize(file).toString();
-                if (!"json".equals(FilenameUtils.getExtension(file.toString())) || relative.startsWith("_"))
                     return true;
-
-                String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
-                ResourceLocation key = new ResourceLocation(ctx.getModId(), name);
-
-                BufferedReader reader = null;
-                try
-                {
-                    reader = Files.newBufferedReader(file);
-                    JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
-                    if (json.has("conditions") && !CraftingHelper.processConditions(JsonUtils.getJsonArray(json, "conditions"), ctx))
-                        return true;
-                    IRecipe recipe = CraftingHelper.getRecipe(json, ctx);
-                    ForgeRegistries.RECIPES.register(recipe.setRegistryName(key));
-                }
-                catch (JsonParseException e)
-                {
-                    FMLLog.log.error("Parsing error loading recipe {}", key, e);
-                    return false;
-                }
-                catch (IOException e)
-                {
-                    FMLLog.log.error("Couldn't read recipe {} from {}", key, file, e);
-                    return false;
-                }
-                finally
-                {
-                    IOUtils.closeQuietly(reader);
-                }
-                return true;
-            },
-            true, true
+                },
+                true, true
         );
     }
 
