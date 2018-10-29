@@ -55,15 +55,13 @@ public class BukkitInjector {
     }
 
     public static void injectBiomes() {
-        for(Map.Entry entry : ForgeRegistries.BIOMES.getEntries()){
-            String biomeName = entry.getKey().toString().toUpperCase(Locale.ENGLISH);
-            Biome[] var3 = Biome.values();
-            for(int var5 = 0; var5 < var3.length; ++var5) {
-                Biome biome = var3[var5];
-                if (biome.toString().equals(biomeName)) {
-                    EnumHelper.addEnum(Biome.class, biomeName, new Class[0]);
-                }
+        for1:
+        for (Map.Entry<ResourceLocation, net.minecraft.world.biome.Biome> entry : ForgeRegistries.BIOMES.getEntries()) {
+            String biomeName = entry.getKey().getResourcePath().toUpperCase(java.util.Locale.ENGLISH);
+            for (Biome biome : Biome.values()) {
+                if (biome.toString().equals(biomeName)) continue for1;
             }
+            EnumHelper.addEnum(Biome.class, biomeName, new Class[]{}, new Object[]{});
         }
     }
 }
