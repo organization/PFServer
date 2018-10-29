@@ -726,7 +726,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                     {
                         try
                         {
-                            return String.format("ID #%d (%s // %s // %s)", Block.getIdFromBlock(blockIn), blockIn.getUnlocalizedName(), blockIn.getClass().getCanonicalName());
+                            return String.format("ID #%d (%s // %s // %s)", Block.getIdFromBlock(blockIn), blockIn.getUnlocalizedName(), blockIn.getClass().getName(), blockIn.getRegistryName());
                         }
                         catch (Throwable var2)
                         {
@@ -767,7 +767,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                         {
                             try
                             {
-                                return String.format("ID #%d (%s // %s // %s)", Block.getIdFromBlock(p_190529_2_), p_190529_2_.getUnlocalizedName(), p_190529_2_.getClass().getCanonicalName());
+                                return String.format("ID #%d (%s // %s)", Block.getIdFromBlock(p_190529_2_), p_190529_2_.getUnlocalizedName(), p_190529_2_.getClass().getCanonicalName());
                             }
                             catch (Throwable var2)
                             {
@@ -1451,18 +1451,20 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     {
         for (int i = 0; i < this.eventListeners.size(); ++i)
         {
-            ((IWorldEventListener)this.eventListeners.get(i)).onEntityAdded(entityIn);
+            this.eventListeners.get(i).onEntityAdded(entityIn);
         }
         entityIn.onAddedToWorld();
+        entityIn.valid = true;
     }
 
     public void onEntityRemoved(Entity entityIn)
     {
         for (int i = 0; i < this.eventListeners.size(); ++i)
         {
-            ((IWorldEventListener)this.eventListeners.get(i)).onEntityRemoved(entityIn);
+            this.eventListeners.get(i).onEntityRemoved(entityIn);
         }
         entityIn.onRemovedFromWorld();
+        entityIn.valid = false;
     }
 
     public void removeEntity(Entity entityIn)

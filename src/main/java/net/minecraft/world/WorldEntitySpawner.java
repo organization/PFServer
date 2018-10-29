@@ -202,7 +202,7 @@ public final class WorldEntitySpawner
 
                                                     if (entityliving.isNotColliding())
                                                     {
-                                                        if (worldServerIn.spawnEntity(entityliving, CreatureSpawnEvent.SpawnReason.NATURAL)) {
+                                                        if (worldServerIn.addEntity(entityliving, CreatureSpawnEvent.SpawnReason.NATURAL)) {
                                                             ++j2;
                                                             moblimit--; // Spigot
                                                         }

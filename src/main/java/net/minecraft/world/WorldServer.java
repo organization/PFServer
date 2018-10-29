@@ -584,7 +584,7 @@ public class WorldServer extends World implements IThreadListener
                             entityskeletonhorse.setTrap(true);
                             entityskeletonhorse.setGrowingAge(0);
                             entityskeletonhorse.setPosition((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
-                            this.spawnEntity(entityskeletonhorse, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);
+                            this.addEntity(entityskeletonhorse, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.LIGHTNING);
                             this.addWeatherEffect(new EntityLightningBolt(this, (double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), true));
                         }
                         else
@@ -783,7 +783,6 @@ public class WorldServer extends World implements IThreadListener
         super.updateEntities();
         spigotConfig.currentPrimedTnt = 0; // Spigot
     }
-
 
     protected void tickPlayers()
     {
@@ -1312,12 +1311,7 @@ public class WorldServer extends World implements IThreadListener
         this.perWorldStorage.saveAllData();
     }
 
-    public boolean spawnEntity(Entity entityIn)
-    {
-        return this.canAddEntity(entityIn) ? super.spawnEntity(entityIn) : false;
-    }
-
-    public boolean spawnEntity(Entity entityIn, CreatureSpawnEvent.SpawnReason spawnReason) {
+    public boolean addEntity(Entity entityIn, CreatureSpawnEvent.SpawnReason spawnReason) {
         // World.spawnEntity(Entity) will call this, and we still want to perform
         // existing entity checking when it's called with a SpawnReason
         return this.canAddEntity(entityIn) ? super.addEntity(entityIn, spawnReason) : false;
