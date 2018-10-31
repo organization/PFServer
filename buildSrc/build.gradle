@@ -13,6 +13,6 @@ dependencies {
     compile 'org.ow2.asm:asm-debug-all:6.0_BETA'
     compile 'commons-io:commons-io:2.6'
     compile 'net.md-5:SpecialSource:1.8.4'
-    compileOnly 'org.projectlombok:lombok:1.16.20'
-    annotationProcessor 'org.projectlombok:lombok:1.16.20' // Lombok does not support incremental annotation processing
+    compile 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4' // Lombok does not support incremental annotation processing
 }
