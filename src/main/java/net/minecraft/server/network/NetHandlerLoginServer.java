@@ -22,6 +22,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 import java.math.BigInteger;

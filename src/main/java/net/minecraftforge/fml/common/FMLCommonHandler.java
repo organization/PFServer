@@ -49,7 +49,6 @@ import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.CompoundDataFixer;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -62,7 +61,6 @@ import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.*;

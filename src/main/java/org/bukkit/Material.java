@@ -2,7 +2,6 @@ package org.bukkit;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.Validate;
-import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.*;
 

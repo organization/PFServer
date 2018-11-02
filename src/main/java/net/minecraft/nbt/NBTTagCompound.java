@@ -1,14 +1,11 @@
 package net.minecraft.nbt;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.util.ReportedException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.DataInput;
