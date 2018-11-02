@@ -133,11 +133,6 @@ public final class CraftMagicNumbers implements UnsafeValues {
     }
 
     @Override
-    public Achievement getAchievementFromInternalName(String name) {
-        throw new UnsupportedOperationException("Not supported in this Minecraft version.");
-    }
-
-    @Override
     public List<String> tabCompleteInternalStatisticOrAchievementName(String token, List<String> completions) {
         List<String> matches = new ArrayList<String>();
         Iterator iterator = StatList.ALL_STATS.iterator();

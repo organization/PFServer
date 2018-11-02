@@ -34,7 +34,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.player.PlayerPickupArrowEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -584,36 +583,6 @@ public abstract class EntityArrow extends Entity implements IProjectile
         }
 
         this.setIsCritical(compound.getBoolean("crit"));
-    }
-
-    public void onCollideWithPlayer(EntityPlayer entityIn)
-    {
-        if (!this.world.isRemote && this.inGround && this.arrowShake <= 0)
-        {
-            ItemStack itemstack = this.getArrowStack();
-            EntityItem item = new EntityItem(this.world, this.posX, this.posY, this.posZ, itemstack);
-            if (this.pickupStatus == PickupStatus.ALLOWED && entityIn.inventory.canHold(itemstack) > 0) {
-                PlayerPickupArrowEvent event = new PlayerPickupArrowEvent((org.bukkit.entity.Player) entityIn.getBukkitEntity(), new org.bukkit.craftbukkit.entity.CraftItem(this.world.getServer(), this, item), (org.bukkit.entity.Arrow) this.getBukkitEntity());
-                // event.setCancelled(!entityhuman.canPickUpLoot); TODO
-                this.world.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return;
-                }
-            }
-            boolean flag = this.pickupStatus == PickupStatus.ALLOWED || this.pickupStatus == PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
-
-            if (this.pickupStatus == PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(item.getItem()))
-            {
-                flag = false;
-            }
-
-            if (flag)
-            {
-                entityIn.onItemPickup(this, 1);
-                this.setDead();
-            }
-        }
     }
 
     protected abstract ItemStack getArrowStack();

@@ -21,10 +21,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.craftbukkit.util.Waitable;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
-
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 import java.math.BigInteger;
@@ -314,30 +311,11 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
 
             AsyncPlayerPreLoginEvent asyncEvent = new AsyncPlayerPreLoginEvent(playerName, address, uniqueId);
             server.getPluginManager().callEvent(asyncEvent);
-
-            if (PlayerPreLoginEvent.getHandlerList().getRegisteredListeners().length != 0) {
-                final PlayerPreLoginEvent event = new PlayerPreLoginEvent(playerName, address, uniqueId);
-                if (asyncEvent.getResult() != PlayerPreLoginEvent.Result.ALLOWED) {
-                    event.disallow(asyncEvent.getResult(), asyncEvent.getKickMessage());
-                }
-                Waitable<PlayerPreLoginEvent.Result> waitable = new Waitable<PlayerPreLoginEvent.Result>() {
-                    @Override
-                    protected PlayerPreLoginEvent.Result evaluate() {
-                        server.getPluginManager().callEvent(event);
-                        return event.getResult();
-                    }};
-
-                    NetHandlerLoginServer.this.server.processQueue.add(waitable);
-                    if (waitable.get() != PlayerPreLoginEvent.Result.ALLOWED) {
-                        disconnect(event.getKickMessage());
-                        return;
-                    }
-            } else {
-                if (asyncEvent.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-                    disconnect(asyncEvent.getKickMessage());
-                    return;
-                }
+            if (asyncEvent.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+                disconnect(asyncEvent.getKickMessage());
+                return;
             }
+
             // CraftBukkit end
             NetHandlerLoginServer.LOGGER.info("UUID of player {} is {}", NetHandlerLoginServer.this.loginGameProfile.getName(), NetHandlerLoginServer.this.loginGameProfile.getId());
             NetHandlerLoginServer.this.currentLoginState = NetHandlerLoginServer.LoginState.READY_TO_ACCEPT;

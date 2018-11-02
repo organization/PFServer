@@ -1426,59 +1426,19 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
             AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(async, player, s, new LazyPlayerSet(serverController));
             this.server.getPluginManager().callEvent(event);
 
-            if (PlayerChatEvent.getHandlerList().getRegisteredListeners().length != 0) {
-                // Evil plugins still listening to deprecated event
-                final PlayerChatEvent queueEvent = new PlayerChatEvent(player, event.getMessage(), event.getFormat(), event.getRecipients());
-                queueEvent.setCancelled(event.isCancelled());
-                Waitable waitable = new Waitable() {
-                    @Override
-                    protected Object evaluate() {
-                        org.bukkit.Bukkit.getPluginManager().callEvent(queueEvent);
+            if (event.isCancelled()) {
+                return;
+            }
 
-                        if (queueEvent.isCancelled()) {
-                            return null;
-                        }
-
-                        String message = String.format(queueEvent.getFormat(), queueEvent.getPlayer().getDisplayName(), queueEvent.getMessage());
-                        NetHandlerPlayServer.this.serverController.console.sendMessage(message);
-                        if (((LazyPlayerSet) queueEvent.getRecipients()).isLazy()) {
-                            for (Object player : NetHandlerPlayServer.this.serverController.getPlayerList().getPlayers()) {
-                                ((EntityPlayerMP) player).sendMessage(CraftChatMessage.fromString(message));
-                            }
-                        } else {
-                            for (Player player : queueEvent.getRecipients()) {
-                                player.sendMessage(message);
-                            }
-                        }
-                        return null;
-                    }};
-                if (async) {
-                    serverController.processQueue.add(waitable);
-                } else {
-                    waitable.run();
-                }
-                try {
-                    waitable.get();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // This is proper habit for java. If we aren't handling it, pass it on!
-                } catch (ExecutionException e) {
-                    throw new RuntimeException("Exception processing chat event", e.getCause());
+            s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
+            serverController.console.sendMessage(s);
+            if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
+                for (Object recipient : serverController.getPlayerList().getPlayers()) {
+                    ((EntityPlayerMP) recipient).sendMessage(CraftChatMessage.fromString(s));
                 }
             } else {
-                if (event.isCancelled()) {
-                    return;
-                }
-
-                s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
-                serverController.console.sendMessage(s);
-                if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
-                    for (Object recipient : serverController.getPlayerList().getPlayers()) {
-                        ((EntityPlayerMP) recipient).sendMessage(CraftChatMessage.fromString(s));
-                    }
-                } else {
-                    for (Player recipient : event.getRecipients()) {
-                        recipient.sendMessage(s);
-                    }
+                for (Player recipient : event.getRecipients()) {
+                    recipient.sendMessage(s);
                 }
             }
         }
