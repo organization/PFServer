@@ -32,8 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("deprecation")
-public final class CraftMagicNumbers implements UnsafeValues {
-    public static final UnsafeValues INSTANCE = new CraftMagicNumbers();
+public final class CraftMagicNumbers{
 
     private CraftMagicNumbers() {}
 
@@ -98,12 +97,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
         return block;
     }
 
-    @Override
     public Material getMaterialFromInternalName(String name) {
         return getMaterial((Item) Item.REGISTRY.getObject(new ResourceLocation(name)));
     }
 
-    @Override
     public List<String> tabCompleteInternalMaterialName(String token, List<String> completions) {
         ArrayList<String> results = Lists.newArrayList();
         for (ResourceLocation key : Item.REGISTRY.getKeys()) {
@@ -112,7 +109,6 @@ public final class CraftMagicNumbers implements UnsafeValues {
         return StringUtil.copyPartialMatches(token, results, completions);
     }
 
-    @Override
     public ItemStack modifyItemStack(ItemStack stack, String arguments) {
         net.minecraft.item.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
 
@@ -127,12 +123,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
         return stack;
     }
 
-    @Override
     public Statistic getStatisticFromInternalName(String name) {
         return CraftStatistic.getBukkitStatisticByName(name);
     }
 
-    @Override
     public List<String> tabCompleteInternalStatisticOrAchievementName(String token, List<String> completions) {
         List<String> matches = new ArrayList<String>();
         Iterator iterator = StatList.ALL_STATS.iterator();
@@ -145,7 +139,6 @@ public final class CraftMagicNumbers implements UnsafeValues {
         return matches;
     }
 
-    @Override
     public Advancement loadAdvancement(NamespacedKey key, String advancement) {
         if (Bukkit.getAdvancement(key) != null) {
             throw new IllegalArgumentException("Advancement " + key + " already exists.");
@@ -175,7 +168,6 @@ public final class CraftMagicNumbers implements UnsafeValues {
         return null;
     }
 
-    @Override
     public boolean removeAdvancement(NamespacedKey key) {
         File file = new File(MinecraftServer.getServerInst().getAdvancementManager().advancementsDir, key.getNamespace() + File.separator + key.getKey() + ".json");
         return file.delete();

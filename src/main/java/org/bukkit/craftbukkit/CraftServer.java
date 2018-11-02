@@ -1648,12 +1648,6 @@ public final class CraftServer implements Server {
         }));
     }
 
-    @Deprecated
-    @Override
-    public UnsafeValues getUnsafe() {
-        return CraftMagicNumbers.INSTANCE;
-    }
-
     private final Spigot spigot = new Spigot() {
 
         @Override

@@ -931,13 +931,6 @@ public interface Server extends PluginMessageRecipient {
      */
     Iterator<Advancement> advancementIterator();
 
-    /**
-     * @see UnsafeValues
-     * @return the unsafe values instance
-     */
-    @Deprecated
-    UnsafeValues getUnsafe();
-
     // Spigot start
     public class Spigot
     {

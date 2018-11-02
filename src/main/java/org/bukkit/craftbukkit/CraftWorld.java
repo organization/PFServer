@@ -471,34 +471,6 @@ public class CraftWorld implements World {
         return gen.generate(world, rand, pos);
     }
 
-    public boolean generateTree(Location loc, TreeType type, BlockChangeDelegate delegate) {
-        world.captureTreeGeneration = true;
-        world.captureBlockSnapshots = true;
-        boolean grownTree = generateTree(loc, type);
-        world.captureBlockSnapshots = false;
-        world.captureTreeGeneration = false;
-        if (grownTree) { // Copy block data to delegate
-            for (BlockSnapshot blocksnapshot : this.world.capturedBlockSnapshots) {
-                BlockPos position = blocksnapshot.getPos();
-                int x = position.getX();
-                int y = position.getY();
-                int z = position.getZ();
-                net.minecraft.block.state.IBlockState oldBlock = world.getBlockState(position);
-                int typeId = net.minecraft.block.Block.getIdFromBlock(blocksnapshot.getReplacedBlock().getBlock());
-                int data = blocksnapshot.getMeta();
-                int flag = blocksnapshot.getFlag();;
-                delegate.setTypeIdAndData(x, y, z, typeId, data);
-                net.minecraft.block.state.IBlockState newBlock = world.getBlockState(position);
-                world.markAndNotifyBlock(position, null, oldBlock, newBlock, flag);
-            }
-            world.capturedBlockSnapshots.clear();
-            return true;
-        } else {
-            world.capturedBlockSnapshots.clear();
-            return false;
-        }
-    }
-
     public TileEntity getTileEntityAt(final int x, final int y, final int z) {
         return world.getTileEntity(new BlockPos(x, y, z));
     }

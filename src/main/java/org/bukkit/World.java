@@ -347,19 +347,6 @@ public interface World extends PluginMessageRecipient, Metadatable {
     public boolean generateTree(Location location, TreeType type);
 
     /**
-     * Creates a tree at the given {@link Location}
-     *
-     * @param loc Location to spawn the tree
-     * @param type Type of the tree to create
-     * @param delegate A class to call for each block changed as a result of
-     *     this method
-     * @return true if the tree was created successfully, otherwise false
-     * @deprecated rarely used API that was largely for implementation purposes
-     */
-    @Deprecated
-    public boolean generateTree(Location loc, TreeType type, BlockChangeDelegate delegate);
-
-    /**
      * Creates a entity at the given {@link Location}
      *
      * @param loc The location to spawn the entity

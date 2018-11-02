@@ -1146,15 +1146,6 @@ public final class Bukkit {
     public static Iterator<Advancement> advancementIterator() {
         return server.advancementIterator();
     }
-
-    /**
-     * @see UnsafeValues
-     * @return the unsafe values instance
-     */
-    @Deprecated
-    public static UnsafeValues getUnsafe() {
-        return server.getUnsafe();
-    }
  
     public static Server.Spigot spigot()
     {
