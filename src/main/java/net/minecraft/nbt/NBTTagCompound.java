@@ -2,6 +2,7 @@ package net.minecraft.nbt;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
@@ -19,7 +20,6 @@ import java.util.regex.Pattern;
 
 public class NBTTagCompound extends NBTBase
 {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
     private final Map<String, NBTBase> tagMap = new ConcurrentHashMap<>();
 
@@ -391,7 +391,7 @@ public class NBTTagCompound extends NBTBase
         StringBuilder stringbuilder = new StringBuilder("{");
         Collection<String> collection = this.tagMap.keySet();
 
-        if (LOGGER.isDebugEnabled())
+        if (PFServer.LOGGER.isDebugEnabled())
         {
             List<String> list = Lists.newArrayList(this.tagMap.keySet());
             Collections.sort(list);
