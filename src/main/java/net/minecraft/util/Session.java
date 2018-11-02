@@ -3,6 +3,7 @@ package net.minecraft.util;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.util.UUIDTypeAdapter;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,14 +28,13 @@ public class Session
         {
             usernameIn = "MissingName";
             playerIDIn = tokenIn = "NotValid";
-            org.apache.logging.log4j.Logger logger = net.minecraftforge.fml.common.FMLLog.log;
-            logger.log(org.apache.logging.log4j.Level.WARN, "=========================================================");
-            logger.log(org.apache.logging.log4j.Level.WARN, "WARNING!! the username was not set for this session, typically");
-            logger.log(org.apache.logging.log4j.Level.WARN, "this means you installed Forge incorrectly. We have set your");
-            logger.log(org.apache.logging.log4j.Level.WARN, "name to \"MissingName\" and your session to nothing. Please");
-            logger.log(org.apache.logging.log4j.Level.WARN, "check your installation and post a console log from the launcher");
-            logger.log(org.apache.logging.log4j.Level.WARN, "when asking for help!");
-            logger.log(org.apache.logging.log4j.Level.WARN, "=========================================================");
+            PFServer.LOGGER.warn("=========================================================");
+            PFServer.LOGGER.warn( "WARNING!! the username was not set for this session, typically");
+            PFServer.LOGGER.warn( "this means you installed Forge incorrectly. We have set your");
+            PFServer.LOGGER.warn( "name to \"MissingName\" and your session to nothing. Please");
+            PFServer.LOGGER.warn( "check your installation and post a console log from the launcher");
+            PFServer.LOGGER.warn( "when asking for help!");
+            PFServer.LOGGER.warn( "=========================================================");
         }
 
         this.username = usernameIn;

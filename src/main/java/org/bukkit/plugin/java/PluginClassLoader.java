@@ -1,6 +1,6 @@
 package org.bukkit.plugin.java;
 
-import mgazul.PFServer.CatServer;
+import mgazul.PFServer.PFServer;
 import mgazul.PFServer.remapper.ClassInheritanceProvider;
 import mgazul.PFServer.remapper.MappingLoader;
 import mgazul.PFServer.remapper.PFServerRemapper;
@@ -97,7 +97,7 @@ final class PluginClassLoader extends URLClassLoader {
     }
 
     Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
-        if (name.startsWith("net.minecraft.server."+CatServer.getNativeVersion())) {
+        if (name.startsWith("net.minecraft.server."+ PFServer.getNativeVersion())) {
             String remappedClass = jarMapping.classes.get(name.replaceAll("\\.", "\\/"));
             Class<?> clazz = ((net.minecraft.launchwrapper.LaunchClassLoader)MinecraftServer.getServerInst().getClass().getClassLoader()).findClass(remappedClass);
             return clazz;

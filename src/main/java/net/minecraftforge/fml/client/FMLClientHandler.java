@@ -28,6 +28,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.*;
@@ -176,7 +177,7 @@ public class FMLClientHandler implements IFMLSidedHandler
         this.resourcePackMap = Maps.newHashMap();
         if (minecraft.isDemo())
         {
-            FMLLog.log.fatal("DEMO MODE DETECTED, FML will not work. Finishing now.");
+            PFServer.LOGGER.fatal("DEMO MODE DETECTED, FML will not work. Finishing now.");
             haltGame("FML will not run in demo mode", new RuntimeException());
             return;
         }
@@ -188,7 +189,7 @@ public class FMLClientHandler implements IFMLSidedHandler
         }
         catch (WrongMinecraftVersionException | DuplicateModsFoundException | MissingModsException | ModSortingException | CustomModLoadingErrorDisplayException | MultipleModsErrored e)
         {
-            FMLLog.log.error("An exception was thrown, the game will display an error screen and halt.", e);
+            PFServer.LOGGER.error("An exception was thrown, the game will display an error screen and halt.", e);
             errorToDisplay = e;
             MinecraftForge.EVENT_BUS.shutdown();
         }
@@ -211,7 +212,7 @@ public class FMLClientHandler implements IFMLSidedHandler
             if (le.getCause() instanceof CustomModLoadingErrorDisplayException)
             {
                 CustomModLoadingErrorDisplayException custom = (CustomModLoadingErrorDisplayException) le.getCause();
-                FMLLog.log.error("A custom exception was thrown by a mod, the game will display an error screen and halt.", custom);
+                PFServer.LOGGER.error("A custom exception was thrown by a mod, the game will display an error screen and halt.", custom);
                 errorToDisplay = custom;
                 MinecraftForge.EVENT_BUS.shutdown();
             }
@@ -251,7 +252,7 @@ public class FMLClientHandler implements IFMLSidedHandler
             {
                 ModMetadata optifineMetadata = MetadataCollection.from(optifineModInfoInputStream, "optifine").getMetadataForId("optifine", dummyOptifineMeta);
                 optifineContainer = new DummyModContainer(optifineMetadata);
-                FMLLog.log.info("Forge Mod Loader has detected optifine {}, enabling compatibility features", optifineContainer.getVersion());
+                PFServer.LOGGER.info("Forge Mod Loader has detected optifine {}, enabling compatibility features", optifineContainer.getVersion());
             }
         }
         catch (Exception e)
@@ -295,7 +296,7 @@ public class FMLClientHandler implements IFMLSidedHandler
             if (le.getCause() instanceof CustomModLoadingErrorDisplayException)
             {
                 CustomModLoadingErrorDisplayException custom = (CustomModLoadingErrorDisplayException) le.getCause();
-                FMLLog.log.error("A custom exception was thrown by a mod, the game will display an error screen and halt.", custom);
+                PFServer.LOGGER.error("A custom exception was thrown by a mod, the game will display an error screen and halt.", custom);
                 errorToDisplay = custom;
                 MinecraftForge.EVENT_BUS.shutdown();
             }
@@ -337,7 +338,7 @@ public class FMLClientHandler implements IFMLSidedHandler
                 guiFactories.put(mc, guiFactory);
             } catch (Exception e)
             {
-                FMLLog.log.error("A critical error occurred instantiating the gui factory for mod {}", mc.getModId(), e);
+                PFServer.LOGGER.error("A critical error occurred instantiating the gui factory for mod {}", mc.getModId(), e);
             }
         }
         loading = false;
@@ -601,7 +602,7 @@ public class FMLClientHandler implements IFMLSidedHandler
             }
             catch (NoSuchMethodException e)
             {
-                FMLLog.log.error("The container {} (type {}) returned an invalid class for its resource pack.", container.getName(), container.getClass().getName());
+                PFServer.LOGGER.error("The container {} (type {}) returned an invalid class for its resource pack.", container.getName(), container.getClass().getName());
             }
             catch (Exception e)
             {
@@ -673,7 +674,7 @@ public class FMLClientHandler implements IFMLSidedHandler
             }
             catch (Exception e1)
             {
-                FMLLog.log.warn("There appears to be a problem loading the save {}, both level files are unreadable.", comparator.getFileName());
+                PFServer.LOGGER.warn("There appears to be a problem loading the save {}, both level files are unreadable.", comparator.getFileName());
                 return;
             }
         }

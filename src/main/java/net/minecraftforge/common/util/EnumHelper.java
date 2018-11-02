@@ -21,6 +21,7 @@ package net.minecraftforge.common.util;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.BlockPressurePlate.Sensitivity;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -43,7 +44,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.gen.structure.StructureStrongholdPieces.Stronghold.Door;
 import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.fml.common.EnhancedRuntimeException;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.World;
 
@@ -184,7 +184,7 @@ public class EnumHelper
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Error setting up EnumHelper.", e);
+            PFServer.LOGGER.error("Error setting up EnumHelper.", e);
         }
 
         isSetup = true;
@@ -335,7 +335,7 @@ public class EnumHelper
             }
 
             for (String line : lines)
-                FMLLog.log.fatal(line);
+                PFServer.LOGGER.fatal(line);
 
             if (test)
             {
@@ -408,7 +408,7 @@ public class EnumHelper
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Error adding enum with EnumHelper.", e);
+            PFServer.LOGGER.error("Error adding enum with EnumHelper.", e);
             throw new RuntimeException(e);
         }
     }

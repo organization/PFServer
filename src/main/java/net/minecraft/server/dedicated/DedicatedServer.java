@@ -1,6 +1,5 @@
 package net.minecraft.server.dedicated;
 
-import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
@@ -45,8 +44,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Proxy;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -366,7 +363,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
                     }
                 }
 
-                if (this.getMaxTickTime() > 0L && false) // CatServer - disable WatchDog
+                if (this.getMaxTickTime() > 0L && false) // PFServer - disable WatchDog
                 {
                     Thread thread1 = new Thread(new ServerHangWatchdog(this));
                     thread1.setName("Server Watchdog");

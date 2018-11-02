@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
+import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,7 +36,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLContainer;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler.OutboundTarget;
@@ -85,7 +89,7 @@ public class FMLNetworkHandler
             Container remoteGuiContainer = NetworkRegistry.INSTANCE.getRemoteGuiContainer(mc, entityPlayerMP, modGuiId, world, x, y, z);
             if (remoteGuiContainer != null)
             {
-                // CatServer start - create bukkitView for passed container then fire open event.
+                // PFServer start - create bukkitView for passed container then fire open event.
                 if (remoteGuiContainer.getBukkitView() == null && entityPlayer != null) {
                     TileEntity te = entityPlayer.world.getTileEntity(new BlockPos(x, y, z));
                     if (te instanceof IInventory) {
@@ -124,7 +128,7 @@ public class FMLNetworkHandler
         }
         else
         {
-            FMLLog.log.debug("Invalid attempt to open a local GUI on a dedicated server. This is likely a bug. GUI ID: {},{}", mc.getModId(), modGuiId);
+            PFServer.LOGGER.debug("Invalid attempt to open a local GUI on a dedicated server. This is likely a bug. GUI ID: {},{}", mc.getModId(), modGuiId);
         }
 
     }
@@ -178,7 +182,7 @@ public class FMLNetworkHandler
                 rejectStrings.add(modContainer.getName() + ": " + reject.getValue());
             }
             String rejectString = String.join("\n", rejectStrings);
-            FMLLog.log.info("Rejecting connection {}: {}", side, rejectString);
+            PFServer.LOGGER.info("Rejecting connection {}: {}", side, rejectString);
             return String.format("Server Mod rejections:\n%s", rejectString);
         }
     }

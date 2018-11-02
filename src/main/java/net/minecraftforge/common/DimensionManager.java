@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Multiset;
 import it.unimi.dsi.fastutil.ints.*;
+import mgazul.PFServer.PFServer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -34,7 +35,6 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.generator.ChunkGenerator;
@@ -122,7 +122,7 @@ public class DimensionManager
         {
             dimensionMap.set(id);
         }
-        // CatServer - register Environment to Bukkit
+        // PFServer - register Environment to Bukkit
         if (id != -1 && id != 0 && id != 1) // ignore vanilla
         {
             registerBukkitDimension(id, type.getName());
@@ -176,11 +176,11 @@ public class DimensionManager
                 int leakCount = leakedWorlds.count(System.identityHashCode(w));
                 if (leakCount == 5)
                 {
-                    FMLLog.log.debug("The world {} ({}) may have leaked: first encounter (5 occurrences).\n", Integer.toHexString(System.identityHashCode(w)), w.getWorldInfo().getWorldName());
+                    PFServer.LOGGER.debug("The world {} ({}) may have leaked: first encounter (5 occurrences).\n", Integer.toHexString(System.identityHashCode(w)), w.getWorldInfo().getWorldName());
                 }
                 else if (leakCount % 5 == 0)
                 {
-                    FMLLog.log.debug("The world {} ({}) may have leaked: seen {} times.\n", Integer.toHexString(System.identityHashCode(w)), w.getWorldInfo().getWorldName(), leakCount);
+                    PFServer.LOGGER.debug("The world {} ({}) may have leaked: seen {} times.\n", Integer.toHexString(System.identityHashCode(w)), w.getWorldInfo().getWorldName(), leakCount);
                 }
             }
         }
@@ -203,14 +203,14 @@ public class DimensionManager
                 FMLCommonHandler.instance().getMinecraftServerInstance().worldServerList.add(world);
             }
             server.worldTickTimes.put(id, new long[100]);
-            FMLLog.log.info("Loading dimension {} ({}) ({})", id, world.getWorldInfo().getWorldName(), world.getMinecraftServer());
+            PFServer.LOGGER.info("Loading dimension {} ({}) ({})", id, world.getWorldInfo().getWorldName(), world.getMinecraftServer());
         }
         else
         {
-            FMLCommonHandler.instance().getMinecraftServerInstance().worldServerList.remove(getWorld(id)); // CatServer - remove world from our new world arraylist
+            FMLCommonHandler.instance().getMinecraftServerInstance().worldServerList.remove(getWorld(id)); // PFServer - remove world from our new world arraylist
             worlds.remove(id);
             server.worldTickTimes.remove(id);
-            FMLLog.log.info("Unloading dimension {}", id);
+            PFServer.LOGGER.info("Unloading dimension {}", id);
         }
 
         ArrayList<WorldServer> tmp = new ArrayList<WorldServer>();
@@ -247,7 +247,7 @@ public class DimensionManager
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Cannot Hotload Dim: {}", dim, e);
+            PFServer.LOGGER.error("Cannot Hotload Dim: {}", dim, e);
             return; // If a provider hasn't been registered then we can't hotload the dim
         }
         MinecraftServer mcServer = overworld.getMinecraftServer();
@@ -345,7 +345,7 @@ public class DimensionManager
         }
         catch (Exception e)
         {
-            FMLLog.log.error("An error occurred trying to create an instance of WorldProvider {} ({})",
+            PFServer.LOGGER.error("An error occurred trying to create an instance of WorldProvider {} ({})",
                     dim, getProviderType(dim), e);
             throw new RuntimeException(e);
         }
@@ -381,7 +381,7 @@ public class DimensionManager
 
         if (unloadQueue.add(id))
         {
-            FMLLog.log.debug("Queueing dimension {} to unload", id);;
+            PFServer.LOGGER.debug("Queueing dimension {} to unload", id);;
         }
     }
 
@@ -411,10 +411,10 @@ public class DimensionManager
             // Don't unload the world if the status changed
             if (w == null || !canUnloadWorld(w))
             {
-                FMLLog.log.debug("Aborting unload for dimension {} as status changed", id);
+                PFServer.LOGGER.debug("Aborting unload for dimension {} as status changed", id);
                 continue;
             }
-            FMLCommonHandler.instance().getMinecraftServerInstance().server.unloadWorld(w.getWorld(), true); // CatServer
+            FMLCommonHandler.instance().getMinecraftServerInstance().server.unloadWorld(w.getWorld(), true); // PFServer
         }
     }
 
@@ -507,7 +507,7 @@ public class DimensionManager
         }
     }
 
-    // CatServer start - new method for handling creation of Bukkit dimensions. Currently supports MultiVerse
+    // PFServer start - new method for handling creation of Bukkit dimensions. Currently supports MultiVerse
     public static WorldServer initDimension(WorldCreator creator, WorldSettings worldSettings) {
         WorldServer overworld = getWorld(0);
         if (overworld == null) {
@@ -613,5 +613,5 @@ public class DimensionManager
     {
         return bukkitDims.contains(dim);
     }
-    // CatServer end
+    // PFServer end
 }

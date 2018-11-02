@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -39,7 +40,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -118,7 +118,7 @@ public final class MultiLayerModel implements IModel
         {
             return new ModelResourceLocation(e.getAsString());
         }
-        FMLLog.log.fatal("Expect ModelResourceLocation, got: {}", json);
+        PFServer.LOGGER.fatal("Expect ModelResourceLocation, got: {}", json);
         return new ModelResourceLocation("builtin/missing", "missing");
     }
 

@@ -2,7 +2,7 @@ package org.bukkit.craftbukkit.event;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import mgazul.PFServer.CatServer;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -412,7 +412,7 @@ public class CraftEventFactory {
         Bukkit.getServer().getPluginManager().callEvent(event);
 
         victim.expToDrop = event.getDroppedExp();
-        // CatServer start - handle any drop changes from plugins
+        // PFServer start - handle any drop changes from plugins
         victim.capturedDrops.clear();
         for (org.bukkit.inventory.ItemStack stack : event.getDrops())
         {
@@ -422,7 +422,7 @@ public class CraftEventFactory {
                 victim.capturedDrops.add((EntityItem)entityitem);
             }
         }
-        // CatServer end
+        // PFServer end
         return event;
     }
 
@@ -442,13 +442,13 @@ public class CraftEventFactory {
         if (event.getKeepInventory()) {
             return event;
         }
-        victim.capturedDrops.clear(); // CatServer - we must clear pre-capture to avoid duplicates
+        victim.capturedDrops.clear(); // PFServer - we must clear pre-capture to avoid duplicates
         for (final org.bukkit.inventory.ItemStack stack : event.getDrops()) {
             if (stack != null) {
                 if (stack.getType() == Material.AIR) {
                     continue;
                 }
-                // CatServer start - add support for Forge's PlayerDropsEvent
+                // PFServer start - add support for Forge's PlayerDropsEvent
                 //world.dropItemNaturally(entity.getLocation(), stack); // handle world drop in EntityPlayerMP
                 if (victim.captureDrops)
                 {
@@ -458,7 +458,7 @@ public class CraftEventFactory {
                         victim.capturedDrops.add((EntityItem)entityitem);
                     }
                 }
-                // CatServer end
+                // PFServer end
             }
         }
         return event;
@@ -504,7 +504,7 @@ public class CraftEventFactory {
 
             if (source instanceof EntityDamageSourceIndirect) {
                 damager = ((EntityDamageSourceIndirect) source).getProximateDamageSource();
-                if (damager != null) { // CatServer - check null
+                if (damager != null) { // PFServer - check null
                     if (damager.getBukkitEntity() instanceof ThrownPotion) {
                         cause = DamageCause.MAGIC;
                     } else if (damager.getBukkitEntity() instanceof Projectile) {
@@ -820,7 +820,7 @@ public class CraftEventFactory {
     }
 
     public static Container callInventoryOpenEvent(EntityPlayerMP player, Container container, boolean cancelled) {
-        if (CatServer.asyncCatch("call InventoryOpenEvent")) {
+        if (PFServer.asyncCatch("call InventoryOpenEvent")) {
             return container;
         } else {
             if (player.openContainer != player.inventoryContainer) { // fire INVENTORY_CLOSE if one already open
@@ -837,7 +837,7 @@ public class CraftEventFactory {
             InventoryOpenEvent event = new InventoryOpenEvent(container.getBukkitView());
             event.setCancelled(cancelled);
             if (container.getBukkitView() != null)
-                server.getPluginManager().callEvent(event); // CatServer - mods bypass
+                server.getPluginManager().callEvent(event); // PFServer - mods bypass
 
             if (event.isCancelled()) {
                 container.transferTo(player.openContainer, craftPlayer);
@@ -966,9 +966,9 @@ public class CraftEventFactory {
     }
 
     public static void handleInventoryCloseEvent(EntityPlayer human) {
-        if (!CatServer.asyncCatch("call InventoryCloseEvent")) {
+        if (!PFServer.asyncCatch("call InventoryCloseEvent")) {
             InventoryCloseEvent event = new InventoryCloseEvent(human.openContainer.getBukkitView());
-            if(human.openContainer.getBukkitView() != null) human.world.getServer().getPluginManager().callEvent(event); // CatServer - mods bypass
+            if(human.openContainer.getBukkitView() != null) human.world.getServer().getPluginManager().callEvent(event); // PFServer - mods bypass
              human.openContainer.transferTo(human.inventoryContainer, human.getBukkitEntity());
         }
     }

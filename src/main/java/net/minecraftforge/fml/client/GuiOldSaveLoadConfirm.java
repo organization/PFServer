@@ -19,11 +19,11 @@
 
 package net.minecraftforge.fml.client;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.gui.GuiYesNoCallback;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.StartupQuery;
 import net.minecraftforge.fml.common.ZipperUtil;
 
@@ -74,7 +74,7 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
         }
         else
         {
-            FMLLog.log.info("Capturing current state of world {} into file {}", saveName, zip.getAbsolutePath());
+            PFServer.LOGGER.info("Capturing current state of world {} into file {}", saveName, zip.getAbsolutePath());
             try
             {
                 String skip = System.getProperty("fml.doNotBackup");
@@ -85,11 +85,11 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
                 else
                 {
                     for (int x = 0; x < 10; x++)
-                        FMLLog.log.fatal("!!!!!!!!!! UPDATING WORLD WITHOUT DOING BACKUP !!!!!!!!!!!!!!!!");
+                        PFServer.LOGGER.fatal("!!!!!!!!!! UPDATING WORLD WITHOUT DOING BACKUP !!!!!!!!!!!!!!!!");
                 }
             } catch (IOException e)
             {
-                FMLLog.log.warn("There was a problem saving the backup {}. Please fix and try again", zip.getName(), e);
+                PFServer.LOGGER.warn("There was a problem saving the backup {}. Please fix and try again", zip.getName(), e);
                 FMLClientHandler.instance().showGuiScreen(new GuiBackupFailed(parent, zip));
                 return;
             }

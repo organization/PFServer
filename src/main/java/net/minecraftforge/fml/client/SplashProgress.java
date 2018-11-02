@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.client;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,7 +28,10 @@ import net.minecraft.client.resources.*;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.EnhancedRuntimeException;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ICrashCallable;
+import net.minecraftforge.fml.common.ProgressManager;
 import net.minecraftforge.fml.common.ProgressManager.ProgressBar;
 import net.minecraftforge.fml.common.asm.FMLSanityChecker;
 import org.apache.commons.io.IOUtils;
@@ -142,7 +146,7 @@ public class SplashProgress
         }
         catch(IOException e)
         {
-            FMLLog.log.info("Could not load splash.properties, will create a default one");
+            PFServer.LOGGER.info("Could not load splash.properties, will create a default one");
         }
 
         //Some systems do not support this and have weird effects, so we need to detect and disable them by default.
@@ -177,7 +181,7 @@ public class SplashProgress
         }
         catch(IOException e)
         {
-            FMLLog.log.error("Could not save the splash.properties file", e);
+            PFServer.LOGGER.error("Could not save the splash.properties file", e);
         }
 
         miscPack = createResourcePack(miscPackFile);
@@ -204,7 +208,7 @@ public class SplashProgress
         CrashReport report = CrashReport.makeCrashReport(new Throwable(), "Loading screen debug info");
         StringBuilder systemDetailsBuilder = new StringBuilder();
         report.getCategory().appendToStringBuilder(systemDetailsBuilder);
-        FMLLog.log.info(systemDetailsBuilder.toString());
+        PFServer.LOGGER.info(systemDetailsBuilder.toString());
 
         try
         {
@@ -214,7 +218,7 @@ public class SplashProgress
         }
         catch (LWJGLException e)
         {
-            FMLLog.log.error("Error starting SplashProgress:", e);
+            PFServer.LOGGER.error("Error starting SplashProgress:", e);
             disableSplash(e);
         }
 
@@ -372,13 +376,13 @@ public class SplashProgress
                         if (!isDisplayVSyncForced)
                         {
                             isDisplayVSyncForced = true;
-                            FMLLog.log.info("Using alternative sync timing : {} frames of Display.update took {} nanos", TIMING_FRAME_COUNT, updateTiming);
+                            PFServer.LOGGER.info("Using alternative sync timing : {} frames of Display.update took {} nanos", TIMING_FRAME_COUNT, updateTiming);
                         }
                         try { Thread.sleep(16); } catch (InterruptedException ie) {}
                     } else
                     {
                         if (framecount ==TIMING_FRAME_COUNT) {
-                            FMLLog.log.info("Using sync timing. {} frames of Display.update took {} nanos", TIMING_FRAME_COUNT, updateTiming);
+                            PFServer.LOGGER.info("Using sync timing. {} frames of Display.update took {} nanos", TIMING_FRAME_COUNT, updateTiming);
                         }
                         Display.sync(100);
                     }
@@ -511,7 +515,7 @@ public class SplashProgress
                 }
                 catch (LWJGLException e)
                 {
-                    FMLLog.log.error("Error setting GL context:", e);
+                    PFServer.LOGGER.error("Error setting GL context:", e);
                     throw new RuntimeException(e);
                 }
                 glClearColor((float)((backgroundColor >> 16) & 0xFF) / 0xFF, (float)((backgroundColor >> 8) & 0xFF) / 0xFF, (float)(backgroundColor & 0xFF) / 0xFF, 1);
@@ -538,7 +542,7 @@ public class SplashProgress
                 }
                 catch (LWJGLException e)
                 {
-                    FMLLog.log.error("Error releasing GL context:", e);
+                    PFServer.LOGGER.error("Error releasing GL context:", e);
                     throw new RuntimeException(e);
                 }
                 finally
@@ -552,7 +556,7 @@ public class SplashProgress
             @Override
             public void uncaughtException(Thread t, Throwable e)
             {
-                FMLLog.log.error("Splash thread Exception", e);
+                PFServer.LOGGER.error("Splash thread Exception", e);
                 threadError = e;
             }
         });
@@ -603,7 +607,7 @@ public class SplashProgress
         }
         catch (LWJGLException e)
         {
-            FMLLog.log.error("Error setting GL context:", e);
+            PFServer.LOGGER.error("Error setting GL context:", e);
             throw new RuntimeException(e);
         }
     }
@@ -624,7 +628,7 @@ public class SplashProgress
         }
         catch (LWJGLException e)
         {
-            FMLLog.log.error("Error releasing GL context:", e);
+            PFServer.LOGGER.error("Error releasing GL context:", e);
             throw new RuntimeException(e);
         }
         lock.unlock();
@@ -647,7 +651,7 @@ public class SplashProgress
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Error finishing SplashProgress:", e);
+            PFServer.LOGGER.error("Error finishing SplashProgress:", e);
             disableSplash(e);
         }
     }
@@ -700,7 +704,7 @@ public class SplashProgress
         }
         catch(IOException e)
         {
-            FMLLog.log.error("Could not save the splash.properties file", e);
+            PFServer.LOGGER.error("Could not save the splash.properties file", e);
             return false;
         }
         return true;
@@ -806,7 +810,7 @@ public class SplashProgress
             }
             catch(IOException e)
             {
-                FMLLog.log.error("Error reading texture from file: {}", location, e);
+                PFServer.LOGGER.error("Error reading texture from file: {}", location, e);
                 throw new RuntimeException(e);
             }
             finally

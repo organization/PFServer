@@ -309,8 +309,8 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
             if (dim == 0) {
                 idatamanager = new AnvilSaveHandler(server.getWorldContainer(), worldNameIn, true, this.dataFixer);
                 worlddata = idatamanager.loadWorldInfo();
-                // CatServer start
-                if (!BukkitInjector.initializedBukkit) { // CatServer - inject bukkit materials before plugins load
+                // PFServer start
+                if (!BukkitInjector.initializedBukkit) { // PFServer - inject bukkit materials before plugins load
                     BukkitInjector.injectBlockBukkitMaterials();
                     BukkitInjector.injectItemBukkitMaterials();
                     BukkitInjector.injectBiomes();
@@ -318,7 +318,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 }
                 server.loadPlugins();
                 server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
-                // CatServer end
+                // PFServer end
                 if (worlddata == null) {
                     worlddata = new WorldInfo(worldsettings, worldNameIn);
                 }

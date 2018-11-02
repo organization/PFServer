@@ -21,6 +21,7 @@ package net.minecraftforge.fml.common;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.common.asm.transformers.ModAPITransformer;
@@ -84,7 +85,7 @@ public class ModClassLoader extends URLClassLoader
         }
         catch (URISyntaxException e)
         {
-            FMLLog.log.error("Unable to process our input to locate the minecraft code", e);
+           PFServer.LOGGER.error("Unable to process our input to locate the minecraft code", e);
             throw new LoaderException(e);
         }
     }

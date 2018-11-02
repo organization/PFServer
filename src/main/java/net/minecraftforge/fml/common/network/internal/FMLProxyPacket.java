@@ -27,6 +27,7 @@ import com.google.common.collect.Multisets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
+import mgazul.PFServer.PFServer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -35,7 +36,6 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraft.network.play.server.SPacketCustomPayload;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.FMLNetworkException;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.handshake.NetworkDispatcher;
@@ -98,12 +98,12 @@ public class FMLProxyPacket implements Packet<INetHandler> {
                     badPackets.add(this.channel);
                     if (badPackets.size() % packetCountWarning == 0)
                     {
-                        FMLLog.log.fatal("Detected ongoing potential memory leak. {} packets have leaked. Top offenders", badPackets.size());
+                        PFServer.LOGGER.fatal("Detected ongoing potential memory leak. {} packets have leaked. Top offenders", badPackets.size());
                         int i = 0;
                         for (Entry<String> s  : Multisets.copyHighestCountFirst(badPackets).entrySet())
                         {
                             if (i++ > 10) break;
-                            FMLLog.log.fatal("\t {} : {}", s.getElement(), s.getCount());
+                            PFServer.LOGGER.fatal("\t {} : {}", s.getElement(), s.getCount());
                         }
                     }
                 }
@@ -111,12 +111,12 @@ public class FMLProxyPacket implements Packet<INetHandler> {
             }
             catch (FMLNetworkException ne)
             {
-                FMLLog.log.error("There was a network exception handling a packet on channel {}", channel, ne);
+                PFServer.LOGGER.error("There was a network exception handling a packet on channel {}", channel, ne);
                 dispatcher.rejectHandshake(ne.getMessage());
             }
             catch (Throwable t)
             {
-                FMLLog.log.error("There was a critical exception handling a packet on channel {}", channel, t);
+                PFServer.LOGGER.error("There was a critical exception handling a packet on channel {}", channel, t);
                 dispatcher.rejectHandshake("A fatal error has occurred, this connection is terminated");
             }
         }

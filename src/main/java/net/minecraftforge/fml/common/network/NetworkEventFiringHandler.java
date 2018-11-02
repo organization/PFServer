@@ -22,7 +22,7 @@ package net.minecraftforge.fml.common.network;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 /**
@@ -56,7 +56,7 @@ public class NetworkEventFiringHandler extends SimpleChannelInboundHandler<FMLPr
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("NetworkEventFiringHandler exception", cause);
+        PFServer.LOGGER.error("NetworkEventFiringHandler exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 }

@@ -19,12 +19,12 @@
 
 package net.minecraftforge.fml.client.config;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public class GuiSelectString extends GuiScreen
             }
             catch (Throwable e)
             {
-                FMLLog.log.error("Error performing GuiSelectString action:", e);
+                PFServer.LOGGER.error("Error performing GuiSelectString action:", e);
             }
             this.mc.displayGuiScreen(this.parentScreen);
         }

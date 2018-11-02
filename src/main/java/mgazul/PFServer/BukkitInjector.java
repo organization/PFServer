@@ -4,13 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.apache.logging.log4j.Level;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 
-import java.util.Locale;
 import java.util.Map;
 
 public class BukkitInjector {
@@ -25,9 +22,9 @@ public class BukkitInjector {
                 String materialName = key.toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", "");
                 Material material = Material.addMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, new Object[]{Integer.valueOf(Item.getIdFromItem(item))}));
                 if (material != null) {
-                    FMLLog.log(Level.DEBUG, "Injected new Forge item material %s with ID %d.", material.name(), material.getId());
+                   PFServer.LOGGER.debug("Injected new Forge item material %s with ID %d.", material.name(), material.getId());
                 } else {
-                    FMLLog.log(Level.DEBUG, "Inject item failure %s with ID %d.", materialName, Item.getIdFromItem(item));
+                    PFServer.LOGGER.debug("Inject item failure %s with ID %d.", materialName, Item.getIdFromItem(item));
                 }
             }
         }
@@ -46,9 +43,9 @@ public class BukkitInjector {
                 String materialName = key.toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", "");
                 Material material = Material.addBlockMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, new Object[]{Integer.valueOf(Block.getIdFromBlock(block))}));
                 if (material != null) {
-                    FMLLog.log(Level.DEBUG, "Injected new Forge block material %s with ID %d.", material.name(), material.getId());
+                    PFServer.LOGGER.debug("Injected new Forge block material %s with ID %d.", material.name(), material.getId());
                 } else {
-                    FMLLog.log(Level.DEBUG, "Inject block failure %s with ID %d.", materialName, Block.getIdFromBlock(block));
+                    PFServer.LOGGER.debug("Inject block failure %s with ID %d.", materialName, Block.getIdFromBlock(block));
                 }
             }
         }

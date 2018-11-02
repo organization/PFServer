@@ -20,6 +20,7 @@
 package net.minecraftforge.fml.common;
 
 import com.google.common.io.Files;
+import mgazul.PFServer.PFServer;
 
 import java.io.*;
 import java.net.URI;
@@ -96,10 +97,10 @@ public class ZipperUtil {
         }
         catch (IOException e)
         {
-            FMLLog.log.warn("World backup failed.", e);
+            PFServer.LOGGER.warn("World backup failed.", e);
             throw e;
         }
 
-        FMLLog.log.info("World backup created at {}.", zip.getCanonicalPath());
+        PFServer.LOGGER.info("World backup created at {}.", zip.getCanonicalPath());
     }
 }

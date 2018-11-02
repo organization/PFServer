@@ -18,7 +18,7 @@
  */
 package net.minecraftforge.fml.relauncher.libraries;
 
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 
 import java.io.File;
 import java.util.*;
@@ -41,14 +41,14 @@ public class LinkRepository extends Repository
         known.add(file);
         if (artifact_to_file.containsKey(key))
         {
-            FMLLog.log.debug("Maven file already exists for {}({}) at {}, ignoring duplicate.", file.getName(), artifact.toString(), artifact_to_file.get(key).getAbsolutePath());
+            PFServer.LOGGER.debug("Maven file already exists for {}({}) at {}, ignoring duplicate.", file.getName(), artifact.toString(), artifact_to_file.get(key).getAbsolutePath());
 
             if (artifact.isSnapshot())
             {
                 Artifact old = snapshots.get(key);
                 if (old == null || old.compareVersion(artifact) < 0)
                 {
-                    FMLLog.log.debug("Overriding Snapshot {} -> {}", old == null ? "null" : old.getTimestamp(), artifact.getTimestamp());
+                    PFServer.LOGGER.debug("Overriding Snapshot {} -> {}", old == null ? "null" : old.getTimestamp(), artifact.getTimestamp());
                     snapshots.put(key, artifact);
                     artifact_to_file.put(key, file);
                     filesystem.put(artifact.getPath(), file);
@@ -57,7 +57,7 @@ public class LinkRepository extends Repository
         }
         else
         {
-            FMLLog.log.debug("Making maven link for {} in memory to {}.", key, file.getAbsolutePath());
+            PFServer.LOGGER.debug("Making maven link for {} in memory to {}.", key, file.getAbsolutePath());
             artifact_to_file.put(key, file);
             filesystem.put(artifact.getPath(), file);
 

@@ -22,7 +22,7 @@ package net.minecraftforge.fml.common.network.handshake;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.AttributeKey;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 
 public class HandshakeMessageHandler<S extends Enum<S> & IHandshakeState<S>> extends SimpleChannelInboundHandler<FMLHandshakeMessage> {
     private static final AttributeKey<IHandshakeState<?>> STATE = AttributeKey.valueOf("fml:handshake-state");
@@ -43,10 +43,10 @@ public class HandshakeMessageHandler<S extends Enum<S> & IHandshakeState<S>> ext
     protected void channelRead0(ChannelHandlerContext ctx, FMLHandshakeMessage msg) throws Exception
     {
         S state = ctx.channel().attr(fmlHandshakeState).get();
-        FMLLog.log.debug("{}: {}->{}:{}", stateType.getSimpleName(), msg.toString(stateType), state.getClass().getName().substring(state.getClass().getName().lastIndexOf('.')+1), state);
+        PFServer.LOGGER.debug("{}: {}->{}:{}", stateType.getSimpleName(), msg.toString(stateType), state.getClass().getName().substring(state.getClass().getName().lastIndexOf('.')+1), state);
         state.accept(ctx, msg, s ->
         {
-            FMLLog.log.debug("  Next: {}", s.name());
+            PFServer.LOGGER.debug("  Next: {}", s.name());
             ctx.channel().attr(fmlHandshakeState).set(s);
         });
     }
@@ -60,10 +60,10 @@ public class HandshakeMessageHandler<S extends Enum<S> & IHandshakeState<S>> ext
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception
     {
         S state = ctx.channel().attr(fmlHandshakeState).get();
-        FMLLog.log.debug("{}: null->{}:{}", stateType.getSimpleName(), state.getClass().getName().substring(state.getClass().getName().lastIndexOf('.')+1), state);
+        PFServer.LOGGER.debug("{}: null->{}:{}", stateType.getSimpleName(), state.getClass().getName().substring(state.getClass().getName().lastIndexOf('.')+1), state);
         state.accept(ctx, null, s ->
         {
-            FMLLog.log.debug("  Next: {}", s.name());
+            PFServer.LOGGER.debug("  Next: {}", s.name());
             ctx.channel().attr(fmlHandshakeState).set(s);
         });
     }
@@ -71,7 +71,7 @@ public class HandshakeMessageHandler<S extends Enum<S> & IHandshakeState<S>> ext
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("HandshakeMessageHandler exception", cause);
+        PFServer.LOGGER.error("HandshakeMessageHandler exception", cause);
         ctx.channel().attr(fmlHandshakeState).set(errorState);
         super.exceptionCaught(ctx, cause);
     }

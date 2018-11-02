@@ -21,7 +21,7 @@ package net.minecraftforge.fml.common.toposort;
 
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 
 import java.util.*;
 
@@ -169,13 +169,13 @@ public class TopologicalSort
                 return;
             }
 
-            FMLLog.log.fatal("Mod Sorting failed.");
-            FMLLog.log.fatal("Visiting node {}", node);
-            FMLLog.log.fatal("Current sorted list : {}", sortedResult);
-            FMLLog.log.fatal("Visited set for this node : {}", visitedNodes);
-            FMLLog.log.fatal("Explored node set : {}", expandedNodes);
+            PFServer.LOGGER.fatal("Mod Sorting failed.");
+            PFServer.LOGGER.fatal("Visiting node {}", node);
+            PFServer.LOGGER.fatal("Current sorted list : {}", sortedResult);
+            PFServer.LOGGER.fatal("Visited set for this node : {}", visitedNodes);
+            PFServer.LOGGER.fatal("Explored node set : {}", expandedNodes);
             SetView<T> cycleList = Sets.difference(visitedNodes, expandedNodes);
-            FMLLog.log.fatal("Likely cycle is in : {}", cycleList);
+            PFServer.LOGGER.fatal("Likely cycle is in : {}", cycleList);
             throw new ModSortingException("There was a cycle detected in the input graph, sorting is not possible", node, cycleList);
         }
 

@@ -21,11 +21,11 @@ package net.minecraftforge.common;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import mgazul.PFServer.PFServer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -379,7 +379,7 @@ public class BiomeDictionary
         if (!hasAnyType(biome))
         {
             makeBestGuess(biome);
-            FMLLog.log.warn("No types have been added to Biome {}, types have been assigned on a best-effort guess: {}", biome.getRegistryName(), getTypes(biome));
+            PFServer.LOGGER.warn("No types have been added to Biome {}, types have been assigned on a best-effort guess: {}", biome.getRegistryName(), getTypes(biome));
         }
     }
 
@@ -471,12 +471,12 @@ public class BiomeDictionary
 
         if (DEBUG)
         {
-            FMLLog.log.debug("BiomeDictionary:");
+            PFServer.LOGGER.debug("BiomeDictionary:");
             for (Type type : Type.byName.values())
             {
                 StringBuilder buf = new StringBuilder();
                 buf.append("    ").append(type.name).append(": ").append(type.biomes.stream().map(Biome::getBiomeName).collect(Collectors.joining(", ")));
-                FMLLog.log.debug(buf.toString());
+                PFServer.LOGGER.debug(buf.toString());
             }
         }
     }

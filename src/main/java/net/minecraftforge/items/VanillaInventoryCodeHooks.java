@@ -55,7 +55,7 @@ public class VanillaInventoryCodeHooks
         if (itemHandlerResult == null)
             return null;
 
-        if (itemHandlerResult.getValue() instanceof IInventory) return null; // CatServer - handle in vanilla
+        if (itemHandlerResult.getValue() instanceof IInventory) return null; // PFServer - handle in vanilla
 
         IItemHandler handler = itemHandlerResult.getKey();
 
@@ -103,7 +103,7 @@ public class VanillaInventoryCodeHooks
         {
             IItemHandler itemHandler = destinationResult.getKey();
             Object destination = destinationResult.getValue();
-            // CatServer start
+            // PFServer start
             CraftItemStack oitemstack = CraftItemStack.asCraftMirror(stack.copy().splitStack(1));
 
             TileEntity te = (TileEntity) destination;
@@ -127,7 +127,7 @@ public class VanillaInventoryCodeHooks
                 remainder = stack.copy();
             }
 
-            // CatServer end
+            // PFServer end
             dropper.setInventorySlotContents(slot, remainder);
             return false;
         }
@@ -159,14 +159,14 @@ public class VanillaInventoryCodeHooks
                     if (!hopper.getStackInSlot(i).isEmpty())
                     {
                         ItemStack originalSlotContents = hopper.getStackInSlot(i).copy();
-                        // CatServer start - Call event when pushing items into other inventories
+                        // PFServer start - Call event when pushing items into other inventories
                         CraftItemStack remainder = CraftItemStack.asCraftMirror(hopper.decrStackSize(i, hopper.world.spigotConfig.hopperAmount)); // Spigot
 
 
                         TileEntity te = (TileEntity) destination;
                         Inventory destinationInventory = te.getOwner() != null ? te.getOwner().getInventory() : CatCustomInventory.inventoryFromForge(itemHandler);
                         InventoryMoveItemEvent event = new InventoryMoveItemEvent(hopper.getOwner().getInventory(), remainder.clone(), destinationInventory, true);
-                        if (destinationInventory != null) hopper.getWorld().getServer().getPluginManager().callEvent(event); //CatServer
+                        if (destinationInventory != null) hopper.getWorld().getServer().getPluginManager().callEvent(event); //PFServer
                         if (event.isCancelled()) {
                             hopper.setInventorySlotContents(i, originalSlotContents);
                             hopper.setTransferCooldown(hopper.world.spigotConfig.hopperTransfer); // Spigot
@@ -181,7 +181,7 @@ public class VanillaInventoryCodeHooks
                             } else {
                                 hopper.setInventorySlotContents(i, originalSlotContents);
                             }
-                            // CatServer end
+                            // PFServer end
                             return true;
                         }
                         originalSlotContents.stackSize -= origCount - itemstack1.stackSize; // Spigot

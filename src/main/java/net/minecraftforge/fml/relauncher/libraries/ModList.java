@@ -23,9 +23,9 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class ModList
         }
         catch (IOException e)
         {
-            FMLLog.log.error(FMLLog.log.getMessageFactory().newMessage("Unable to load ModList json at {}.", json.getAbsoluteFile()), e);
+            PFServer.LOGGER.error(PFServer.LOGGER.getMessageFactory().newMessage("Unable to load ModList json at {}.", json.getAbsoluteFile()), e);
         }
 
         return new ModList(json, mcdir);
@@ -120,11 +120,11 @@ public class ModList
             }
             catch (JsonSyntaxException jse)
             {
-                FMLLog.log.info(FMLLog.log.getMessageFactory().newMessage("Failed to parse modList json file {}.", path), jse);
+                PFServer.LOGGER.info(PFServer.LOGGER.getMessageFactory().newMessage("Failed to parse modList json file {}.", path), jse);
             }
             catch (IOException ioe)
             {
-                FMLLog.log.info(FMLLog.log.getMessageFactory().newMessage("Failed to read modList json file {}.", path), ioe);
+                PFServer.LOGGER.info(PFServer.LOGGER.getMessageFactory().newMessage("Failed to read modList json file {}.", path), ioe);
             }
         }
         this.mod_list = temp_list == null ? new JsonModList() : temp_list;
@@ -141,7 +141,7 @@ public class ModList
             }
             catch (IOException e)
             {
-                FMLLog.log.info(FMLLog.log.getMessageFactory().newMessage("Failed to create repository for modlist at {}.", mod_list.repositoryRoot), e);
+                PFServer.LOGGER.info(PFServer.LOGGER.getMessageFactory().newMessage("Failed to create repository for modlist at {}.", mod_list.repositoryRoot), e);
             }
         }
         this.repo = temp;
@@ -202,7 +202,7 @@ public class ModList
         }
         catch (IOException ioe)
         {
-            FMLLog.log.info(FMLLog.log.getMessageFactory().newMessage("Unable to canonicalize path {} relative to {}", path, root.getAbsolutePath()));
+            PFServer.LOGGER.info(PFServer.LOGGER.getMessageFactory().newMessage("Unable to canonicalize path {} relative to {}", path, root.getAbsolutePath()));
         }
         return null;
     }

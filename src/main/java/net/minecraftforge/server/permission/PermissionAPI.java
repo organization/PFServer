@@ -21,8 +21,8 @@ package net.minecraftforge.server.permission;
 
 import com.google.common.base.Preconditions;
 import com.mojang.authlib.GameProfile;
+import mgazul.PFServer.PFServer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.server.permission.context.IContext;
@@ -41,7 +41,7 @@ public class PermissionAPI
     {
         Preconditions.checkNotNull(handler, "Permission handler can't be null!");
         Preconditions.checkState(Loader.instance().getLoaderState().ordinal() <= LoaderState.PREINITIALIZATION.ordinal(), "Can't register after IPermissionHandler PreInit!");
-        FMLLog.log.warn("Replacing {} with {}", permissionHandler.getClass().getName(), handler.getClass().getName());
+        PFServer.LOGGER.warn("Replacing {} with {}", permissionHandler.getClass().getName(), handler.getClass().getName());
         permissionHandler = handler;
     }
 

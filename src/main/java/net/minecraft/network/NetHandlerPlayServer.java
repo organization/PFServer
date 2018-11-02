@@ -1826,13 +1826,13 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
 
                 ItemStack itemstack = ItemStack.EMPTY;
 
-                // CatServer start - some containers such as NEI's Creative Container does not have a view at this point so we need to create one
+                // PFServer start - some containers such as NEI's Creative Container does not have a view at this point so we need to create one
                 if (inventory == null)
                 {
                     inventory = new CraftInventoryView(this.player.getBukkitEntity(), MinecraftServer.getServerInst().server.createInventory(this.player.getBukkitEntity(), InventoryType.CHEST), this.player.openContainer);
                     this.player.openContainer.setBukkitView(inventory);
                 }
-                // CatServer end
+                // PFServer end
 
                 switch (packetIn.getClickType()) {
                     case PICKUP:

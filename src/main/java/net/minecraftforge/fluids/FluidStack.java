@@ -20,10 +20,10 @@
 
 package net.minecraftforge.fluids;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.registries.IRegistryDelegate;
 
 import javax.annotation.Nullable;
@@ -46,12 +46,12 @@ public class FluidStack
     {
         if (fluid == null)
         {
-            FMLLog.bigWarning("Null fluid supplied to fluidstack. Did you try and create a stack for an unregistered fluid?");
+            PFServer.bigWarning("Null fluid supplied to fluidstack. Did you try and create a stack for an unregistered fluid?");
             throw new IllegalArgumentException("Cannot create a fluidstack from a null fluid");
         }
         else if (!FluidRegistry.isFluidRegistered(fluid))
         {
-            FMLLog.bigWarning("Failed attempt to create a FluidStack for an unregistered Fluid {} (type {})", fluid.getName(), fluid.getClass().getName());
+            PFServer.bigWarning("Failed attempt to create a FluidStack for an unregistered Fluid {} (type {})", fluid.getName(), fluid.getClass().getName());
             throw new IllegalArgumentException("Cannot create a fluidstack from an unregistered fluid");
         }
         this.fluidDelegate = FluidRegistry.makeDelegate(fluid);

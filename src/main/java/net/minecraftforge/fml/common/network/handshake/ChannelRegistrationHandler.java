@@ -22,9 +22,9 @@ package net.minecraftforge.fml.common.network.handshake;
 import com.google.common.collect.ImmutableSet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import mgazul.PFServer.PFServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -66,7 +66,7 @@ public class ChannelRegistrationHandler extends SimpleChannelInboundHandler<FMLP
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("ChannelRegistrationHandler exception", cause);
+        PFServer.LOGGER.error("ChannelRegistrationHandler exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 }

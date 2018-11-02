@@ -100,7 +100,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         this.listAnimatedSprites.clear();
         int j = Integer.MAX_VALUE;
         int k = 1 << this.mipmapLevels;
-        net.minecraftforge.fml.common.FMLLog.log.info("Max texture size: {}", i);
+        LOGGER.info("Max texture size: {}", i);
         net.minecraftforge.fml.common.ProgressManager.ProgressBar bar = net.minecraftforge.fml.common.ProgressManager.push("Texture stitching", this.mapRegisteredSprites.size());
         loadedSprites.clear();
 

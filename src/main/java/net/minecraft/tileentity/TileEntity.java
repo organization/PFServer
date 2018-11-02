@@ -115,7 +115,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
         catch (Throwable throwable1)
         {
             LOGGER.error("Failed to create block entity {}", s, throwable1);
-            net.minecraftforge.fml.common.FMLLog.log.error("A TileEntity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
+            LOGGER.error("A TileEntity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
                     s, oclass == null ? null : oclass.getName(), throwable1);
         }
 
@@ -129,7 +129,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
             catch (Throwable throwable)
             {
                 LOGGER.error("Failed to load data for block entity {}", s, throwable);
-                net.minecraftforge.fml.common.FMLLog.log.error("A TileEntity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
+                LOGGER.error("A TileEntity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
                         s, oclass.getName(), throwable);
                 tileentity = null;
             }
@@ -346,16 +346,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
     }
 
     private boolean isVanilla = getClass().getName().startsWith("net.minecraft.");
-    /**
-     * Called from Chunk.setBlockIDWithMetadata and Chunk.fillChunk, determines if this tile entity should be re-created when the ID, or Metadata changes.
-     * Use with caution as this will leave straggler TileEntities, or create conflicts with other TileEntities if not used properly.
-     *
-     * @param world Current world
-     * @param pos Tile's world position
-     * @param oldState The old ID of the block
-     * @param newState The new ID of the block (May be the same)
-     * @return true forcing the invalidation of the existing TE, false not to invalidate the existing TE
-     */
+
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
         return isVanilla ? (oldState.getBlock() != newSate.getBlock()) : oldState != newSate;
@@ -366,17 +357,8 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
         return pass == 0;
     }
 
-    /**
-     * Sometimes default render bounding box: infinite in scope. Used to control rendering on {@link TileEntitySpecialRenderer}.
-     */
     public static final net.minecraft.util.math.AxisAlignedBB INFINITE_EXTENT_AABB = new net.minecraft.util.math.AxisAlignedBB(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-    /**
-     * Return an {@link AxisAlignedBB} that controls the visible scope of a {@link TileEntitySpecialRenderer} associated with this {@link TileEntity}
-     * Defaults to the collision bounding box {@link Block#getCollisionBoundingBoxFromPool(World, int, int, int)} associated with the block
-     * at this location.
-     *
-     * @return an appropriately size {@link AxisAlignedBB} for the {@link TileEntity}
-     */
+
     @SideOnly(Side.CLIENT)
     public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox()
     {

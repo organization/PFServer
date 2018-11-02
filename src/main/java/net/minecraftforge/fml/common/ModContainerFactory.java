@@ -20,6 +20,7 @@
 package net.minecraftforge.fml.common;
 
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.discovery.ModCandidate;
 import net.minecraftforge.fml.common.discovery.asm.ASMModParser;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation;
@@ -64,17 +65,17 @@ public class ModContainerFactory
         {
             if (modTypes.containsKey(ann.getASMType()))
             {
-                FMLLog.log.debug("Identified a mod of type {} ({}) - loading", ann.getASMType(), className);
+                PFServer.LOGGER.debug("Identified a mod of type {} ({}) - loading", ann.getASMType(), className);
                 try {
                     ModContainer ret = modTypes.get(ann.getASMType()).newInstance(className, container, ann.getValues());
                     if (!ret.shouldLoadInEnvironment())
                     {
-                        FMLLog.log.debug("Skipping mod {}, container opted to not load.", className);
+                        PFServer.LOGGER.debug("Skipping mod {}, container opted to not load.", className);
                         return null;
                     }
                     return ret;
                 } catch (Exception e) {
-                    FMLLog.log.error("Unable to construct {} container", ann.getASMType().getClassName(), e);
+                    PFServer.LOGGER.error("Unable to construct {} container", ann.getASMType().getClassName(), e);
                     return null;
                 }
             }

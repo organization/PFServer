@@ -56,12 +56,12 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     private final int[] precipitationHeightMap;
     private final boolean[] updateSkylightColumns;
     private boolean loaded;
-    public final World world; // CatServer - private -> public
-    public final int[] heightMap; // CatServer - private -> public
+    public final World world; // PFServer - private -> public
+    public final int[] heightMap; // PFServer - private -> public
     public final int x;
     public final int z;
     private boolean isGapLightingUpdated;
-    public final Map<BlockPos, TileEntity> tileEntities; // CatServer - private -> public
+    public final Map<BlockPos, TileEntity> tileEntities; // PFServer - private -> public
     public final ClassInheritanceMultiMap<Entity>[] entityLists;  // Spigot
     private boolean isTerrainPopulated;
     private boolean isLightPopulated;
@@ -1249,7 +1249,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
 
     public boolean isPopulated()
     {
-        return this.ticked && this.isTerrainPopulated;  // CatServer - remove light populated check
+        return this.ticked && this.isTerrainPopulated;  // PFServer - remove light populated check
     }
 
     public boolean wasTicked()
@@ -1703,11 +1703,11 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
         String format = "{} loaded a new chunk {} in dimension {} ({}) while populating chunk {}, causing cascading worldgen lag.";
 
         if (activeModContainer == null) { // vanilla minecraft has problems too (MC-114332), log it at a quieter level.
-            net.minecraftforge.fml.common.FMLLog.log.debug(format, "Minecraft", this.getPos(), this.world.provider.getDimension(), this.world.provider.getDimensionType().getName(), populating);
-            net.minecraftforge.fml.common.FMLLog.log.debug("Consider setting 'fixVanillaCascading' to 'true' in the Forge config to fix many cases where this occurs in the base game.");
+            LOGGER.debug(format, "Minecraft", this.getPos(), this.world.provider.getDimension(), this.world.provider.getDimensionType().getName(), populating);
+            LOGGER.debug("Consider setting 'fixVanillaCascading' to 'true' in the Forge config to fix many cases where this occurs in the base game.");
         } else {
-            net.minecraftforge.fml.common.FMLLog.log.warn(format, activeModContainer.getName(), this.getPos(), this.world.provider.getDimension(), this.world.provider.getDimensionType().getName(), populating);
-            net.minecraftforge.fml.common.FMLLog.log.warn("Please report this to the mod's issue tracker. This log can be disabled in the Forge config.");
+            LOGGER.warn(format, activeModContainer.getName(), this.getPos(), this.world.provider.getDimension(), this.world.provider.getDimensionType().getName(), populating);
+            LOGGER.warn("Please report this to the mod's issue tracker. This log can be disabled in the Forge config.");
         }
     }
 

@@ -1,6 +1,6 @@
 package mgazul.PFServer.remapper;
 
-import mgazul.PFServer.CatServer;
+import mgazul.PFServer.PFServer;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.transformer.MappingTransformer;
 import net.md_5.specialsource.transformer.MavenShade;
@@ -29,7 +29,7 @@ public class MappingLoader {
             jarMapping.packages.put(org_bukkit_craftbukkit + "/libs/jline", "jline");
             jarMapping.packages.put(org_bukkit_craftbukkit + "/libs/joptsimple", "joptsimple");
             jarMapping.methods.put("org/bukkit/Bukkit/getOnlinePlayers ()[Lorg/bukkit/entity/Player;", "getOnlinePlayers_1710");
-            loadNmsMappings(jarMapping, CatServer.getNativeVersion());
+            loadNmsMappings(jarMapping, PFServer.getNativeVersion());
         } catch (Exception var2) {
             var2.printStackTrace();
         }

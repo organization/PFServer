@@ -20,12 +20,12 @@
 package net.minecraftforge.common;
 
 import com.google.common.collect.Lists;
+import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks.SeedEntry;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.ICrashCallable;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -78,7 +78,7 @@ public class MinecraftForge
     */
    public static void initialize()
    {
-       FMLLog.log.info("MinecraftForge v{} Initialized", ForgeVersion.getVersion());
+       PFServer.LOGGER.info("MinecraftForge v{} Initialized", ForgeVersion.getVersion());
 
        OreDictionary.getOreName(0);
 
@@ -119,7 +119,7 @@ public class MinecraftForge
            }
            catch (Exception e)
            {
-               FMLLog.log.error("Could not find class for name '{}'.", name, e);
+               PFServer.LOGGER.error("Could not find class for name '{}'.", name, e);
            }
        }
    }

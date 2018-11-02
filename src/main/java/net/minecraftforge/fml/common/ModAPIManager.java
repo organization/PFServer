@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.asm.transformers.ModAPITransformer;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
@@ -110,7 +111,7 @@ public class ModAPIManager {
         public void validate(String providedAPI, String apiOwner, String apiVersion)
         {
             if (Loader.instance().getModClassLoader().containsSource(this.getSource())) {
-                FMLLog.bigWarning("The API {} from source {} is loaded from an incompatible classloader. THIS WILL NOT WORK!", providedAPI, this.getSource().getAbsolutePath());
+                PFServer.bigWarning("The API {} from source {} is loaded from an incompatible classloader. THIS WILL NOT WORK!", providedAPI, this.getSource().getAbsolutePath());
             }
             // TODO Compare this annotation data to the one we first found. Maybe barf if there is inconsistency?
         }
@@ -180,7 +181,7 @@ public class ModAPIManager {
                 {
                     continue;
                 }
-                FMLLog.log.debug("Found API {} (owned by {} providing {}) embedded in {}",apiPackage, apiOwner, providedAPI, embeddedIn);
+                PFServer.LOGGER.debug("Found API {} (owned by {} providing {}) embedded in {}",apiPackage, apiOwner, providedAPI, embeddedIn);
                 if (!embeddedIn.equals(apiOwner))
                 {
                     container.addAPIReference(embeddedIn);
@@ -198,7 +199,7 @@ public class ModAPIManager {
                     List<String> candidateIds = candidate.getContainedMods().stream().map(ModContainer::getModId).collect(Collectors.toCollection(ArrayList::new));
                     if (!candidateIds.contains(container.ownerMod.getLabel()) && !container.currentReferents.containsAll(candidateIds))
                     {
-                        FMLLog.log.info("Found mod(s) {} containing declared API package {} (owned by {}) without associated API reference",candidateIds, pkg, container.ownerMod);
+                        PFServer.LOGGER.info("Found mod(s) {} containing declared API package {} (owned by {}) without associated API reference",candidateIds, pkg, container.ownerMod);
                         container.addAPIReferences(candidateIds);
                     }
                 }
@@ -211,18 +212,18 @@ public class ModAPIManager {
                     APIContainer parent = apiContainers.get(owner.getLabel());
                     if (parent == container)
                     {
-                        FMLLog.log.trace("APIContainer {} is it's own parent. skipping", owner);
+                        PFServer.LOGGER.trace("APIContainer {} is it's own parent. skipping", owner);
                         container.markSelfReferenced();
                         break;
                     }
-                    FMLLog.log.trace("Removing upstream parent {} from {}", parent.ownerMod.getLabel(), container);
+                    PFServer.LOGGER.trace("Removing upstream parent {} from {}", parent.ownerMod.getLabel(), container);
                     container.currentReferents.remove(parent.ownerMod.getLabel());
                     container.referredMods.remove(parent.ownerMod);
                     owner = parent.ownerMod;
                 }
                 while (apiContainers.containsKey(owner.getLabel()));
             }
-            FMLLog.log.debug("Creating API container dummy for API {}: owner: {}, dependents: {}", container.providedAPI, container.ownerMod, container.referredMods);
+            PFServer.LOGGER.debug("Creating API container dummy for API {}: owner: {}, dependents: {}", container.providedAPI, container.ownerMod, container.referredMods);
         }
     }
 

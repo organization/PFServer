@@ -21,10 +21,10 @@ package net.minecraftforge.common.network;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import mgazul.PFServer.PFServer;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.network.ForgeMessage.DimensionRegisterMessage;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class DimensionMessageHandler extends SimpleChannelInboundHandler<ForgeMessage.DimensionRegisterMessage>{
     @Override
@@ -38,7 +38,7 @@ public class DimensionMessageHandler extends SimpleChannelInboundHandler<ForgeMe
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("DimensionMessageHandler exception", cause);
+        PFServer.LOGGER.error("DimensionMessageHandler exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 

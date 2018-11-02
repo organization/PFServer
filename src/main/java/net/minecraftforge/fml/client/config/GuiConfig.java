@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.client.config;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -31,7 +32,6 @@ import net.minecraftforge.fml.client.config.GuiConfigEntries.IConfigEntry;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import org.lwjgl.input.Keyboard;
@@ -86,7 +86,7 @@ public class GuiConfig extends GuiScreen
     /**
      * This constructor handles the {@code @Config} configuration classes
      * @param parentScreen the parent GuiScreen object
-     * @param mod the mod for which to create a screen
+     * @param modid the mod for which to create a screen
      */
     public GuiConfig(GuiScreen parentScreen, String modid, String title)
     {
@@ -334,7 +334,7 @@ public class GuiConfig extends GuiScreen
             }
             catch (Throwable e)
             {
-                FMLLog.log.error("Error performing GuiConfig action:", e);
+                PFServer.LOGGER.error("Error performing GuiConfig action:", e);
             }
 
             if (flag)

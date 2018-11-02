@@ -19,6 +19,7 @@
 package net.minecraftforge.fml.server;
 
 import com.google.common.collect.ImmutableList;
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -159,7 +160,7 @@ public class FMLServerHandler implements IFMLSidedHandler
     {
         if (query.getResult() == null)
         {
-            FMLLog.log.warn(query.getText());
+            PFServer.LOGGER.warn(query.getText());
             query.finish();
         }
         else
@@ -167,7 +168,7 @@ public class FMLServerHandler implements IFMLSidedHandler
             String text = query.getText() +
                     "\n\nRun the command /fml confirm or or /fml cancel to proceed." +
                     "\nAlternatively start the server with -Dfml.queryResult=confirm or -Dfml.queryResult=cancel to preselect the answer.";
-            FMLLog.log.warn(text);
+            PFServer.LOGGER.warn(text);
 
             if (!query.isSynchronous()) return; // no-op until mc does commands in another thread (if ever)
 
@@ -188,14 +189,14 @@ public class FMLServerHandler implements IFMLSidedHandler
 
                         if (cmd.equals("/fml confirm"))
                         {
-                            FMLLog.log.info("confirmed");
+                            PFServer.LOGGER.info("confirmed");
                             query.setResult(true);
                             done = true;
                             it.remove();
                         }
                         else if (cmd.equals("/fml cancel"))
                         {
-                            FMLLog.log.info("cancelled");
+                            PFServer.LOGGER.info("cancelled");
                             query.setResult(false);
                             done = true;
                             it.remove();
@@ -258,7 +259,7 @@ public class FMLServerHandler implements IFMLSidedHandler
         }
         catch (FileNotFoundException e)
         {
-            FMLLog.log.warn("Missing English translation for {}: {}", container.getModId(), e.getMessage());
+            PFServer.LOGGER.warn("Missing English translation for {}: {}", container.getModId(), e.getMessage());
         }
         catch (IOException e)
         {
@@ -266,7 +267,7 @@ public class FMLServerHandler implements IFMLSidedHandler
         }
         catch(Exception e)
         {
-            FMLLog.log.error(e);
+            PFServer.LOGGER.error(e);
         }
         finally
         {

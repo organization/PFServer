@@ -19,8 +19,8 @@
 
 package net.minecraftforge.common.chunkio;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -41,14 +41,14 @@ class ChunkIOThreadPoolExecutor extends ThreadPoolExecutor {
         {
             try
             {
-                FMLLog.log.error("Unhandled exception loading chunk:", t);
+                PFServer.LOGGER.error("Unhandled exception loading chunk:", t);
                 QueuedChunk queuedChunk = ((ChunkIOProvider) r).getChunkInfo();
-                FMLLog.log.error(queuedChunk);
-                FMLLog.log.error(CrashReportCategory.getCoordinateInfo(queuedChunk.x << 4, 64, queuedChunk.z << 4));
+                PFServer.LOGGER.error(queuedChunk);
+                PFServer.LOGGER.error(CrashReportCategory.getCoordinateInfo(queuedChunk.x << 4, 64, queuedChunk.z << 4));
             }
             catch (Throwable t2)
             {
-                FMLLog.log.error(t2);
+                PFServer.LOGGER.error(t2);
             }
             finally
             {

@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fluids;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.fml.common.FMLLog;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -189,7 +189,7 @@ public class Fluid
         }
         else
         {
-            FMLLog.log.warn("A mod has attempted to assign Block {} to the Fluid '{}' but this Fluid has already been linked to the Block {}. "
+            PFServer.LOGGER.warn("A mod has attempted to assign Block {} to the Fluid '{}' but this Fluid has already been linked to the Block {}. "
                     + "You may have duplicate Fluid Blocks as a result. It *may* be possible to configure your mods to avoid this.", block, fluidName, this.block);
         }
         return this;

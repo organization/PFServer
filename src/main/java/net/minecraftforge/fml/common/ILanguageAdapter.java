@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.common;
 
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.reflect.Field;
@@ -72,7 +73,7 @@ public interface ILanguageAdapter {
             catch (ClassNotFoundException e)
             {
                 // Not a singleton, look for @Instance field as a fallback.
-                FMLLog.log.info("An error occurred trying to load a proxy into {}.{}. Did you declare your mod as 'class' instead of 'object'?", proxyTarget.getSimpleName(), target.getName(), e);
+                PFServer.LOGGER.info("An error occurred trying to load a proxy into {}.{}. Did you declare your mod as 'class' instead of 'object'?", proxyTarget.getSimpleName(), target.getName(), e);
                 return;
             }
 
@@ -108,12 +109,12 @@ public interface ILanguageAdapter {
             }
             catch (InvocationTargetException e)
             {
-                FMLLog.log.error("An error occurred trying to load a proxy into {}.{}", target.getName(), e);
+                PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", target.getName(), e);
                 throw new LoaderException(e);
             }
 
             // If we come here we could not find a setter for this proxy.
-            FMLLog.log.fatal("Failed loading proxy into {}.{}, could not find setter function. Did you declare the field with 'val' instead of 'var'?", proxyTarget.getSimpleName(), target.getName());
+            PFServer.LOGGER.fatal("Failed loading proxy into {}.{}, could not find setter function. Did you declare the field with 'val' instead of 'var'?", proxyTarget.getSimpleName(), target.getName());
             throw new LoaderException(String.format("Failed loading proxy into %s.%s, could not find setter function. Did you declare the field with 'val' instead of 'var'?", proxyTarget.getSimpleName(), target.getName()));
         }
 
@@ -158,14 +159,14 @@ public interface ILanguageAdapter {
 
                             if (!target.getType().isAssignableFrom(proxy.getClass()))
                             {
-                                FMLLog.log.fatal("Attempted to load a proxy type {} into {}.{}, but the types don't match", targetType, proxyTarget.getSimpleName(), target.getName());
+                                PFServer.LOGGER.fatal("Attempted to load a proxy type {} into {}.{}, but the types don't match", targetType, proxyTarget.getSimpleName(), target.getName());
                                 throw new LoaderException(String.format("Attempted to load a proxy type %s into %s.%s, but the types don't match", targetType, proxyTarget.getSimpleName(), target.getName()));
                             }
 
                             setProxy(target, proxyTarget, proxy);
                         }
                         catch (Exception e) {
-                            FMLLog.log.error("An error occurred trying to load a proxy into {}.{}", target.getName(), e);
+                            PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", target.getName(), e);
                             throw new LoaderException(e);
                         }
                     }
@@ -173,7 +174,7 @@ public interface ILanguageAdapter {
             }
             else
             {
-                FMLLog.log.trace("Mod does not appear to be a singleton.");
+                PFServer.LOGGER.trace("Mod does not appear to be a singleton.");
             }
         }
     }

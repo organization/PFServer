@@ -452,7 +452,7 @@ public class PlayerInteractionManager
 
     public EnumActionResult processRightClickBlock(EntityPlayer player, World worldIn, ItemStack stack, EnumHand hand, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        // CatServer - fire PlayerInteractEvent
+        // PFServer - fire PlayerInteractEvent
         IBlockState blockdata = worldIn.getBlockState(pos);
 
         if (blockdata.getBlock() != Blocks.AIR) {

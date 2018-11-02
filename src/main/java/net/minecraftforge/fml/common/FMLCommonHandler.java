@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.item.EntityItem;
@@ -172,17 +173,6 @@ public class FMLCommonHandler
             return Loader.instance().getReversedModObjectList().get(mod);
         }
     }
-    /**
-     * Get the forge mod loader logging instance (goes to the forgemodloader log file)
-     * @return The log instance for the FML log file
-     *
-     * @deprecated Not used in FML, Mods use your own logger, see {@link FMLPreInitializationEvent#getModLog()}
-     */
-    @Deprecated
-    public Logger getFMLLogger()
-    {
-        return FMLLog.log;
-    }
 
     public Side getSide()
     {
@@ -204,7 +194,7 @@ public class FMLCommonHandler
      */
     public void raiseException(Throwable exception, String message, boolean stopGame)
     {
-        FMLLog.log.error("Something raised an exception. The message was '{}'. 'stopGame' is {}", stopGame, exception);
+        PFServer.LOGGER.error("Something raised an exception. The message was '{}'. 'stopGame' is {}", stopGame, exception);
         if (stopGame)
         {
             getSidedDelegate().haltGame(message,exception);
@@ -470,19 +460,19 @@ public class FMLCommonHandler
         {
             try
             {
-                FMLLog.log.info("Waiting for the server to terminate/save.");
+                PFServer.LOGGER.info("Waiting for the server to terminate/save.");
                 if (!latch.await(10, TimeUnit.SECONDS))
                 {
-                    FMLLog.log.warn("The server didn't stop within 10 seconds, exiting anyway.");
+                    PFServer.LOGGER.warn("The server didn't stop within 10 seconds, exiting anyway.");
                 }
                 else
                 {
-                    FMLLog.log.info("Server terminated.");
+                    PFServer.LOGGER.info("Server terminated.");
                 }
             }
             catch (InterruptedException e)
             {
-                FMLLog.log.warn("Interrupted wait, exiting.");
+                PFServer.LOGGER.warn("Interrupted wait, exiting.");
             }
         }
 
@@ -621,7 +611,7 @@ public class FMLCommonHandler
         if (!shouldAllowPlayerLogins())
         {
             TextComponentString text = new TextComponentString("Server is still starting! Please wait before reconnecting.");
-            FMLLog.log.info("Disconnecting Player: {}", text.getUnformattedText());
+            PFServer.LOGGER.info("Disconnecting Player: {}", text.getUnformattedText());
             manager.sendPacket(new SPacketDisconnect(text));
             manager.closeChannel(text);
             return false;
@@ -632,7 +622,7 @@ public class FMLCommonHandler
             manager.setConnectionState(EnumConnectionState.LOGIN);
             TextComponentString text = new TextComponentString("This server has mods that require FML/Forge to be installed on the client. Contact your server admin for more details.");
             Collection<String> modNames = NetworkRegistry.INSTANCE.getRequiredMods(Side.CLIENT);
-            FMLLog.log.info("Disconnecting Player: This server has mods that require FML/Forge to be installed on the client: {}", modNames);
+            PFServer.LOGGER.info("Disconnecting Player: This server has mods that require FML/Forge to be installed on the client: {}", modNames);
             manager.sendPacket(new SPacketDisconnect(text));
             manager.closeChannel(text);
             return false;
@@ -657,17 +647,17 @@ public class FMLCommonHandler
      */
     public void exitJava(int exitCode, boolean hardExit)
     {
-        FMLLog.log.warn("Java has been asked to exit (code {})", exitCode);
+        PFServer.LOGGER.warn("Java has been asked to exit (code {})", exitCode);
         if (hardExit)
         {
-            FMLLog.log.warn("This is an abortive exit and could cause world corruption or other things");
+            PFServer.LOGGER.warn("This is an abortive exit and could cause world corruption or other things");
         }
         StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        FMLLog.log.warn("Exit trace:");
+        PFServer.LOGGER.warn("Exit trace:");
         //The first 2 elements are Thread#getStackTrace and FMLCommonHandler#exitJava and aren't relevant
         for (int i = 2; i < stack.length; i++)
         {
-            FMLLog.log.warn("\t{}", stack[i]);
+            PFServer.LOGGER.warn("\t{}", stack[i]);
         }
         if (hardExit)
         {
@@ -693,7 +683,7 @@ public class FMLCommonHandler
         }
         catch (InterruptedException | ExecutionException e)
         {
-            FMLLog.log.fatal("Exception caught executing FutureTask: {}", e.toString(), e);
+            PFServer.LOGGER.fatal("Exception caught executing FutureTask: {}", e.toString(), e);
         }
     }
 

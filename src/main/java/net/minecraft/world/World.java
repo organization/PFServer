@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import mgazul.PFServer.PFServer;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.FunctionManager;
 import net.minecraft.block.Block;
@@ -182,7 +183,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         this.isRemote = client;
         this.worldBorder = providerIn.createWorldBorder();
         perWorldStorage = new MapStorage((ISaveHandler)null);
-        // CatServer start
+        // PFServer start
         if (DimensionManager.getWorld(0) != null) // if overworld has loaded, use its mapstorage
         {
             this.mapStorage = DimensionManager.getWorld(0).mapStorage;
@@ -211,7 +212,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                 getWorld().getPopulators().addAll(generator.getDefaultPopulators(getWorld()));
             }
         }
-        // CatServer end
+        // PFServer end
         // CraftBukkit start
         getWorldBorder().world = (WorldServer) this;
         // From PlayerList.setPlayerFileData
@@ -449,7 +450,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public boolean setBlockState(BlockPos pos, IBlockState newState, int flags)
     {
-        // CatServer start - tree generation
+        // PFServer start - tree generation
         if (this.captureTreeGeneration) {
             net.minecraftforge.common.util.BlockSnapshot blocksnapshot = null;
 
@@ -1073,7 +1074,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public IBlockState getBlockState(BlockPos pos)
     {
-        // CatServer start - tree generation
+        // PFServer start - tree generation
         if (captureTreeGeneration)
         {
             for (net.minecraftforge.common.util.BlockSnapshot blocksnapshot : this.capturedBlockSnapshots)
@@ -1947,7 +1948,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
                 if (net.minecraftforge.common.ForgeModContainer.removeErroringEntities)
                 {
-                    net.minecraftforge.fml.common.FMLLog.log.fatal("{}", crashreport.getCompleteReport());
+                    PFServer.LOGGER.fatal("{}", crashreport.getCompleteReport());
                     removeEntity(entity);
                 }
                 else
@@ -2026,7 +2027,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                     entity2.addEntityCrashInfo(crashreportcategory1);
                     if (net.minecraftforge.common.ForgeModContainer.removeErroringEntities)
                     {
-                        net.minecraftforge.fml.common.FMLLog.log.fatal("{}", crashreport1.getCompleteReport());
+                        PFServer.LOGGER.fatal("{}", crashreport1.getCompleteReport());
                         removeEntity(entity2);
                     }
                     else
@@ -2114,7 +2115,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                         tileentity.addInfoToCrashReport(crashreportcategory2);
                         if (net.minecraftforge.common.ForgeModContainer.removeErroringTileEntities)
                         {
-                            net.minecraftforge.fml.common.FMLLog.log.fatal("{}", crashreport2.getCompleteReport());
+                            PFServer.LOGGER.fatal("{}", crashreport2.getCompleteReport());
                             tileentity.invalidate();
                             this.removeTileEntity(tileentity.getPos());
                         }

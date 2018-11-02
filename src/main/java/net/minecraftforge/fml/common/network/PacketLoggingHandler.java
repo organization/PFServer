@@ -22,8 +22,8 @@ package net.minecraftforge.fml.common.network;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
+import mgazul.PFServer.PFServer;
 import net.minecraft.network.*;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +44,7 @@ public class PacketLoggingHandler
                 {
                     PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
                     msg.writePacketData(buf);
-                    FMLLog.log.debug("{} {}:\n{}", prefix, msg.getClass().getSimpleName(), ByteBufUtils.getContentDump(buf));
+                    PFServer.LOGGER.debug("{} {}:\n{}", prefix, msg.getClass().getSimpleName(), ByteBufUtils.getContentDump(buf));
                     ctx.fireChannelRead(msg);
                 }
             });
@@ -58,7 +58,7 @@ public class PacketLoggingHandler
                     {
                         PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
                         ((Packet<?>)msg).writePacketData(buf);
-                        FMLLog.log.debug("{} {}:\n{}", prefix, msg.getClass().getSimpleName(), ByteBufUtils.getContentDump(buf));
+                        PFServer.LOGGER.debug("{} {}:\n{}", prefix, msg.getClass().getSimpleName(), ByteBufUtils.getContentDump(buf));
                     }
                     ctx.write(msg, promise);
                 }
@@ -78,7 +78,7 @@ public class PacketLoggingHandler
                     {
                         ByteBuf pkt = (ByteBuf)itr.next();
                         pkt.markReaderIndex();
-                        FMLLog.log.debug("{}:\n{}", prefix, ByteBufUtils.getContentDump(pkt));
+                        PFServer.LOGGER.debug("{}:\n{}", prefix, ByteBufUtils.getContentDump(pkt));
                         pkt.resetReaderIndex();
                     }
                 }
@@ -90,7 +90,7 @@ public class PacketLoggingHandler
                 protected void encode(ChannelHandlerContext context, ByteBuf input, ByteBuf output) throws Exception
                 {
                     input.markReaderIndex();
-                    FMLLog.log.debug("{}:\n{}", prefix, ByteBufUtils.getContentDump(input));
+                    PFServer.LOGGER.debug("{}:\n{}", prefix, ByteBufUtils.getContentDump(input));
                     input.resetReaderIndex();
                     super.encode(context, input, output);
                 }

@@ -150,7 +150,7 @@ public class ShapelessRecipes extends net.minecraftforge.registries.IForgeRegist
         CraftItemStack result = CraftItemStack.asCraftMirror(this.recipeOutput);
         CraftShapelessRecipe recipe = new CraftShapelessRecipe(result, this);
         for (Ingredient list : this.recipeItems) {
-            if (list != null) { // CatServer - get recipe from OreDictionary
+            if (list != null) { // PFServer - get recipe from OreDictionary
                 ItemStack[] matchingStacks = list.getMatchingStacks();
                 ItemStack stack = matchingStacks[0];
                 recipe.addIngredient(CraftMagicNumbers.getMaterial(stack.getItem()), (matchingStacks.length) > 1 ? 32767 : stack.getMetadata());

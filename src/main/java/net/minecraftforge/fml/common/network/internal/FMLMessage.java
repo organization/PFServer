@@ -21,11 +21,11 @@ package net.minecraftforge.fml.common.network.internal;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.EntityRegistry.EntityRegistration;
@@ -179,7 +179,7 @@ public abstract class FMLMessage {
             }
             catch (IOException e)
             {
-                FMLLog.log.fatal("Encountered fatal exception trying to send entity spawn data watchers", e);
+                PFServer.LOGGER.fatal("Encountered fatal exception trying to send entity spawn data watchers", e);
                 throw new RuntimeException(e);
             }
             buf.writeBytes(tmpBuf);
@@ -232,7 +232,7 @@ public abstract class FMLMessage {
             }
             catch (IOException e)
             {
-                FMLLog.log.fatal("There was a critical error decoding the datawatcher stream for a mod entity.", e);
+                PFServer.LOGGER.fatal("There was a critical error decoding the datawatcher stream for a mod entity.", e);
                 throw new RuntimeException(e);
             }
 

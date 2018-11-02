@@ -29,6 +29,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
@@ -40,7 +41,6 @@ import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.NotImplementedException;
@@ -94,7 +94,7 @@ public final class Clips
         {
             return new ModelClip(clip.get(), modelLocation, clipName);
         }
-        FMLLog.log.error("Unable to find clip {} in the model {}", clipName, modelLocation);
+        PFServer.LOGGER.error("Unable to find clip {} in the model {}", clipName, modelLocation);
         // FIXME: missing clip?
         return new ModelClip(IdentityClip.INSTANCE, modelLocation, clipName);
     }

@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.common.event;
 
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState.ModState;
 
@@ -72,7 +72,7 @@ public class FMLPostInitializationEvent extends FMLStateEvent
             }
             catch (Exception e)
             {
-                FMLLog.log.info("An error occurred trying to build a soft depend proxy", e);
+                PFServer.LOGGER.info("An error occurred trying to build a soft depend proxy", e);
                 return Optional.empty();
             }
         }

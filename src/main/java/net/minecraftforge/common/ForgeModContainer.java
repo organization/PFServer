@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import mgazul.PFServer.PFServer;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;
@@ -158,7 +159,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         ConfigCategory GENERAL = config.getCategory(CATEGORY_GENERAL);
         if (GENERAL.containsKey(key))
         {
-            FMLLog.log.debug("Remapping property {} from category general to client", key);
+            PFServer.LOGGER.debug("Remapping property {} from category general to client", key);
             Property property = GENERAL.get(key);
             GENERAL.remove(key);
             config.getCategory(CATEGORY_CLIENT).put(key, property);
@@ -235,7 +236,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
 
         if (removeErroringEntities)
         {
-            FMLLog.log.warn("Enabling removal of erroring Entities - USE AT YOUR OWN RISK");
+            PFServer.LOGGER.warn("Enabling removal of erroring Entities - USE AT YOUR OWN RISK");
         }
 
         prop = config.get(Configuration.CATEGORY_GENERAL, "removeErroringTileEntities", false);
@@ -246,7 +247,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
 
         if (removeErroringTileEntities)
         {
-            FMLLog.log.warn("Enabling removal of erroring Tile Entities - USE AT YOUR OWN RISK");
+            PFServer.LOGGER.warn("Enabling removal of erroring Tile Entities - USE AT YOUR OWN RISK");
         }
 
         prop = config.get(Configuration.CATEGORY_GENERAL, "fullBoundingBoxLadders", false);

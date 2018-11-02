@@ -25,9 +25,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import mgazul.PFServer.PFServer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -75,11 +75,11 @@ public abstract class FMLHandshakeMessage {
             if (serverProtocolVersion > 1)
             {
                 overrideDimension = buffer.readInt();
-                FMLLog.log.debug("Server FML protocol version {}, 4 byte dimension received {}", serverProtocolVersion, overrideDimension);
+                PFServer.LOGGER.debug("Server FML protocol version {}, 4 byte dimension received {}", serverProtocolVersion, overrideDimension);
             }
             else
             {
-                FMLLog.log.info("Server FML protocol version {}, no additional data received", serverProtocolVersion);
+                PFServer.LOGGER.info("Server FML protocol version {}, no additional data received", serverProtocolVersion);
             }
         }
 

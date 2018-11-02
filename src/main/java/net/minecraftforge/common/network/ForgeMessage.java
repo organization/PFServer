@@ -23,9 +23,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
 import io.netty.buffer.ByteBuf;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -106,7 +106,7 @@ public abstract class ForgeMessage {
             }
             else
             {
-                FMLLog.log.info("Legacy server message contains no default fluid list - there may be problems with fluids");
+                PFServer.LOGGER.info("Legacy server message contains no default fluid list - there may be problems with fluids");
                 defaultFluids.clear();
             }
         }

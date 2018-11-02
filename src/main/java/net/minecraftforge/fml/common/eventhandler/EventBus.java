@@ -24,7 +24,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Sets;
 import com.google.common.reflect.TypeToken;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
@@ -40,7 +40,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EventBus implements IEventExceptionHandler
 {
     private static int maxID = 0;
-
     private ConcurrentHashMap<Object, ArrayList<IEventListener>> listeners = new ConcurrentHashMap<Object, ArrayList<IEventListener>>();
     private Map<Object,ModContainer> listenerOwners = new MapMaker().weakKeys().weakValues().makeMap();
     private final int busID = maxID++;
@@ -70,7 +69,7 @@ public class EventBus implements IEventExceptionHandler
         ModContainer activeModContainer = Loader.instance().activeModContainer();
         if (activeModContainer == null)
         {
-            FMLLog.log.error("Unable to determine registrant mod for {}. This is a critical error and should be impossible", target, new Throwable());
+            PFServer.LOGGER.error("Unable to determine registrant mod for {}. This is a critical error and should be impossible", target, new Throwable());
             activeModContainer = Loader.instance().getMinecraftModContainer();
         }
         listenerOwners.put(target, activeModContainer);
@@ -152,7 +151,7 @@ public class EventBus implements IEventExceptionHandler
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Error registering event handler: {} {} {}", owner, eventType, method, e);
+            PFServer.LOGGER.error("Error registering event handler: {} {} {}", owner, eventType, method, e);
         }
     }
 
@@ -191,18 +190,18 @@ public class EventBus implements IEventExceptionHandler
 
     public void shutdown()
     {
-        FMLLog.log.warn("EventBus {} shutting down - future events will not be posted.", busID);
+        PFServer.LOGGER.warn("EventBus {} shutting down - future events will not be posted.", busID);
         shutdown = true;
     }
 
     @Override
     public void handleException(EventBus bus, Event event, IEventListener[] listeners, int index, Throwable throwable)
     {
-        FMLLog.log.error("Exception caught during firing event {}:", event, throwable);
-        FMLLog.log.error("Index: {} Listeners:", index);
+        PFServer.LOGGER.error("Exception caught during firing event {}:", event, throwable);
+        PFServer.LOGGER.error("Index: {} Listeners:", index);
         for (int x = 0; x < listeners.length; x++)
         {
-            FMLLog.log.error("{}: {}", x, listeners[x]);
+            PFServer.LOGGER.error("{}: {}", x, listeners[x]);
         }
     }
 }

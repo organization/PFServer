@@ -28,9 +28,9 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.repackage.com.nothome.delta.GDiffPatcher;
 
@@ -61,7 +61,7 @@ public class ClassPatchManager {
         if (dumpPatched)
         {
             tempDir = Files.createTempDir();
-            FMLLog.log.info("Dumping patched classes to {}",tempDir.getAbsolutePath());
+            PFServer.LOGGER.info("Dumping patched classes to {}",tempDir.getAbsolutePath());
         }
     }
 
@@ -87,12 +87,12 @@ public class ClassPatchManager {
         }
         boolean ignoredError = false;
         if (DEBUG)
-            FMLLog.log.debug("Runtime patching class {} (input size {}), found {} patch{}", mappedName, (inputData == null ? 0 : inputData.length), list.size(), list.size()!=1 ? "es" : "");
+            PFServer.LOGGER.debug("Runtime patching class {} (input size {}), found {} patch{}", mappedName, (inputData == null ? 0 : inputData.length), list.size(), list.size()!=1 ? "es" : "");
         for (ClassPatch patch: list)
         {
             if (!patch.targetClassName.equals(mappedName) && !patch.sourceClassName.equals(name))
             {
-                FMLLog.log.warn("Binary patch found {} for wrong class {}", patch.targetClassName, mappedName);
+                PFServer.LOGGER.warn("Binary patch found {} for wrong class {}", patch.targetClassName, mappedName);
             }
             if (!patch.existsAtTarget && (inputData == null || inputData.length == 0))
             {
@@ -100,11 +100,11 @@ public class ClassPatchManager {
             }
             else if (!patch.existsAtTarget)
             {
-                FMLLog.log.warn("Patcher expecting empty class data file for {}, but received non-empty", patch.targetClassName);
+                PFServer.LOGGER.warn("Patcher expecting empty class data file for {}, but received non-empty", patch.targetClassName);
             }
             else if (patch.existsAtTarget && (inputData == null || inputData.length == 0))
             {
-                FMLLog.log.fatal("Patcher expecting non-empty class data file for {}, but received empty.", patch.targetClassName);
+                PFServer.LOGGER.fatal("Patcher expecting non-empty class data file for {}, but received empty.", patch.targetClassName);
                 throw new RuntimeException(String.format("Patcher expecting non-empty class data file for %s, but received empty, your vanilla jar may be corrupt.", patch.targetClassName));
             }
             else
@@ -112,15 +112,15 @@ public class ClassPatchManager {
                 int inputChecksum = Hashing.adler32().hashBytes(inputData).asInt();
                 if (patch.inputChecksum != inputChecksum)
                 {
-                    FMLLog.log.fatal("There is a binary discrepancy between the expected input class {} ({}) and the actual class. Checksum on disk is {}, in patch {}. Things are probably about to go very wrong. Did you put something into the jar file?", mappedName, name, Integer.toHexString(inputChecksum), Integer.toHexString(patch.inputChecksum));
+                    PFServer.LOGGER.fatal("There is a binary discrepancy between the expected input class {} ({}) and the actual class. Checksum on disk is {}, in patch {}. Things are probably about to go very wrong. Did you put something into the jar file?", mappedName, name, Integer.toHexString(inputChecksum), Integer.toHexString(patch.inputChecksum));
                     if (!Boolean.parseBoolean(System.getProperty("fml.ignorePatchDiscrepancies","false")))
                     {
-                        FMLLog.log.fatal("The game is going to exit, because this is a critical error, and it is very improbable that the modded game will work, please obtain clean jar files.");
+                        PFServer.LOGGER.fatal("The game is going to exit, because this is a critical error, and it is very improbable that the modded game will work, please obtain clean jar files.");
                         System.exit(1);
                     }
                     else
                     {
-                        FMLLog.log.fatal("FML is going to ignore this error, note that the patch will not be applied, and there is likely to be a malfunctioning behaviour, including not running at all");
+                        PFServer.LOGGER.fatal("FML is going to ignore this error, note that the patch will not be applied, and there is likely to be a malfunctioning behaviour, including not running at all");
                         ignoredError = true;
                         continue;
                     }
@@ -134,14 +134,14 @@ public class ClassPatchManager {
                 }
                 catch (IOException e)
                 {
-                    FMLLog.log.error("Encountered problem runtime patching class {}", name, e);
+                    PFServer.LOGGER.error("Encountered problem runtime patching class {}", name, e);
                     continue;
                 }
             }
         }
         if (!ignoredError && DEBUG)
         {
-            FMLLog.log.debug("Successfully applied runtime patches for {} (new size {})", mappedName, inputData.length);
+            PFServer.LOGGER.debug("Successfully applied runtime patches for {} (new size {})", mappedName, inputData.length);
         }
         if (dumpPatched)
         {
@@ -151,7 +151,7 @@ public class ClassPatchManager {
             }
             catch (IOException e)
             {
-                FMLLog.log.error(FMLLog.log.getMessageFactory().newMessage("Failed to write {} to {}", mappedName, tempDir.getAbsolutePath()), e);
+                PFServer.LOGGER.error(PFServer.LOGGER.getMessageFactory().newMessage("Failed to write {} to {}", mappedName, tempDir.getAbsolutePath()), e);
             }
         }
         patchedClasses.put(name,inputData);
@@ -169,7 +169,7 @@ public class ClassPatchManager {
             {
                 if (!((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")))
                 {
-                    FMLLog.log.fatal("The binary patch set is missing, things are not going to work!");
+                    PFServer.LOGGER.fatal("The binary patch set is missing, things are not going to work!");
                 }
                 return;
             }
@@ -212,16 +212,16 @@ public class ClassPatchManager {
             {
             }
         } while (true);
-        FMLLog.log.debug("Read {} binary patches", patches.size());
+        PFServer.LOGGER.debug("Read {} binary patches", patches.size());
         if (DEBUG)
-            FMLLog.log.debug("Patch list :\n\t{}", Joiner.on("\t\n").join(patches.asMap().entrySet()));
+            PFServer.LOGGER.debug("Patch list :\n\t{}", Joiner.on("\t\n").join(patches.asMap().entrySet()));
         patchedClasses.clear();
     }
 
     private ClassPatch readPatch(JarEntry patchEntry, JarInputStream jis)
     {
         if (DEBUG)
-            FMLLog.log.trace("Reading patch data from {}", patchEntry.getName());
+            PFServer.LOGGER.trace("Reading patch data from {}", patchEntry.getName());
         ByteArrayDataInput input;
         try
         {
@@ -229,7 +229,7 @@ public class ClassPatchManager {
         }
         catch (IOException e)
         {
-            FMLLog.log.warn(FMLLog.log.getMessageFactory().newMessage("Unable to read binpatch file {} - ignoring", patchEntry.getName()), e);
+            PFServer.LOGGER.warn(PFServer.LOGGER.getMessageFactory().newMessage("Unable to read binpatch file {} - ignoring", patchEntry.getName()), e);
             return null;
         }
         String name = input.readUTF();

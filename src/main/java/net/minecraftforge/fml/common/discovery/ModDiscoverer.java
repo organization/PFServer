@@ -21,7 +21,7 @@ package net.minecraftforge.fml.common.discovery;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.ModClassLoader;
 import net.minecraftforge.fml.common.ModContainer;
@@ -51,7 +51,7 @@ public class ModDiscoverer
         File[] minecraftSources = modClassLoader.getParentSources();
         if (minecraftSources.length == 1 && minecraftSources[0].isFile())
         {
-            FMLLog.log.debug("Minecraft is a file at {}, loading", minecraftSources[0].getAbsolutePath());
+            PFServer.LOGGER.debug("Minecraft is a file at {}, loading", minecraftSources[0].getAbsolutePath());
             addCandidate(new ModCandidate(minecraftSources[0], minecraftSources[0], ContainerType.JAR, true, true));
         }
         else
@@ -63,17 +63,17 @@ public class ModDiscoverer
                 {
                     if (knownLibraries.contains(source.getName()) || modClassLoader.isDefaultLibrary(source))
                     {
-                        FMLLog.log.trace("Skipping known library file {}", source.getAbsolutePath());
+                        PFServer.LOGGER.trace("Skipping known library file {}", source.getAbsolutePath());
                     }
                     else
                     {
-                        FMLLog.log.debug("Found a minecraft related file at {}, examining for mod candidates", source.getAbsolutePath());
+                        PFServer.LOGGER.debug("Found a minecraft related file at {}, examining for mod candidates", source.getAbsolutePath());
                         addCandidate(new ModCandidate(source, source, ContainerType.JAR, i==0, true));
                     }
                 }
                 else if (minecraftSources[i].isDirectory())
                 {
-                    FMLLog.log.debug("Found a minecraft related directory at {}, examining for mod candidates", source.getAbsolutePath());
+                    PFServer.LOGGER.debug("Found a minecraft related directory at {}, examining for mod candidates", source.getAbsolutePath());
                     addCandidate(new ModCandidate(source, source, ContainerType.DIR, i==0, true));
                 }
                 i++;
@@ -102,7 +102,7 @@ public class ModDiscoverer
             }
             catch (LoaderException le)
             {
-                FMLLog.log.warn("Identified a problem with the mod candidate {}, ignoring this source", candidate.getModContainer(), le);
+                PFServer.LOGGER.warn("Identified a problem with the mod candidate {}, ignoring this source", candidate.getModContainer(), le);
             }
         }
 
@@ -125,7 +125,7 @@ public class ModDiscoverer
         {
             if (c.getModContainer().equals(candidate.getModContainer()))
             {
-                FMLLog.log.trace("  Skipping already in list {}", candidate.getModContainer());
+                PFServer.LOGGER.trace("  Skipping already in list {}", candidate.getModContainer());
                 return;
             }
         }

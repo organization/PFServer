@@ -18,6 +18,7 @@
  */
 package net.minecraftforge.fml.common.registry;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -27,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -301,7 +301,7 @@ public final class EntityEntryBuilder<E extends Entity>
             }
             catch (final IllegalAccessException | InstantiationException | InvocationTargetException e)
             {
-                FMLLog.log.error("Encountered an exception while constructing entity '{}'", this.describeEntity(), e);
+                PFServer.LOGGER.error("Encountered an exception while constructing entity '{}'", this.describeEntity(), e);
                 return null;
             }
         }

@@ -1310,7 +1310,7 @@ public abstract class EntityLivingBase extends Entity
 
                 if (!net.minecraftforge.common.ForgeHooks.onLivingDrops(this, cause, capturedDrops, i, recentlyHit > 0))
                 {
-                    // CatServer start - capture drops for plugins then fire event
+                    // PFServer start - capture drops for plugins then fire event
                     if (this.capturedDrops.size() > 0)
                     {
                         java.util.List<org.bukkit.inventory.ItemStack> loot = new java.util.ArrayList<org.bukkit.inventory.ItemStack>();
@@ -1324,7 +1324,7 @@ public abstract class EntityLivingBase extends Entity
                     {
                         CraftEventFactory.callEntityDeathEvent(this);
                     }
-                    // CatServer end
+                    // PFServer end
 
                     for (EntityItem item : capturedDrops)
                     {
@@ -1561,14 +1561,14 @@ public abstract class EntityLivingBase extends Entity
     protected boolean damageEntity_CB(final DamageSource damagesource, float f) { // void -> boolean, add final
         if (!this.isEntityInvulnerable(damagesource)) {
             final boolean human = this instanceof EntityPlayer;
-            // CatServer start - apply forge damage and armor
+            // PFServer start - apply forge damage and armor
             f = net.minecraftforge.common.ForgeHooks.onLivingHurt(this, damagesource, f);
             if (f < 0) return true;
             if (human) {
                 f = net.minecraftforge.common.ISpecialArmor.ArmorProperties.applyArmor(this, ((EntityPlayer)this).inventory.armorInventory, damagesource, f);
                 if (f <= 0) return false;
             }
-            // CatServer end
+            // PFServer end
             float originalDamage = f;
             Function<Double, Double> hardHat = new Function<Double, Double>() {
                 @Override

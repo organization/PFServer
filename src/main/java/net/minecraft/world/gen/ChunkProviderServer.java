@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.EnumCreatureType;
@@ -107,7 +108,7 @@ public class ChunkProviderServer implements IChunkProvider
             chunk = net.minecraftforge.common.ForgeChunkManager.fetchDormantChunk(pos, this.world);
             if (chunk != null || !(this.chunkLoader instanceof net.minecraft.world.chunk.storage.AnvilChunkLoader))
             {
-                if (!loadingChunks.add(pos)) net.minecraftforge.fml.common.FMLLog.bigWarning("There is an attempt to load a chunk ({},{}) in dimension {} that is already being loaded. This will cause weird chunk breakages.", x, z, this.world.provider.getDimension());
+                if (!loadingChunks.add(pos)) PFServer.bigWarning("There is an attempt to load a chunk ({},{}) in dimension {} that is already being loaded. This will cause weird chunk breakages.", x, z, this.world.provider.getDimension());
                 if (chunk == null) chunk = this.loadChunkFromFile(x, z);
 
                 if (chunk != null)
@@ -289,7 +290,7 @@ public class ChunkProviderServer implements IChunkProvider
                 }
             }
 
-            //if (this.id2ChunkMap.isEmpty()) net.minecraftforge.common.DimensionManager.unloadWorld(this.world.provider.getDimension()); //CatServer - Disable forge unload world
+            //if (this.id2ChunkMap.isEmpty()) net.minecraftforge.common.DimensionManager.unloadWorld(this.world.provider.getDimension()); //PFServer - Disable forge unload world
 
             this.chunkLoader.chunkTick();
         }

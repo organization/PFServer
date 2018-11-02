@@ -23,6 +23,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import mgazul.PFServer.PFServer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -119,7 +120,7 @@ public final class FMLContainer extends DummyModContainer implements WorldAccess
 
         NBTTagCompound registries = new NBTTagCompound();
         fmlData.setTag("Registries", registries);
-        FMLLog.log.debug("Gathering id map for writing to world save {}", info.getWorldName());
+        PFServer.LOGGER.debug("Gathering id map for writing to world save {}", info.getWorldName());
 
         for (Map.Entry<ResourceLocation, ForgeRegistry.Snapshot> e : RegistryManager.ACTIVE.takeSnapshot(true).entrySet())
         {

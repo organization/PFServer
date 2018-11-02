@@ -20,6 +20,7 @@
 package net.minecraftforge.registries;
 
 import com.google.common.collect.*;
+import mgazul.PFServer.PFServer;
 import mgazul.PFServer.inventory.CustomModRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -106,7 +107,7 @@ public class GameData
     {
         if ( DISABLE_VANILLA_REGISTRIES)
         {
-            FMLLog.bigWarning("DISABLING VANILLA REGISTRY CREATION AS PER SYSTEM VARIABLE SETTING! forge.disableVanillaGameData");
+            PFServer.bigWarning("DISABLING VANILLA REGISTRY CREATION AS PER SYSTEM VARIABLE SETTING! forge.disableVanillaGameData");
             return;
         }
         if (hasInit)
@@ -188,7 +189,7 @@ public class GameData
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void vanillaSnapshot()
     {
-        FMLLog.log.debug("Creating vanilla freeze snapshot");
+        PFServer.LOGGER.debug("Creating vanilla freeze snapshot");
         for (Map.Entry<ResourceLocation, ForgeRegistry<? extends IForgeRegistryEntry<?>>> r : RegistryManager.ACTIVE.registries.entrySet())
         {
             final Class<? extends IForgeRegistryEntry> clazz = RegistryManager.ACTIVE.getSuperType(r.getKey());
@@ -201,13 +202,13 @@ public class GameData
         });
         RegistryManager.VANILLA.registries.forEach(LOCK_VANILLA);
         RegistryManager.ACTIVE.registries.forEach(LOCK_VANILLA);
-        FMLLog.log.debug("Vanilla freeze snapshot created");
+        PFServer.LOGGER.debug("Vanilla freeze snapshot created");
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void freezeData()
     {
-        FMLLog.log.debug("Freezing registries");
+        PFServer.LOGGER.debug("Freezing registries");
         for (Map.Entry<ResourceLocation, ForgeRegistry<? extends IForgeRegistryEntry<?>>> r : RegistryManager.ACTIVE.registries.entrySet())
         {
             final Class<? extends IForgeRegistryEntry> clazz = RegistryManager.ACTIVE.getSuperType(r.getKey());
@@ -223,7 +224,7 @@ public class GameData
         // the id mapping is fanilized, no ids actually changed but this is a good place to tell everyone to 'bake' their stuff.
         Loader.instance().fireRemapEvent(ImmutableMap.of(), true);
 
-        FMLLog.log.debug("All registries frozen");
+        PFServer.LOGGER.debug("All registries frozen");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -231,12 +232,12 @@ public class GameData
     {
         if (RegistryManager.FROZEN.registries.isEmpty())
         {
-            FMLLog.log.warn("Can't revert to frozen GameData state without freezing first.");
+            PFServer.LOGGER.warn("Can't revert to frozen GameData state without freezing first.");
             return;
         }
         RegistryManager.ACTIVE.registries.forEach((name, reg) -> reg.resetDelegates());
 
-        FMLLog.log.debug("Reverting to frozen data state.");
+        PFServer.LOGGER.debug("Reverting to frozen data state.");
         for (Map.Entry<ResourceLocation, ForgeRegistry<? extends IForgeRegistryEntry<?>>> r : RegistryManager.ACTIVE.registries.entrySet())
         {
             final Class<? extends IForgeRegistryEntry> clazz = RegistryManager.ACTIVE.getSuperType(r.getKey());
@@ -247,16 +248,16 @@ public class GameData
 
         // the id mapping has reverted, ensure we sync up the object holders
         ObjectHolderRegistry.INSTANCE.applyObjectHolders();
-        FMLLog.log.debug("Frozen state restored.");
+        PFServer.LOGGER.debug("Frozen state restored.");
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void revert(RegistryManager state, ResourceLocation registry, boolean lock)
     {
-        FMLLog.log.debug("Reverting {} to {}", registry, state.getName());
+        PFServer.LOGGER.debug("Reverting {} to {}", registry, state.getName());
         final Class<? extends IForgeRegistryEntry> clazz = RegistryManager.ACTIVE.getSuperType(registry);
         loadRegistry(registry, state, RegistryManager.ACTIVE, clazz, lock);
-        FMLLog.log.debug("Reverting complete");
+        PFServer.LOGGER.debug("Reverting complete");
     }
 
     //Lets us clear the map so we can rebuild it.
@@ -526,7 +527,7 @@ public class GameData
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Multimap<ResourceLocation, ResourceLocation> injectSnapshot(Map<ResourceLocation, ForgeRegistry.Snapshot> snapshot, boolean injectFrozenData, boolean isLocalWorld)
     {
-        FMLLog.log.info("Injecting existing registry data into this {} instance", FMLCommonHandler.instance().getEffectiveSide().isServer() ? "server" : "client");
+        PFServer.LOGGER.info("Injecting existing registry data into this {} instance", FMLCommonHandler.instance().getEffectiveSide().isServer() ? "server" : "client");
         RegistryManager.ACTIVE.registries.forEach((name, reg) -> reg.validateContent(name));
         RegistryManager.ACTIVE.registries.forEach((name, reg) -> reg.dump(name));
         RegistryManager.ACTIVE.registries.forEach((name, reg) -> reg.resetDelegates());
@@ -576,14 +577,14 @@ public class GameData
                 else if (isLocalWorld)
                 {
                     if (ForgeRegistry.DEBUG)
-                        FMLLog.log.debug("Registry {}: Resuscitating dummy entry {}", key, dummy);
+                        PFServer.LOGGER.debug("Registry {}: Resuscitating dummy entry {}", key, dummy);
                 }
                 else
                 {
                     // The server believes this is a dummy block identity, but we seem to have one locally. This is likely a conflict
                     // in mod setup - Mark this entry as a dummy
                     int id = reg.getID(dummy);
-                    FMLLog.log.warn("Registry {}: The ID {} @ {} is currently locally mapped - it will be replaced with a dummy for this session", dummy, key, id);
+                    PFServer.LOGGER.warn("Registry {}: The ID {} @ {} is currently locally mapped - it will be replaced with a dummy for this session", dummy, key, id);
                     reg.markDummy(dummy, id);
                 }
             });
@@ -592,7 +593,7 @@ public class GameData
         int count = missing.values().stream().mapToInt(Map::size).sum();
         if (count > 0)
         {
-            FMLLog.log.debug("There are {} mappings missing - attempting a mod remap", count);
+            PFServer.LOGGER.debug("There are {} mappings missing - attempting a mod remap", count);
             Multimap<ResourceLocation, ResourceLocation> defaulted = ArrayListMultimap.create();
             Multimap<ResourceLocation, ResourceLocation> failed = ArrayListMultimap.create();
 
@@ -606,8 +607,8 @@ public class GameData
                 List<MissingMappings.Mapping<?>> lst = event.getAllMappings().stream().filter(e -> e.getAction() == MissingMappings.Action.DEFAULT).sorted((a, b) -> a.toString().compareTo(b.toString())).collect(Collectors.toList());
                 if (!lst.isEmpty())
                 {
-                    FMLLog.log.error("Unidentified mapping from registry {}", name);
-                    lst.forEach(map -> FMLLog.log.error("    {}: {}", map.key, map.id));
+                    PFServer.LOGGER.error("Unidentified mapping from registry {}", name);
+                    lst.forEach(map -> PFServer.LOGGER.error("    {}: {}", map.key, map.id));
                 }
                 event.getAllMappings().stream().filter(e -> e.getAction() == MissingMappings.Action.FAIL).forEach(fail -> failed.put(name, fail.key));
 
@@ -646,7 +647,7 @@ public class GameData
                     else
                     {
                         for (int x = 0; x < 10; x++)
-                            FMLLog.log.error("!!!!!!!!!! UPDATING WORLD WITHOUT DOING BACKUP !!!!!!!!!!!!!!!!");
+                            PFServer.LOGGER.error("!!!!!!!!!! UPDATING WORLD WITHOUT DOING BACKUP !!!!!!!!!!!!!!!!");
                     }
                 }
                 catch (IOException e)
@@ -659,7 +660,7 @@ public class GameData
             if (!defaulted.isEmpty())
             {
                 if (isLocalWorld)
-                    FMLLog.log.error("There are unidentified mappings in this world - we are going to attempt to process anyway");
+                    PFServer.LOGGER.error("There are unidentified mappings in this world - we are going to attempt to process anyway");
             }
 
         }
@@ -796,7 +797,7 @@ public class GameData
         String prefix = mc == null || (mc instanceof InjectedModContainer && ((InjectedModContainer)mc).wrappedContainer instanceof FMLContainer) ? "minecraft" : mc.getModId().toLowerCase(Locale.ROOT);
         if (!oldPrefix.equals(prefix) && oldPrefix.length() > 0)
         {
-            FMLLog.log.warn("Potentially Dangerous alternative prefix `{}` for name `{}`, expected `{}`. This could be a intended override, but in most cases indicates a broken mod.", oldPrefix, name, prefix);
+            PFServer.LOGGER.warn("Potentially Dangerous alternative prefix `{}` for name `{}`, expected `{}`. This could be a intended override, but in most cases indicates a broken mod.", oldPrefix, name, prefix);
             prefix = oldPrefix;
         }
         return new ResourceLocation(prefix, name);
@@ -814,8 +815,8 @@ public class GameData
             }
             catch (NoSuchFieldException | SecurityException e)
             {
-                FMLLog.log.error("Could not get `registryName` field from IForgeRegistryEntry.Impl");
-                FMLLog.log.throwing(Level.ERROR, e);
+                PFServer.LOGGER.error("Could not get `registryName` field from IForgeRegistryEntry.Impl");
+                PFServer.LOGGER.throwing(Level.ERROR, e);
                 throw new RuntimeException(e);
             }
         }
@@ -825,8 +826,8 @@ public class GameData
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
-            FMLLog.log.error("Could not set `registryName` field in IForgeRegistryEntry.Impl to `{}`", name.toString());
-            FMLLog.log.throwing(Level.ERROR, e);
+            PFServer.LOGGER.error("Could not set `registryName` field in IForgeRegistryEntry.Impl to `{}`", name.toString());
+            PFServer.LOGGER.throwing(Level.ERROR, e);
             throw new RuntimeException(e);
         }
 

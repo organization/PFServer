@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.client;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiErrorScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 
 import java.awt.*;
@@ -64,7 +64,7 @@ public class GuiErrorBase extends GuiErrorScreen
             }
             catch (Exception e)
             {
-                FMLLog.log.error("Problem opening mods folder", e);
+               PFServer.LOGGER.error("Problem opening mods folder", e);
             }
         }
         else if (button.id == 11)
@@ -75,7 +75,7 @@ public class GuiErrorBase extends GuiErrorScreen
             }
             catch (Exception e)
             {
-                FMLLog.log.error("Problem opening log file {}", logFile, e);
+                PFServer.LOGGER.error("Problem opening log file {}", logFile, e);
             }
         }
     }

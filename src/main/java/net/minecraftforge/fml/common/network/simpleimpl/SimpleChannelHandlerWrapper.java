@@ -23,8 +23,8 @@ import com.google.common.base.Preconditions;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import mgazul.PFServer.PFServer;
 import net.minecraft.network.INetHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -60,7 +60,7 @@ public class SimpleChannelHandlerWrapper<REQ extends IMessage, REPLY extends IMe
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("SimpleChannelHandlerWrapper exception", cause);
+        PFServer.LOGGER.error("SimpleChannelHandlerWrapper exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 }

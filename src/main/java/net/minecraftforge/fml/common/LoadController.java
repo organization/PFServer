@@ -24,6 +24,7 @@ import com.google.common.collect.*;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.common.util.TextTable;
 import net.minecraftforge.fml.common.LoaderState.ModState;
 import net.minecraftforge.fml.common.ProgressManager.ProgressBar;
@@ -104,7 +105,7 @@ public class LoadController
             }
             else
             {
-                FMLLog.log.warn("Mod {} has been disabled through configuration", mod.getModId());
+                PFServer.LOGGER.warn("Mod {} has been disabled through configuration", mod.getModId());
                 modStates.put(mod.getModId(), ModState.UNLOADED);
                 modStates.put(mod.getModId(), ModState.DISABLED);
             }
@@ -125,7 +126,7 @@ public class LoadController
     {
         if (FMLCommonHandler.instance().isDisplayCloseRequested())
         {
-            FMLLog.log.info("The game window is being closed by the player, exiting.");
+            PFServer.LOGGER.info("The game window is being closed by the player, exiting.");
             FMLCommonHandler.instance().exitJava(0, false);
         }
 
@@ -140,7 +141,7 @@ public class LoadController
             }
             else
             {
-                FMLLog.log.info("The state engine was in incorrect state {} and forced into state {}. Errors may have been discarded.", state, desiredState);
+                PFServer.LOGGER.info("The state engine was in incorrect state {} and forced into state {}. Errors may have been discarded.", state, desiredState);
                 forceState(desiredState);
             }
         }
@@ -191,7 +192,7 @@ public class LoadController
         {
             if (av.getLabel() != null && requirements.contains(av.getLabel()) && modStates.containsEntry(av.getLabel(), ModState.ERRORED))
             {
-                FMLLog.log.error("Skipping event {} and marking errored mod {} since required dependency {} has errored", stateEvent.getEventType(), modId, av.getLabel());
+                PFServer.LOGGER.error("Skipping event {} and marking errored mod {} since required dependency {} has errored", stateEvent.getEventType(), modId, av.getLabel());
                 modStates.put(modId, ModState.ERRORED);
                 return;
             }
@@ -199,9 +200,9 @@ public class LoadController
         activeContainer = mc;
         stateEvent.applyModContainer(mc);
         ThreadContext.put("mod", modId);
-        FMLLog.log.trace("Sending event {} to mod {}", stateEvent.getEventType(), modId);
+        PFServer.LOGGER.trace("Sending event {} to mod {}", stateEvent.getEventType(), modId);
         eventChannels.get(modId).post(stateEvent);
-        FMLLog.log.trace("Sent event {} to mod {}", stateEvent.getEventType(), modId);
+        PFServer.LOGGER.trace("Sent event {} to mod {}", stateEvent.getEventType(), modId);
         ThreadContext.remove("mod");
         activeContainer = null;
         if (stateEvent instanceof FMLStateEvent)
@@ -308,7 +309,7 @@ public class LoadController
     {
         if (modObjectList == null)
         {
-            FMLLog.log.fatal("Detected an attempt by a mod {} to perform game activity during mod construction. This is a serious programming error.", activeContainer);
+            PFServer.LOGGER.fatal("Detected an attempt by a mod {} to perform game activity during mod construction. This is a serious programming error.", activeContainer);
             return buildModObjectList();
         }
         return ImmutableBiMap.copyOf(modObjectList);

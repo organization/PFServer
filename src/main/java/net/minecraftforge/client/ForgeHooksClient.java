@@ -20,6 +20,7 @@
 package net.minecraftforge.client;
 
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -77,7 +78,6 @@ import net.minecraftforge.common.model.ITransformation;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -434,7 +434,7 @@ public class ForgeHooksClient
                 GL20.glEnableVertexAttribArray(attr.getIndex());
                 GL20.glVertexAttribPointer(attr.getIndex(), count, constant, false, stride, buffer);
             default:
-                FMLLog.log.fatal("Unimplemented vanilla attribute upload: {}", attrType.getDisplayName());
+                PFServer.LOGGER.fatal("Unimplemented vanilla attribute upload: {}", attrType.getDisplayName());
         }
     }
 
@@ -464,7 +464,7 @@ public class ForgeHooksClient
             case GENERIC:
                 GL20.glDisableVertexAttribArray(attr.getIndex());
             default:
-                FMLLog.log.fatal("Unimplemented vanilla attribute upload: {}", attrType.getDisplayName());
+                PFServer.LOGGER.fatal("Unimplemented vanilla attribute upload: {}", attrType.getDisplayName());
         }
     }
 

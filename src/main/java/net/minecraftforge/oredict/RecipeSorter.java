@@ -23,10 +23,10 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.item.crafting.*;
 import net.minecraft.item.crafting.RecipesBanners.RecipeAddPattern;
 import net.minecraft.item.crafting.RecipesBanners.RecipeDuplicatePattern;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.toposort.TopologicalSort;
 import net.minecraftforge.fml.common.toposort.TopologicalSort.DirectedGraph;
 
@@ -167,7 +167,7 @@ public class RecipeSorter implements Comparator<IRecipe>
     public static void sortCraftManager()
     {
         bake();
-        FMLLog.log.debug("Sorting recipes");
+        PFServer.LOGGER.debug("Sorting recipes");
         warned.clear();
         //Collections.sort(CraftingManager.getInstance().getRecipeList(), INSTANCE);
     }
@@ -224,7 +224,7 @@ public class RecipeSorter implements Comparator<IRecipe>
         {
             if (!warned.contains(cls))
             {
-                FMLLog.bigWarning("Unknown recipe class! {} Modders need to register their recipe types with {}", cls.getName(), RecipeSorter.class.getName());
+                PFServer.bigWarning("Unknown recipe class! {} Modders need to register their recipe types with {}", cls.getName(), RecipeSorter.class.getName());
                 warned.add(cls);
             }
             cls = cls.getSuperclass();
@@ -234,7 +234,7 @@ public class RecipeSorter implements Comparator<IRecipe>
                 if (ret != null)
                 {
                     priorities.put(recipe.getClass(), ret);
-                    FMLLog.log.debug("    Parent Found: {} - {}", ret, cls.getName());
+                    PFServer.LOGGER.debug("    Parent Found: {} - {}", ret, cls.getName());
                     return ret;
                 }
             }
@@ -246,7 +246,7 @@ public class RecipeSorter implements Comparator<IRecipe>
     private static void bake()
     {
         if (!isDirty) return;
-        FMLLog.log.debug("Forge RecipeSorter Baking:");
+        PFServer.LOGGER.debug("Forge RecipeSorter Baking:");
         DirectedGraph<SortEntry> sorter = new DirectedGraph<SortEntry>();
         sorter.addNode(before);
         sorter.addNode(after);
@@ -292,7 +292,7 @@ public class RecipeSorter implements Comparator<IRecipe>
         int x = sorted.size();
         for (SortEntry entry : sorted)
         {
-            FMLLog.log.debug("  {}: {}", x, entry);
+            PFServer.LOGGER.debug("  {}: {}", x, entry);
             priorities.put(entry.cls, x--);
         }
     }

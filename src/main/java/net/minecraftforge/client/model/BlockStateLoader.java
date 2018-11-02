@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.block.model.ModelBlockDefinition;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.client.renderer.block.model.Variant;
@@ -31,7 +32,6 @@ import net.minecraft.client.renderer.block.model.VariantList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -205,7 +205,7 @@ public class BlockStateLoader
                 final IModel model;
                 if (modelLocation == null)
                 {
-                    FMLLog.log.error("model not found for variant {} for blockstate {}", entry.getKey(), blockstateLocation);
+                    PFServer.LOGGER.error("model not found for variant {} for blockstate {}", entry.getKey(), blockstateLocation);
                     model = ModelLoaderRegistry.getMissingModel(blockstateLocation, new Throwable());
                 }
                 else

@@ -26,6 +26,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.*;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -58,7 +59,6 @@ import net.minecraftforge.common.model.animation.IClip;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.ProgressManager;
 import net.minecraftforge.fml.common.ProgressManager.ProgressBar;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -146,7 +146,7 @@ public final class ModelLoader extends ModelBakery
                 }
                 catch (Exception e)
                 {
-                    FMLLog.log.error("Exception baking model for location(s) {}:", modelLocations, e);
+                    PFServer.LOGGER.error("Exception baking model for location(s) {}:", modelLocations, e);
                     bakedModels.put(model, missingBaked);
                 }
             }
@@ -264,7 +264,7 @@ public final class ModelLoader extends ModelBakery
                 catch(Exception normalException)
                 {
                     // try blockstate json if the item model is missing
-                    FMLLog.log.debug("Item json isn't found for '{}', trying to load the variant from the blockstate json", memory);
+                    PFServer.LOGGER.debug("Item json isn't found for '{}', trying to load the variant from the blockstate json", memory);
                     try
                     {
                         model = ModelLoaderRegistry.getModel(memory);
@@ -971,17 +971,17 @@ public final class ModelLoader extends ModelBakery
                         if(entry.getValue() instanceof ItemLoadingException)
                         {
                             ItemLoadingException ex = (ItemLoadingException)entry.getValue();
-                            FMLLog.log.error("{}, normal location exception: ", errorMsg, ex.normalException);
-                            FMLLog.log.error("{}, blockstate location exception: ", errorMsg, ex.blockstateException);
+                            PFServer.LOGGER.error("{}, normal location exception: ", errorMsg, ex.normalException);
+                            PFServer.LOGGER.error("{}, blockstate location exception: ", errorMsg, ex.blockstateException);
                         }
                         else
                         {
-                            FMLLog.log.error(errorMsg, entry.getValue());
+                            PFServer.LOGGER.error(errorMsg, entry.getValue());
                         }
                         ResourceLocation blockstateLocation = new ResourceLocation(location.getResourceDomain(), location.getResourcePath());
                         if(loadingExceptions.containsKey(blockstateLocation) && !printedBlockStateErrors.contains(blockstateLocation))
                         {
-                            FMLLog.log.error("Exception loading blockstate for the variant {}: ", location, loadingExceptions.get(blockstateLocation));
+                            PFServer.LOGGER.error("Exception loading blockstate for the variant {}: ", location, loadingExceptions.get(blockstateLocation));
                             printedBlockStateErrors.add(blockstateLocation);
                         }
                     }
@@ -1004,7 +1004,7 @@ public final class ModelLoader extends ModelBakery
                 errorCount++;
                 if(errorCount < verboseMissingInfoCount)
                 {
-                    FMLLog.log.fatal("Model definition for location {} not found", missing);
+                    PFServer.LOGGER.fatal("Model definition for location {} not found", missing);
                 }
                 modelErrors.put(domain, errorCount);
             }
@@ -1017,7 +1017,7 @@ public final class ModelLoader extends ModelBakery
         {
             if(e.getValue() >= verboseMissingInfoCount)
             {
-                FMLLog.log.fatal("Suppressed additional {} model loading errors for domain {}", e.getValue() - verboseMissingInfoCount, e.getKey());
+                PFServer.LOGGER.fatal("Suppressed additional {} model loading errors for domain {}", e.getValue() - verboseMissingInfoCount, e.getKey());
             }
         }
         loadingExceptions.clear();

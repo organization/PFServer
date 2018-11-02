@@ -386,7 +386,7 @@ public class BlockPistonBase extends BlockDirectional
                     return bblock.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
                 }
             };
-            // CatServer start - prohibit move or brok TE!
+            // PFServer start - prohibit move or brok TE!
             boolean cancell = false;
             for (BlockPos blockPos : moved) {
                 if (worldIn.getTileEntity(blockPos) != null) {
@@ -411,7 +411,7 @@ public class BlockPistonBase extends BlockDirectional
                 }
                 return false;
             }
-            // CatServer end
+            // PFServer end
             org.bukkit.event.block.BlockPistonEvent event;
             if (extending) {
                 event = new BlockPistonExtendEvent(bblock, blocks, CraftBlock.notchToBlockFace(enumfacing));

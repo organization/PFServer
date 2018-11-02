@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common.asm.transformers;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -64,7 +64,7 @@ public class EventSubscriptionTransformer implements IClassTransformer
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Error building events.", e);
+            PFServer.LOGGER.error("Error building events.", e);
         }
 
         return bytes;

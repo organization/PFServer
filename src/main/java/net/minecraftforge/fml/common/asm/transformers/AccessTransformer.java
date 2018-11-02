@@ -27,8 +27,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -107,7 +107,7 @@ public class AccessTransformer implements IClassTransformer
             rulesResource = Resources.getResource(rulesFile);
         }
         processATFile(Resources.asCharSource(rulesResource, StandardCharsets.UTF_8));
-        FMLLog.log.debug("Loaded {} rules from AccessTransformer config file {}", modifiers.size(), rulesFile);
+        PFServer.LOGGER.debug("Loaded {} rules from AccessTransformer config file {}", modifiers.size(), rulesFile);
     }
     protected void processATFile(CharSource rulesResource) throws IOException
     {
@@ -155,7 +155,7 @@ public class AccessTransformer implements IClassTransformer
                 }
                 String className = parts.get(1).replace('/', '.');
                 modifiers.put(className, m);
-                if (DEBUG) FMLLog.log.debug("AT RULE: {} {} {} (type {})", toBinary(m.targetAccess), m.name, m.desc, className);
+                if (DEBUG) PFServer.LOGGER.debug("AT RULE: {} {} {} (type {})", toBinary(m.targetAccess), m.name, m.desc, className);
                 return true;
             }
         });
@@ -169,7 +169,7 @@ public class AccessTransformer implements IClassTransformer
 
         if (DEBUG)
         {
-            FMLLog.log.debug("Considering all methods and fields on {} ({})", transformedName, name);
+            PFServer.LOGGER.debug("Considering all methods and fields on {} ({})", transformedName, name);
         }
 
         ClassNode classNode = new ClassNode();
@@ -184,7 +184,7 @@ public class AccessTransformer implements IClassTransformer
                 classNode.access = getFixedAccess(classNode.access, m);
                 if (DEBUG)
                 {
-                    FMLLog.log.debug("Class: {} {} -> {}", name, toBinary(m.oldAccess), toBinary(m.newAccess));
+                    PFServer.LOGGER.debug("Class: {} {} -> {}", name, toBinary(m.oldAccess), toBinary(m.newAccess));
                 }
                 continue;
             }
@@ -197,7 +197,7 @@ public class AccessTransformer implements IClassTransformer
                         n.access = getFixedAccess(n.access, m);
                         if (DEBUG)
                         {
-                            FMLLog.log.debug("Field: {}.{} {} -> {}", name, n.name, toBinary(m.oldAccess), toBinary(m.newAccess));
+                            PFServer.LOGGER.debug("Field: {}.{} {} -> {}", name, n.name, toBinary(m.oldAccess), toBinary(m.newAccess));
                         }
 
                         if (!m.name.equals("*"))
@@ -233,7 +233,7 @@ public class AccessTransformer implements IClassTransformer
 
                         if (DEBUG)
                         {
-                            FMLLog.log.debug("Method: {}.{}{} {} -> {}", name, n.name, n.desc, toBinary(m.oldAccess), toBinary(m.newAccess));
+                            PFServer.LOGGER.debug("Method: {}.{}{} {} -> {}", name, n.name, n.desc, toBinary(m.oldAccess), toBinary(m.newAccess));
                         }
 
                         if (!m.name.equals("*"))

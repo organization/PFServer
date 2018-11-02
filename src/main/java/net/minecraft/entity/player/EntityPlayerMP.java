@@ -538,13 +538,13 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         ITextComponent chatmessage = this.getCombatTracker().getDeathMessage();
 
         String deathmessage = chatmessage.getFormattedText();
-        // CatServer start - handle drop items in Bukkit
+        // PFServer start - handle drop items in Bukkit
         captureDrops = true;
         org.bukkit.event.entity.PlayerDeathEvent deathEvent = CraftEventFactory.callPlayerDeathEvent(this, loot,
                 this.getCombatTracker().getDeathMessage().getFormattedText(),
                 this.world.getGameRules().getBoolean("keepInventory"));
         captureDrops = false;
-        // CatServer end
+        // PFServer end
         String deathMessage = deathEvent.getDeathMessage();
 
         if (deathMessage != null && deathMessage.length() > 0 && flag) { // TODO: allow plugins to override?

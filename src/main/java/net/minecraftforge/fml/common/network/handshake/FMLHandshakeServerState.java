@@ -21,8 +21,8 @@ package net.minecraftforge.fml.common.network.handshake;
 
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import mgazul.PFServer.PFServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLMessage;
@@ -58,14 +58,14 @@ enum FMLHandshakeServerState implements IHandshakeState<FMLHandshakeServerState>
             // Hello packet first
             if (msg instanceof FMLHandshakeMessage.ClientHello)
             {
-                FMLLog.log.info("Client protocol version {}", Integer.toHexString(((FMLHandshakeMessage.ClientHello)msg).protocolVersion()));
+                PFServer.LOGGER.info("Client protocol version {}", Integer.toHexString(((FMLHandshakeMessage.ClientHello)msg).protocolVersion()));
                 return;
             }
 
             FMLHandshakeMessage.ModList client = (FMLHandshakeMessage.ModList)msg;
             NetworkDispatcher dispatcher = ctx.channel().attr(NetworkDispatcher.FML_DISPATCHER).get();
             dispatcher.setModList(client.modList());
-            FMLLog.log.info("Client attempting to join with {} mods : {}", client.modListSize(), client.modListAsString());
+            PFServer.LOGGER.info("Client attempting to join with {} mods : {}", client.modListSize(), client.modListAsString());
             String modRejections = FMLNetworkHandler.checkModList(client, Side.CLIENT);
             if (modRejections != null)
             {

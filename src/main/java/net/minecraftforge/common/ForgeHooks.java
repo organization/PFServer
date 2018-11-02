@@ -25,6 +25,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import mgazul.PFServer.PFServer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.*;
@@ -91,7 +92,6 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.ModContainer;
@@ -1395,12 +1395,12 @@ public class ForgeHooks
                         }
                         catch (JsonParseException jsonparseexception)
                         {
-                            FMLLog.log.error("Parsing error loading built-in advancement " + key, (Throwable)jsonparseexception);
+                            PFServer.LOGGER.error("Parsing error loading built-in advancement " + key, (Throwable)jsonparseexception);
                             return false;
                         }
                         catch (IOException ioexception)
                         {
-                            FMLLog.log.error("Couldn't read advancement " + key + " from " + file, (Throwable)ioexception);
+                            PFServer.LOGGER.error("Couldn't read advancement " + key + " from " + file, (Throwable)ioexception);
                             return false;
                         }
                         finally

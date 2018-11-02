@@ -116,7 +116,7 @@ public class CraftInventoryCrafting extends CraftInventory implements CraftingIn
     }
 
     public Recipe getRecipe() {
-        // CatServer - handle custom recipe classes without Bukkit API equivalents
+        // PFServer - handle custom recipe classes without Bukkit API equivalents
         IRecipe recipe = ((InventoryCrafting)getInventory()).currentRecipe;
         try {
             return recipe == null ? null : recipe.toBukkitRecipe();

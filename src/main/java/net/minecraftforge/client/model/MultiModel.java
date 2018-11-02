@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -38,7 +39,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -279,7 +279,7 @@ public final class MultiModel implements IModel
 
         if(bakedBase == null && parts.isEmpty())
         {
-            FMLLog.log.error("MultiModel {} is empty (no base model or parts were provided/resolved)", location);
+            PFServer.LOGGER.error("MultiModel {} is empty (no base model or parts were provided/resolved)", location);
             IModel missing = ModelLoaderRegistry.getMissingModel();
             return missing.bake(missing.getDefaultState(), format, bakedTextureGetter);
         }

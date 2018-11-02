@@ -1,6 +1,6 @@
 package mgazul.PFServer.remapper;
 
-import mgazul.PFServer.CatServer;
+import mgazul.PFServer.PFServer;
 import net.md_5.specialsource.JarRemapper;
 import org.objectweb.asm.Type;
 
@@ -65,7 +65,7 @@ public class RemapUtils {
     }
 
     public static final String NMS_PREFIX = "net/minecraft/server/";
-    public static final String NMS_VERSION = CatServer.getNativeVersion();
+    public static final String NMS_VERSION = PFServer.getNativeVersion();
 
     public static String mapClass(String pBukkitClass) {
         String tRemapped = JarRemapper.mapTypeName(pBukkitClass, ReflectionTransformer.jarMapping.packages, ReflectionTransformer.jarMapping.classes, pBukkitClass);

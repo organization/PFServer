@@ -28,6 +28,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import mgazul.PFServer.PFServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -176,7 +177,7 @@ public class Loader
         modClassLoader = new ModClassLoader(getClass().getClassLoader());
         if (mccversion !=null && !mccversion.equals(MC_VERSION))
         {
-            FMLLog.log.fatal("This version of FML is built for Minecraft {}, we have detected Minecraft {} in your minecraft jar file", mccversion, MC_VERSION);
+            PFServer.LOGGER.fatal("This version of FML is built for Minecraft {}, we have detected Minecraft {} in your minecraft jar file", mccversion, MC_VERSION);
             throw new LoaderException(String.format("This version of FML is built for Minecraft %s, we have detected Minecraft %s in your minecraft jar file", mccversion, MC_VERSION));
         }
 
@@ -199,7 +200,7 @@ public class Loader
      */
     private void sortModList()
     {
-        FMLLog.log.trace("Verifying mod requirements are satisfied");
+        PFServer.LOGGER.trace("Verifying mod requirements are satisfied");
         List<WrongMinecraftVersionException> wrongMinecraftExceptions = new ArrayList<>();
         List<MissingModsException> missingModsExceptions = new ArrayList<>();
         try
@@ -215,9 +216,9 @@ public class Loader
             {
                 if (!mod.acceptableMinecraftVersionRange().containsVersion(minecraft.getProcessedVersion()))
                 {
-                    FMLLog.log.fatal("The mod {} does not wish to run in Minecraft version {}. You will have to remove it to play.", mod.getModId(), getMCVersionString());
+                    PFServer.LOGGER.fatal("The mod {} does not wish to run in Minecraft version {}. You will have to remove it to play.", mod.getModId(), getMCVersionString());
                     WrongMinecraftVersionException ret = new WrongMinecraftVersionException(mod, getMCVersionString());
-                    FMLLog.log.fatal(ret.getMessage());
+                    PFServer.LOGGER.fatal(ret.getMessage());
                     wrongMinecraftExceptions.add(ret);
                     continue;
                 }
@@ -245,14 +246,14 @@ public class Loader
                 }
                 if (!missingModsException.getMissingModInfos().isEmpty())
                 {
-                    FMLLog.log.fatal(missingModsException.toString());
+                    PFServer.LOGGER.fatal(missingModsException.toString());
                     missingModsExceptions.add(missingModsException);
                 }
             }
 
             if (wrongMinecraftExceptions.isEmpty() && missingModsExceptions.isEmpty())
             {
-                FMLLog.log.trace("All mod requirements are satisfied");
+                PFServer.LOGGER.trace("All mod requirements are satisfied");
             }
             else if (missingModsExceptions.size()==1 && wrongMinecraftExceptions.isEmpty())
             {
@@ -272,7 +273,7 @@ public class Loader
 
             try
             {
-                FMLLog.log.trace("Sorting mods into an ordered list");
+                PFServer.LOGGER.trace("Sorting mods into an ordered list");
                 List<ModContainer> sortedMods = sorter.sort();
                 // Reset active list to the sorted list
                 modController.getActiveModList().clear();
@@ -281,37 +282,37 @@ public class Loader
                 mods.removeAll(sortedMods);
                 sortedMods.addAll(mods);
                 mods = sortedMods;
-                FMLLog.log.trace("Mod sorting completed successfully");
+                PFServer.LOGGER.trace("Mod sorting completed successfully");
             }
             catch (ModSortingException sortException)
             {
-                FMLLog.log.fatal("A dependency cycle was detected in the input mod set so an ordering cannot be determined");
+                PFServer.LOGGER.fatal("A dependency cycle was detected in the input mod set so an ordering cannot be determined");
                 SortingExceptionData<ModContainer> exceptionData = sortException.getExceptionData();
-                FMLLog.log.fatal("The first mod in the cycle is {}", exceptionData.getFirstBadNode());
-                FMLLog.log.fatal("The mod cycle involves");
+                PFServer.LOGGER.fatal("The first mod in the cycle is {}", exceptionData.getFirstBadNode());
+                PFServer.LOGGER.fatal("The mod cycle involves");
                 for (ModContainer mc : exceptionData.getVisitedNodes())
                 {
-                    FMLLog.log.fatal("{} : before: {}, after: {}", mc.toString(), mc.getDependants(), mc.getDependencies());
+                    PFServer.LOGGER.fatal("{} : before: {}, after: {}", mc.toString(), mc.getDependants(), mc.getDependencies());
                 }
-                FMLLog.log.error("The full error", sortException);
+                PFServer.LOGGER.error("The full error", sortException);
                 throw sortException;
             }
         }
         finally
         {
-            FMLLog.log.debug("Mod sorting data");
+            PFServer.LOGGER.debug("Mod sorting data");
             int unprintedMods = mods.size();
             for (ModContainer mod : getActiveModList())
             {
                 if (!mod.isImmutable())
                 {
-                    FMLLog.log.debug("\t{}({}:{}): {} ({})", mod.getModId(), mod.getName(), mod.getVersion(), mod.getSource().getName(), mod.getSortingRules());
+                    PFServer.LOGGER.debug("\t{}({}:{}): {} ({})", mod.getModId(), mod.getName(), mod.getVersion(), mod.getSource().getName(), mod.getSortingRules());
                     unprintedMods--;
                 }
             }
             if (unprintedMods == mods.size())
             {
-                FMLLog.log.debug("No user mods found to sort");
+                PFServer.LOGGER.debug("No user mods found to sort");
             }
         }
 
@@ -334,7 +335,7 @@ public class Loader
     private ModDiscoverer identifyMods(List<String> additionalContainers)
     {
         injectedContainers.addAll(additionalContainers);
-        FMLLog.log.debug("Building injected Mod Containers {}", injectedContainers);
+        PFServer.LOGGER.debug("Building injected Mod Containers {}", injectedContainers);
         mods.add(minecraft);
         // Add in the MCP mod container
         mods.add(new InjectedModContainer(mcp,new File("minecraft.jar")));
@@ -347,7 +348,7 @@ public class Loader
             }
             catch (Exception e)
             {
-                FMLLog.log.error("A problem occurred instantiating the injected mod container {}", cont, e);
+                PFServer.LOGGER.error("A problem occurred instantiating the injected mod container {}", cont, e);
                 throw new LoaderException(e);
             }
             mods.add(new InjectedModContainer(mc,mc.getSource()));
@@ -356,9 +357,9 @@ public class Loader
 
         //if (!FMLForgePlugin.RUNTIME_DEOBF) //Only descover mods in the classpath if we're in the dev env.
         {                                  //TODO: Move this to GradleStart? And add a specific mod canidate for Forge itself.
-            FMLLog.log.debug("Attempting to load mods contained in the minecraft jar file and associated classes");
+            PFServer.LOGGER.debug("Attempting to load mods contained in the minecraft jar file and associated classes");
             discoverer.findClasspathMods(modClassLoader);
-            FMLLog.log.debug("Minecraft jar mods loaded successfully");
+            PFServer.LOGGER.debug("Minecraft jar mods loaded successfully");
         }
 
         List<Artifact> maven_canidates = LibraryManager.flattenLists(minecraftDir);
@@ -382,11 +383,11 @@ public class Loader
             // skip loaded coremods
             if (CoreModManager.getIgnoredMods().contains(mod.getName()))
             {
-                FMLLog.log.trace("Skipping already parsed coremod or tweaker {}", mod.getName());
+                PFServer.LOGGER.trace("Skipping already parsed coremod or tweaker {}", mod.getName());
             }
             else
             {
-                FMLLog.log.debug("Found a candidate zip or jar file {}", mod.getName());
+                PFServer.LOGGER.debug("Found a candidate zip or jar file {}", mod.getName());
                 discoverer.addCandidate(new ModCandidate(mod, mod, ContainerType.JAR));
             }
         }
@@ -394,7 +395,7 @@ public class Loader
         mods.addAll(discoverer.identifyMods());
         identifyDuplicates(mods);
         namedMods = Maps.uniqueIndex(mods, ModContainer::getModId);
-        FMLLog.log.info("Forge Mod Loader has identified {} mod{} to load", mods.size(), mods.size() != 1 ? "s" : "");
+        PFServer.LOGGER.info("Forge Mod Loader has identified {} mod{} to load", mods.size(), mods.size() != 1 ? "s" : "");
         return discoverer;
     }
 
@@ -424,7 +425,7 @@ public class Loader
         {
             if (e.getCount() > 1)
             {
-                FMLLog.log.fatal("Found a duplicate mod {} at {}", e.getElement().getModId(), dupsearch.get(e.getElement()));
+                PFServer.LOGGER.fatal("Found a duplicate mod {} at {}", e.getElement().getModId(), dupsearch.get(e.getElement()));
                 dupes.putAll(e.getElement(),dupsearch.get(e.getElement()));
             }
         }
@@ -453,44 +454,44 @@ public class Loader
         }
         catch (IOException ioe)
         {
-            FMLLog.log.error("Failed to resolve loader directories: mods : {} ; config {}", canonicalModsDir.getAbsolutePath(),
+            PFServer.LOGGER.error("Failed to resolve loader directories: mods : {} ; config {}", canonicalModsDir.getAbsolutePath(),
                             configDir.getAbsolutePath(), ioe);
             throw new LoaderException(ioe);
         }
 
         if (!canonicalModsDir.exists())
         {
-            FMLLog.log.info("No mod directory found, creating one: {}", canonicalModsPath);
+            PFServer.LOGGER.info("No mod directory found, creating one: {}", canonicalModsPath);
             boolean dirMade = canonicalModsDir.mkdir();
             if (!dirMade)
             {
-                FMLLog.log.fatal("Unable to create the mod directory {}", canonicalModsPath);
+                PFServer.LOGGER.fatal("Unable to create the mod directory {}", canonicalModsPath);
                 throw new LoaderException(String.format("Unable to create the mod directory %s", canonicalModsPath));
             }
-            FMLLog.log.info("Mod directory created successfully");
+            PFServer.LOGGER.info("Mod directory created successfully");
         }
 
         if (!canonicalConfigDir.exists())
         {
-            FMLLog.log.debug("No config directory found, creating one: {}", canonicalConfigPath);
+            PFServer.LOGGER.debug("No config directory found, creating one: {}", canonicalConfigPath);
             boolean dirMade = canonicalConfigDir.mkdir();
             if (!dirMade)
             {
-                FMLLog.log.fatal("Unable to create the config directory {}", canonicalConfigPath);
+                PFServer.LOGGER.fatal("Unable to create the config directory {}", canonicalConfigPath);
                 throw new LoaderException();
             }
-            FMLLog.log.info("Config directory created successfully");
+            PFServer.LOGGER.info("Config directory created successfully");
         }
 
         if (!canonicalModsDir.isDirectory())
         {
-            FMLLog.log.fatal("Attempting to load mods from {}, which is not a directory", canonicalModsPath);
+            PFServer.LOGGER.fatal("Attempting to load mods from {}, which is not a directory", canonicalModsPath);
             throw new LoaderException();
         }
 
         if (!configDir.isDirectory())
         {
-            FMLLog.log.fatal("Attempting to load configuration from {}, which is not a directory", canonicalConfigPath);
+            PFServer.LOGGER.fatal("Attempting to load configuration from {}, which is not a directory", canonicalConfigPath);
             throw new LoaderException();
         }
 
@@ -544,14 +545,14 @@ public class Loader
         {
             if (nonMod.isFile())
             {
-                FMLLog.log.info("FML has found a non-mod file {} in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.", nonMod.getName());
+                PFServer.LOGGER.info("FML has found a non-mod file {} in your mods directory. It will now be injected into your classpath. This could severe stability issues, it should be removed if possible.", nonMod.getName());
                 try
                 {
                     modClassLoader.addFile(nonMod);
                 }
                 catch (MalformedURLException e)
                 {
-                    FMLLog.log.error("Encountered a weird problem with non-mod file injection : {}", nonMod.getName(), e);
+                    PFServer.LOGGER.error("Encountered a weird problem with non-mod file injection : {}", nonMod.getName(), e);
                 }
             }
         }
@@ -561,22 +562,22 @@ public class Loader
         modController.transition(LoaderState.CONSTRUCTING, false);
         modController.distributeStateMessage(LoaderState.CONSTRUCTING, modClassLoader, discoverer.getASMTable(), reverseDependencies);
 
-        FMLLog.log.debug("Mod signature data");
-        FMLLog.log.debug(" \tValid Signatures:");
+        PFServer.LOGGER.debug("Mod signature data");
+        PFServer.LOGGER.debug(" \tValid Signatures:");
         for (ModContainer mod : getActiveModList())
         {
             if (mod.getSigningCertificate() != null)
-                FMLLog.log.debug("\t\t({}) {}\t({}\t{})\t{}", CertificateHelper.getFingerprint(mod.getSigningCertificate()), mod.getModId(), mod.getName(), mod.getVersion(), mod.getSource().getName());
+                PFServer.LOGGER.debug("\t\t({}) {}\t({}\t{})\t{}", CertificateHelper.getFingerprint(mod.getSigningCertificate()), mod.getModId(), mod.getName(), mod.getVersion(), mod.getSource().getName());
         }
-        FMLLog.log.debug(" \tMissing Signatures:");
+        PFServer.LOGGER.debug(" \tMissing Signatures:");
         for (ModContainer mod : getActiveModList())
         {
             if (mod.getSigningCertificate() == null)
-                FMLLog.log.debug("\t\t{}\t({}\t{})\t{}", mod.getModId(), mod.getName(), mod.getVersion(), mod.getSource().getName());
+                PFServer.LOGGER.debug("\t\t{}\t({}\t{})\t{}", mod.getModId(), mod.getName(), mod.getVersion(), mod.getSource().getName());
         }
         if (getActiveModList().isEmpty())
         {
-            FMLLog.log.debug("No user mod signature data found");
+            PFServer.LOGGER.debug("No user mod signature data found");
         }
         progressBar.step("Initializing mods Phase 1");
         modController.transition(LoaderState.PREINITIALIZATION, false);
@@ -586,7 +587,7 @@ public class Loader
     {
         if (!modController.isInState(LoaderState.PREINITIALIZATION))
         {
-            FMLLog.log.warn("There were errors previously. Not beginning mod initialization phase");
+            PFServer.LOGGER.warn("There were errors previously. Not beginning mod initialization phase");
             return;
         }
         GameData.fireCreateRegistryEvents();
@@ -605,31 +606,31 @@ public class Loader
     private void disableRequestedMods()
     {
         String forcedModList = System.getProperty("fml.modStates", "");
-        FMLLog.log.trace("Received a system property request \'{}\'",forcedModList);
+        PFServer.LOGGER.trace("Received a system property request \'{}\'",forcedModList);
         Map<String, String> sysPropertyStateList = Splitter.on(CharMatcher.anyOf(";:"))
                 .omitEmptyStrings().trimResults().withKeyValueSeparator("=")
                 .split(forcedModList);
-        FMLLog.log.trace("System property request managing the state of {} mods", sysPropertyStateList.size());
+        PFServer.LOGGER.trace("System property request managing the state of {} mods", sysPropertyStateList.size());
         Map<String, String> modStates = Maps.newHashMap();
 
         forcedModFile = new File(canonicalConfigDir, "fmlModState.properties");
         Properties forcedModListProperties = new Properties();
         if (forcedModFile.exists() && forcedModFile.isFile())
         {
-            FMLLog.log.trace("Found a mod state file {}", forcedModFile.getName());
+            PFServer.LOGGER.trace("Found a mod state file {}", forcedModFile.getName());
             try
             {
                 forcedModListProperties.load(new InputStreamReader(new FileInputStream(forcedModFile), StandardCharsets.UTF_8));
-                FMLLog.log.trace("Loaded states for {} mods from file", forcedModListProperties.size());
+                PFServer.LOGGER.trace("Loaded states for {} mods from file", forcedModListProperties.size());
             }
             catch (Exception e)
             {
-                FMLLog.log.info("An error occurred reading the fmlModState.properties file", e);
+                PFServer.LOGGER.info("An error occurred reading the fmlModState.properties file", e);
             }
         }
         modStates.putAll(Maps.fromProperties(forcedModListProperties));
         modStates.putAll(sysPropertyStateList);
-        FMLLog.log.debug("After merging, found state information for {} mods", modStates.size());
+        PFServer.LOGGER.debug("After merging, found state information for {} mods", modStates.size());
 
         Map<String, Boolean> isEnabled = Maps.transformValues(modStates, Boolean::parseBoolean);
 
@@ -637,7 +638,7 @@ public class Loader
         {
             if (namedMods.containsKey(entry.getKey()))
             {
-                FMLLog.log.info("Setting mod {} to enabled state {}", entry.getKey(), entry.getValue());
+                PFServer.LOGGER.info("Setting mod {} to enabled state {}", entry.getKey(), entry.getValue());
                 namedMods.get(entry.getKey()).setEnabledState(entry.getValue());
             }
         }
@@ -720,7 +721,7 @@ public class Loader
         modController.transition(LoaderState.AVAILABLE, false);
         modController.distributeStateMessage(LoaderState.AVAILABLE);
         GameData.freezeData();
-        FMLLog.log.info("Forge Mod Loader has successfully loaded {} mod{}", mods.size(), mods.size() == 1 ? "" : "s");
+        PFServer.LOGGER.info("Forge Mod Loader has successfully loaded {} mod{}", mods.size(), mods.size() == 1 ? "" : "s");
         progressBar.step("Completing Minecraft initialization");
     }
 
@@ -765,7 +766,7 @@ public class Loader
         }
         catch (Throwable t)
         {
-            FMLLog.log.error("A fatal exception occurred during the server starting event", t);
+            PFServer.LOGGER.error("A fatal exception occurred during the server starting event", t);
             return false;
         }
         return true;
@@ -835,7 +836,7 @@ public class Loader
         }
         catch (Throwable t)
         {
-            FMLLog.log.error("A fatal exception occurred during the server about to start event", t);
+            PFServer.LOGGER.error("A fatal exception occurred during the server about to start event", t);
             return false;
         }
         return true;
@@ -882,7 +883,7 @@ public class Loader
         }
 
         if (difference.size() > 0)
-            FMLLog.log.info("Attempting connection with missing mods {} at {}", difference, side);
+            PFServer.LOGGER.info("Attempting connection with missing mods {} at {}", difference, side);
         return true;
     }
 
@@ -900,17 +901,17 @@ public class Loader
         Disableable disableable = mc.canBeDisabled();
         if (disableable == Disableable.NEVER)
         {
-            FMLLog.log.info("Cannot disable mod {} - it is never allowed to be disabled", modId);
+            PFServer.LOGGER.info("Cannot disable mod {} - it is never allowed to be disabled", modId);
             return;
         }
         if (disableable == Disableable.DEPENDENCIES)
         {
-            FMLLog.log.info("Cannot disable mod {} - there are dependent mods that require its presence", modId);
+            PFServer.LOGGER.info("Cannot disable mod {} - there are dependent mods that require its presence", modId);
             return;
         }
         if (disableable == Disableable.YES)
         {
-            FMLLog.log.info("Runtime disabling mod {}", modId);
+            PFServer.LOGGER.info("Runtime disabling mod {}", modId);
             modController.disableMod(mc);
             List<ModContainer> localmods = Lists.newArrayList(mods);
             localmods.remove(mc);
@@ -926,7 +927,7 @@ public class Loader
         }
         catch (Exception e)
         {
-            FMLLog.log.info("An error occurred writing the fml mod states file, your disabled change won't persist", e);
+            PFServer.LOGGER.info("An error occurred writing the fml mod states file, your disabled change won't persist", e);
         }
     }
 
@@ -944,7 +945,7 @@ public class Loader
         File injectedDepFile = new File(getConfigDir(),"injectedDependencies.json");
         if (!injectedDepFile.exists())
         {
-            FMLLog.log.debug("File {} not found. No dependencies injected", injectedDepFile.getAbsolutePath());
+            PFServer.LOGGER.debug("File {} not found. No dependencies injected", injectedDepFile.getAbsolutePath());
             return;
         }
         JsonParser parser = new JsonParser();
@@ -966,18 +967,18 @@ public class Loader
                     } else if (type.equals("after")) {
                         injectedAfter.put(modId, VersionParser.parseVersionReference(depObj.get("target").getAsString()));
                     } else {
-                        FMLLog.log.error("Invalid dependency type {}", type);
+                        PFServer.LOGGER.error("Invalid dependency type {}", type);
                         throw new RuntimeException("Unable to parse type");
                     }
                 }
             }
         } catch (Exception e)
         {
-            FMLLog.log.error("Unable to parse {} - skipping", injectedDepFile);
-            FMLLog.log.throwing(Level.ERROR, e);
+            PFServer.LOGGER.error("Unable to parse {} - skipping", injectedDepFile);
+            PFServer.LOGGER.throwing(Level.ERROR, e);
             return;
         }
-        FMLLog.log.debug("Loaded {} injected dependencies on modIds: {}", injectedBefore.size(), injectedBefore.keySet());
+        PFServer.LOGGER.debug("Loaded {} injected dependencies on modIds: {}", injectedBefore.size(), injectedBefore.keySet());
     }
 
     List<ArtifactVersion> getInjectedBefore(String modId)

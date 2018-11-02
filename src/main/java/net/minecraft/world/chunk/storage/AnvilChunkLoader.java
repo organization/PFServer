@@ -1,6 +1,7 @@
 package net.minecraft.world.chunk.storage;
 
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -367,7 +368,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                 }
                 catch (Exception e)
                 {
-                    net.minecraftforge.fml.common.FMLLog.log.error("An Entity type {} has thrown an exception trying to write state. It will not persist. Report this to the mod author",
+                    PFServer.LOGGER.error("An Entity type {} has thrown an exception trying to write state. It will not persist. Report this to the mod author",
                             entity.getClass().getName(), e);
                 }
             }
@@ -385,7 +386,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
             }
             catch (Exception e)
             {
-                net.minecraftforge.fml.common.FMLLog.log.error("A TileEntity type {} has throw an exception trying to write state. It will not persist. Report this to the mod author",
+                PFServer.LOGGER.error("A TileEntity type {} has throw an exception trying to write state. It will not persist. Report this to the mod author",
                         tileentity.getClass().getName(), e);
             }
         }
@@ -422,7 +423,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
             }
             catch (Exception exception)
             {
-                net.minecraftforge.fml.common.FMLLog.log.error("A capability provider has thrown an exception trying to write state. It will not persist. Report this to the mod author", exception);
+                PFServer.LOGGER.error("A capability provider has thrown an exception trying to write state. It will not persist. Report this to the mod author", exception);
             }
         }
     }

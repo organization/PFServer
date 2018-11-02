@@ -18,13 +18,13 @@
  */
 package net.minecraftforge.fml.client.config;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import org.lwjgl.input.Keyboard;
@@ -122,7 +122,7 @@ public class GuiConfigEntries extends GuiListExtended
                     }
                     catch (Throwable e)
                     {
-                        FMLLog.log.error("There was a critical error instantiating the custom IConfigEntry for config element {}.", configElement.getName(), e);
+                        PFServer.LOGGER.error("There was a critical error instantiating the custom IConfigEntry for config element {}.", configElement.getName(), e);
                     }
                 else if (configElement.isProperty())
                 {

@@ -21,8 +21,8 @@ package net.minecraftforge.registries;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
@@ -46,7 +46,7 @@ public enum ObjectHolderRegistry
 
     public void findObjectHolders(ASMDataTable table)
     {
-        FMLLog.log.info("Processing ObjectHolder annotations");
+        PFServer.LOGGER.info("Processing ObjectHolder annotations");
         Set<ASMData> allObjectHolders = table.getAll(GameRegistry.ObjectHolder.class.getName());
         Map<String, String> classModIds = Maps.newHashMap();
         Map<String, Class<?>> classCache = Maps.newHashMap();
@@ -85,7 +85,7 @@ public enum ObjectHolderRegistry
         scanTarget(classModIds, classCache, "net.minecraft.init.Enchantments", null, "minecraft", true, true);
         scanTarget(classModIds, classCache, "net.minecraft.init.SoundEvents", null, "minecraft", true, true);
         scanTarget(classModIds, classCache, "net.minecraft.init.PotionTypes", null, "minecraft", true, true);
-        FMLLog.log.info("Found {} ObjectHolder annotations", objectHolders.size());
+        PFServer.LOGGER.info("Found {} ObjectHolder annotations", objectHolders.size());
     }
 
     private void scanTarget(Map<String, String> classModIds, Map<String, Class<?>> classCache, String className, @Nullable String annotationTarget, String value, boolean isClass, boolean extractFromValue)
@@ -119,7 +119,7 @@ public enum ObjectHolderRegistry
                 String prefix = classModIds.get(className);
                 if (prefix == null)
                 {
-                    FMLLog.log.warn("Found an unqualified ObjectHolder annotation ({}) without a modid context at {}.{}, ignoring", value, className, annotationTarget);
+                    PFServer.LOGGER.warn("Found an unqualified ObjectHolder annotation ({}) without a modid context at {}.{}, ignoring", value, className, annotationTarget);
                     throw new IllegalStateException("Unqualified reference to ObjectHolder");
                 }
                 value = prefix + ":" + value;
@@ -162,12 +162,12 @@ public enum ObjectHolderRegistry
 
     public void applyObjectHolders()
     {
-        FMLLog.log.info("Applying holder lookups");
+        PFServer.LOGGER.info("Applying holder lookups");
         for (ObjectHolderRef ohr : objectHolders)
         {
             ohr.apply();
         }
-        FMLLog.log.info("Holder lookups applied");
+        PFServer.LOGGER.info("Holder lookups applied");
     }
 
 }

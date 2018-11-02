@@ -27,7 +27,7 @@ public class RecipeIterator implements Iterator<Recipe> {
     public Recipe next() {
         if (recipes.hasNext()) {
             removeFrom = recipes;
-            // CatServer - handle custom recipe classes without Bukkit API equivalents
+            // PFServer - handle custom recipe classes without Bukkit API equivalents
             IRecipe recipe = recipes.next();
             try {
                 return recipe.toBukkitRecipe();

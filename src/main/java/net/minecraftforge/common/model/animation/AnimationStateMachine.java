@@ -29,6 +29,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -37,7 +38,6 @@ import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.animation.TimeValues;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.util.JsonUtils;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
@@ -152,7 +152,7 @@ public final class AnimationStateMachine implements IAnimationStateMachine
                     }
                     else
                     {
-                        FMLLog.log.error("Unknown special event \"{}\", ignoring.", event.event());
+                        PFServer.LOGGER.error("Unknown special event \"{}\", ignoring.", event.event());
                     }
                 }
             }
@@ -221,7 +221,7 @@ public final class AnimationStateMachine implements IAnimationStateMachine
         }
         catch(IOException | JsonParseException e)
         {
-            FMLLog.log.error("Exception loading Animation State Machine {}, skipping", location, e);
+            PFServer.LOGGER.error("Exception loading Animation State Machine {}, skipping", location, e);
             return missing;
         }
         finally

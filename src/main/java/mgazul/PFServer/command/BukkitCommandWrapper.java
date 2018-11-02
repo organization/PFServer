@@ -1,16 +1,6 @@
 package mgazul.PFServer.command;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.command.CraftBlockCommandSender;
-import org.bukkit.craftbukkit.command.CraftRemoteConsoleCommandSender;
-
 import com.google.common.collect.ImmutableList;
-
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -19,6 +9,13 @@ import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.CommandBlockBaseLogic;
 import net.minecraft.util.math.BlockPos;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.command.CraftBlockCommandSender;
+import org.bukkit.craftbukkit.command.CraftRemoteConsoleCommandSender;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class BukkitCommandWrapper implements ICommand {
     private final CommandSender bukkitSender;

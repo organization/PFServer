@@ -271,7 +271,7 @@ public class CraftBlock implements Block {
 
     public BlockState getState() {
         Material material = getType();
-        // CatServer start - handle if null
+        // PFServer start - handle if null
         if (material == null) {
             TileEntity tileEntity = chunk.getCraftWorld().getTileEntityAt(x, y, z);
             if (tileEntity != null) {
@@ -282,7 +282,7 @@ public class CraftBlock implements Block {
                 return new CraftBlockState(this);
             }
         }
-        // CatServer end
+        // PFServer end
         switch (material) {
         case SIGN:
         case SIGN_POST:

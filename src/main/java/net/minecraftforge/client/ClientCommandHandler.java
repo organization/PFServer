@@ -19,6 +19,7 @@
 
 package net.minecraftforge.client;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.command.*;
@@ -28,7 +29,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.List;
 
@@ -107,7 +107,7 @@ public class ClientCommandHandler extends CommandHandler
         catch (Throwable t)
         {
             sender.sendMessage(format(RED, "commands.generic.exception"));
-            FMLLog.log.error("Command '{}' threw an exception:", message, t);
+            PFServer.LOGGER.error("Command '{}' threw an exception:", message, t);
         }
 
         return -1;

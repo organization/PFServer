@@ -21,8 +21,8 @@ package net.minecraftforge.common.network;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class FluidIdRegistryMessageHandler extends SimpleChannelInboundHandler<ForgeMessage.FluidIdMapMessage> {
     @Override
@@ -33,7 +33,7 @@ public class FluidIdRegistryMessageHandler extends SimpleChannelInboundHandler<F
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("FluidIdRegistryMessageHandler exception", cause);
+        PFServer.LOGGER.error("FluidIdRegistryMessageHandler exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 

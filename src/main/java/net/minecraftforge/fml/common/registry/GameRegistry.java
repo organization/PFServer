@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.ICommandSender;
@@ -48,7 +49,6 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.IEntitySelectorFactory;
 import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -125,7 +125,7 @@ public class GameRegistry
             }
             catch (Exception e)
             {
-                FMLLog.log.error("Exception caught during entity selector creation with {} for argument map {} of {} for {} at {}", factory,
+                PFServer.LOGGER.error("Exception caught during entity selector creation with {} for argument map {} of {} for {} at {}", factory,
                         arguments, mainSelector, sender, position, e);
             }
         }
@@ -338,7 +338,7 @@ public class GameRegistry
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
         if (item == null)
         {
-            FMLLog.log.trace("Unable to find item with name {}", itemName);
+            PFServer.LOGGER.trace("Unable to find item with name {}", itemName);
             return ItemStack.EMPTY;
         }
         ItemStack is = new ItemStack(item, stackSize, meta);

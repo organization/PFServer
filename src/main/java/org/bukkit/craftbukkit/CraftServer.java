@@ -648,7 +648,7 @@ public final class CraftServer implements Server {
 
     @Override
     public void reload() {
-        if (true) return; // CatServer - disable reload
+        if (true) return; // PFServer - disable reload
         reloadCount++;
         configuration = YamlConfiguration.loadConfiguration(getConfigFile());
         commandsConfiguration = YamlConfiguration.loadConfiguration(getCommandsConfigFile());

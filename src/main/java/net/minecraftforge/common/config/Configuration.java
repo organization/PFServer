@@ -22,11 +22,11 @@ package net.minecraftforge.common.config;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Floats;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.GuiConfigEntries;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.IConfigEntry;
 import net.minecraftforge.fml.client.config.IConfigElement;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 import org.apache.commons.io.IOUtils;
@@ -112,7 +112,7 @@ public class Configuration
             {
                 File fileBak = new File(file.getAbsolutePath() + "_" +
                         new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".errored");
-                FMLLog.log.fatal("An exception occurred while loading config file {}. This file will be renamed to {} " +
+                PFServer.LOGGER.fatal("An exception occurred while loading config file {}. This file will be renamed to {} " +
                         "and a new config file will be generated.", file.getName(), fileBak.getName(), e);
 
                 file.renameTo(fileBak);
@@ -1027,7 +1027,7 @@ public class Configuration
         }
         catch (IOException e)
         {
-            FMLLog.log.error("Error while loading config {}.", fileName, e);
+            PFServer.LOGGER.error("Error while loading config {}.", fileName, e);
         }
         finally
         {
@@ -1088,7 +1088,7 @@ public class Configuration
         }
         catch (IOException e)
         {
-            FMLLog.log.error("Error while saving config {}.", fileName, e);
+            PFServer.LOGGER.error("Error while saving config {}.", fileName, e);
         }
     }
 
@@ -1699,7 +1699,7 @@ public class Configuration
         }
         catch (Exception e)
         {
-            FMLLog.log.error("Failed to get float for {}/{}", name, category, e);
+            PFServer.LOGGER.error("Failed to get float for {}/{}", name, category, e);
         }
         return defaultValue;
     }

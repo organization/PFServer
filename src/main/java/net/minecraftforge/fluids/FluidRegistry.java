@@ -24,6 +24,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +33,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.ModContainer;
@@ -118,13 +118,13 @@ public abstract class FluidRegistry
                 String derivedName = defaultName.split(":",2)[1];
                 String localDefault = defaultFluidName.get(derivedName);
                 if (localDefault == null) {
-                    FMLLog.log.error("The fluid {} (specified as {}) is missing from this instance - it will be removed", derivedName, defaultName);
+                    PFServer.LOGGER.error("The fluid {} (specified as {}) is missing from this instance - it will be removed", derivedName, defaultName);
                     continue;
                 }
                 fluid = masterFluidReference.get(localDefault);
-                FMLLog.log.error("The fluid {} specified as default is not present - it will be reverted to default {}", defaultName, localDefault);
+                PFServer.LOGGER.error("The fluid {} specified as default is not present - it will be reverted to default {}", defaultName, localDefault);
             }
-            FMLLog.log.debug("The fluid {} has been selected as the default fluid for {}", defaultName, fluid.getName());
+            PFServer.LOGGER.debug("The fluid {} has been selected as the default fluid for {}", defaultName, fluid.getName());
             Fluid oldFluid = localFluids.put(fluid.getName(), fluid);
             Integer id = localFluidIDs.remove(oldFluid);
             localFluidIDs.put(fluid, id);
@@ -256,7 +256,7 @@ public abstract class FluidRegistry
         {
             ModContainer modContainer = Loader.instance().activeModContainer();
             String modContainerName = modContainer == null ? null : modContainer.getName();
-            FMLLog.log.error("Trying to activate the universal filled bucket too late. Call it statically in your Mods class. Mod: {}", modContainerName);
+            PFServer.LOGGER.error("Trying to activate the universal filled bucket too late. Call it statically in your Mods class. Mod: {}", modContainerName);
         }
         else
         {
@@ -367,7 +367,7 @@ public abstract class FluidRegistry
     {
         String name = masterFluidReference.inverse().get(key);
         if (Strings.isNullOrEmpty(name)) {
-            FMLLog.log.error("The fluid registry is corrupted. A fluid {} {} is not properly registered. The mod that registered this is broken", key.getClass().getName(), key.getName());
+            PFServer.LOGGER.error("The fluid registry is corrupted. A fluid {} {} is not properly registered. The mod that registered this is broken", key.getClass().getName(), key.getName());
             throw new IllegalStateException("The fluid registry is corrupted");
         }
         return name;
@@ -393,7 +393,7 @@ public abstract class FluidRegistry
         Set<String> defaults = Sets.newHashSet();
         if (tag.hasKey("DefaultFluidList",9))
         {
-            FMLLog.log.debug("Loading persistent fluid defaults from world");
+            PFServer.LOGGER.debug("Loading persistent fluid defaults from world");
             NBTTagList tl = tag.getTagList("DefaultFluidList", 8);
             for (int i = 0; i < tl.tagCount(); i++)
             {
@@ -402,7 +402,7 @@ public abstract class FluidRegistry
         }
         else
         {
-            FMLLog.log.debug("World is missing persistent fluid defaults - using local defaults");
+            PFServer.LOGGER.debug("World is missing persistent fluid defaults - using local defaults");
         }
         loadFluidDefaults(HashBiMap.create(fluidIDs), defaults);
     }
@@ -432,13 +432,13 @@ public abstract class FluidRegistry
 
         if (!illegalFluids.isEmpty())
         {
-            FMLLog.log.fatal("The fluid registry is corrupted. Something has inserted a fluid without registering it");
-            FMLLog.log.fatal("There is {} unregistered fluids", illegalFluids.size());
+            PFServer.LOGGER.fatal("The fluid registry is corrupted. Something has inserted a fluid without registering it");
+            PFServer.LOGGER.fatal("There is {} unregistered fluids", illegalFluids.size());
             for (Fluid f: illegalFluids)
             {
-                FMLLog.log.fatal("  Fluid name : {}, type: {}", f.getName(), f.getClass().getName());
+                PFServer.LOGGER.fatal("  Fluid name : {}, type: {}", f.getName(), f.getClass().getName());
             }
-            FMLLog.log.fatal("The mods that own these fluids need to register them properly");
+            PFServer.LOGGER.fatal("The mods that own these fluids need to register them properly");
             throw new IllegalStateException("The fluid map contains fluids unknown to the master fluid registry");
         }
     }

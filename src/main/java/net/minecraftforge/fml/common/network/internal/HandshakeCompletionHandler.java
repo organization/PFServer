@@ -22,7 +22,7 @@ package net.minecraftforge.fml.common.network.internal;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.network.handshake.NetworkDispatcher;
 import net.minecraftforge.fml.common.network.internal.FMLMessage.CompleteHandshake;
 
@@ -38,7 +38,7 @@ public class HandshakeCompletionHandler extends SimpleChannelInboundHandler<FMLM
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("HandshakeCompletionHandler exception", cause);
+        PFServer.LOGGER.error("HandshakeCompletionHandler exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 }

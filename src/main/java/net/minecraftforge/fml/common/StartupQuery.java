@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.common;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.server.MinecraftServer;
 
 import javax.annotation.Nullable;
@@ -67,7 +68,7 @@ public class StartupQuery {
             }
             catch (InterruptedException e)
             {
-                FMLLog.log.warn("query interrupted");
+                PFServer.LOGGER.warn("query interrupted");
                 abort();
             }
 
@@ -119,7 +120,7 @@ public class StartupQuery {
 
         if (result != null && prop != null)
         {
-            FMLLog.log.info("Using fml.queryResult {} to answer the following query:\n{}", prop, text);
+            PFServer.LOGGER.info("Using fml.queryResult {} to answer the following query:\n{}", prop, text);
 
             if (prop.equalsIgnoreCase("confirm"))
             {
@@ -132,7 +133,7 @@ public class StartupQuery {
                 return;
             }
 
-            FMLLog.log.warn("Invalid value for fml.queryResult: {}, expected confirm or cancel", prop);
+            PFServer.LOGGER.warn("Invalid value for fml.queryResult: {}, expected confirm or cancel", prop);
         }
 
         synchronous = false;
@@ -155,7 +156,7 @@ public class StartupQuery {
         }
         catch (InterruptedException e)
         {
-            FMLLog.log.warn("query interrupted");
+            PFServer.LOGGER.warn("query interrupted");
             abort();
         }
     }

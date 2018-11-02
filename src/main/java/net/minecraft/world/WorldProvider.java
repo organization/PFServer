@@ -610,9 +610,9 @@ public abstract class WorldProvider
     {
         return true;
     }
-    // CatServer start
+    // PFServer start
     public static WorldProvider getProviderForDimension(int dimensionId){
         return DimensionManager.createProviderFor(dimensionId);
     }
-    // CatServer end
+    // PFServer end
 }

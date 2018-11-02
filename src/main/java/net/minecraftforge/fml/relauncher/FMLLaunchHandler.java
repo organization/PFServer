@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.relauncher;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.TracingPrintStream;
 import net.minecraftforge.fml.common.launcher.FMLTweaker;
 import net.minecraftforge.fml.relauncher.libraries.LibraryManager;
@@ -91,15 +91,15 @@ public class FMLLaunchHandler
     {
         FMLInjectionData.build(minecraftHome, classLoader);
         redirectStdOutputToLog();
-        FMLLog.log.info("Forge Mod Loader version {}.{}.{}.{} for Minecraft {} loading", FMLInjectionData.major, FMLInjectionData.minor,
+        PFServer.LOGGER.info("Forge Mod Loader version {}.{}.{}.{} for Minecraft {} loading", FMLInjectionData.major, FMLInjectionData.minor,
                 FMLInjectionData.rev, FMLInjectionData.build, FMLInjectionData.mccversion);
-        FMLLog.log.info("Java is {}, version {}, running on {}:{}:{}, installed at {}", System.getProperty("java.vm.name"), System.getProperty("java.version"), System.getProperty("os.name"), System.getProperty("os.arch"), System.getProperty("os.version"), System.getProperty("java.home"));
-        FMLLog.log.debug("Java classpath at launch is:");
+        PFServer.LOGGER.info("Java is {}, version {}, running on {}:{}:{}, installed at {}", System.getProperty("java.vm.name"), System.getProperty("java.version"), System.getProperty("os.name"), System.getProperty("os.arch"), System.getProperty("os.version"), System.getProperty("java.home"));
+        PFServer.LOGGER.debug("Java classpath at launch is:");
         for (String path : System.getProperty("java.class.path").split(File.pathSeparator))
-            FMLLog.log.debug("    {}", path);
-        FMLLog.log.debug("Java library path at launch is:");
+            PFServer.LOGGER.debug("    {}", path);
+        PFServer.LOGGER.debug("Java library path at launch is:");
         for (String path : System.getProperty("java.library.path").split(File.pathSeparator))
-            FMLLog.log.debug("    {}", path);
+            PFServer.LOGGER.debug("    {}", path);
 
         try
         {
@@ -114,7 +114,7 @@ public class FMLLaunchHandler
 
     private void redirectStdOutputToLog()
     {
-        FMLLog.log.debug("Injecting tracing printstreams for STDOUT/STDERR.");
+        PFServer.LOGGER.debug("Injecting tracing printstreams for STDOUT/STDERR.");
         System.setOut(new TracingPrintStream(LogManager.getLogger("STDOUT"), System.out));
         System.setErr(new TracingPrintStream(LogManager.getLogger("STDERR"), System.err));
     }

@@ -20,9 +20,9 @@ package net.minecraftforge.fml.relauncher.libraries;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
@@ -58,10 +58,10 @@ public class LibraryManager
     public static void setup(File minecraftHome)
     {
         File libDir = findLibraryFolder(minecraftHome);
-        FMLLog.log.debug("Determined Minecraft Libraries Root: {}", libDir);
+        PFServer.LOGGER.debug("Determined Minecraft Libraries Root: {}", libDir);
         Repository old = Repository.replace(libDir, "libraries");
         if (old != null)
-            FMLLog.log.debug("  Overwriting Previous: {}", old);
+            PFServer.LOGGER.debug("  Overwriting Previous: {}", old);
         libraries_dir = Repository.get("libraries");
 
         File mods = new File(minecraftHome, "mods");
@@ -102,14 +102,14 @@ public class LibraryManager
     {
         if (LIBRARY_DIRECTORY_OVERRIDE != null)
         {
-            FMLLog.log.error("System variable set to override Library Directory: {}", LIBRARY_DIRECTORY_OVERRIDE);
+            PFServer.LOGGER.error("System variable set to override Library Directory: {}", LIBRARY_DIRECTORY_OVERRIDE);
             return new File(LIBRARY_DIRECTORY_OVERRIDE);
         }
 
         CodeSource source = ArtifactVersion.class.getProtectionDomain().getCodeSource();
         if (source == null)
         {
-            FMLLog.log.error("Unable to determine codesource for {}. Using default libraries directory.", ArtifactVersion.class.getName());
+            PFServer.LOGGER.error("Unable to determine codesource for {}. Using default libraries directory.", ArtifactVersion.class.getName());
             return new File(minecraftHome, "libraries");
         }
 
@@ -125,9 +125,9 @@ public class LibraryManager
 
             if (!comp.endsWith("/org/apache/maven/maven-artifact/"))
             {
-                FMLLog.log.error("Apache Maven library folder was not in the format expected. Using default libraries directory.");
-                FMLLog.log.error("Full: {}", new File(source.getLocation().toURI()));
-                FMLLog.log.error("Trimmed: {}", comp);
+                PFServer.LOGGER.error("Apache Maven library folder was not in the format expected. Using default libraries directory.");
+                PFServer.LOGGER.error("Full: {}", new File(source.getLocation().toURI()));
+                PFServer.LOGGER.error("Trimmed: {}", comp);
                 return new File(minecraftHome, "libraries");
             }
             //     maven-artifact  /maven          /apache         /org            /libraries
@@ -135,7 +135,7 @@ public class LibraryManager
         }
         catch (URISyntaxException e)
         {
-            FMLLog.log.error(FMLLog.log.getMessageFactory().newMessage("Unable to determine file for {}. Using default libraries directory.", ArtifactVersion.class.getName()), e);
+            PFServer.LOGGER.error(PFServer.LOGGER.getMessageFactory().newMessage("Unable to determine file for {}. Using default libraries directory.", ArtifactVersion.class.getName()), e);
         }
 
         return new File(minecraftHome, "libraries"); //Everything else failed, return the default.
@@ -146,7 +146,7 @@ public class LibraryManager
         if (!dir.exists())
             return;
 
-        FMLLog.log.debug("Cleaning up mods folder: {}", dir);
+        PFServer.LOGGER.debug("Cleaning up mods folder: {}", dir);
         for (File file : dir.listFiles(f -> f.isFile() && f.getName().endsWith(".jar")))
         {
             Pair<Artifact, byte[]> ret = extractPacked(file, modlist, modDirs);
@@ -166,7 +166,7 @@ public class LibraryManager
         }
         catch (IOException e)
         {
-            FMLLog.log.error(FMLLog.log.getMessageFactory().newMessage("Error updating modlist file {}", modlist.getName()), e);
+            PFServer.LOGGER.error(PFServer.LOGGER.getMessageFactory().newMessage("Error updating modlist file {}", modlist.getName()), e);
         }
     }
 
@@ -174,20 +174,20 @@ public class LibraryManager
     {
         if (processed.contains(file))
         {
-            FMLLog.log.debug("File already proccessed {}, Skipping", file.getAbsolutePath());
+            PFServer.LOGGER.debug("File already proccessed {}, Skipping", file.getAbsolutePath());
             return null;
         }
         JarFile jar = null;
         try
         {
             jar = new JarFile(file);
-            FMLLog.log.debug("Examining file: {}", file.getName());
+            PFServer.LOGGER.debug("Examining file: {}", file.getName());
             processed.add(file);
             return extractPacked(jar, modlist, modDirs);
         }
         catch (IOException ioe)
         {
-            FMLLog.log.error("Unable to read the jar file {} - ignoring", file.getName(), ioe);
+            PFServer.LOGGER.error("Unable to read the jar file {} - ignoring", file.getName(), ioe);
         }
         finally
         {
@@ -220,7 +220,7 @@ public class LibraryManager
             {
                 if (!dep.endsWith(".jar"))
                 {
-                    FMLLog.log.error("Contained Dep is not a jar file: {}", dep);
+                    PFServer.LOGGER.error("Contained Dep is not a jar file: {}", dep);
                     throw new IllegalStateException("Invalid contained dep, Must be jar: " + dep);
                 }
 
@@ -230,14 +230,14 @@ public class LibraryManager
                 JarEntry depEntry = jar.getJarEntry(dep);
                 if (depEntry == null)
                 {
-                    FMLLog.log.error("Contained Dep is not in the jar: {}", dep);
+                    PFServer.LOGGER.error("Contained Dep is not in the jar: {}", dep);
                     throw new IllegalStateException("Invalid contained dep, Missing from jar: " + dep);
                 }
 
                 String depEndName = new File(dep).getName(); // extract last part of name
                 if (skipContainedDeps.contains(dep) || skipContainedDeps.contains(depEndName))
                 {
-                    FMLLog.log.error("Skipping dep at request: {}", dep);
+                    PFServer.LOGGER.error("Skipping dep at request: {}", dep);
                     continue;
                 }
 
@@ -277,14 +277,14 @@ public class LibraryManager
                         File target = new File(dir, depEndName);
                         if (target.exists())
                         {
-                            FMLLog.log.debug("Found existing ContainDep extracted to {}, skipping extraction", target.getCanonicalPath());
+                            PFServer.LOGGER.debug("Found existing ContainDep extracted to {}, skipping extraction", target.getCanonicalPath());
                             found = true;
                         }
                     }
                     if (!found)
                     {
                         File target = new File(modDirs[0], depEndName);
-                        FMLLog.log.debug("Extracting ContainedDep {} from {} to {}", dep, jar.getName(), target.getCanonicalPath());
+                        PFServer.LOGGER.debug("Extracting ContainedDep {} from {} to {}", dep, jar.getName(), target.getCanonicalPath());
                         try
                         {
                             Files.createParentDirs(target);
@@ -296,12 +296,12 @@ public class LibraryManager
                             {
                                 ByteStreams.copy(in, out);
                             }
-                            FMLLog.log.debug("Extracted ContainedDep {} from {} to {}", dep, jar.getName(), target.getCanonicalPath());
+                            PFServer.LOGGER.debug("Extracted ContainedDep {} from {} to {}", dep, jar.getName(), target.getCanonicalPath());
                             extractPacked(target, modlist, modDirs);
                         }
                         catch (IOException e)
                         {
-                            FMLLog.log.error("An error occurred extracting dependency", e);
+                            PFServer.LOGGER.error("An error occurred extracting dependency", e);
                         }
                     }
                 }
@@ -313,7 +313,7 @@ public class LibraryManager
                         File target = artifact.getFile();
                         if (target.exists())
                         {
-                            FMLLog.log.debug("Found existing ContainedDep {}({}) from {} extracted to {}, skipping extraction", dep, artifact.toString(), target.getCanonicalPath(), jar.getName());
+                            PFServer.LOGGER.debug("Found existing ContainedDep {}({}) from {} extracted to {}, skipping extraction", dep, artifact.toString(), target.getCanonicalPath(), jar.getName());
                             if (!ENABLE_AUTO_MOD_MOVEMENT)
                             {
                                 Pair<?, ?> child = extractPacked(target, modlist, modDirs); //If we're not building a real list we have to re-build the dep list every run. So search down.
@@ -325,7 +325,7 @@ public class LibraryManager
                         }
                         else
                         {
-                            FMLLog.log.debug("Extracting ContainedDep {}({}) from {} to {}", dep, artifact.toString(), jar.getName(), target.getCanonicalPath());
+                            PFServer.LOGGER.debug("Extracting ContainedDep {}({}) from {} to {}", dep, artifact.toString(), jar.getName(), target.getCanonicalPath());
                             Files.createParentDirs(target);
                             try
                                     (
@@ -335,7 +335,7 @@ public class LibraryManager
                             {
                                 ByteStreams.copy(in, out);
                             }
-                            FMLLog.log.debug("Extracted ContainedDep {}({}) from {} to {}", dep, artifact.toString(), jar.getName(), target.getCanonicalPath());
+                            PFServer.LOGGER.debug("Extracted ContainedDep {}({}) from {} to {}", dep, artifact.toString(), jar.getName(), target.getCanonicalPath());
 
                             if (artifact.isSnapshot())
                             {
@@ -358,11 +358,11 @@ public class LibraryManager
                     }
                     catch (NumberFormatException nfe)
                     {
-                        FMLLog.log.error(FMLLog.log.getMessageFactory().newMessage("An error occurred extracting dependency. Invalid Timestamp: {}", meta.getValue(TIMESTAMP)), nfe);
+                        PFServer.LOGGER.error(PFServer.LOGGER.getMessageFactory().newMessage("An error occurred extracting dependency. Invalid Timestamp: {}", meta.getValue(TIMESTAMP)), nfe);
                     }
                     catch (IOException e)
                     {
-                        FMLLog.log.error("An error occurred extracting dependency", e);
+                        PFServer.LOGGER.error("An error occurred extracting dependency", e);
                     }
                 }
             }
@@ -430,22 +430,22 @@ public class LibraryManager
         String extraMods = args.get("--mods");
         if (extraMods != null)
         {
-            FMLLog.log.info("Found mods from the command line:");
+            PFServer.LOGGER.info("Found mods from the command line:");
             for (String mod : extraMods.split(","))
             {
                 File file = new File(mcDir, mod);
                 if (!file.exists())
                 {
-                    FMLLog.log.info("  Failed to find mod file {} ({})", mod, file.getAbsolutePath());
+                    PFServer.LOGGER.info("  Failed to find mod file {} ({})", mod, file.getAbsolutePath());
                 }
                 else if (!list.contains(file))
                 {
-                    FMLLog.log.debug("  Adding {} ({}) to the mod list", mod, file.getAbsolutePath());
+                    PFServer.LOGGER.debug("  Adding {} ({}) to the mod list", mod, file.getAbsolutePath());
                     list.add(file);
                 }
                 else if (!list.contains(file))
                 {
-                    FMLLog.log.debug("  Duplicte command line mod detected {} ({})", mod, file.getAbsolutePath());
+                    PFServer.LOGGER.debug("  Duplicte command line mod detected {} ({})", mod, file.getAbsolutePath());
                 }
             }
         }
@@ -456,12 +456,12 @@ public class LibraryManager
             if (!base.isDirectory() || !base.exists())
                 continue;
 
-            FMLLog.log.info("Searching {} for mods", base.getAbsolutePath());
+            PFServer.LOGGER.info("Searching {} for mods", base.getAbsolutePath());
             for (File f : base.listFiles(MOD_FILENAME_FILTER))
             {
                 if (!list.contains(f))
                 {
-                    FMLLog.log.debug("  Adding {} to the mod list", f.getName());
+                    PFServer.LOGGER.debug("  Adding {} to the mod list", f.getName());
                     list.add(f);
                 }
             }

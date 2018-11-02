@@ -22,7 +22,7 @@ package net.minecraftforge.fml.common.asm.transformers;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +55,7 @@ public class ModAccessTransformer extends AccessTransformer
             int added = getModifiers().size() - old_count;
             if (added > 0)
             {
-                FMLLog.log.debug("Loaded {} rules from AccessTransformer mod jar file {}\n", added, e.getKey());
+                PFServer.LOGGER.debug("Loaded {} rules from AccessTransformer mod jar file {}\n", added, e.getKey());
             }
         }
     }

@@ -74,7 +74,7 @@ public class EntityArmorStand extends EntityLivingBase
     public Rotations leftLegRotation;
     public Rotations rightLegRotation;
 
-    private java.util.ArrayList<org.bukkit.inventory.ItemStack> drops = new java.util.ArrayList<>(); // CatServer
+    private java.util.ArrayList<org.bukkit.inventory.ItemStack> drops = new java.util.ArrayList<>(); // PFServer
 
     public EntityArmorStand(World worldIn)
     {

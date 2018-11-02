@@ -25,7 +25,7 @@ public class CatGradleStart {
     Map<String, String>     argMap        = Maps.newHashMap();
     List<String>            extras        = Lists.newArrayList();
 
-    static final File       SRG_SRG_MCP   = new File(CatGradleStart.class.getClassLoader().getResource("mappings/" + CatServer.getNativeVersion() + "/srg2mcp.srg").getFile());
+    static final File       SRG_SRG_MCP   = new File(CatGradleStart.class.getClassLoader().getResource("mappings/" + PFServer.getNativeVersion() + "/srg2mcp.srg").getFile());
 
     protected void launch(String[] args) throws Throwable
     {

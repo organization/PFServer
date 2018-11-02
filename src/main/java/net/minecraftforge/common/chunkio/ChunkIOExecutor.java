@@ -20,11 +20,11 @@
 package net.minecraftforge.common.chunkio;
 
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -119,7 +119,7 @@ public class ChunkIOExecutor
         ChunkIOProvider task = tasks.get(key);
         if (task == null)
         {
-            FMLLog.log.warn("Attempted to dequeue chunk that wasn't queued? {} @ ({}, {})", world.provider.getDimension(), x, z);
+            PFServer.LOGGER.warn("Attempted to dequeue chunk that wasn't queued? {} @ ({}, {})", world.provider.getDimension(), x, z);
             return;
         }
 

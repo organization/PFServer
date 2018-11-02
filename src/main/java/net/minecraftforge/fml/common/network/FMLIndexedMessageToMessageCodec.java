@@ -29,8 +29,8 @@ import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
+import mgazul.PFServer.PFServer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import java.lang.ref.WeakReference;
@@ -96,7 +96,7 @@ public abstract class FMLIndexedMessageToMessageCodec<A> extends MessageToMessag
         ByteBuf payload = msg.payload().duplicate();
         if (payload.readableBytes() < 1)
         {
-            FMLLog.log.error("The FMLIndexedCodec has received an empty buffer on channel {}, likely a result of a LAN server issue. Pipeline parts : {}", ctx.channel().attr(NetworkRegistry.FML_CHANNEL), ctx.pipeline().toString());
+            PFServer.LOGGER.error("The FMLIndexedCodec has received an empty buffer on channel {}, likely a result of a LAN server issue. Pipeline parts : {}", ctx.channel().attr(NetworkRegistry.FML_CHANNEL), ctx.pipeline().toString());
         }
         byte discriminator = payload.readByte();
         Class<? extends A> clazz = discriminators.get(discriminator);
@@ -123,7 +123,7 @@ public abstract class FMLIndexedMessageToMessageCodec<A> extends MessageToMessag
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("FMLIndexedMessageCodec exception caught", cause);
+        PFServer.LOGGER.error("FMLIndexedMessageCodec exception caught", cause);
         super.exceptionCaught(ctx, cause);
     }
 }

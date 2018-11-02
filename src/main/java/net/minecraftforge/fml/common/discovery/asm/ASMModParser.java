@@ -23,7 +23,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ModCandidate;
@@ -57,7 +57,7 @@ public class ASMModParser
         }
         catch (Exception ex)
         {
-            FMLLog.log.error("Unable to read a class file correctly", ex);
+            PFServer.LOGGER.error("Unable to read a class file correctly", ex);
             throw new LoaderException(ex);
         }
     }

@@ -20,7 +20,11 @@
 package net.minecraftforge.fml.common.discovery;
 
 import com.google.common.collect.Lists;
-import net.minecraftforge.fml.common.*;
+import mgazul.PFServer.PFServer;
+import net.minecraftforge.fml.common.LoaderException;
+import net.minecraftforge.fml.common.MetadataCollection;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.ModContainerFactory;
 import net.minecraftforge.fml.common.discovery.asm.ASMModParser;
 import org.apache.commons.io.IOUtils;
 
@@ -51,7 +55,7 @@ public class DirectoryDiscoverer implements ITypeDiscoverer
     {
         this.table = table;
         List<ModContainer> found = Lists.newArrayList();
-        FMLLog.log.debug("Examining directory {} for potential mods", candidate.getModContainer().getName());
+        PFServer.LOGGER.debug("Examining directory {} for potential mods", candidate.getModContainer().getName());
         exploreFileSystem("", candidate.getModContainer(), found, candidate, null);
         for (ModContainer mc : found)
         {
@@ -76,12 +80,12 @@ public class DirectoryDiscoverer implements ITypeDiscoverer
                 {
                     IOUtils.closeQuietly(fis);
                 }
-                FMLLog.log.debug("Found an mcmod.info file in directory {}", modDir.getName());
+                PFServer.LOGGER.debug("Found an mcmod.info file in directory {}", modDir.getName());
             }
             catch (Exception e)
             {
                 mc = MetadataCollection.from(null,"");
-                FMLLog.log.debug("No mcmod.info file found in directory {}", modDir.getName());
+                PFServer.LOGGER.debug("No mcmod.info file found in directory {}", modDir.getName());
             }
         }
 
@@ -93,7 +97,7 @@ public class DirectoryDiscoverer implements ITypeDiscoverer
         {
             if (file.isDirectory())
             {
-                FMLLog.log.trace("Recursing into package {}", path + file.getName());
+                PFServer.LOGGER.trace("Recursing into package {}", path + file.getName());
                 exploreFileSystem(path + file.getName() + "/", file, harvestedMods, candidate, mc);
                 continue;
             }
@@ -111,7 +115,7 @@ public class DirectoryDiscoverer implements ITypeDiscoverer
                 }
                 catch (LoaderException e)
                 {
-                    FMLLog.log.error("There was a problem reading the file {} - probably this is a corrupt file", file.getPath(), e);
+                    PFServer.LOGGER.error("There was a problem reading the file {} - probably this is a corrupt file", file.getPath(), e);
                     throw e;
                 }
                 catch (IOException e)

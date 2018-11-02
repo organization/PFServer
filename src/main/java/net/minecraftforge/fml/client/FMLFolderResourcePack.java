@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.client;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.resources.FolderResourcePack;
 import net.minecraftforge.fml.common.FMLContainerHolder;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.ModContainer;
 
 import javax.imageio.ImageIO;
@@ -62,7 +62,7 @@ public class FMLFolderResourcePack extends FolderResourcePack implements FMLCont
         {
             if ("pack.mcmeta".equals(resourceName))
             {
-                FMLLog.log.debug("Mod {} is missing a pack.mcmeta file, substituting a dummy one", container.getName());
+                PFServer.LOGGER.debug("Mod {} is missing a pack.mcmeta file, substituting a dummy one", container.getName());
                 return new ByteArrayInputStream(("{\n" +
                         " \"pack\": {\n"+
                         "   \"description\": \"dummy FML pack for "+container.getName()+"\",\n"+

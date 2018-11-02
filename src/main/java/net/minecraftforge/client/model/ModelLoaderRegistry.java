@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IReloadableResourceManager;
@@ -36,7 +37,6 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.AnimationStateMachine;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.Deque;
 import java.util.Map;
@@ -211,7 +211,7 @@ public class ModelLoaderRegistry
         }
         catch(Exception e)
         {
-            FMLLog.log.error(error, e);
+            PFServer.LOGGER.error(error, e);
             return getMissingModel(location, e);
         }
     }

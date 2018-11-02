@@ -19,8 +19,8 @@
 
 package net.minecraftforge.registries;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
@@ -136,7 +136,7 @@ class ObjectHolderRef
 
         if (thing == null)
         {
-            FMLLog.log.debug("Unable to lookup {} for {}. This means the object wasn't registered. It's likely just mod options.", injectedObject, field);
+            PFServer.LOGGER.debug("Unable to lookup {} for {}. This means the object wasn't registered. It's likely just mod options.", injectedObject, field);
             return;
         }
         try
@@ -145,7 +145,7 @@ class ObjectHolderRef
         }
         catch (IllegalArgumentException | ReflectiveOperationException e)
         {
-            FMLLog.log.warn("Unable to set {} with value {} ({})", this.field, thing, this.injectedObject, e);
+            PFServer.LOGGER.warn("Unable to set {} with value {} ({})", this.field, thing, this.injectedObject, e);
         }
     }
 

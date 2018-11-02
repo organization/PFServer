@@ -334,7 +334,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
             if (this.channel.pipeline().get("decompress") instanceof NettyCompressionDecoder) {
                 ((NettyCompressionDecoder)this.channel.pipeline().get("decompress")).setCompressionThreshold(threshold);
             } else {
-                this.channel.pipeline().addAfter("splitter", "decompress", new NettyCompressionDecoder(threshold)); // CatServer
+                this.channel.pipeline().addAfter("splitter", "decompress", new NettyCompressionDecoder(threshold)); // PFServer
             }
 
             if (this.channel.pipeline().get("compress") instanceof NettyCompressionEncoder) {

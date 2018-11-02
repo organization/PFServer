@@ -21,7 +21,11 @@ package net.minecraftforge.fml.common.discovery;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import net.minecraftforge.fml.common.*;
+import mgazul.PFServer.PFServer;
+import net.minecraftforge.fml.common.LoaderException;
+import net.minecraftforge.fml.common.MetadataCollection;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.ModContainerFactory;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 import net.minecraftforge.fml.common.discovery.asm.ASMModParser;
 import net.minecraftforge.fml.common.discovery.json.JsonAnnotationLoader;
@@ -45,14 +49,14 @@ public class JarDiscoverer implements ITypeDiscoverer
     public List<ModContainer> discover(ModCandidate candidate, ASMDataTable table)
     {
         List<ModContainer> foundMods = Lists.newArrayList();
-        FMLLog.log.debug("Examining file {} for potential mods", candidate.getModContainer().getName());
+        PFServer.LOGGER.debug("Examining file {} for potential mods", candidate.getModContainer().getName());
         try (JarFile jar = new JarFile(candidate.getModContainer()))
         {
             ZipEntry modInfo = jar.getEntry("mcmod.info");
             MetadataCollection mc = null;
             if (modInfo != null)
             {
-                FMLLog.log.trace("Located mcmod.info file in file {}", candidate.getModContainer().getName());
+                PFServer.LOGGER.trace("Located mcmod.info file in file {}", candidate.getModContainer().getName());
                 try (InputStream inputStream = jar.getInputStream(modInfo))
                 {
                     mc = MetadataCollection.from(inputStream, candidate.getModContainer().getName());
@@ -60,7 +64,7 @@ public class JarDiscoverer implements ITypeDiscoverer
             }
             else
             {
-                FMLLog.log.debug("The mod container {} appears to be missing an mcmod.info file", candidate.getModContainer().getName());
+                PFServer.LOGGER.debug("The mod container {} appears to be missing an mcmod.info file", candidate.getModContainer().getName());
                 mc = MetadataCollection.from(null, "");
             }
 
@@ -71,7 +75,7 @@ public class JarDiscoverer implements ITypeDiscoverer
         }
         catch (Exception e)
         {
-            FMLLog.log.warn("Zip file {} failed to read properly, it will be ignored", candidate.getModContainer().getName(), e);
+            PFServer.LOGGER.warn("Zip file {} failed to read properly, it will be ignored", candidate.getModContainer().getName(), e);
         }
         return foundMods;
     }
@@ -98,7 +102,7 @@ public class JarDiscoverer implements ITypeDiscoverer
                 }
                 catch (LoaderException e)
                 {
-                    FMLLog.log.error("There was a problem reading the entry {} in the jar {} - probably a corrupt zip", candidate.getModContainer().getPath(), e);
+                    PFServer.LOGGER.error("There was a problem reading the entry {} in the jar {} - probably a corrupt zip", candidate.getModContainer().getPath(), e);
                     jar.close();
                     throw e;
                 }
@@ -118,7 +122,7 @@ public class JarDiscoverer implements ITypeDiscoverer
 
     private void findClassesJSON(ModCandidate candidate, ASMDataTable table, JarFile jar, List<ModContainer> foundMods, MetadataCollection mc) throws IOException
     {
-        FMLLog.log.info("Loading jar {} annotation data from json", candidate.getModContainer().getPath());
+        PFServer.LOGGER.info("Loading jar {} annotation data from json", candidate.getModContainer().getPath());
         ZipEntry json = jar.getEntry(JsonAnnotationLoader.ANNOTATION_JSON);
         Multimap<String, ASMData> annos = JsonAnnotationLoader.loadJson(jar.getInputStream(json), candidate, table);
 
@@ -137,12 +141,12 @@ public class JarDiscoverer implements ITypeDiscoverer
 
             for (ASMData data : annos.get(type.getClassName()))
             {
-                FMLLog.log.debug("Identified a mod of type {} ({}) - loading", type.getClassName(), data.getClassName());
+                PFServer.LOGGER.debug("Identified a mod of type {} ({}) - loading", type.getClassName(), data.getClassName());
                 try
                 {
                     ModContainer ret = ctr.newInstance(data.getClassName(), candidate, data.getAnnotationInfo());
                     if (!ret.shouldLoadInEnvironment())
-                        FMLLog.log.debug("Skipping mod {}, container opted to not load.", data.getClassName());
+                        PFServer.LOGGER.debug("Skipping mod {}, container opted to not load.", data.getClassName());
                     else
                     {
                         table.addContainer(ret);
@@ -153,7 +157,7 @@ public class JarDiscoverer implements ITypeDiscoverer
                 }
                 catch (Exception e)
                 {
-                    FMLLog.log.error("Unable to construct {} container", data.getClassName(), e);
+                    PFServer.LOGGER.error("Unable to construct {} container", data.getClassName(), e);
                 }
             }
         }

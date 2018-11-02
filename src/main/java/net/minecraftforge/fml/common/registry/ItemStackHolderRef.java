@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common.registry;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -81,7 +81,7 @@ class ItemStackHolderRef {
             is = GameRegistry.makeItemStack(itemName, meta, 1, serializednbt);
         } catch (RuntimeException e)
         {
-            FMLLog.log.error("Caught exception processing itemstack {},{},{} in annotation at {}.{}", itemName, meta, serializednbt,field.getClass().getName(),field.getName());
+            PFServer.LOGGER.error("Caught exception processing itemstack {},{},{} in annotation at {}.{}", itemName, meta, serializednbt,field.getClass().getName(),field.getName());
             throw e;
         }
         try
@@ -91,7 +91,7 @@ class ItemStackHolderRef {
         }
         catch (Exception e)
         {
-            FMLLog.log.warn("Unable to set {} with value {},{},{}", this.field, this.itemName, this.meta, this.serializednbt);
+            PFServer.LOGGER.warn("Unable to set {} with value {},{},{}", this.field, this.itemName, this.meta, this.serializednbt);
         }
     }
 }

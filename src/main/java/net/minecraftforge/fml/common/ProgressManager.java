@@ -20,6 +20,7 @@
 package net.minecraftforge.fml.common;
 
 import com.google.common.base.Joiner;
+import mgazul.PFServer.PFServer;
 
 import java.util.Iterator;
 import java.util.List;
@@ -73,13 +74,13 @@ public class ProgressManager
             if (bar.timeEachStep)
             {
                 String timeString = String.format("%.3f", ((float) (newTime - bar.lastTime) / 1000000 / 1000));
-                FMLLog.log.debug("Bar Step: {} - {} took {}s", bar.getTitle(), bar.getMessage(), timeString);
+                PFServer.LOGGER.debug("Bar Step: {} - {} took {}s", bar.getTitle(), bar.getMessage(), timeString);
             }
             String timeString = String.format("%.3f", ((float) (newTime - bar.startTime) / 1000000 / 1000));
             if (bar.getSteps() == 1)
-                FMLLog.log.debug("Bar Finished: {} - {} took {}s", bar.getTitle(), bar.getMessage(), timeString);
+                PFServer.LOGGER.debug("Bar Finished: {} - {} took {}s", bar.getTitle(), bar.getMessage(), timeString);
             else
-                FMLLog.log.debug("Bar Finished: {} took {}s", bar.getTitle(), timeString);
+                PFServer.LOGGER.debug("Bar Finished: {} took {}s", bar.getTitle(), timeString);
         }
         FMLCommonHandler.instance().processWindowMessages();
     }
@@ -124,7 +125,7 @@ public class ProgressManager
             if (timeEachStep && step != 0)
             {
                 long newTime = System.nanoTime();
-                FMLLog.log.debug(String.format("Bar Step: %s - %s took %.3fs", getTitle(), getMessage(), ((float)(newTime - lastTime) / 1000000 / 1000)));
+                PFServer.LOGGER.debug(String.format("Bar Step: %s - %s took %.3fs", getTitle(), getMessage(), ((float)(newTime - lastTime) / 1000000 / 1000)));
                 lastTime = newTime;
             }
             step++;

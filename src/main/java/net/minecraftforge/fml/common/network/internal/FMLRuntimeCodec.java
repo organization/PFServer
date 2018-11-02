@@ -22,7 +22,7 @@ package net.minecraftforge.fml.common.network.internal;
 import com.google.common.base.Splitter;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.FMLIndexedMessageToMessageCodec;
 import net.minecraftforge.fml.common.network.FMLNetworkException;
@@ -51,10 +51,10 @@ public class FMLRuntimeCodec extends FMLIndexedMessageToMessageCodec<FMLMessage>
     {
         if (msg.payload().getByte(0) == 0 && msg.payload().readableBytes() > 2)
         {
-            FMLLog.log.fatal("The connection appears to have sent an invalid FML packet of type 0, this is likely because it think's it's talking to 1.6.4 FML");
-            FMLLog.log.info("Bad data :");
+            PFServer.LOGGER.fatal("The connection appears to have sent an invalid FML packet of type 0, this is likely because it think's it's talking to 1.6.4 FML");
+            PFServer.LOGGER.info("Bad data :");
             for (String l : Splitter.on('\n').split(ByteBufUtils.getContentDump(msg.payload()))) {
-                FMLLog.log.info("\t{}",l);
+                PFServer.LOGGER.info("\t{}",l);
             }
             throw new FMLNetworkException("Invalid FML packet");
         }

@@ -20,6 +20,7 @@
 package net.minecraftforge.fml.client;
 
 import com.google.common.base.Strings;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -38,7 +39,6 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.CheckResult;
 import net.minecraftforge.common.ForgeVersion.Status;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.ModContainer.Disableable;
@@ -282,7 +282,7 @@ public class GuiModList extends GuiScreen
                         }
                         catch (Exception e)
                         {
-                            FMLLog.log.error("There was a critical issue trying to build the config GUI for {}", selectedMod.getModId(), e);
+                            PFServer.LOGGER.error("There was a critical issue trying to build the config GUI for {}", selectedMod.getModId(), e);
                         }
                         return;
                     }

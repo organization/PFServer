@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -46,7 +47,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -495,7 +495,7 @@ public final class ModelFluid implements IModel
         String fluid = e.getAsString();
         if(!FluidRegistry.isFluidRegistered(fluid))
         {
-            FMLLog.log.fatal("fluid '{}' not found", fluid);
+            PFServer.LOGGER.fatal("fluid '{}' not found", fluid);
             return WATER;
         }
         return new ModelFluid(FluidRegistry.getFluid(fluid));

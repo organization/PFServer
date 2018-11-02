@@ -24,9 +24,9 @@ import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.Futures;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.handshake.FMLHandshakeMessage.ServerHello;
@@ -87,7 +87,7 @@ enum FMLHandshakeClientState implements IHandshakeState<FMLHandshakeClientState>
             }
 
             ServerHello serverHelloPacket = (FMLHandshakeMessage.ServerHello)msg;
-            FMLLog.log.info("Server protocol version {}", Integer.toHexString(serverHelloPacket.protocolVersion()));
+            PFServer.LOGGER.info("Server protocol version {}", Integer.toHexString(serverHelloPacket.protocolVersion()));
             if (serverHelloPacket.protocolVersion() > 1)
             {
                 // Server sent us an extra dimension for the logging in player - stash it for retrieval later
@@ -146,7 +146,7 @@ enum FMLHandshakeClientState implements IHandshakeState<FMLHandshakeClientState>
             if (pkt.hasMore())
             {
                 cons.accept(WAITINGSERVERCOMPLETE);
-                FMLLog.log.debug("Received Mod Registry mapping for {}: {} IDs {} overrides {} dummied", pkt.getName(), entry.ids.size(), entry.overrides.size(), entry.dummied.size());
+                PFServer.LOGGER.debug("Received Mod Registry mapping for {}: {} IDs {} overrides {} dummied", pkt.getName(), entry.ids.size(), entry.overrides.size(), entry.dummied.size());
                 return;
             }
 
@@ -160,8 +160,8 @@ enum FMLHandshakeClientState implements IHandshakeState<FMLHandshakeClientState>
                 cons.accept(ERROR);
                 NetworkDispatcher dispatcher = ctx.channel().attr(NetworkDispatcher.FML_DISPATCHER).get();
                 dispatcher.rejectHandshake("Fatally missing registry entries");
-                FMLLog.log.fatal("Failed to connect to server: there are {} missing registry items", locallyMissing.size());
-                locallyMissing.asMap().forEach((key, value) ->  FMLLog.log.debug("Missing {} Entries: {}", key, value));
+                PFServer.LOGGER.fatal("Failed to connect to server: there are {} missing registry items", locallyMissing.size());
+                locallyMissing.asMap().forEach((key, value) ->  PFServer.LOGGER.debug("Missing {} Entries: {}", key, value));
                 return;
             }
             cons.accept(PENDINGCOMPLETE);

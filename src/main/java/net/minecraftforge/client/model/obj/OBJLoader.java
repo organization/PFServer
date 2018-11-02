@@ -19,13 +19,13 @@
 
 package net.minecraftforge.client.model.obj;
 
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileNotFoundException;
@@ -50,7 +50,7 @@ public enum OBJLoader implements ICustomModelLoader {
     public void addDomain(String domain)
     {
         enabledDomains.add(domain.toLowerCase());
-        FMLLog.log.info("OBJLoader: Domain {} has been added.", domain.toLowerCase());
+        PFServer.LOGGER.info("OBJLoader: Domain {} has been added.", domain.toLowerCase());
     }
 
     @Override

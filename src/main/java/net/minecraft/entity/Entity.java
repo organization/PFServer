@@ -246,7 +246,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
         this.dataManager.register(SILENT, Boolean.valueOf(false));
         this.dataManager.register(NO_GRAVITY, Boolean.valueOf(false));
         this.entityInit();
-        if(!(this instanceof EntityPlayer)) { // CatServer - move to EntityPlayer
+        if(!(this instanceof EntityPlayer)) { // PFServer - move to EntityPlayer
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.EntityEvent.EntityConstructing(this));
         capabilities = net.minecraftforge.event.ForgeEventFactory.gatherCapabilities(this);
         }
@@ -256,7 +256,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     private NBTTagCompound customEntityData;
     public boolean captureDrops = false;
     public java.util.ArrayList<EntityItem> capturedDrops = new java.util.ArrayList<EntityItem>();
-    public net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities; // CatServer - private -> public
+    public net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities; // PFServer - private -> public
 
     public int getEntityId()
     {
@@ -2644,7 +2644,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public void onStruckByLightning(EntityLightningBolt lightningBolt)
     {
-        if (lightningBolt == null) lightningBolt = new EntityLightningBolt(this.world, this.posX, this.posY, this.posZ, true); // CatServer - if null, create EntityLightningBolt for Bukkit
+        if (lightningBolt == null) lightningBolt = new EntityLightningBolt(this.world, this.posX, this.posY, this.posZ, true); // PFServer - if null, create EntityLightningBolt for Bukkit
         final org.bukkit.entity.Entity thisBukkitEntity = this.getBukkitEntity();
         final org.bukkit.entity.Entity stormBukkitEntity = lightningBolt.getBukkitEntity();
         final PluginManager pluginManager = Bukkit.getPluginManager();

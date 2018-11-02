@@ -767,7 +767,7 @@ public class WorldServer extends World implements IThreadListener
 
     public void updateEntities()
     {
-        if (this.playerEntities.isEmpty() && getPersistentChunks().isEmpty()) // CatServer - Use Forge logic here
+        if (this.playerEntities.isEmpty() && getPersistentChunks().isEmpty()) // PFServer - Use Forge logic here
         {
             if (this.updateEntityTick++ >= 300)
             {
@@ -1026,7 +1026,7 @@ public class WorldServer extends World implements IThreadListener
     protected IChunkProvider createChunkProvider()
     {
         IChunkLoader ichunkloader = this.saveHandler.getChunkLoader(this.provider);
-        // CatServer - if provider is vanilla, proceed to create a bukkit compatible chunk generator
+        // PFServer - if provider is vanilla, proceed to create a bukkit compatible chunk generator
         if (this.provider.getClass().toString().length() <= 3 || this.provider.getClass().toString().contains("net.minecraft")) {
             // CraftBukkit start
             org.bukkit.craftbukkit.generator.InternalChunkGenerator gen;

@@ -22,7 +22,7 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,11 +69,11 @@ public class SnapshotJson implements Comparable<SnapshotJson>
         }
         catch (JsonSyntaxException jse)
         {
-            FMLLog.log.info(FMLLog.log.getMessageFactory().newMessage("Failed to parse snapshot json file {}.", target), jse);
+            PFServer.LOGGER.info(PFServer.LOGGER.getMessageFactory().newMessage("Failed to parse snapshot json file {}.", target), jse);
         }
         catch (IOException ioe)
         {
-            FMLLog.log.info(FMLLog.log.getMessageFactory().newMessage("Failed to read snapshot json file {}.", target), ioe);
+            PFServer.LOGGER.info(PFServer.LOGGER.getMessageFactory().newMessage("Failed to read snapshot json file {}.", target), ioe);
         }
 
         return new SnapshotJson();

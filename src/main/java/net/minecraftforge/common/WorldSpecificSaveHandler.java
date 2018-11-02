@@ -20,6 +20,7 @@
 package net.minecraftforge.common;
 
 import com.google.common.io.Files;
+import mgazul.PFServer.PFServer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldProvider;
@@ -29,7 +30,6 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,7 +93,7 @@ public class WorldSpecificSaveHandler implements ISaveHandler
             }
             catch (IOException e)
             {
-                FMLLog.log.error("A critical error occurred copying {} to world specific dat folder - new file will be created.", parentFile.getName(), e);
+                PFServer.LOGGER.error("A critical error occurred copying {} to world specific dat folder - new file will be created.", parentFile.getName(), e);
             }
         }
     }

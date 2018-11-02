@@ -608,7 +608,7 @@ public class Item extends net.minecraftforge.registries.IForgeRegistryEntry.Impl
      */
     public int getEntityLifespan(ItemStack itemStack, World world)
     {
-        return world.spigotConfig.itemDespawnRate; // CatServer - default use Spigot setting
+        return world.spigotConfig.itemDespawnRate; // PFServer - default use Spigot setting
     }
 
     /**

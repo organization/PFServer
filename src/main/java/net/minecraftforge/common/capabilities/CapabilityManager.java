@@ -22,8 +22,8 @@ package net.minecraftforge.common.capabilities;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import org.objectweb.asm.Type;
 
@@ -107,7 +107,7 @@ public enum CapabilityManager
             Type type = (Type)entry.getAnnotationInfo().get("value");
             if (type == null)
             {
-                FMLLog.log.warn("Unable to inject capability at {}.{} (Invalid Annotation)", targetClass, targetName);
+                PFServer.LOGGER.warn("Unable to inject capability at {}.{} (Invalid Annotation)", targetClass, targetName);
                 continue;
             }
             final String capabilityName = type.getInternalName().replace('/', '.').intern();
@@ -129,7 +129,7 @@ public enum CapabilityManager
                                 {
                                     if ((mtd.getModifiers() & Modifier.STATIC) != Modifier.STATIC)
                                     {
-                                        FMLLog.log.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
+                                        PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
                                         return null;
                                     }
 
@@ -138,11 +138,11 @@ public enum CapabilityManager
                                     return null;
                                 }
                             }
-                            FMLLog.log.warn("Unable to inject capability {} at {}.{} (Method Not Found)", capabilityName, targetClass, targetName);
+                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Method Not Found)", capabilityName, targetClass, targetName);
                         }
                         catch (Exception e)
                         {
-                            FMLLog.log.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
+                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
                         }
                         return null;
                     }
@@ -160,14 +160,14 @@ public enum CapabilityManager
                             Field field = Class.forName(targetClass).getDeclaredField(targetName);
                             if ((field.getModifiers() & Modifier.STATIC) != Modifier.STATIC)
                             {
-                                FMLLog.log.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
+                                PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
                                 return null;
                             }
                             EnumHelper.setFailsafeFieldValue(field, null, input);
                         }
                         catch (Exception e)
                         {
-                            FMLLog.log.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
+                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
                         }
                         return null;
                     }

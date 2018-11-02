@@ -1,6 +1,6 @@
 package org.bukkit.command.defaults;
 
-import mgazul.PFServer.CatServer;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.common.ForgeVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -22,9 +22,9 @@ public class VersionCommand extends BukkitCommand {
         if (!testPermission(sender)) return true;
 
         if (args.length == 0) {
-            sender.sendMessage("This server is running PFServer version " + CatServer.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ", Forge version "+ForgeVersion.getVersion() + ")");
+            sender.sendMessage("This server is running PFServer version " + PFServer.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ", Forge version "+ForgeVersion.getVersion() + ")");
         } else {
-            sender.sendMessage("This server is running PFServer version " + CatServer.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ", Forge version "+ForgeVersion.getVersion() + ")");
+            sender.sendMessage("This server is running PFServer version " + PFServer.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ", Forge version "+ForgeVersion.getVersion() + ")");
         }
         return true;
     }

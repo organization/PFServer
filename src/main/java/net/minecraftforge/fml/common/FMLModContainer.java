@@ -22,6 +22,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -103,7 +104,7 @@ public class FMLModContainer implements ModContainer
         {
             // Delay loading of the adapter until the mod is on the classpath, in case the mod itself contains it.
             this.languageAdapter = null;
-            FMLLog.log.trace("Using custom language adapter {} for {} (modid: {})", languageAdapterType, this.className, getModId());
+            PFServer.LOGGER.trace("Using custom language adapter {} for {} (modid: {})", languageAdapterType, this.className, getModId());
         }
         sanityCheckModId();
     }
@@ -131,7 +132,7 @@ public class FMLModContainer implements ModContainer
             }
             catch (Exception ex)
             {
-                FMLLog.log.error("Error constructing custom mod language adapter referenced by {} (modid: {})", getModId(), ex);
+                PFServer.LOGGER.error("Error constructing custom mod language adapter referenced by {} (modid: {})", getModId(), ex);
                 throw new RuntimeException(ex);
             }
         }
@@ -188,11 +189,11 @@ public class FMLModContainer implements ModContainer
             modMetadata.requiredMods = info.requirements;
             modMetadata.dependencies = info.dependencies;
             modMetadata.dependants = info.dependants;
-            FMLLog.log.trace("Parsed dependency info for {}: Requirements: {} After:{} Before:{}", getModId(), info.requirements, info.dependencies, info.dependants);
+            PFServer.LOGGER.trace("Parsed dependency info for {}: Requirements: {} After:{} Before:{}", getModId(), info.requirements, info.dependencies, info.dependants);
         }
         else
         {
-            FMLLog.log.trace("Using mcmod dependency info for {}: {} {} {}", getModId(), modMetadata.requiredMods, modMetadata.dependencies, modMetadata.dependants);
+            PFServer.LOGGER.trace("Using mcmod dependency info for {}: {} {} {}", getModId(), modMetadata.requiredMods, modMetadata.dependencies, modMetadata.dependants);
         }
         if (Strings.isNullOrEmpty(modMetadata.name))
         {
@@ -205,7 +206,7 @@ public class FMLModContainer implements ModContainer
             if (versionProps != null)
             {
                 internalVersion = versionProps.getProperty(getModId() + ".version");
-                FMLLog.log.debug("Found version {} for mod {} in version.properties, using", internalVersion, getModId());
+                PFServer.LOGGER.debug("Found version {} for mod {} in version.properties, using", internalVersion, getModId());
             }
 
         }
@@ -242,7 +243,7 @@ public class FMLModContainer implements ModContainer
             }
             catch (MalformedURLException e)
             {
-                FMLLog.log.debug("Specified json URL for mod '{}' is invalid: {}", getModId(), jsonURL);
+                PFServer.LOGGER.debug("Specified json URL for mod '{}' is invalid: {}", getModId(), jsonURL);
             }
         }
     }
@@ -252,7 +253,7 @@ public class FMLModContainer implements ModContainer
     {
         try
         {
-            FMLLog.log.debug("Attempting to load the file version.properties from {} to locate a version number for mod {}", getSource().getName(), getModId());
+            PFServer.LOGGER.debug("Attempting to load the file version.properties from {} to locate a version number for mod {}", getSource().getName(), getModId());
             Properties version = null;
             if (getSource().isFile())
             {
@@ -289,7 +290,7 @@ public class FMLModContainer implements ModContainer
         }
         catch (IOException e)
         {
-            FMLLog.log.trace("Failed to find a usable version.properties file for mod {}", getModId());
+            PFServer.LOGGER.trace("Failed to find a usable version.properties file for mod {}", getModId());
             return null;
         }
     }
@@ -341,7 +342,7 @@ public class FMLModContainer implements ModContainer
     {
         if (this.enabled)
         {
-            FMLLog.log.debug("Enabling mod {}", getModId());
+            PFServer.LOGGER.debug("Enabling mod {}", getModId());
             this.eventBus = bus;
             this.controller = controller;
             eventBus.register(this);
@@ -372,7 +373,7 @@ public class FMLModContainer implements ModContainer
                     }
                     else
                     {
-                        FMLLog.log.error("The mod {} appears to have an invalid event annotation {}. This annotation can only apply to methods with recognized event arguments - it will not be called", getModId(), a.annotationType().getSimpleName());
+                        PFServer.LOGGER.error("The mod {} appears to have an invalid event annotation {}. This annotation can only apply to methods with recognized event arguments - it will not be called", getModId(), a.annotationType().getSimpleName());
                     }
                 }
                 else if (a.annotationType().equals(Mod.InstanceFactory.class))
@@ -384,11 +385,11 @@ public class FMLModContainer implements ModContainer
                     }
                     else if (!(Modifier.isStatic(m.getModifiers()) && m.getParameterTypes().length == 0))
                     {
-                        FMLLog.log.error("The InstanceFactory annotation can only apply to a static method, taking zero arguments - it will be ignored on {}({}) for mod {}", m.getName(), Arrays.asList(m.getParameterTypes()), getModId());
+                        PFServer.LOGGER.error("The InstanceFactory annotation can only apply to a static method, taking zero arguments - it will be ignored on {}({}) for mod {}", m.getName(), Arrays.asList(m.getParameterTypes()), getModId());
                     }
                     else if (factoryMethod != null)
                     {
-                        FMLLog.log.error("The InstanceFactory annotation can only be used once, the application to {}({}) will be ignored for mod {}", m.getName(), Arrays.asList(m.getParameterTypes()), getModId());
+                        PFServer.LOGGER.error("The InstanceFactory annotation can only be used once, the application to {}({}) will be ignored for mod {}", m.getName(), Arrays.asList(m.getParameterTypes()), getModId());
                     }
                 }
             }
@@ -418,13 +419,13 @@ public class FMLModContainer implements ModContainer
                 owner = ASMDataTable.getOwnerModID(mods, targets);
                 if (Strings.isNullOrEmpty(owner))
                 {
-                    FMLLog.bigWarning("Could not determine owning mod for @{} on {} for mod {}", annotationClassName, targets.getClassName(), this.getModId());
+                    PFServer.bigWarning("Could not determine owning mod for @{} on {} for mod {}", annotationClassName, targets.getClassName(), this.getModId());
                     continue;
                 }
             }
             if (!this.getModId().equals(owner))
             {
-                FMLLog.log.debug("Skipping @{} injection for {}.{} since it is not for mod {}", annotationClassName, targets.getClassName(), targets.getObjectName(), this.getModId());
+                PFServer.LOGGER.debug("Skipping @{} injection for {}.{} since it is not for mod {}", annotationClassName, targets.getClassName(), targets.getObjectName(), this.getModId());
                 continue;
             }
             Field f = null;
@@ -455,7 +456,7 @@ public class FMLModContainer implements ModContainer
                 }
                 catch (ReflectiveOperationException e)
                 {
-                    FMLLog.log.warn("Attempting to load @{} in class {} for {} and failing", annotationName, targets.getClassName(), mc.getModId(), e);
+                    PFServer.LOGGER.warn("Attempting to load @{} in class {} for {} and failing", annotationName, targets.getClassName(), mc.getModId(), e);
                 }
             }
             if (f != null)
@@ -466,7 +467,7 @@ public class FMLModContainer implements ModContainer
                     target = modInstance;
                     if (!modInstance.getClass().equals(clz))
                     {
-                        FMLLog.log.warn("Unable to inject @{} in non-static field {}.{} for {} as it is NOT the primary mod instance", annotationName, targets.getClassName(), targets.getObjectName(), mc.getModId());
+                        PFServer.LOGGER.warn("Unable to inject @{} in non-static field {}.{} for {} as it is NOT the primary mod instance", annotationName, targets.getClassName(), targets.getObjectName(), mc.getModId());
                         continue;
                     }
                 }
@@ -517,7 +518,7 @@ public class FMLModContainer implements ModContainer
             if (!sourceFingerprints.contains(expectedFingerprint))
             {
                 Level warnLevel = source.isDirectory() ? Level.TRACE : Level.ERROR;
-                FMLLog.log.log(warnLevel, "The mod {} is expecting signature {} for source {}, however there is no signature matching that description", getModId(), expectedFingerprint, source.getName());
+                PFServer.LOGGER.log(warnLevel, "The mod {} is expecting signature {} for source {}, however there is no signature matching that description", getModId(), expectedFingerprint, source.getName());
             }
             else
             {
@@ -718,13 +719,13 @@ public class FMLModContainer implements ModContainer
 
         if (clientSideOnly && side != Side.CLIENT)
         {
-            FMLLog.log.info("Disabling mod {} it is client side only.", getModId());
+            PFServer.LOGGER.info("Disabling mod {} it is client side only.", getModId());
             return false;
         }
 
         if (serverSideOnly && side != Side.SERVER)
         {
-            FMLLog.log.info("Disabling mod {} it is server side only.", getModId());
+            PFServer.LOGGER.info("Disabling mod {} it is server side only.", getModId());
             return false;
         }
 

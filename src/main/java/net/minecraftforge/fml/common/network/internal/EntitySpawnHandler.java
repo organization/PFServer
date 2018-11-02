@@ -21,6 +21,7 @@ package net.minecraftforge.fml.common.network.internal;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
@@ -29,7 +30,6 @@ import net.minecraft.entity.EntityTracker;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -137,7 +137,7 @@ public class EntitySpawnHandler extends SimpleChannelInboundHandler<FMLMessage.E
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
     {
-        FMLLog.log.error("EntitySpawnHandler exception", cause);
+        PFServer.LOGGER.error("EntitySpawnHandler exception", cause);
         super.exceptionCaught(ctx, cause);
     }
 }

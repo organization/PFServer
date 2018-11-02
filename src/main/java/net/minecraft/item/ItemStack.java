@@ -52,9 +52,9 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
 {
     public static final ItemStack EMPTY = new ItemStack((Item)null);
     public static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.##");
-    public int stackSize; // CatServer - private -> public
+    public int stackSize; // PFServer - private -> public
     private int animationsToGo;
-    public Item item; // CatServer - private -> public
+    public Item item; // PFServer - private -> public
     private NBTTagCompound stackTagCompound;
     private boolean isEmpty;
     int itemDamage;

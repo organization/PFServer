@@ -21,6 +21,7 @@ package net.minecraftforge.oredict;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPrismarine;
 import net.minecraft.init.Blocks;
@@ -31,7 +32,6 @@ import net.minecraft.item.crafting.*;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -366,7 +366,7 @@ public class OreDictionary
             ItemStack.EMPTY //So the above can have a comma and we don't have to keep editing extra lines.
         };
 
-        FMLLog.log.info("Starts to replace vanilla recipe ingredients with ore ingredients.");
+        PFServer.LOGGER.info("Starts to replace vanilla recipe ingredients with ore ingredients.");
         int replaced = 0;
         // Search vanilla recipes for recipes to replace
         for(IRecipe obj : CraftingManager.REGISTRY)
@@ -398,7 +398,7 @@ public class OreDictionary
                                 matches = true;
                                 if (oreName != null && !oreName.equals(ent.getValue()))
                                 {
-                                    FMLLog.log.info("Invalid recipe found with multiple oredict ingredients in the same ingredient..."); //TODO: Write a dumper?
+                                    PFServer.LOGGER.info("Invalid recipe found with multiple oredict ingredients in the same ingredient..."); //TODO: Write a dumper?
                                     skip = true;
                                     break;
                                 }
@@ -412,7 +412,7 @@ public class OreDictionary
                         if (!matches && oreName != null)
                         {
                             //TODO: Properly fix this, Broken recipe example: Beds
-                            //FMLLog.info("Invalid recipe found with ingredient that partially matches ore entries..."); //TODO: Write a dumper?
+                            //PFServer.LOGGER.info("Invalid recipe found with ingredient that partially matches ore entries..."); //TODO: Write a dumper?
                             skip = true;
                         }
                         if (skip)
@@ -426,14 +426,14 @@ public class OreDictionary
                         if(DEBUG && replacedIngs.add(ing))
                         {
                             String recipeName = obj.getRegistryName().getResourcePath();
-                            FMLLog.log.debug("Replaced {} of the recipe \'{}\' with \"{}\".", ing.getMatchingStacks(), recipeName, oreName);
+                            PFServer.LOGGER.debug("Replaced {} of the recipe \'{}\' with \"{}\".", ing.getMatchingStacks(), recipeName, oreName);
                         }
                     }
                 }
             }
         }
 
-        FMLLog.log.info("Replaced {} ore ingredients", replaced);
+        PFServer.LOGGER.info("Replaced {} ore ingredients", replaced);
     }
 
     /**
@@ -489,7 +489,7 @@ public class OreDictionary
         int id;
         if (registryName == null)
         {
-            FMLLog.log.debug("Attempted to find the oreIDs for an unregistered object ({}). This won't work very well.", stack);
+            PFServer.LOGGER.debug("Attempted to find the oreIDs for an unregistered object ({}). This won't work very well.", stack);
             return new int[0];
         }
         else
@@ -639,7 +639,7 @@ public class OreDictionary
         if ("Unknown".equals(name)) return; //prevent bad IDs.
         if (ore.isEmpty())
         {
-            FMLLog.bigWarning("Invalid registration attempt for an Ore Dictionary item with name {} has occurred. The registration has been denied to prevent crashes. The mod responsible for the registration needs to correct this.", name);
+            PFServer.bigWarning("Invalid registration attempt for an Ore Dictionary item with name {} has occurred. The registration has been denied to prevent crashes. The mod responsible for the registration needs to correct this.", name);
             return; //prevent bad ItemStacks.
         }
 
@@ -653,7 +653,7 @@ public class OreDictionary
         {
             ModContainer modContainer = Loader.instance().activeModContainer();
             String modContainerName = modContainer == null ? null : modContainer.getName();
-            FMLLog.bigWarning("A broken ore dictionary registration with name {} has occurred. It adds an item (type: {}) which is currently unknown to the game registry. This dictionary item can only support a single value when"
+            PFServer.bigWarning("A broken ore dictionary registration with name {} has occurred. It adds an item (type: {}) which is currently unknown to the game registry. This dictionary item can only support a single value when"
                     + " registered with ores like this, and NO I am not going to turn this spam off. Just register your ore dictionary entries after the GameRegistry.\n"
                     + "TO USERS: YES this is a BUG in the mod " + modContainerName + " report it to them!", name, ore.getItem().getClass());
             hash = -1;
@@ -721,7 +721,7 @@ public class OreDictionary
                 int hash;
                 if (name == null)
                 {
-                    FMLLog.log.debug("Defaulting unregistered ore dictionary entry for ore dictionary {}: type {} to -1", getOreName(id), ore.getItem().getClass());
+                    PFServer.LOGGER.debug("Defaulting unregistered ore dictionary entry for ore dictionary {}: type {} to -1", getOreName(id), ore.getItem().getClass());
                     hash = -1;
                 }
                 else

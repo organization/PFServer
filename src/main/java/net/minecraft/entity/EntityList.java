@@ -31,7 +31,7 @@ public class EntityList
     public static final ResourceLocation LIGHTNING_BOLT = new ResourceLocation("lightning_bolt");
     private static final ResourceLocation PLAYER = new ResourceLocation("player");
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final RegistryNamespaced<ResourceLocation, Class<? extends Entity>> REGISTRY = new CatEntityRegistry<ResourceLocation, Class<? extends Entity>>(); // CatServer - compatible with bukkit plugin
+    public static final RegistryNamespaced<ResourceLocation, Class<? extends Entity>> REGISTRY = new CatEntityRegistry<ResourceLocation, Class<? extends Entity>>(); // PFServer - compatible with bukkit plugin
     public static final Map<ResourceLocation, EntityEggInfo> ENTITY_EGGS = Maps.<ResourceLocation, EntityEggInfo>newLinkedHashMap();
     private static final Set<ResourceLocation> EXTRA_NAMES = Sets.newHashSet();
 
@@ -147,7 +147,7 @@ public class EntityList
             }
             catch (Exception e)
             {
-                net.minecraftforge.fml.common.FMLLog.log.error("An Entity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
+                LOGGER.error("An Entity {}({}) has thrown an exception during loading, its state cannot be restored. Report this to the mod author",
                         nbt.getString("id"), entity.getName(), e);
                 entity = null;
             }

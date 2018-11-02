@@ -20,7 +20,7 @@ package net.minecraftforge.fml.relauncher.libraries;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,12 +127,12 @@ public class Repository
         {
             if (target.exists())
             {
-                FMLLog.log.debug("Maven file already exists for {}({}) at {}, deleting duplicate.", file.getName(), artifact.toString(), target.getAbsolutePath());
+                PFServer.LOGGER.debug("Maven file already exists for {}({}) at {}, deleting duplicate.", file.getName(), artifact.toString(), target.getAbsolutePath());
                 file.delete();
             }
             else
             {
-                FMLLog.log.debug("Moving file {}({}) to maven repo at {}.", file.getName(), artifact.toString(), target.getAbsolutePath());
+                PFServer.LOGGER.debug("Moving file {}({}) to maven repo at {}.", file.getName(), artifact.toString(), target.getAbsolutePath());
                 Files.move(file, target);
 
                 if (artifact.isSnapshot())
@@ -152,7 +152,7 @@ public class Repository
         }
         catch (IOException e)
         {
-            FMLLog.log.error(FMLLog.log.getMessageFactory().newMessage("Error moving file {} to {}", file, target.getAbsolutePath()), e);
+            PFServer.LOGGER.error(PFServer.LOGGER.getMessageFactory().newMessage("Error moving file {} to {}", file, target.getAbsolutePath()), e);
         }
         return file;
     }

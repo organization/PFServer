@@ -67,7 +67,7 @@ public class CraftInventory implements Inventory {
     }
 
     public ItemStack[] getContents() {
-        // CatServer start - fix AbstractMethodError
+        // PFServer start - fix AbstractMethodError
         List<net.minecraft.item.ItemStack> mcItems = null;
         try {
             mcItems = getInventory().getContents();
@@ -481,7 +481,7 @@ public class CraftInventory implements Inventory {
     }
 
     public InventoryHolder getHolder() {
-        // CatServer start - fix AbstractMethodError
+        // PFServer start - fix AbstractMethodError
         try {
             return inventory.getOwner();
         } catch (AbstractMethodError e) {
@@ -493,7 +493,7 @@ public class CraftInventory implements Inventory {
                 return null;
             }
         }
-        // CatServer end
+        // PFServer end
     }
 
     public int getMaxStackSize() {

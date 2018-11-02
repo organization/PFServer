@@ -28,6 +28,7 @@ import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import mgazul.PFServer.PFServer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.*;
@@ -42,7 +43,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.*;
 import net.minecraftforge.fml.common.network.internal.FMLMessage;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
@@ -146,7 +146,7 @@ import java.util.Map;
         else
         {
             serverInitiateHandshake();
-            FMLLog.log.info("Connection received without FML marker, assuming vanilla.");
+            PFServer.LOGGER.info("Connection received without FML marker, assuming vanilla.");
             insertIntoChannel();
             this.completeServerSideConnection(ConnectionType.VANILLA);
         }
@@ -163,11 +163,11 @@ import java.util.Map;
         // Insert ourselves into the pipeline
         this.manager.channel().pipeline().addBefore("packet_handler", "fml:packet_handler", this);
         if (this.state != null) {
-            FMLLog.log.info("Opening channel which already seems to have a state set. This is a vanilla connection. Handshake handler will stop now");
+            PFServer.LOGGER.info("Opening channel which already seems to have a state set. This is a vanilla connection. Handshake handler will stop now");
             this.manager.channel().config().setAutoRead(true);
             return;
         }
-        FMLLog.log.trace("Handshake channel activating");
+        PFServer.LOGGER.trace("Handshake channel activating");
         this.state = ConnectionState.OPENING;
         // send ourselves as a user event, to kick the pipeline active
         this.handshakeChannel.pipeline().fireUserEventTriggered(this);
@@ -230,7 +230,7 @@ import java.util.Map;
     private void completeClientSideConnection(ConnectionType type)
     {
         this.connectionType = type;
-        FMLLog.log.info("[{}] Client side {} connection established", Thread.currentThread().getName(), this.connectionType.name().toLowerCase(Locale.ENGLISH));
+        PFServer.LOGGER.info("[{}] Client side {} connection established", Thread.currentThread().getName(), this.connectionType.name().toLowerCase(Locale.ENGLISH));
         this.state = ConnectionState.CONNECTED;
         MinecraftForge.EVENT_BUS.post(new FMLNetworkEvent.ClientConnectedToServerEvent(manager, this.connectionType.name()));
     }
@@ -238,7 +238,7 @@ import java.util.Map;
     private synchronized void completeServerSideConnection(ConnectionType type)
     {
         this.connectionType = type;
-        FMLLog.log.info("[{}] Server side {} connection established", Thread.currentThread().getName(), this.connectionType.name().toLowerCase(Locale.ENGLISH));
+        PFServer.LOGGER.info("[{}] Server side {} connection established", Thread.currentThread().getName(), this.connectionType.name().toLowerCase(Locale.ENGLISH));
         this.state = ConnectionState.CONNECTED;
         if (DEBUG_HANDSHAKE)
             manager.closeChannel(new TextComponentString("Handshake Complete review log file for details."));
@@ -275,7 +275,7 @@ import java.util.Map;
         }
         else
         {
-            FMLLog.log.info("Unexpected packet during modded negotiation - assuming vanilla or keepalives : {}", msg.getClass().getName());
+            PFServer.LOGGER.info("Unexpected packet during modded negotiation - assuming vanilla or keepalives : {}", msg.getClass().getName());
         }
         return false;
     }
@@ -300,7 +300,7 @@ import java.util.Map;
     {
         if (evt instanceof ConnectionType && side == Side.SERVER)
         {
-            FMLLog.log.info("Timeout occurred, assuming a vanilla client");
+            PFServer.LOGGER.info("Timeout occurred, assuming a vanilla client");
             kickVanilla();
         }
     }
@@ -312,7 +312,7 @@ import java.util.Map;
 
     private void kickWithMessage(String message)
     {
-        FMLLog.log.error("Network Disconnect: {}", message);
+        PFServer.LOGGER.error("Network Disconnect: {}", message);
         final TextComponentString TextComponentString = new TextComponentString(message);
         if (side == Side.CLIENT)
         {
@@ -549,7 +549,7 @@ import java.util.Map;
     {
         if (state == ConnectionState.CONNECTED)
         {
-            FMLLog.log.fatal("Attempt to double complete the network connection!");
+            PFServer.LOGGER.fatal("Attempt to double complete the network connection!");
             throw new FMLNetworkException("Attempt to double complete!");
         }
         if (side == Side.CLIENT)
@@ -569,7 +569,7 @@ import java.util.Map;
 
     public void abortClientHandshake(String type)
     {
-        FMLLog.log.info("Aborting client handshake \"{}\"", type);
+        PFServer.LOGGER.info("Aborting client handshake \"{}\"", type);
         //FMLCommonHandler.instance().waitForPlayClient();
         completeClientSideConnection(ConnectionType.valueOf(type));
     }
@@ -583,11 +583,11 @@ import java.util.Map;
             // Mute the reset by peer exception - it's disconnection noise
             if (cause.getMessage() != null && cause.getMessage().contains("Connection reset by peer"))
             {
-                FMLLog.log.debug("Muted NetworkDispatcher exception", cause);
+                PFServer.LOGGER.debug("Muted NetworkDispatcher exception", cause);
             }
             else
             {
-                FMLLog.log.debug("NetworkDispatcher exception", cause);
+                PFServer.LOGGER.debug("NetworkDispatcher exception", cause);
             }
         }
         super.exceptionCaught(ctx, cause);
@@ -607,11 +607,11 @@ import java.util.Map;
 
     public void setOverrideDimension(int overrideDim) {
         this.overrideLoginDim = overrideDim;
-        FMLLog.log.debug("Received override dimension {}", overrideDim);
+        PFServer.LOGGER.debug("Received override dimension {}", overrideDim);
     }
 
     public int getOverrideDimension(SPacketJoinGame packetIn) {
-        FMLLog.log.debug("Overriding dimension: using {}", this.overrideLoginDim);
+        PFServer.LOGGER.debug("Overriding dimension: using {}", this.overrideLoginDim);
         return this.overrideLoginDim != 0 ? this.overrideLoginDim : packetIn.getDimension();
     }
 

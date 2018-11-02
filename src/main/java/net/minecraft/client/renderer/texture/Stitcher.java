@@ -2,6 +2,7 @@ package net.minecraft.client.renderer.texture;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.StitcherException;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,8 +56,8 @@ public class Stitcher
 
     public void doStitch()
     {
-        Holder[] astitcher$holder = (Holder[])this.setStitchHolders.toArray(new Holder[this.setStitchHolders.size()]);
-        Arrays.sort((Object[])astitcher$holder);
+        Holder[] astitcher$holder = this.setStitchHolders.toArray(new Holder[this.setStitchHolders.size()]);
+        Arrays.sort(astitcher$holder);
         net.minecraftforge.fml.common.ProgressManager.ProgressBar bar = net.minecraftforge.fml.common.ProgressManager.push("Texture stitching", astitcher$holder.length);
 
         for (Holder stitcher$holder : astitcher$holder)
@@ -65,9 +66,9 @@ public class Stitcher
             if (!this.allocateSlot(stitcher$holder))
             {
                 String s = String.format("Unable to fit: %s - size: %dx%d - Maybe try a lowerresolution resourcepack?", stitcher$holder.getAtlasSprite().getIconName(), stitcher$holder.getAtlasSprite().getIconWidth(), stitcher$holder.getAtlasSprite().getIconHeight());
-                net.minecraftforge.fml.common.FMLLog.log.info(s);
+                PFServer.LOGGER.info(s);
                 for (Holder h : astitcher$holder)
-                    net.minecraftforge.fml.common.FMLLog.log.info("  {}", h);
+                    PFServer.LOGGER.info("  {}", h);
                 throw new StitcherException(stitcher$holder, s);
             }
         }

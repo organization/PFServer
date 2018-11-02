@@ -21,7 +21,7 @@ package net.minecraftforge.fml.common.discovery.json;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder;
 import org.objectweb.asm.Type;
 
@@ -161,7 +161,7 @@ class ASMInfo
                         {
                             Annotation sub = pool.getSubAnnotation(Integer.parseInt(s));
                             if (sub == null)
-                                FMLLog.log.error("Invalid Sub-Annotation in Annotation JSON: " + s);
+                                PFServer.LOGGER.error("Invalid Sub-Annotation in Annotation JSON: " + s);
                             else
                                 list.add(sub.getValues(pool));
                         }
@@ -175,7 +175,7 @@ class ASMInfo
                     {
                         Annotation sub = pool.getSubAnnotation(Integer.parseInt(value));
                         if (sub == null)
-                            FMLLog.log.error("Invalid Sub-Annotation in Annotation JSON: " + value);
+                            PFServer.LOGGER.error("Invalid Sub-Annotation in Annotation JSON: " + value);
                         else
                             _value = sub.getValues(pool);
                     }

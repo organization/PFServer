@@ -23,6 +23,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.VersionParser;
 
@@ -73,7 +74,7 @@ public class MetadataCollection
         }
         catch (JsonParseException e)
         {
-            FMLLog.log.error("The mcmod.info file in {} cannot be parsed as valid JSON. It will be ignored", sourceName, e);
+            PFServer.LOGGER.error("The mcmod.info file in {} cannot be parsed as valid JSON. It will be ignored", sourceName, e);
             return new MetadataCollection();
         }
     }

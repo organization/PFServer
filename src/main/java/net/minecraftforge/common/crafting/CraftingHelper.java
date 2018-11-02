@@ -33,7 +33,6 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -46,6 +45,8 @@ import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.RegistryManager;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.io.BufferedReader;
@@ -65,6 +66,7 @@ import java.util.function.Function;
 
 public class CraftingHelper {
 
+    public static final Logger LOGGER = LogManager.getLogger();
     private static final boolean DEBUG_LOAD_MINECRAFT = false;
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static Map<ResourceLocation, IConditionFactory> conditions = Maps.newHashMap();
@@ -660,7 +662,7 @@ public class CraftingHelper {
                         }
                         catch (IOException e)
                         {
-                            FMLLog.log.error("Error loading _constants.json: ", e);
+                            LOGGER.error("Error loading _constants.json: ", e);
                             return false;
                         }
                         finally
@@ -693,12 +695,12 @@ public class CraftingHelper {
                     }
                     catch (JsonParseException e)
                     {
-                        FMLLog.log.error("Parsing error loading recipe {}", key, e);
+                        LOGGER.error("Parsing error loading recipe {}", key, e);
                         return false;
                     }
                     catch (IOException e)
                     {
-                        FMLLog.log.error("Couldn't read recipe {} from {}", key, file, e);
+                        LOGGER.error("Couldn't read recipe {} from {}", key, file, e);
                         return false;
                     }
                     finally
@@ -748,7 +750,7 @@ public class CraftingHelper {
                 }
                 catch (URISyntaxException e)
                 {
-                    FMLLog.log.error("Error finding Minecraft jar: ", e);
+                    LOGGER.error("Error finding Minecraft jar: ", e);
                     return false;
                 }
             }
@@ -763,7 +765,7 @@ public class CraftingHelper {
                 }
                 catch (IOException e)
                 {
-                    FMLLog.log.error("Error loading FileSystem from jar: ", e);
+                    LOGGER.error("Error loading FileSystem from jar: ", e);
                     return false;
                 }
             }
@@ -793,7 +795,7 @@ public class CraftingHelper {
                 }
                 catch (IOException e)
                 {
-                    FMLLog.log.error("Error iterating filesystem for: {}", mod.getModId(), e);
+                    LOGGER.error("Error iterating filesystem for: {}", mod.getModId(), e);
                     return false;
                 }
 

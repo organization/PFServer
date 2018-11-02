@@ -170,7 +170,7 @@ public abstract class PlayerList
         playerIn.connection = nethandlerplayserver;
         //forge 允许从ServerConnectionFromClientEvent向客户端发送数据包
         net.minecraftforge.fml.common.FMLCommonHandler.instance().fireServerConnectionEvent(netManager);
-        // CatServer start - send DimensionRegisterMessage to client before attempting to login to a Bukkit dimension
+        // PFServer start - send DimensionRegisterMessage to client before attempting to login to a Bukkit dimension
         if (DimensionManager.isBukkitDimension(playerIn.dimension))
         {
             FMLEmbeddedChannel serverChannel = ForgeNetworkHandler.getServerChannel();
@@ -178,7 +178,7 @@ public abstract class PlayerList
             serverChannel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(playerIn);
             serverChannel.writeOutbound(new ForgeMessage.DimensionRegisterMessage(playerIn.dimension, DimensionManager.getProviderType(playerIn.dimension).name()));
         }
-        // CatServer end
+        // PFServer end
         nethandlerplayserver.sendPacket(new SPacketJoinGame(playerIn.getEntityId(), playerIn.interactionManager.getGameType(), worldinfo.isHardcoreModeEnabled(), worldserver.provider.getDimension(), worldserver.getDifficulty(), this.getMaxPlayers(), worldinfo.getTerrainType(), worldserver.getGameRules().getBoolean("reducedDebugInfo")));
         playerIn.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
         nethandlerplayserver.sendPacket(new SPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(this.getServerInstance().getServerModName())));
@@ -492,7 +492,7 @@ public abstract class PlayerList
 
         // CraftBukkit start - Quitting must be before we do final save of data, in case plugins need to modify it
         org.bukkit.craftbukkit.event.CraftEventFactory.handleInventoryCloseEvent(playerIn);
-        if(playerIn.connection != null) { // CatServer - fix crash when player is Forge Handshake
+        if(playerIn.connection != null) { // PFServer - fix crash when player is Forge Handshake
             PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(cserver.getPlayer(playerIn), "\u00A7e" + playerIn.getName() + " left the game");
             cserver.getPluginManager().callEvent(playerQuitEvent);
             playerIn.getBukkitEntity().disconnect(playerQuitEvent.getQuitMessage());
@@ -864,7 +864,7 @@ public abstract class PlayerList
         }
 
         int actualDimension = worldserver.provider.getDimension();
-        // CatServer - change dim for bukkit added dimensions
+        // PFServer - change dim for bukkit added dimensions
         if (DimensionManager.isBukkitDimension(actualDimension))
         {
             FMLEmbeddedChannel serverChannel = ForgeNetworkHandler.getServerChannel();
@@ -872,7 +872,7 @@ public abstract class PlayerList
             serverChannel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(entityplayermp);
             serverChannel.writeOutbound(new ForgeMessage.DimensionRegisterMessage(actualDimension, DimensionManager.getProviderType(actualDimension).name()));
         }
-        // CatServer end
+        // PFServer end
         // entityplayermp.connection.sendPacket(new SPacketRespawn(entityplayermp.dimension, entityplayermp.world.getDifficulty(), entityplayermp.world.getWorldInfo().getTerrainType(), entityplayermp.interactionManager.getGameType()));
         entityplayermp.connection.sendPacket(new SPacketRespawn(actualDimension, worldserver.getDifficulty(), worldserver.getWorldInfo().getTerrainType(), entityplayermp.interactionManager.getGameType()));
         entityplayermp.setWorld(worldserver);
@@ -1157,14 +1157,14 @@ public abstract class PlayerList
                 blockposition = worldserver1.getSpawnCoordinate();
             }
 
-            // CatServer start - check null
+            // PFServer start - check null
             if (blockposition != null)
             {
                 d0 = (double) blockposition.getX();
                 y = (double) blockposition.getY();
                 d1 = (double) blockposition.getZ();
             }
-            // CatServer end
+            // PFServer end
         }
 
         worldserver.profiler.endSection();

@@ -21,11 +21,15 @@ package net.minecraftforge.fml.common.event;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import mgazul.PFServer.PFServer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.ModContainer;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -57,7 +61,7 @@ public class FMLInterModComms {
         {
             this.activeContainer = activeContainer;
             this.currentList = null;
-            FMLLog.log.trace("Attempting to deliver {} IMC messages to mod {}", modMessages.get(activeContainer.getModId()).size(), activeContainer.getModId());
+            PFServer.LOGGER.trace("Attempting to deliver {} IMC messages to mod {}", modMessages.get(activeContainer.getModId()).size(), activeContainer.getModId());
         }
 
         private ImmutableList<IMCMessage> currentList;
@@ -186,7 +190,7 @@ public class FMLInterModComms {
                 Function<T,V> f = Class.forName((String) value).asSubclass(Function.class).newInstance();
                 return Optional.of(f);
             } catch (Exception e) {
-                FMLLog.log.info("An error occurred instantiating the IMC function. key: {} value: {}, caller: {}", key,value,sender);
+                PFServer.LOGGER.info("An error occurred instantiating the IMC function. key: {} value: {}, caller: {}", key,value,sender);
                 return Optional.empty();
             }
         }

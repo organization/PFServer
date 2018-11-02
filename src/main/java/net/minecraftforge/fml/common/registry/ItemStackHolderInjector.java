@@ -21,7 +21,7 @@ package net.minecraftforge.fml.common.registry;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 
@@ -37,15 +37,15 @@ public enum ItemStackHolderInjector
     private List<ItemStackHolderRef> itemStackHolders = Lists.newArrayList();
 
     public void inject() {
-        FMLLog.log.info("Injecting itemstacks");
+        PFServer.LOGGER.info("Injecting itemstacks");
         for (ItemStackHolderRef ishr: itemStackHolders) {
             ishr.apply();
         }
-        FMLLog.log.info("Itemstack injection complete");
+        PFServer.LOGGER.info("Itemstack injection complete");
     }
 
     public void findHolders(ASMDataTable table) {
-        FMLLog.log.info("Identifying ItemStackHolder annotations");
+        PFServer.LOGGER.info("Identifying ItemStackHolder annotations");
         Set<ASMData> allItemStackHolders = table.getAll(GameRegistry.ItemStackHolder.class.getName());
         Map<String, Class<?>> classCache = Maps.newHashMap();
         for (ASMData data : allItemStackHolders)
@@ -57,7 +57,7 @@ public enum ItemStackHolderInjector
             String nbt = data.getAnnotationInfo().containsKey("nbt") ? (String) data.getAnnotationInfo().get("nbt") : "";
             addHolder(classCache, className, annotationTarget, value, meta, nbt);
         }
-        FMLLog.log.info("Found {} ItemStackHolder annotations", allItemStackHolders.size());
+        PFServer.LOGGER.info("Found {} ItemStackHolder annotations", allItemStackHolders.size());
 
     }
 

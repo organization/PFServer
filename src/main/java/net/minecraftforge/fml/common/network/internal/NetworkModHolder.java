@@ -24,7 +24,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.SetMultimap;
-import net.minecraftforge.fml.common.FMLLog;
+import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
@@ -158,7 +158,7 @@ public class NetworkModHolder
             }
             catch (Exception e)
             {
-                FMLLog.log.error("Error occurred invoking NetworkCheckHandler {} at {}", container, e);
+                PFServer.LOGGER.error("Error occurred invoking NetworkCheckHandler {} at {}", container, e);
                 return String.format("Error occurred invoking NetworkCheckHandler %s", container);
             }
         }
@@ -194,7 +194,7 @@ public class NetworkModHolder
     {
         this(container);
         this.checker = Preconditions.checkNotNull(checker);
-        FMLLog.log.debug("The mod {} is using a custom checker {}", container.getModId(), checker.getClass().getName());
+        PFServer.LOGGER.debug("The mod {} is using a custom checker {}", container.getModId(), checker.getClass().getName());
     }
     public NetworkModHolder(ModContainer container, Class<?> modClass, @Nullable String acceptableVersionRange, ASMDataTable table)
     {
@@ -232,7 +232,7 @@ public class NetworkModHolder
                     }
                     else
                     {
-                        FMLLog.log.fatal("Found unexpected method signature for annotation NetworkCheckHandler");
+                        PFServer.LOGGER.fatal("Found unexpected method signature for annotation NetworkCheckHandler");
                     }
                 }
             }
@@ -249,7 +249,7 @@ public class NetworkModHolder
             }
             catch (Exception e)
             {
-                FMLLog.log.warn("The declared version check handler method {} on network mod id {} is not accessible", networkCheckHandlerMethod, container.getModId(), e);
+                PFServer.LOGGER.warn("The declared version check handler method {} on network mod id {} is not accessible", networkCheckHandlerMethod, container.getModId(), e);
             }
         }
         if (this.checkHandler != null)
@@ -268,20 +268,20 @@ public class NetworkModHolder
             }
             catch (InvalidVersionSpecificationException e)
             {
-                FMLLog.log.warn("Invalid bounded range {} specified for network mod id {}", acceptableVersionRange, container.getModId(), e);
+                PFServer.LOGGER.warn("Invalid bounded range {} specified for network mod id {}", acceptableVersionRange, container.getModId(), e);
             }
             this.checker = new DefaultNetworkChecker();
         }
-        FMLLog.log.trace("Mod {} is using network checker : {}", container.getModId(), this.checker);
-        FMLLog.log.trace("Testing mod {} to verify it accepts its own version in a remote connection", container.getModId());
+        PFServer.LOGGER.trace("Mod {} is using network checker : {}", container.getModId(), this.checker);
+        PFServer.LOGGER.trace("Testing mod {} to verify it accepts its own version in a remote connection", container.getModId());
         boolean acceptsSelf = acceptVersion(container.getVersion());
         if (!acceptsSelf)
         {
-            FMLLog.log.fatal("The mod {} appears to reject its own version number ({}) in its version handling. This is likely a severe bug in the mod!", container.getModId(), container.getVersion());
+            PFServer.LOGGER.fatal("The mod {} appears to reject its own version number ({}) in its version handling. This is likely a severe bug in the mod!", container.getModId(), container.getVersion());
         }
         else
         {
-            FMLLog.log.trace("The mod {} accepts its own version ({})", container.getModId(), container.getVersion());
+            PFServer.LOGGER.trace("The mod {} accepts its own version ({})", container.getModId(), container.getVersion());
         }
     }
 

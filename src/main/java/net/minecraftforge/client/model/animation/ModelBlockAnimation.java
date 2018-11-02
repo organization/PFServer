@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
+import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.block.model.BlockPart;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
@@ -40,7 +41,6 @@ import net.minecraftforge.common.model.animation.IJoint;
 import net.minecraftforge.common.model.animation.IJointClip;
 import net.minecraftforge.common.model.animation.JointClips;
 import net.minecraftforge.common.util.JsonUtils;
-import net.minecraftforge.fml.common.FMLLog;
 
 import javax.annotation.Nullable;
 import javax.vecmath.AxisAngle4f;
@@ -553,7 +553,7 @@ public class ModelBlockAnimation
         }
         catch(IOException | JsonParseException e)
         {
-            FMLLog.log.error("Exception loading vanilla model animation {}, skipping", armatureLocation, e);
+            PFServer.LOGGER.error("Exception loading vanilla model animation {}, skipping", armatureLocation, e);
             return defaultModelBlockAnimation;
         }
     }

@@ -1,6 +1,6 @@
 package mgazul.PFServer.remapper;
 
-import mgazul.PFServer.CatServer;
+import mgazul.PFServer.PFServer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,7 +23,7 @@ public class ReflectionMethods {
     }
 
     public static Class<?> forName(String className, boolean initialize, ClassLoader classLoader) throws ClassNotFoundException {
-        if (!className.startsWith("net.minecraft.server." + CatServer.getNativeVersion())) return Class.forName(className, initialize, classLoader);
+        if (!className.startsWith("net.minecraft.server." + PFServer.getNativeVersion())) return Class.forName(className, initialize, classLoader);
         className = ReflectionTransformer.jarMapping.classes.get(className.replace('.', '/')).replace('/', '.');
         return Class.forName(className, initialize, classLoader);
     }

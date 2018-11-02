@@ -40,7 +40,7 @@ public abstract class CommandHandler implements ICommandManager
         String s = astring[0];
         astring = dropFirstString(astring);
         ICommand icommand = this.commandMap.get(s);
-        if (icommand == null) icommand = BukkitCommandWrapper.toNMSCommand(sender, s); // CatServer - allow mods execute plugin command
+        if (icommand == null) icommand = BukkitCommandWrapper.toNMSCommand(sender, s); // PFServer - allow mods execute plugin command
         int i = 0;
 
         try
