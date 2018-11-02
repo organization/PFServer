@@ -1,6 +1,7 @@
 package mgazul.PFServer;
 
 import mgazul.PFServer.remapper.NetworkTransformer;
+import mgazul.PFServer.remapper.SideTransformer;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import javax.annotation.Nullable;
@@ -10,7 +11,8 @@ public class CorePlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         return new String[] {
-                NetworkTransformer.class.getCanonicalName()
+                NetworkTransformer.class.getCanonicalName(),
+                SideTransformer.class.getCanonicalName()
         };
     }
     @Override
