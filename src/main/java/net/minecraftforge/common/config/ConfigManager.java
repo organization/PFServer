@@ -185,7 +185,7 @@ public class ConfigManager
             }
             catch (Exception e)
             {
-                PFServer.LOGGER.error("An error occurred trying to load a config for {} into {}", targ.getClassName(), e);
+                PFServer.LOGGER.error("An error occurred trying to load a config for {} into {}", modid, targ.getClassName(), e);
                 throw new LoaderException(e);
             }
         }

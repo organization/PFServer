@@ -42,7 +42,7 @@ public class ObfuscationReflectionHelper
         }
         catch (UnableToAccessFieldException e)
         {
-            PFServer.LOGGER.error("There was a problem getting field index {} from {}", classToAccess.getName(), e);
+            PFServer.LOGGER.error("There was a problem getting field index {} from {}", fieldIndex, classToAccess.getName(), e);
             throw e;
         }
     }
@@ -72,7 +72,7 @@ public class ObfuscationReflectionHelper
         }
         catch (UnableToAccessFieldException e)
         {
-            PFServer.LOGGER.error("Unable to access any field {} on type {}", classToAccess.getName(), e);
+            PFServer.LOGGER.error("Unable to access any field {} on type {}", Arrays.toString(fieldNames), classToAccess.getName(), e);
             throw e;
         }
     }
@@ -85,7 +85,7 @@ public class ObfuscationReflectionHelper
         }
         catch (UnableToAccessFieldException e)
         {
-            PFServer.LOGGER.error("There was a problem setting field index {} on type {}", classToAccess.getName(), e);
+            PFServer.LOGGER.error("There was a problem setting field index {} on type {}", fieldIndex, classToAccess.getName(), e);
             throw e;
         }
     }
@@ -98,12 +98,12 @@ public class ObfuscationReflectionHelper
         }
         catch (UnableToFindFieldException e)
         {
-            PFServer.LOGGER.error("Unable to locate any field {} on type {}", classToAccess.getName(), e);
+            PFServer.LOGGER.error("Unable to locate any field {} on type {}", Arrays.toString(fieldNames), classToAccess.getName(), e);
             throw e;
         }
         catch (UnableToAccessFieldException e)
         {
-            PFServer.LOGGER.error("Unable to set any field {} on type {}", classToAccess.getName(), e);
+            PFServer.LOGGER.error("Unable to set any field {} on type {}", Arrays.toString(fieldNames), classToAccess.getName(), e);
             throw e;
         }
     }

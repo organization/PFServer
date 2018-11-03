@@ -158,8 +158,8 @@ public class NetworkModHolder
             }
             catch (Exception e)
             {
-                PFServer.LOGGER.error("Error occurred invoking NetworkCheckHandler {} at {}", container, e);
-                return String.format("Error occurred invoking NetworkCheckHandler %s", container);
+                PFServer.LOGGER.error("Error occurred invoking NetworkCheckHandler {} at {}", checkHandler.getName(), container, e);
+                return String.format("Error occurred invoking NetworkCheckHandler %s at %s", checkHandler.getName(), container);
             }
         }
 

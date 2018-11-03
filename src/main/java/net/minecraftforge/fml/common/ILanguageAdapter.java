@@ -109,7 +109,7 @@ public interface ILanguageAdapter {
             }
             catch (InvocationTargetException e)
             {
-                PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", target.getName(), e);
+                PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", proxyTarget.getSimpleName(), target.getName(), e);
                 throw new LoaderException(e);
             }
 
@@ -166,7 +166,7 @@ public interface ILanguageAdapter {
                             setProxy(target, proxyTarget, proxy);
                         }
                         catch (Exception e) {
-                            PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", target.getName(), e);
+                            PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", proxyTarget.getSimpleName(), target.getName(), e);
                             throw new LoaderException(e);
                         }
                     }

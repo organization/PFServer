@@ -96,7 +96,7 @@ public class ProxyInjector
             }
             catch (Exception e)
             {
-                PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", targ.getObjectName(), e);
+                PFServer.LOGGER.error("An error occurred trying to load a proxy into {}.{}", targ.getClassName(), targ.getObjectName(), e);
                 throw new LoaderException(e);
             }
         }

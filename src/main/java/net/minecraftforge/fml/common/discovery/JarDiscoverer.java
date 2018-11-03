@@ -102,7 +102,7 @@ public class JarDiscoverer implements ITypeDiscoverer
                 }
                 catch (LoaderException e)
                 {
-                    PFServer.LOGGER.error("There was a problem reading the entry {} in the jar {} - probably a corrupt zip", candidate.getModContainer().getPath(), e);
+                    PFServer.LOGGER.error("There was a problem reading the entry {} in the jar {} - probably a corrupt zip", ze.getName(), candidate.getModContainer().getPath(), e);
                     jar.close();
                     throw e;
                 }

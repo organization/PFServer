@@ -192,7 +192,7 @@ public class FMLCommonHandler
      */
     public void raiseException(Throwable exception, String message, boolean stopGame)
     {
-        PFServer.LOGGER.error("Something raised an exception. The message was '{}'. 'stopGame' is {}", stopGame, exception);
+        PFServer.LOGGER.error("Something raised an exception. The message was '{}'. 'stopGame' is {}", message, stopGame, exception);
         if (stopGame)
         {
             getSidedDelegate().haltGame(message,exception);

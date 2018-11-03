@@ -132,7 +132,7 @@ public class FMLModContainer implements ModContainer
             }
             catch (Exception ex)
             {
-                PFServer.LOGGER.error("Error constructing custom mod language adapter referenced by {} (modid: {})", getModId(), ex);
+                PFServer.LOGGER.error("Error constructing custom mod language adapter referenced by {} (modid: {})", this.className, getModId(), ex);
                 throw new RuntimeException(ex);
             }
         }
