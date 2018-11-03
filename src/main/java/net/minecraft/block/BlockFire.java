@@ -134,7 +134,7 @@ public class BlockFire extends Block
         return 30;
     }
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+   /* public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (worldIn.getGameRules().getBoolean("doFireTick"))
         {
@@ -264,6 +264,7 @@ public class BlockFire extends Block
             }
         }
     }
+    */
 
     protected boolean canDie(World worldIn, BlockPos pos)
     {

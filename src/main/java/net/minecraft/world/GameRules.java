@@ -11,7 +11,6 @@ public class GameRules
 
     public GameRules()
     {
-        this.addGameRule("doFireTick", "true", ValueType.BOOLEAN_VALUE);
         this.addGameRule("mobGriefing", "true", ValueType.BOOLEAN_VALUE);
         this.addGameRule("keepInventory", "false", ValueType.BOOLEAN_VALUE);
         this.addGameRule("doMobSpawning", "true", ValueType.BOOLEAN_VALUE);
