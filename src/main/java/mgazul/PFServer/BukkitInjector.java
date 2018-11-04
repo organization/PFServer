@@ -20,7 +20,7 @@ public class BukkitInjector {
             Item item = entry.getValue();
             if(!key.getResourceDomain().equals("minecraft")) {
                 String materialName = key.toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", "");
-                Material material = Material.addMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, new Object[]{Integer.valueOf(Item.getIdFromItem(item))}));
+                Material material = Material.addMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE, Integer.TYPE}, new Object[]{Item.getIdFromItem(item), item.getItemStackLimit()}));
                 if (material != null) {
                    PFServer.LOGGER.debug("Injected new Forge item material %s with ID %d.", material.name(), material.getId());
                 } else {
@@ -41,7 +41,7 @@ public class BukkitInjector {
             Block block = entry.getValue();
             if(!key.getResourceDomain().equals("minecraft")) {
                 String materialName = key.toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", "");
-                Material material = Material.addBlockMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, new Object[]{Integer.valueOf(Block.getIdFromBlock(block))}));
+                Material material = Material.addBlockMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, new Object[]{Block.getIdFromBlock(block)}));
                 if (material != null) {
                     PFServer.LOGGER.debug("Injected new Forge block material %s with ID %d.", material.name(), material.getId());
                 } else {
