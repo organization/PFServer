@@ -8,7 +8,7 @@ public class PFServer {
 
 	private static final String version = "1.0.0";
 	private static final String native_verson = "v1_12_R1";
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger("PFServer");
 
 	public static String getVersion(){
 		return version;
