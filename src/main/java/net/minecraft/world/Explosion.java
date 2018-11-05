@@ -50,7 +50,7 @@ public class Explosion
     private final Map<EntityPlayer, Vec3d> playerKnockbackMap;
     private final Vec3d position;
 
-    public boolean wasCanceled = false;
+    public boolean wasCanceled = true;
 
     @SideOnly(Side.CLIENT)
     public Explosion(World worldIn, Entity entityIn, double x, double y, double z, float size, List<BlockPos> affectedPositions)
@@ -167,7 +167,7 @@ public class Explosion
                         d5 = d5 / d13;
                         d7 = d7 / d13;
                         d9 = d9 / d13;
-                        double d14 = (double)this.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+                        double d14 = this.getBlockDensity(vec3d, entity.getEntityBoundingBox());
                         double d10 = (1.0D - d12) * d14;
                         // entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float)((int)((d10 * d10 + d10) / 2.0D * 7.0D * (double)f3 + 1.0D)));
                         CraftEventFactory.entityDamage = exploder;
@@ -205,7 +205,7 @@ public class Explosion
 
     public void doExplosionB(boolean spawnParticles)
     {
-        this.world.playSound((EntityPlayer)null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
+        this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
 
         if (this.size >= 2.0F && this.damagesTerrain)
         {
@@ -231,20 +231,20 @@ public class Explosion
                 }
             }
 
-            boolean cancelled;
+            boolean cancelled = true;
             List<org.bukkit.block.Block> bukkitBlocks;
             float yield;
 
             if (explode != null) {
                 EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 1.0F / this.size);
                 this.world.getServer().getPluginManager().callEvent(event);
-                cancelled = event.isCancelled();
+               // cancelled = event.isCancelled();
                 bukkitBlocks = event.blockList();
                 yield = event.getYield();
             } else {
                 BlockExplodeEvent event = new BlockExplodeEvent(location.getBlock(), blockList, 1.0F / this.size);
                 this.world.getServer().getPluginManager().callEvent(event);
-                cancelled = event.isCancelled();
+               // cancelled = event.isCancelled();
                 bukkitBlocks = event.blockList();
                 yield = event.getYield();
             }
@@ -351,4 +351,82 @@ public class Explosion
     }
 
     public Vec3d getPosition(){ return this.position; }
+
+    // Paper start - Optimize explosions
+    private float getBlockDensity(Vec3d vec3d, AxisAlignedBB aabb) {
+        CacheKey key = new CacheKey(this, aabb);
+        Float blockDensity = this.world.explosionDensityCache.get(key);
+        if (blockDensity == null) {
+            blockDensity = this.world.getBlockDensity(vec3d, aabb);
+            this.world.explosionDensityCache.put(key, blockDensity);
+        }
+
+        return blockDensity;
+    }
+
+    static class CacheKey {
+        private final World world;
+        private final double posX, posY, posZ;
+        private final double minX, minY, minZ;
+        private final double maxX, maxY, maxZ;
+
+        public CacheKey(Explosion explosion, AxisAlignedBB aabb) {
+            this.world = explosion.world;
+            this.posX = explosion.x;
+            this.posY = explosion.y;
+            this.posZ = explosion.z;
+            this.minX = aabb.minX;
+            this.minY = aabb.minY;
+            this.minZ = aabb.minZ;
+            this.maxX = aabb.maxX;
+            this.maxY = aabb.maxY;
+            this.maxZ = aabb.maxZ;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CacheKey cacheKey = (CacheKey) o;
+
+            if (Double.compare(cacheKey.posX, posX) != 0) return false;
+            if (Double.compare(cacheKey.posY, posY) != 0) return false;
+            if (Double.compare(cacheKey.posZ, posZ) != 0) return false;
+            if (Double.compare(cacheKey.minX, minX) != 0) return false;
+            if (Double.compare(cacheKey.minY, minY) != 0) return false;
+            if (Double.compare(cacheKey.minZ, minZ) != 0) return false;
+            if (Double.compare(cacheKey.maxX, maxX) != 0) return false;
+            if (Double.compare(cacheKey.maxY, maxY) != 0) return false;
+            if (Double.compare(cacheKey.maxZ, maxZ) != 0) return false;
+            return world.equals(cacheKey.world);
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            result = world.hashCode();
+            temp = Double.doubleToLongBits(posX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(posY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(posZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+    }
+    // Paper end
 }

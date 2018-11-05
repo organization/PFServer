@@ -831,7 +831,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         // Send time updates to everyone, it will get the right time from the world the player is in.
         if (this.tickCounter % 20 == 0) {
             for (int i = 0; i < this.getPlayerList().getPlayers().size(); ++i) {
-                EntityPlayerMP entityplayer = (EntityPlayerMP) this.getPlayerList().getPlayers().get(i);
+                EntityPlayerMP entityplayer = this.getPlayerList().getPlayers().get(i);
                 entityplayer.connection.sendPacket(new SPacketTimeUpdate(entityplayer.world.getTotalWorldTime(), entityplayer.getPlayerTime(), entityplayer.world.getGameRules().getBoolean("doDaylightCycle"))); // Add support for per player time
             }
         }
@@ -897,6 +897,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 worldserver.timings.tracker.stopTiming(); // Spigot
                 this.profiler.endSection();
                 this.profiler.endSection();
+                worldserver.explosionDensityCache.clear(); // Paper - Optimize explosions
             // }
 
             // worldTickTimes.get(id)[this.tickCounter % 100] = System.nanoTime() - i;
