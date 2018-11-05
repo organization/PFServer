@@ -12,13 +12,12 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 public class NBTTagCompound extends NBTBase
 {
     private static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
-    private final Map<String, NBTBase> tagMap = new ConcurrentHashMap<>();
+    private final Map<String, NBTBase> tagMap = new HashMap<>();
 
     void write(DataOutput output) throws IOException
     {
