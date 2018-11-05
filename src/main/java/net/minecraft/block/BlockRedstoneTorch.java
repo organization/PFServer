@@ -237,7 +237,7 @@ public class BlockRedstoneTorch extends BlockTorch
     static class Toggle
         {
             BlockPos pos;
-            long time; 
+            long time;
             final long getTime() { return this.time; } // Paper - OBFHELPER;
 
             public Toggle(BlockPos pos, long time)

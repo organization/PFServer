@@ -1,7 +1,5 @@
 package mgazul.PFServer.remapper;
 
-import java.lang.reflect.Method;
-
 /**
  * Based on Apache's ReflectionUtil
  * @author Maxqia
