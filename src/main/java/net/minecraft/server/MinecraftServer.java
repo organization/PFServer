@@ -692,7 +692,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
                 ImageIO.write(bufferedimage, "PNG", new ByteBufOutputStream(bytebuf));
                 ByteBuf bytebuf1 = Base64.encode(bytebuf);
-                response.setFavicon("data:image/png;base64," + bytebuf1.toString(StandardCharsets.UTF_8));
+                response.setFavicon("data:image/png;base64," + bytebuf1.toString(StandardCharsets.UTF_8).replace("/n", ""));
                 bytebuf1.release(); // Forge: fix MC-122085
             }
             catch (Exception exception)
