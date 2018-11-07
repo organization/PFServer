@@ -840,19 +840,17 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         SpigotTimings.timeUpdateTimer.stopTiming(); // Spigot
         net.minecraftforge.common.chunkio.ChunkIOExecutor.tick();
 
-        // TODO: Check if it's OK to replace ids for worldServerList.size()
-        // Integer[] ids = net.minecraftforge.common.DimensionManager.getIDs(this.tickCounter % 200 == 0);
         for (int x = 0; x < worldServerList.size(); x++)
         {
-            // int id = ids[x];
             long i = System.nanoTime();
 
-            // if (id == 0 || this.getAllowNether()) {
-                WorldServer worldserver = worldServerList.get(x);
-                this.profiler.func_194340_a(() ->
-                {
-                    return worldserver.getWorldInfo().getWorldName();
-                });
+            WorldServer worldserver = worldServerList.get(x);
+            int id = worldserver.dimension;
+
+            this.profiler.func_194340_a(() ->
+            {
+                return worldserver.getWorldInfo().getWorldName();
+            });
 
                 /* Drop global time updates
                 if (this.tickCounter % 20 == 0)
@@ -900,9 +898,8 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 this.profiler.endSection();
                 this.profiler.endSection();
                 worldserver.explosionDensityCache.clear(); // Paper - Optimize explosions
-            // }
 
-            // worldTickTimes.get(id)[this.tickCounter % 100] = System.nanoTime() - i;
+                worldTickTimes.get(id)[this.tickCounter % 100] = System.nanoTime() - i;
         }
 
         this.profiler.endStartSection("dim_unloading");
