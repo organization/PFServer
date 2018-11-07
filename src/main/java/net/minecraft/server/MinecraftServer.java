@@ -342,7 +342,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                     worlddata = new WorldInfo(worldsettings, name);
                 }
                 worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
-                world = (WorldServer) new WorldServerMulti(this, idatamanager, dim, this.worldServerList.get(0), this.profiler, worlddata, worldEnvironment, gen).init();
+                world = (WorldServer) new WorldServerMulti(this, idatamanager, dim, this.worlds[0], this.profiler, worlddata, worldEnvironment, gen).init();
             }
             this.server.getPluginManager().callEvent(new org.bukkit.event.world.WorldInitEvent(world.getWorld()));
             world.addEventListener(new ServerWorldEventHandler(this, world));
@@ -974,7 +974,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 return world;
             }
         }
-        return worldServerList.get(0);
+        return worlds[0];
         // CraftBukkit end
     }
 
@@ -1414,7 +1414,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     public World getEntityWorld()
     {
         // return this.worlds[0];
-        return this.worldServerList.get(0); // CraftBukkit
+        return this.worlds[0]; // CraftBukkit
     }
 
     public boolean isBlockProtected(World worldIn, BlockPos pos, EntityPlayer playerIn)
@@ -1494,7 +1494,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     public boolean sendCommandFeedback()
     {
         // return this.worlds[0].getGameRules().getBoolean("sendCommandFeedback");
-        return worldServerList.get(0).getGameRules().getBoolean("sendCommandFeedback");
+        return worlds[0].getGameRules().getBoolean("sendCommandFeedback");
     }
 
     public MinecraftServer getServer()
@@ -1564,13 +1564,13 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     public AdvancementManager getAdvancementManager()
     {
         // return this.worlds[0].getAdvancementManager();
-        return this.worldServerList.get(0).getAdvancementManager();
+        return this.worlds[0].getAdvancementManager();
     }
 
     public FunctionManager getFunctionManager()
     {
         // return this.worlds[0].getFunctionManager();
-        return this.worldServerList.get(0).getFunctionManager();
+        return this.worlds[0].getFunctionManager();
     }
 
     public void reload()
@@ -1579,7 +1579,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         {
             this.getPlayerList().saveAllPlayerData();
             // this.worlds[0].getLootTableManager().reloadLootTables();
-            this.worldServerList.get(0).getLootTableManager().reloadLootTables();
+            this.worlds[0].getLootTableManager().reloadLootTables();
             this.getAdvancementManager().reload();
             this.getFunctionManager().reload();
             this.getPlayerList().reloadResources();
