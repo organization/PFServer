@@ -186,7 +186,7 @@ public class ContainerRepair extends Container
                     if (l2 <= 0)
                     {
 //                        this.outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
-                        org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(getBukkitView(), ItemStack.EMPTY);
+                        if (getBukkitView() != null) org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(getBukkitView(), ItemStack.EMPTY);
                         this.maximumCost = 0;
                         return;
                     }
@@ -308,7 +308,7 @@ public class ContainerRepair extends Container
                     if (flag3 && !flag2)
                     {
 //                        this.outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
-                        org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(getBukkitView(), ItemStack.EMPTY);
+                        if (getBukkitView() != null) org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(getBukkitView(), ItemStack.EMPTY);
                         this.maximumCost = 0;
                         return;
                     }
@@ -368,7 +368,7 @@ public class ContainerRepair extends Container
             }
 
 //            this.outputSlot.setInventorySlotContents(0, itemstack1);
-            org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(getBukkitView(), itemstack1);
+            if (getBukkitView() != null) org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareAnvilEvent(getBukkitView(), itemstack1);
             this.detectAndSendChanges();
         }
     }

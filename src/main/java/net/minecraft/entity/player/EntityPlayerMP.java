@@ -72,6 +72,7 @@ import org.bukkit.event.player.PlayerChangedMainHandEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.MainHand;
 
 import javax.annotation.Nullable;
@@ -1167,7 +1168,8 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         this.connection.sendPacket(new SPacketWindowItems(containerToSend.windowId, itemsList));
         this.connection.sendPacket(new SPacketSetSlot(-1, -1, this.inventory.getItemStack()));
         // CraftBukkit start - Send a Set Slot to update the crafting result slot
-        if (java.util.EnumSet.of(InventoryType.CRAFTING,InventoryType.WORKBENCH).contains(containerToSend.getBukkitView().getType())) {
+        InventoryView bukkitView = containerToSend.getBukkitView();
+        if (bukkitView != null && java.util.EnumSet.of(InventoryType.CRAFTING,InventoryType.WORKBENCH).contains(bukkitView.getType())) { // CatServer - mods bypass
             this.connection.sendPacket(new SPacketSetSlot(containerToSend.windowId, 0, containerToSend.getSlot(0).getStack()));
         }
         // CraftBukkit end
