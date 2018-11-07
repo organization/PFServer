@@ -247,7 +247,7 @@ public class DimensionManager
         }
         catch (Exception e)
         {
-            PFServer.LOGGER.error("Cannot Hotload Dim: {}", dim, e);
+            PFServer.LOGGER.error("Cannot Hotload Dim: {}", dim);
             return; // If a provider hasn't been registered then we can't hotload the dim
         }
         MinecraftServer mcServer = overworld.getMinecraftServer();
