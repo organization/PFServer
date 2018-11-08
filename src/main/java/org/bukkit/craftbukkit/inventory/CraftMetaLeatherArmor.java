@@ -34,7 +34,12 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
         if (tag.hasKey(DISPLAY.NBT)) {
             NBTTagCompound display = tag.getCompoundTag(DISPLAY.NBT);
             if (display.hasKey(COLOR.NBT)) {
-                color = Color.fromRGB(display.getInteger(COLOR.NBT));
+                // Fix SPIGOT-4363
+                try {
+                    color = Color.fromRGB(display.getInteger(COLOR.NBT));
+                } catch (IllegalArgumentException ex) {
+                    // Invalid colour
+                }
             }
         }
     }
