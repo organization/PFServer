@@ -928,6 +928,8 @@ public class ForgeHooks
                     blocksnapshot.restore(true, false);
                     world.restoringBlockSnapshots = false;
                 }
+
+                ((org.bukkit.craftbukkit.entity.CraftPlayer) player.getBukkitEntity()).updateInventory(); // update inventory
             }
             else
             {

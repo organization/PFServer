@@ -301,6 +301,11 @@ public class PlayerInteractionManager
             // CraftBukkit start - Force block reset to client
             this.player.connection.sendPacket(new SPacketBlockChange(this.world, pos));
             // CraftBukkit end
+            // update TE for this block
+            TileEntity tileentity = this.world.getTileEntity(pos);
+            if (tileentity != null) {
+                this.player.connection.sendPacket(tileentity.getUpdatePacket());
+            }
         }
     }
 
@@ -479,6 +484,7 @@ public class PlayerInteractionManager
                 } else if (blockdata.getBlock() instanceof BlockCake) {
                     ((EntityPlayerMP) player).getBukkitEntity().sendHealthUpdate(); // SPIGOT-1341 - reset health for cake
                 }
+                ((EntityPlayerMP) player).getBukkitEntity().updateInventory(); // SPIGOT-2867
                 return (cbEvent.useItemInHand() != Event.Result.ALLOW) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
             }
             else if (this.gameType == GameType.SPECTATOR)
