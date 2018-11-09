@@ -28,6 +28,7 @@ import org.bukkit.World;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
@@ -532,6 +533,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
         String name = getHandle().getCustomNameTag();
 
         if (name == null || name.length() == 0) {
+            if (getType() == EntityType.MOD_CUSTOM && this instanceof CraftLivingEntity) return ((CraftLivingEntity) this).entity.getName();
             return null;
         }
 

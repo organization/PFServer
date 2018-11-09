@@ -32,4 +32,14 @@ public class CraftCustomEntity extends CraftEntity {
             return type;
         else return EntityType.MOD_CUSTOM;
     }
+
+    public String getCustomName() {
+        String name = getHandle().getCustomNameTag();
+
+        if (name == null || name.length() == 0) {
+            return this.entity.getName();
+        }
+
+        return name;
+    }
 }
