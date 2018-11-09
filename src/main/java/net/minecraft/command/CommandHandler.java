@@ -31,11 +31,6 @@ public abstract class CommandHandler implements ICommandManager
     {
         rawCommand = rawCommand.trim();
 
-        if (rawCommand.startsWith("/"))
-        {
-            rawCommand = rawCommand.substring(1);
-        }
-
         String[] astring = rawCommand.split(" ");
         String s = astring[0];
         astring = dropFirstString(astring);
