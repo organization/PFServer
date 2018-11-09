@@ -1,5 +1,6 @@
 package org.bukkit.entity;
 
+import mgazul.PFServer.entity.CraftCustomEntity;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.minecart.*;
@@ -260,7 +261,7 @@ public enum EntityType {
      * An unknown entity without an Entity Class
      */
     UNKNOWN(null, null, -1, false),
-    MOD_CUSTOM("mod_custom", null, -1, false);
+    MOD_CUSTOM("mod_custom", CraftCustomEntity.class, -1, false);
 
     private String name;
     private Class<? extends Entity> clazz;
