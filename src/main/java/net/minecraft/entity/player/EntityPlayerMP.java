@@ -58,8 +58,6 @@ import net.minecraft.util.text.*;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.*;
 import net.minecraft.world.storage.loot.ILootContainer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.WeatherType;
@@ -82,7 +80,6 @@ import java.util.List;
 
 public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 {
-    private static final Logger LOGGER = LogManager.getLogger();
     public String language = "en_us"; // CraftBukkit - lowercase
     public NetHandlerPlayServer connection;
     public final MinecraftServer mcServer;
@@ -1836,6 +1833,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
             this.addExperience(this.newExp);
         }
         this.keepLevel = false;
+        getEntityData().getKeySet().clear();
     }
 
     @Override
