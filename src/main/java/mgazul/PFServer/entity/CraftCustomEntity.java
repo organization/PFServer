@@ -7,13 +7,11 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.EntityType;
 
 public class CraftCustomEntity extends CraftEntity {
-    public Class<? extends net.minecraft.entity.Entity> entityClass;
     private String entityName;
 
     public CraftCustomEntity(CraftServer server, net.minecraft.entity.Entity entity) {
         super(server, entity);
-        this.entityClass = entity.getClass();
-        this.entityName = EntityRegistry.entityTypeMap.get(entityClass);
+        this.entityName = EntityRegistry.entityTypeMap.get(entity.getClass());
         if (entityName == null)
             entityName = entity.getCommandSenderEntity().getName();
     }
