@@ -260,7 +260,7 @@ public enum EntityType {
      * An unknown entity without an Entity Class
      */
     UNKNOWN(null, null, -1, false),
-    MOD_CUSTOM("mod_custom", null, -1);
+    MOD_CUSTOM("mod_custom", null, -1, false);
 
     private String name;
     private Class<? extends Entity> clazz;

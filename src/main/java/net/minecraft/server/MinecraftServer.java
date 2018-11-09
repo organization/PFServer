@@ -310,10 +310,11 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
                 idatamanager = new AnvilSaveHandler(server.getWorldContainer(), worldNameIn, true, this.dataFixer);
                 worlddata = idatamanager.loadWorldInfo();
                 // PFServer start
-                if (!BukkitInjector.initializedBukkit) { // PFServer - inject bukkit materials before plugins load
+                if (!BukkitInjector.initializedBukkit) { // inject bukkit materials before plugins load
                     BukkitInjector.injectBlockBukkitMaterials();
                     BukkitInjector.injectItemBukkitMaterials();
                     BukkitInjector.injectBiomes();
+                    BukkitInjector.injectEntityType();
                     BukkitInjector.registerEnchantments();
                     BukkitInjector.registerPotions();
                     BukkitInjector.initializedBukkit = true;
