@@ -38,6 +38,9 @@ public class SetSpawn extends BukkitCommand{
 						file.set("spawn.y", p.getLocation().getY());
 						file.set("spawn.z", p.getLocation().getZ());
 						file.set("spawn.world", p.getLocation().getWorld().getName());
+						file.set("spawn.pitch", p.getLocation().getPitch());
+						file.set("spawn.yaw", p.getLocation().getYaw());
+						
 					}
 				}else {
 					MsgSent.error("§c你没有使用这个指令的权限", p);

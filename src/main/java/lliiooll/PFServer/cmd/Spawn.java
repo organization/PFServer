@@ -40,6 +40,8 @@ public class Spawn extends BukkitCommand{
 							int x = file.getInt("spawn.x");
 							int y = file.getInt("spawn.y");
 							int z = file.getInt("spawn.z");
+							float pitch = file.getLong("spawn.float");
+							float yaw = file.getLong("spawn.yaw");
 							String world = file.getString("spawn.world");
 							if(world.equals(null)) {
 								p.teleport(p.getBedSpawnLocation());
@@ -47,6 +49,8 @@ public class Spawn extends BukkitCommand{
 							}else {
 								World w = Bukkit.getWorld(world);
 								Location l = new Location(w, x, y, z);
+								l.setPitch(pitch);
+								l.setYaw(yaw);
 								p.teleport(l);
 								MsgSent.info("§2传送完毕", p);
 							}
