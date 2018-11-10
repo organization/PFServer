@@ -2,6 +2,7 @@ package net.minecraft.tileentity;
 
 import com.google.common.base.Joiner;
 import io.netty.buffer.ByteBuf;
+import mgazul.PFServer.PFServer;
 import net.minecraft.advancements.FunctionManager;
 import net.minecraft.command.*;
 import net.minecraft.crash.CrashReport;
@@ -30,7 +31,6 @@ import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
 
 public abstract class CommandBlockBaseLogic implements ICommandSender
 {
@@ -320,12 +320,12 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
                 }
             } catch (Throwable exception) {
                 if (sender.getCommandSenderEntity() instanceof EntityMinecartCommandBlock) {
-                    MinecraftServer.getServerInst().server.getLogger().log(Level.WARNING, String.format("MinecartCommandBlock at (%d,%d,%d) failed to handle command", sender.getPosition().getX(), sender.getPosition().getY(), sender.getPosition().getZ()), exception);
+                    PFServer.LOGGER.warn(String.format("MinecartCommandBlock at (%d,%d,%d) failed to handle command", sender.getPosition().getX(), sender.getPosition().getY(), sender.getPosition().getZ()), exception);
                 } else if (sender instanceof CommandBlockBaseLogic) {
                     CommandBlockBaseLogic listener = (CommandBlockBaseLogic) sender;
-                    MinecraftServer.getServerInst().server.getLogger().log(Level.WARNING, String.format("CommandBlock at (%d,%d,%d) failed to handle command", listener.getPosition().getX(), listener.getPosition().getY(), listener.getPosition().getZ()), exception);
+                    PFServer.LOGGER.warn(String.format("CommandBlock at (%d,%d,%d) failed to handle command", listener.getPosition().getX(), listener.getPosition().getY(), listener.getPosition().getZ()), exception);
                 } else {
-                    MinecraftServer.getServerInst().server.getLogger().log(Level.WARNING, String.format("Unknown CommandBlock failed to handle command"), exception);
+                    PFServer.LOGGER.warn(String.format("Unknown CommandBlock failed to handle command"), exception);
                 }
             }
         }

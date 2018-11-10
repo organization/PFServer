@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Base Permissible for use in any Permissible object via proxy or extension
@@ -208,7 +207,7 @@ public class PermissibleBase implements Permissible {
         PermissionAttachment result = addAttachment(plugin);
 
         if (Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new RemoveAttachmentRunnable(result), ticks) == -1) {
-            Bukkit.getServer().getLogger().log(Level.WARNING, "Could not add PermissionAttachment to " + parent + " for plugin " + plugin.getDescription().getFullName() + ": Scheduler returned -1");
+            Bukkit.getServer().getLogger().warn("Could not add PermissionAttachment to " + parent + " for plugin " + plugin.getDescription().getFullName() + ": Scheduler returned -1");
             result.remove();
             return null;
         } else {

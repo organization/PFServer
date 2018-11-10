@@ -2090,7 +2090,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             TileEntity tileentity = (TileEntity) this.tickableTileEntities.get(tileTickPosition);
             // Spigot start
             if (tileentity == null) {
-                getServer().getLogger().severe("Spigot has detected a null entity and has removed it, preventing a crash");
+                PFServer.LOGGER.error("Spigot has detected a null entity and has removed it, preventing a crash");
                 tilesThisCycle--;
                 this.tickableTileEntities.remove(tileTickPosition--);
                 continue;

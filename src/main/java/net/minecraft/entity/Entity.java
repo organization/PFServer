@@ -3,6 +3,7 @@ package net.minecraft.entity;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import mgazul.PFServer.PFServer;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.EnumPushReaction;
@@ -387,7 +388,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
         if (yaw == Float.POSITIVE_INFINITY || yaw == Float.NEGATIVE_INFINITY) {
             if (this instanceof EntityPlayer) {
-                this.world.getServer().getLogger().warning(this.getName() + " was caught trying to crash the server with an invalid yaw");
+                PFServer.LOGGER.warn(this.getName() + " was caught trying to crash the server with an invalid yaw");
                 ((CraftPlayer) this.getBukkitEntity()).kickPlayer("Nope");
             }
             yaw = 0;
@@ -400,7 +401,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
         if (pitch == Float.POSITIVE_INFINITY || pitch == Float.NEGATIVE_INFINITY) {
             if (this instanceof EntityPlayer) {
-                this.world.getServer().getLogger().warning(this.getName() + " was caught trying to crash the server with an invalid pitch");
+                PFServer.LOGGER.warn(this.getName() + " was caught trying to crash the server with an invalid pitch");
                 ((CraftPlayer) this.getBukkitEntity()).kickPlayer("Nope");
             }
             pitch = 0;

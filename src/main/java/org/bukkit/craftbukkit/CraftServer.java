@@ -13,6 +13,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import jline.console.ConsoleReader;
+import mgazul.PFServer.PFServer;
 import mgazul.PFServer.command.CraftSimpleCommandMap;
 import mgazul.PFServer.remapper.ReflectionTransformer;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -46,6 +47,8 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.*;
 import org.bukkit.World;
 import org.bukkit.Warning.WarningState;
@@ -96,7 +99,6 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitWorker;
 import org.bukkit.util.StringUtil;
 import org.bukkit.util.permissions.DefaultPermissions;
@@ -109,13 +111,11 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class CraftServer implements Server {
-    private final String serverName = "CraftBukkit";
+    private final String serverName = "PFServer";
     private final String serverVersion;
     private final String bukkitVersion = Versioning.getBukkitVersion();
-    private final Logger logger = Logger.getLogger("Minecraft");
     private final ServicesManager servicesManager = new SimpleServicesManager();
     private final CraftScheduler scheduler = new CraftScheduler();
     private final CraftSimpleCommandMap craftCommandMap = new CraftSimpleCommandMap(this);
@@ -264,7 +264,7 @@ public final class CraftServer implements Server {
         try {
             configuration.save(getConfigFile());
         } catch (IOException ex) {
-            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "Could not save " + getConfigFile(), ex);
+            LogManager.getLogger(CraftServer.class.getName()).error("Could not save " + getConfigFile(), ex);
         }
     }
 
@@ -272,7 +272,7 @@ public final class CraftServer implements Server {
         try {
             commandsConfiguration.save(getCommandsConfigFile());
         } catch (IOException ex) {
-            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "Could not save " + getCommandsConfigFile(), ex);
+            LogManager.getLogger(CraftServer.class.getName()).error("Could not save " + getCommandsConfigFile(), ex);
         }
     }
 
@@ -290,7 +290,7 @@ public final class CraftServer implements Server {
                     plugin.getLogger().info(message);
                     plugin.onLoad();
                 } catch (Throwable ex) {
-                    Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
+                    LogManager.getLogger(CraftServer.class.getName()).error(ex.getMessage() + " initializing " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
                 }
             }
         } else {
@@ -354,14 +354,14 @@ public final class CraftServer implements Server {
                 try {
                     pluginManager.addPermission(perm, false);
                 } catch (IllegalArgumentException ex) {
-                    getLogger().log(Level.WARNING, "Plugin " + plugin.getDescription().getFullName() + " tried to register permission '" + perm.getName() + "' but it's already registered", ex);
+                    PFServer.LOGGER.warn("Plugin " + plugin.getDescription().getFullName() + " tried to register permission '" + perm.getName() + "' but it's already registered", ex);
                 }
             }
             pluginManager.dirtyPermissibles();
 
             pluginManager.enablePlugin(plugin);
         } catch (Throwable ex) {
-            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
+            LogManager.getLogger(CraftServer.class.getName()).error(ex.getMessage() + " loading " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
         }
     }
 
@@ -615,7 +615,7 @@ public final class CraftServer implements Server {
             this.playerCommandState = true;
             return this.dispatchCommand(sender, serverCommand.command);
         } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Unexpected exception while parsing console command \"" + serverCommand.command + '"', ex);
+            PFServer.LOGGER.warn("Unexpected exception while parsing console command \"" + serverCommand.command + '"', ex);
             return false;
         } finally {
             this.playerCommandState = false;
@@ -682,12 +682,12 @@ public final class CraftServer implements Server {
         try {
             playerList.getBannedIPs().readSavedFile();
         } catch (IOException ex) {
-            logger.log(Level.WARNING, "Failed to load banned-ips.json, " + ex.getMessage());
+            PFServer.LOGGER.warn("Failed to load banned-ips.json, " + ex.getMessage());
         }
         try {
             playerList.getBannedPlayers().readSavedFile();
         } catch (IOException ex) {
-            logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
+            PFServer.LOGGER.warn("Failed to load banned-players.json, " + ex.getMessage());
         }
 
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
@@ -734,7 +734,7 @@ public final class CraftServer implements Server {
             if (plugin.getDescription().getAuthors().size() > 0) {
                 author = plugin.getDescription().getAuthors().get(0);
             }
-            getLogger().log(Level.SEVERE, String.format(
+            PFServer.LOGGER.error(String.format(
                  "Nag author: '%s' of '%s' about the following: %s",
                  author,
                  plugin.getDescription().getName(),
@@ -759,7 +759,7 @@ public final class CraftServer implements Server {
                 icon = loadServerIcon0(file);
             }
         } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Couldn't load server icon", ex);
+            PFServer.LOGGER.warn("Couldn't load server icon", ex);
         }
     }
 
@@ -783,10 +783,10 @@ public final class CraftServer implements Server {
         try {
             perms = (Map<String, Map<String, Object>>) yaml.load(stream);
         } catch (MarkedYAMLException ex) {
-            getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML: " + ex.toString());
+            PFServer.LOGGER.warn("Server permissions file " + file + " is not valid YAML: " + ex.toString());
             return;
         } catch (Throwable ex) {
-            getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML.", ex);
+            PFServer.LOGGER.warn("Server permissions file " + file + " is not valid YAML.", ex);
             return;
         } finally {
             try {
@@ -797,7 +797,7 @@ public final class CraftServer implements Server {
         }
 
         if (perms == null) {
-            getLogger().log(Level.INFO, "Server permissions file " + file + " is empty, ignoring it");
+            PFServer.LOGGER.info("Server permissions file " + file + " is empty, ignoring it");
             return;
         }
 
@@ -807,7 +807,7 @@ public final class CraftServer implements Server {
             try {
                 pluginManager.addPermission(perm);
             } catch (IllegalArgumentException ex) {
-                getLogger().log(Level.SEVERE, "Permission in " + file + " was already defined", ex);
+                PFServer.LOGGER.error("Permission in " + file + " was already defined", ex);
             }
         }
     }
@@ -857,7 +857,7 @@ public final class CraftServer implements Server {
         WorldServer worldserver = DimensionManager.initDimension(creator, worldSettings);
         
         pluginManager.callEvent(new WorldInitEvent(worldserver.getWorld()));
-        logger.info("Preparing start region for level " + (console.worldServerList.size() - 1) + " (Dimension: " + worldserver.provider.getDimension() + ", Seed: " + worldserver.getSeed() + ")"); // Cauldron - log dimension
+        PFServer.LOGGER.info("Preparing start region for level " + (console.worldServerList.size() - 1) + " (Dimension: " + worldserver.provider.getDimension() + ", Seed: " + worldserver.getSeed() + ")"); // Cauldron - log dimension
 
         if (worldserver.getWorld().getKeepSpawnInMemory()) {
             short short1 = 196;
@@ -874,7 +874,7 @@ public final class CraftServer implements Server {
                         int i1 = (short1 * 2 + 1) * (short1 * 2 + 1);
                         int j1 = (j + short1) * (short1 * 2 + 1) + k + 1;
 
-                        logger.info("Preparing spawn area for " + worldserver.getWorld().getName() + ", " + (j1 * 100 / i1) + "%");
+                        PFServer.LOGGER.info("Preparing spawn area for " + worldserver.getWorld().getName() + ", " + (j1 * 100 / i1) + "%");
                         i = l;
                     }
 
@@ -925,7 +925,7 @@ public final class CraftServer implements Server {
                 handle.saveAllChunks(true, null);
                 handle.flush();
             } catch (MinecraftException ex) {
-                getLogger().log(Level.SEVERE, null, ex);
+                PFServer.LOGGER.error(ex);
             }
         }
         MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.WorldEvent.Unload(handle)); // fire unload event before removing world
@@ -975,7 +975,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Logger getLogger() {
-        return logger;
+        return PFServer.LOGGER;
     }
 
     public ConsoleReader getReader() {
@@ -1138,14 +1138,14 @@ public final class CraftServer implements Server {
                     Plugin plugin = pluginManager.getPlugin(split[0]);
 
                     if (plugin == null) {
-                        getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' does not exist");
+                       PFServer.LOGGER.error("Could not set generator for default world '" + world + "': Plugin '" + split[0] + "' does not exist");
                     } else if (!plugin.isEnabled()) {
-                        getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + plugin.getDescription().getFullName() + "' is not enabled yet (is it load:STARTUP?)");
+                        PFServer.LOGGER.error("Could not set generator for default world '" + world + "': Plugin '" + plugin.getDescription().getFullName() + "' is not enabled yet (is it load:STARTUP?)");
                     } else {
                         try {
                             result = plugin.getDefaultWorldGenerator(world, id);
                             if (result == null) {
-                                getLogger().severe("Could not set generator for default world '" + world + "': Plugin '" + plugin.getDescription().getFullName() + "' lacks a default world generator");
+                                PFServer.LOGGER.error("Could not set generator for default world '" + world + "': Plugin '" + plugin.getDescription().getFullName() + "' lacks a default world generator");
                             }
                         } catch (Throwable t) {
                             plugin.getLogger().log(Level.SEVERE, "Could not set generator for default world '" + world + "': Plugin '" + plugin.getDescription().getFullName(), t);
@@ -1533,7 +1533,7 @@ public final class CraftServer implements Server {
             }
         } catch (CommandException ex) {
             player.sendMessage(ChatColor.RED + "An internal error occurred while attempting to tab-complete this command");
-            getLogger().log(Level.SEVERE, "Exception when " + player.getName() + " attempted to tab complete " + message, ex);
+            PFServer.LOGGER.error("Exception when " + player.getName() + " attempted to tab complete " + message, ex);
         }
 
         return completions == null ? ImmutableList.<String>of() : completions;
@@ -1577,7 +1577,7 @@ public final class CraftServer implements Server {
             return;
         }
         this.printSaveWarning = true;
-        getLogger().log(Level.WARNING, "A manual (plugin-induced) save has been detected while server is configured to auto-save. This may affect performance.", warningState == WarningState.ON ? new Throwable() : null);
+        PFServer.LOGGER.warn("A manual (plugin-induced) save has been detected while server is configured to auto-save. This may affect performance.", warningState == WarningState.ON ? new Throwable() : null);
     }
 
     @Override

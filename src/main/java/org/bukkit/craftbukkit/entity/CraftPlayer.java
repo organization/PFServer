@@ -1371,7 +1371,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if ( healthMod >= Float.MAX_VALUE || healthMod <= 0 )
         {
             healthMod = 20; // Reset health
-            getServer().getLogger().warning( getName() + " tried to crash the server with a large health attribute" );
+            getServer().getLogger().warn( getName() + " tried to crash the server with a large health attribute" );
         }
         collection.add(new ModifiableAttributeInstance(getHandle().getAttributeMap(), (new RangedAttribute(null, "generic.maxHealth", healthMod, 0.0D, Float.MAX_VALUE)).setDescription("Max Health").setShouldWatch(true)));
         // Spigot end
