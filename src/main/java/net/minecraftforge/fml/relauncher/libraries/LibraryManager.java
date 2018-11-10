@@ -125,13 +125,13 @@ public class LibraryManager
 
             if (!comp.endsWith("/org/apache/maven/maven-artifact/"))
             {
-                PFServer.LOGGER.error("Apache Maven library folder was not in the format expected. Using default libraries directory.");
-                PFServer.LOGGER.error("Full: {}", new File(source.getLocation().toURI()));
-                PFServer.LOGGER.error("Trimmed: {}", comp);
+               // PFServer.LOGGER.error("Apache Maven library folder was not in the format expected. Using default libraries directory.");
+               // PFServer.LOGGER.error("Full: {}", new File(source.getLocation().toURI()));
+               // PFServer.LOGGER.error("Trimmed: {}", comp);
                 return new File(minecraftHome, "libraries");
             }
             //     maven-artifact  /maven          /apache         /org            /libraries
-            return apache          .getParentFile().getParentFile().getParentFile().getParentFile();
+            return apache.getParentFile().getParentFile().getParentFile().getParentFile();
         }
         catch (URISyntaxException e)
         {
