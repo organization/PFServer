@@ -169,15 +169,14 @@ public abstract class PlayerList
         WorldServer world = ((CraftWorld) loc.getWorld()).getHandle();
 
         playerIn.setWorld(world);
-        playerIn.setPosition(loc.getX(), loc.getY(), loc.getZ());
-        playerIn.setRotation(loc.getYaw(), loc.getPitch());
+        playerIn.setPositionAndRotation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         // Spigot end
 
         // CraftBukkit - Moved message to after join
         // LOGGER.info("{}[{}] logged in with entity id {} at ({}, {}, {})", playerIn.getName(), s1, Integer.valueOf(playerIn.getEntityId()), Double.valueOf(playerIn.posX), Double.valueOf(playerIn.posY), Double.valueOf(playerIn.posZ));
         WorldServer worldserver = this.mcServer.getWorld(playerIn.dimension);
         WorldInfo worldinfo = worldserver.getWorldInfo();
-        this.setPlayerGameTypeBasedOnOther(playerIn, (EntityPlayerMP)null, worldserver);
+        this.setPlayerGameTypeBasedOnOther(playerIn, null, worldserver);
         playerIn.connection = nethandlerplayserver;
         //forge 允许从ServerConnectionFromClientEvent向客户端发送数据包
         net.minecraftforge.fml.common.FMLCommonHandler.instance().fireServerConnectionEvent(netManager);
@@ -432,7 +431,7 @@ public abstract class PlayerList
 
         net.minecraftforge.common.chunkio.ChunkIOExecutor.adjustPoolSize(this.getCurrentPlayerCount());
         worldserver.spawnEntity(playerIn);
-        this.preparePlayer(playerIn, (WorldServer)null);
+        this.preparePlayer(playerIn, null);
     }
 
     public void playerLoggedIn(EntityPlayerMP playerIn, String joinMessage)
