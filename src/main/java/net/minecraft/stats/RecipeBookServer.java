@@ -56,6 +56,7 @@ public class RecipeBookServer extends RecipeBook
 
     private void sendPacket(SPacketRecipeBook.State state, EntityPlayerMP player, List<IRecipe> recipesIn)
     {
+        if (player.connection == null) return; // SPIGOT-4478 during PlayerLoginEvent
         net.minecraftforge.common.ForgeHooks.sendRecipeBook(player.connection, state, recipesIn, Collections.emptyList(), this.isGuiOpen, this.isFilteringCraftable);
     }
 
