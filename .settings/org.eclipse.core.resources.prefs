@@ -1,2 +1,7 @@
 eclipse.preferences.version=1
+encoding//src/main/java/lliiooll/PFServer/MsgSent.java=UTF-8
+encoding//src/main/java/lliiooll/PFServer/cmd/SetSpawn.java=UTF-8
+encoding//src/main/java/lliiooll/PFServer/cmd/Spawn.java=UTF-8
 encoding//src/main/java/lliiooll/PFServer/cmd/Tpa.java=UTF-8
+encoding//src/main/java/lliiooll/PFServer/cmd/Tpaccept.java=UTF-8
+encoding//src/main/java/lliiooll/PFServer/cmd/Tprefused.java=UTF-8

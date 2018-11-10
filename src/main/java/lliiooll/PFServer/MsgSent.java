@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 
 public class MsgSent {
 
-	private static String info = "¡ì2[¡ìbPFServerR¡ì2] ";
-	private static String error = "¡ì2[¡ìcPFServerR¡ì2] ";
-	private static String warn = "¡ì2[¡ìePFServerR¡ì2] ";
+	private static String info = "Â§2[Â§bPFServerRÂ§2] ";
+	private static String error = "Â§2[Â§cPFServerRÂ§2] ";
+	private static String warn = "Â§2[Â§ePFServerRÂ§2] ";
 	
 	public static void info(String msg,Player p) {
 		p.sendMessage(info + msg);

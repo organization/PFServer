@@ -6,11 +6,11 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 
 import lliiooll.PFServer.MsgSent;
-import lliiooll.PFServer.thread.TpaThread;
 
 public class Tpa extends BukkitCommand{
 	
-	public static boolean tof;
+	public static Player p;//请求传送着
+	public static Player p1;//传送目标
 
 	protected Tpa(String name) {
 		super(name);
@@ -32,13 +32,10 @@ public class Tpa extends BukkitCommand{
 						if(p1.equals(null)) {
 							MsgSent.error("§2玩家不在线或不存在", p);
 						}else {
-							int s = 2;
-							MsgSent.info("§2" + s + "§2秒后开始传送.", p);
-							new TpaThread(s);
-							if(tof = true) {
-								p.teleport(p1.getLocation());
-							}
-							
+							Tpa.p = p;
+							Tpa.p1 = p1;
+							MsgSent.info("§2玩家§e" + p.getName() + "§2请求传送到你这里来,使用§b/tpaccept§2接受或§b/tprefused§2拒绝", p1);
+							MsgSent.info("§2已发送请求", p);
 						}
 					}
 				}else {
