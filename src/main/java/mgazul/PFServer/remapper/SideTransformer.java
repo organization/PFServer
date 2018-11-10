@@ -10,7 +10,11 @@ import java.util.function.Predicate;
 
 public class SideTransformer implements IClassTransformer {
 
-    private final Predicate<? super MethodNode> filter = (method) -> method.desc.contains("Lnet/minecraft/client/util/ITooltipFlag");
+    private final Predicate<? super MethodNode> filter = (method) ->
+            method.desc.contains("Lnet/minecraft/client/") && (
+                    method.desc.contains("Lnet/minecraft/client/util/ITooltipFlag") ||
+                            (method.desc.contains("Lnet/minecraft/client/renderer/") && !method.desc.contains("Lnet/minecraft/client/renderer/block/model/ModelResourceLocation"))
+            );
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
