@@ -691,6 +691,7 @@ public final class CraftServer implements Server {
         }
 
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
+        cn.pfcraft.server.PFSConfig.init((File) console.options.valueOf("pfserver-settings")); // PFServer
         for (WorldServer world : console.worlds) {
             world.worldInfo.setDifficulty(difficulty);
             world.setAllowedSpawnTypes(monsters, animals);
@@ -706,6 +707,7 @@ public final class CraftServer implements Server {
                 world.ticksPerMonsterSpawns = this.getTicksPerMonsterSpawns();
             }
             world.spigotConfig.init(); // Spigot
+            world.pfserverConfig.init(); // PFServer
         }
 
         pluginManager.clearPlugins();
@@ -713,6 +715,7 @@ public final class CraftServer implements Server {
         resetRecipes();
         reloadData();
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
+        cn.pfcraft.server.PFSConfig.registerCommands(); // PFServer
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
 
         int pollCount = 0;
@@ -1691,4 +1694,26 @@ public final class CraftServer implements Server {
     public Spigot spigot() {
         return spigot;
     }
+
+    // Paper start
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static boolean dumpHeap(File file) {
+        try {
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();
+            }
+
+            Class clazz = Class.forName("com.sun.management.HotSpotDiagnosticMXBean");
+            javax.management.MBeanServer server = java.lang.management.ManagementFactory.getPlatformMBeanServer();
+            Object hotspotMBean = java.lang.management.ManagementFactory.newPlatformMXBeanProxy(server, "com.sun.management:type=HotSpotDiagnostic", clazz);
+            java.lang.reflect.Method m = clazz.getMethod("dumpHeap", String.class, boolean.class);
+            m.invoke(hotspotMBean, file.getPath(), true);
+            return true;
+        } catch (Throwable t) {
+            PFServer.LOGGER.error("Could not write heap to " + file);
+            t.printStackTrace();
+            return false;
+        }
+    }
+    // Paper end
 }

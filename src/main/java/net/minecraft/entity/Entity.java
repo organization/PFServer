@@ -159,8 +159,11 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     private static final DataParameter<Boolean> NO_GRAVITY = EntityDataManager.<Boolean>createKey(Entity.class, DataSerializers.BOOLEAN);
     public boolean addedToChunk;
     public int chunkCoordX;
+    public int getChunkX() { return chunkCoordX; }
     public int chunkCoordY;
+    public int getChunkY() { return chunkCoordY; }
     public int chunkCoordZ;
+    public int getChunkZ() { return chunkCoordZ; }
     @SideOnly(Side.CLIENT)
     public long serverPosX;
     @SideOnly(Side.CLIENT)

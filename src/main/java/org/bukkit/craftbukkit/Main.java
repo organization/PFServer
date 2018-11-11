@@ -127,6 +127,13 @@ public class Main {
                         .defaultsTo(new File("spigot.yml"))
                         .describedAs("Yml file");
                 // Spigot End
+                // Paper Start
+                acceptsAll(asList("pfserver", "pfserver-settings"), "File for pfserver settings")
+                        .withRequiredArg()
+                        .ofType(File.class)
+                        .defaultsTo(new File("pfserver.yml"))
+                        .describedAs("Yml file");
+                // Paper end
             }
         };
 

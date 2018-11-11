@@ -1,5 +1,6 @@
 package net.minecraft.server.dedicated;
 
+import cn.pfcraft.server.PFSConfig;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
@@ -218,6 +219,10 @@ public class DedicatedServer extends MinecraftServer implements IServer
             org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));
             org.spigotmc.SpigotConfig.registerCommands();
             // Spigot end
+            // PFServer start
+            PFSConfig.init((File) options.valueOf("pfserver-settings"));
+            PFSConfig.registerCommands();
+            // PFServer end
 
             LOGGER.info("Generating keypair");
             this.setKeyPair(CryptManager.generateKeyPair());
