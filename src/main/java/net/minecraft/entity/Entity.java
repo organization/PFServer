@@ -99,7 +99,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.<ItemStack>emptyList();
     private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     private static double renderDistanceWeight = 1.0D;
-    private static int nextEntityID;
+    private static int nextEntityID = 1;
     private int entityId;
     public boolean preventEntitySpawning;
     public final List<Entity> riddenByEntities;  // Spigot
