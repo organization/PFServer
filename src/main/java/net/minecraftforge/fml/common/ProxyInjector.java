@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Strings;
 import com.google.common.collect.SetMultimap;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 import net.minecraftforge.fml.relauncher.Side;

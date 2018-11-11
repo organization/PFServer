@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.network.handshake;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ImmutableSet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mgazul.PFServer.PFServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;

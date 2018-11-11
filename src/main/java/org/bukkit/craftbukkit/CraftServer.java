@@ -1,5 +1,8 @@
 package org.bukkit.craftbukkit;
 
+import cn.pfcraft.server.PFServer;
+import cn.pfcraft.server.command.CraftSimpleCommandMap;
+import cn.pfcraft.server.remapper.ReflectionTransformer;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
@@ -13,9 +16,6 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import jline.console.ConsoleReader;
-import mgazul.PFServer.PFServer;
-import mgazul.PFServer.command.CraftSimpleCommandMap;
-import mgazul.PFServer.remapper.ReflectionTransformer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;

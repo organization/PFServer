@@ -1,4 +1,4 @@
-package mgazul.PFServer.entity;
+package cn.pfcraft.server.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.Entity;

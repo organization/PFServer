@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common.network.handshake;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import mgazul.PFServer.PFServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

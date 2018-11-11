@@ -18,9 +18,9 @@
  */
 package net.minecraftforge.fml.relauncher.libraries;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;

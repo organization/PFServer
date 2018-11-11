@@ -1,6 +1,6 @@
-package mgazul.PFServer.remapper;
+package cn.pfcraft.server.remapper;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.transformer.MappingTransformer;
 import net.md_5.specialsource.transformer.MavenShade;

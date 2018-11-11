@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import cn.pfcraft.server.BukkitInjector;
+import cn.pfcraft.server.utils.CachedSizeConcurrentLinkedQueue;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Futures;
@@ -15,7 +17,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
-import mgazul.PFServer.BukkitInjector;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.FunctionManager;
 import net.minecraft.command.CommandBase;
@@ -136,7 +137,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     private final GameProfileRepository profileRepo;
     private final PlayerProfileCache profileCache;
     private long nanoTimeSinceStatusRefresh;
-    public final Queue < FutureTask<? >> futureTaskQueue = new mgazul.PFServer.utils.CachedSizeConcurrentLinkedQueue<>(); // Paper - Make size() constant-time
+    public final Queue < FutureTask<? >> futureTaskQueue = new CachedSizeConcurrentLinkedQueue<>(); // Paper - Make size() constant-time
     private Thread serverThread;
     public long currentTime = getCurrentTimeMillis();
     @SideOnly(Side.CLIENT)

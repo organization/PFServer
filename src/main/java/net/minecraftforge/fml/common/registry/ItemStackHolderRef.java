@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.common.registry;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.item.ItemStack;
 
 import java.lang.reflect.Field;

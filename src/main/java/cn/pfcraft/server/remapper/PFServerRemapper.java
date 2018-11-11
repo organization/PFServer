@@ -1,4 +1,4 @@
-package mgazul.PFServer.remapper;
+package cn.pfcraft.server.remapper;
 
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;

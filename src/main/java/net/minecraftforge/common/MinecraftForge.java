@@ -19,8 +19,8 @@
 
 package net.minecraftforge.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Lists;
-import mgazul.PFServer.PFServer;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.item.ItemStack;

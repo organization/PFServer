@@ -1,7 +1,7 @@
 package net.minecraft.item.crafting;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
-import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.init.Blocks;

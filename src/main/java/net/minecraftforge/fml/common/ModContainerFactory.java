@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.discovery.ModCandidate;
 import net.minecraftforge.fml.common.discovery.asm.ASMModParser;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation;

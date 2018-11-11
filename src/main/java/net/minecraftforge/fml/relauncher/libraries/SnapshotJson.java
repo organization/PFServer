@@ -18,11 +18,11 @@
  */
 package net.minecraftforge.fml.relauncher.libraries;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import mgazul.PFServer.PFServer;
 
 import java.io.File;
 import java.io.IOException;

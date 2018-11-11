@@ -19,9 +19,9 @@
 
 package net.minecraftforge.common.network;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mgazul.PFServer.PFServer;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.network.ForgeMessage.DimensionRegisterMessage;

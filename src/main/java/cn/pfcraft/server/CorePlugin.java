@@ -1,7 +1,7 @@
-package mgazul.PFServer;
+package cn.pfcraft.server;
 
-import mgazul.PFServer.remapper.NetworkTransformer;
-import mgazul.PFServer.remapper.SideTransformer;
+import cn.pfcraft.server.remapper.NetworkTransformer;
+import cn.pfcraft.server.remapper.SideTransformer;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import javax.annotation.Nullable;

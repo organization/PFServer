@@ -19,13 +19,13 @@
 
 package net.minecraftforge.oredict;
 
+import cn.pfcraft.server.inventory.CustomModRecipe;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import mgazul.PFServer.inventory.CustomModRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;

@@ -1,4 +1,4 @@
-package mgazul.PFServer.remapper;
+package cn.pfcraft.server.remapper;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;

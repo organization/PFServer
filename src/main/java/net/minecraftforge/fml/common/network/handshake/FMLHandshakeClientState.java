@@ -19,12 +19,12 @@
 
 package net.minecraftforge.fml.common.network.handshake;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.util.concurrent.Futures;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;

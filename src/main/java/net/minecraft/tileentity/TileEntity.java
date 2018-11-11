@@ -1,6 +1,6 @@
 package net.minecraft.tileentity;
 
-import mgazul.PFServer.inventory.CatCustomInventory;
+import cn.pfcraft.server.inventory.CatCustomInventory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;

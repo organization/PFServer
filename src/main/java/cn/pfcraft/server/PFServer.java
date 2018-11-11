@@ -1,4 +1,4 @@
-package mgazul.PFServer;
+package cn.pfcraft.server;
 
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;

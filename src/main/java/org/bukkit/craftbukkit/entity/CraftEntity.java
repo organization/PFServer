@@ -1,10 +1,10 @@
 package org.bukkit.craftbukkit.entity;
 
+import cn.pfcraft.server.entity.CraftCustomEntity;
+import cn.pfcraft.server.entity.CraftCustomProjectile;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import mgazul.PFServer.entity.CraftCustomEntity;
-import mgazul.PFServer.entity.CraftCustomProjectile;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.EntityDragon;

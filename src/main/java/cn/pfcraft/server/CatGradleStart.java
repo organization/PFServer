@@ -1,4 +1,4 @@
-package mgazul.PFServer;
+package cn.pfcraft.server;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;

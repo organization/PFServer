@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.common.asm.transformers.deobf;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -26,7 +27,6 @@ import com.google.common.collect.*;
 import com.google.common.collect.ImmutableBiMap.Builder;
 import com.google.common.io.CharSource;
 import com.google.common.io.Files;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.common.patcher.ClassPatchManager;
 import org.objectweb.asm.ClassReader;

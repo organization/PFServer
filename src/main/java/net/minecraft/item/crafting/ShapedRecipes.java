@@ -1,10 +1,10 @@
 package net.minecraft.item.crafting;
 
+import cn.pfcraft.server.inventory.CustomModRecipe;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import mgazul.PFServer.inventory.CustomModRecipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

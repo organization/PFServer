@@ -1,4 +1,4 @@
-package mgazul.PFServer.command;
+package cn.pfcraft.server.command;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;

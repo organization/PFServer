@@ -1,4 +1,4 @@
-package mgazul.PFServer.inventory;
+package cn.pfcraft.server.inventory;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraftforge.items.IItemHandler;

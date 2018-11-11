@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common.discovery;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.ModClassLoader;
 import net.minecraftforge.fml.common.ModContainer;

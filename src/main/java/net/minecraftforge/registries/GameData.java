@@ -19,9 +19,9 @@
 
 package net.minecraftforge.registries;
 
+import cn.pfcraft.server.PFServer;
+import cn.pfcraft.server.inventory.CustomModRecipe;
 import com.google.common.collect.*;
-import mgazul.PFServer.PFServer;
-import mgazul.PFServer.inventory.CustomModRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockObserver;

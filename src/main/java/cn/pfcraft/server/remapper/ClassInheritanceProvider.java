@@ -1,11 +1,11 @@
-package mgazul.PFServer.remapper;
+package cn.pfcraft.server.remapper;
 
 import net.md_5.specialsource.provider.InheritanceProvider;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import static mgazul.PFServer.remapper.RemapUtils.reverseMap;
+import static cn.pfcraft.server.remapper.RemapUtils.reverseMap;
 
 public class ClassInheritanceProvider implements InheritanceProvider {
     @Override

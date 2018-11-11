@@ -18,10 +18,10 @@
  */
 package net.minecraftforge.fml.common.discovery.json;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder;
 import org.objectweb.asm.Type;
 

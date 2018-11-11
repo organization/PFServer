@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.common.event;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState.ModState;
 

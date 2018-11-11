@@ -1,6 +1,6 @@
 package net.minecraftforge.registries;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
 import org.apache.commons.lang3.Validate;

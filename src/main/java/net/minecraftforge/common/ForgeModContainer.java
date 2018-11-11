@@ -19,11 +19,11 @@
 
 package net.minecraftforge.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import mgazul.PFServer.PFServer;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;

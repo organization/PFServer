@@ -1,4 +1,4 @@
-package mgazul.PFServer.remapper;
+package cn.pfcraft.server.remapper;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;

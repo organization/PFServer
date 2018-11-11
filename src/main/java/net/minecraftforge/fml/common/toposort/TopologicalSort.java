@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common.toposort;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
-import mgazul.PFServer.PFServer;
 
 import java.util.*;
 

@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common.registry;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.*;
-import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.EntityLiving;

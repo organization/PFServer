@@ -1,6 +1,6 @@
-package mgazul.PFServer;
+package cn.pfcraft.server;
 
-import mgazul.PFServer.entity.CraftCustomEntity;
+import cn.pfcraft.server.entity.CraftCustomEntity;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;

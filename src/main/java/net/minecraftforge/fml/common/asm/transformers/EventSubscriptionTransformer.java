@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.common.asm.transformers;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import org.objectweb.asm.ClassReader;

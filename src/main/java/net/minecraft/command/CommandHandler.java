@@ -1,11 +1,11 @@
 package net.minecraft.command;
 
+import cn.pfcraft.server.command.BukkitCommandWrapper;
+import cn.pfcraft.server.command.CraftSimpleCommandMap;
+import cn.pfcraft.server.command.ModCustomCommand;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.command.BukkitCommandWrapper;
-import mgazul.PFServer.command.CraftSimpleCommandMap;
-import mgazul.PFServer.command.ModCustomCommand;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;

@@ -19,9 +19,9 @@
 
 package net.minecraftforge.oredict;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPrismarine;
 import net.minecraft.init.Blocks;

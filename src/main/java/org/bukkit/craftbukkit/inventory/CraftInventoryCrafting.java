@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import mgazul.PFServer.inventory.CustomModRecipe;
+import cn.pfcraft.server.inventory.CustomModRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.crafting.IRecipe;

@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.common.network.handshake;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandler;
@@ -28,7 +29,6 @@ import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import mgazul.PFServer.PFServer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.*;

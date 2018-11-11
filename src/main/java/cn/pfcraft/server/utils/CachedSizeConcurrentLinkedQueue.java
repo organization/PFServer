@@ -1,4 +1,4 @@
-package mgazul.PFServer.utils;
+package cn.pfcraft.server.utils;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.LongAdder;

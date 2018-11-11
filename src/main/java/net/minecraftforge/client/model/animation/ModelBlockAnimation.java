@@ -19,12 +19,12 @@
 
 package net.minecraftforge.client.model.animation;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.block.model.BlockPart;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;

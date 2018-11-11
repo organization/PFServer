@@ -1,4 +1,4 @@
-package mgazul.PFServer.command;
+package cn.pfcraft.server.command;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.command.CommandException;

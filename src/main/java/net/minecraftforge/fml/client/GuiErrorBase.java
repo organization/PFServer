@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.client;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiErrorScreen;
 import net.minecraft.client.resources.I18n;

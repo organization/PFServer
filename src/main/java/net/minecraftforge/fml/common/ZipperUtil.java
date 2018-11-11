@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.io.Files;
-import mgazul.PFServer.PFServer;
 
 import java.io.*;
 import java.net.URI;

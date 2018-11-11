@@ -19,8 +19,8 @@
 
 package net.minecraftforge.client;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
-import mgazul.PFServer.PFServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

@@ -1,6 +1,6 @@
 package org.bukkit.entity;
 
-import mgazul.PFServer.entity.CraftCustomEntity;
+import cn.pfcraft.server.entity.CraftCustomEntity;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.minecart.*;

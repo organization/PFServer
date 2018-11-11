@@ -19,9 +19,9 @@
 
 package net.minecraftforge.registries;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import mgazul.PFServer.PFServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;

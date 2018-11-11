@@ -19,10 +19,10 @@
 
 package net.minecraftforge.common.config;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Floats;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.GuiConfigEntries;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.IConfigEntry;

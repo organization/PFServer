@@ -1,4 +1,4 @@
-package mgazul.PFServer.entity;
+package cn.pfcraft.server.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

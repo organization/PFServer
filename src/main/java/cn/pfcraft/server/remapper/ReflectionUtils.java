@@ -1,4 +1,4 @@
-package mgazul.PFServer.remapper;
+package cn.pfcraft.server.remapper;
 
 /**
  * Based on Apache's ReflectionUtil

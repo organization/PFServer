@@ -1,6 +1,6 @@
 package org.bukkit.command.defaults;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraftforge.common.ForgeVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

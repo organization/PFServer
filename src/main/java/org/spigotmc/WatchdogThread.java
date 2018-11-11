@@ -1,6 +1,6 @@
 package org.spigotmc;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
