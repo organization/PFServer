@@ -57,8 +57,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.Main;
 import org.bukkit.craftbukkit.SpigotTimings;
 import org.spigotmc.SlackActivityAccountant;
@@ -84,6 +82,7 @@ import java.util.concurrent.FutureTask;
 
 public abstract class MinecraftServer implements ICommandSender, Runnable, IThreadListener, ISnooperInfo
 {
+    private static MinecraftServer SERVER;
     public static final Logger LOGGER = LogManager.getLogger();
     public static final File USER_CACHE_FILE = new File("usercache.json");
     public ISaveFormat anvilConverterForAnvilFile;
@@ -164,6 +163,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
 
     public MinecraftServer(OptionSet options, Proxy proxyIn, DataFixer dataFixerIn, YggdrasilAuthenticationService authServiceIn, MinecraftSessionService sessionServiceIn, GameProfileRepository profileRepoIn, PlayerProfileCache profileCacheIn)
     {
+        SERVER = this;
         this.serverProxy = proxyIn;
         this.authService = authServiceIn;
         this.sessionService = sessionServiceIn;
@@ -1500,11 +1500,9 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         return this;
     }
 
-    @Nullable
-    @Deprecated
     public static MinecraftServer getServerInst()
     {
-        return (Bukkit.getServer() instanceof CraftServer) ? ((CraftServer) Bukkit.getServer()).getServer() : null;
+        return SERVER;
     }
 
     public int getMaxWorldSize()
