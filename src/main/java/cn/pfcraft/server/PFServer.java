@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 public class PFServer {
 
-	private static final String version = "1.0.0";
+	private static final String version = "1.1.0";
 	private static final String native_verson = "v1_12_R1";
 	public static final Logger LOGGER = LogManager.getLogger("PFServer");
 

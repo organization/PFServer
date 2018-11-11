@@ -33,8 +33,11 @@ repositories {
     }
 }
 
-group = 'mgazul.PFServer'
-version = '1.0.0'
+group = 'cn.pfcraft.server'
+version = versioning {
+    full {it.abbreviated}
+    dirty = { t -> t }
+}.info.full
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -126,7 +129,7 @@ task jar_server(type: Jar) {
     manifest {
         attributes(
                 "Implementation-Title": "rootProject.name",
-                "Implementation-Version": rootProject.name + "-1.12.2",
+                "Implementation-Version": "git-" + version,
                 "Main-Class": "net.minecraftforge.fml.relauncher.ServerLaunchWrapper",
                 "TweakClass": "net.minecraftforge.fml.common.launcher.FMLTweaker",
                 "Class-Path": configurations.compile.collect { 'libraries/' + it.getName() }.join(' '),
