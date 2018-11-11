@@ -53,7 +53,7 @@ public class WatchdogThread extends Thread
         while ( !stopping )
         {
             //
-            if ( lastTick != 0 && System.currentTimeMillis() > lastTick + timeoutTime )
+            if ( lastTick != 0 && System.currentTimeMillis() > lastTick + timeoutTime && !Boolean.getBoolean("disable.watchdog"))
             {
                 Logger log = PFServer.LOGGER;
                 log.error( "The server has stopped responding!" );
