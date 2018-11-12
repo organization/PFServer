@@ -78,7 +78,6 @@ import org.bukkit.craftbukkit.scoreboard.CraftScoreboardManager;
 import org.bukkit.craftbukkit.util.CraftIconCache;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.craftbukkit.util.DatFileFilter;
-import org.bukkit.craftbukkit.util.Versioning;
 import org.bukkit.craftbukkit.util.permissions.CraftDefaultPermissions;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -113,9 +112,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 public final class CraftServer implements Server {
-    private final String serverName = "PFServer";
     private final String serverVersion;
-    private final String bukkitVersion = Versioning.getBukkitVersion();
     private final ServicesManager servicesManager = new SimpleServicesManager();
     private final CraftScheduler scheduler = new CraftScheduler();
     private final CraftSimpleCommandMap craftCommandMap = new CraftSimpleCommandMap(this);
@@ -367,7 +364,7 @@ public final class CraftServer implements Server {
 
     @Override
     public String getName() {
-        return serverName;
+        return PFServer.getName();
     }
 
     @Override
@@ -377,7 +374,7 @@ public final class CraftServer implements Server {
 
     @Override
     public String getBukkitVersion() {
-        return bukkitVersion;
+        return PFServer.getBukkitVersion();
     }
 
     @Override
@@ -817,7 +814,7 @@ public final class CraftServer implements Server {
 
     @Override
     public String toString() {
-        return "CraftServer{" + "serverName=" + serverName + ",serverVersion=" + serverVersion + ",minecraftVersion=" + console.getMinecraftVersion() + '}';
+        return "CraftServer{" + "serverName=" + PFServer.getName() + ",serverVersion=" + serverVersion + ",minecraftVersion=" + console.getMinecraftVersion() + '}';
     }
 
     public World createWorld(String name, Environment environment) {
