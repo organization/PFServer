@@ -196,4 +196,10 @@ final class PluginClassLoader extends URLClassLoader {
 
         return result;
     }
+
+    protected Package getPackage(String name) {
+        if (name == "org.bukkit.craftbukkit")
+            name = "org.bukkit.craftbukkit." + PFServer.getNativeVersion();
+        return super.getPackage(name);
+    }
 }
