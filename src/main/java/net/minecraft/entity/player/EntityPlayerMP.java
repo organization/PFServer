@@ -1833,7 +1833,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
             this.addExperience(this.newExp);
         }
         this.keepLevel = false;
-        getEntityData().getKeySet().clear();
+        getEntityData().getKeySet().removeIf(tag -> !PERSISTED_NBT_TAG.equals(tag));
     }
 
     @Override
