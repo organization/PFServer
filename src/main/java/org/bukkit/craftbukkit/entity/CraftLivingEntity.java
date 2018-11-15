@@ -48,7 +48,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
         }
         this.entityName = EntityRegistry.entityTypeMap.get(entity.getClass());
         if (entityName == null)
-            entityName = entity.getCommandSenderEntity().getName();
+            entityName = entity.getName();
     }
 
     public double getHealth() {
