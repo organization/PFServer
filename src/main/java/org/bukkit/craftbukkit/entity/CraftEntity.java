@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.*;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -255,6 +256,11 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public Vector getVelocity() {
+        // CatServer start - fix invalid vector
+        if (!NumberConversions.isFinite(entity.motionX)) entity.motionX = 0;
+        if (!NumberConversions.isFinite(entity.motionY)) entity.motionY = 0;
+        if (!NumberConversions.isFinite(entity.motionZ)) entity.motionZ = 0;
+        // CatServer end
         return new Vector(entity.motionX, entity.motionY, entity.motionZ);
     }
 
