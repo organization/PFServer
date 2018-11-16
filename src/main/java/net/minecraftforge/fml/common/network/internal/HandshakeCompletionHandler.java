@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.network.internal;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.network.handshake.NetworkDispatcher;
 import net.minecraftforge.fml.common.network.internal.FMLMessage.CompleteHandshake;
 

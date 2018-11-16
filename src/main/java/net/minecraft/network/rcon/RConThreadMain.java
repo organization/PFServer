@@ -25,7 +25,7 @@ public class RConThreadMain extends RConThreadBase
         super(p_i1538_1_, "RCON Listener");
         this.rconPort = p_i1538_1_.getIntProperty("rcon.port", 0);
         this.rconPassword = p_i1538_1_.getStringProperty("rcon.password", "");
-        this.hostname = p_i1538_1_.getHostname();
+        this.hostname = p_i1538_1_.getStringProperty("rcon.ip", p_i1538_1_.getHostname());
         this.serverPort = p_i1538_1_.getPort();
 
         if (0 == this.rconPort)

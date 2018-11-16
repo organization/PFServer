@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.common.network.internal;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ConcurrentHashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
@@ -27,7 +28,6 @@ import com.google.common.collect.Multisets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
-import mgazul.PFServer.PFServer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;

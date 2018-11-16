@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.client;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Strings;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.BufferBuilder;

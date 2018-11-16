@@ -19,11 +19,11 @@
 
 package net.minecraftforge.fml.common.network.internal;
 
+import cn.pfcraft.server.PFServer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
-import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

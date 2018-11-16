@@ -346,6 +346,8 @@ public interface World extends PluginMessageRecipient, Metadatable {
      */
     public boolean generateTree(Location location, TreeType type);
 
+    public boolean generateTree(Location loc, TreeType type, BlockChangeDelegate delegate);
+
     /**
      * Creates a entity at the given {@link Location}
      *

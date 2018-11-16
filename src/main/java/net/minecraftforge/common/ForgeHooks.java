@@ -19,13 +19,13 @@
 
 package net.minecraftforge.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import mgazul.PFServer.PFServer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.*;

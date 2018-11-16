@@ -1,8 +1,8 @@
 package net.minecraft.entity;
 
+import cn.pfcraft.server.entity.CatEntityRegistry;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.entity.CatEntityRegistry;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;

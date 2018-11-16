@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common.event;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
-import mgazul.PFServer.PFServer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;

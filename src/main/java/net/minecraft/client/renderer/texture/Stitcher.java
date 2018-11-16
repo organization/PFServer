@@ -1,8 +1,8 @@
 package net.minecraft.client.renderer.texture;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.StitcherException;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;

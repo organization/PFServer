@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.network;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
-import mgazul.PFServer.PFServer;
 import net.minecraft.network.*;
 
 import java.util.Iterator;

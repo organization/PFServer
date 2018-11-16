@@ -19,6 +19,7 @@
 
 package net.minecraftforge.fml.common.asm.transformers;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
@@ -27,7 +28,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.io.CharSource;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassReader;

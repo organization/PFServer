@@ -49,7 +49,7 @@ public class CraftInventoryView extends InventoryView {
     @Override
     public void setItem(int slot, ItemStack item) {
         net.minecraft.item.ItemStack stack = CraftItemStack.asNMSCopy(item);
-        if (slot != -999) {
+        if (slot >= 0) {
             container.getSlot(slot).putStack(stack);
         } else {
             player.getHandle().dropItem(stack, false);
@@ -58,7 +58,7 @@ public class CraftInventoryView extends InventoryView {
 
     @Override
     public ItemStack getItem(int slot) {
-        if (slot == -999) {
+        if (slot < 0) {
             return null;
         }
         return CraftItemStack.asCraftMirror(container.getSlot(slot).getStack());
@@ -124,7 +124,7 @@ public class CraftInventoryView extends InventoryView {
                 // Nothing to do, it's a CONTAINER slot
             }
         } else {
-            if (slot == -999 || slot == -1) {
+            if (slot  < 0) {
                 type = SlotType.OUTSIDE;
             } else if (inventory.getType() == InventoryType.CRAFTING) { // Also includes creative inventory
                 if (slot < 9) {

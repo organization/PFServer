@@ -1,9 +1,9 @@
 package net.minecraft.util;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.util.UUIDTypeAdapter;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.asm.transformers;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModAPIManager;

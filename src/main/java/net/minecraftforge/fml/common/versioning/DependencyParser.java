@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.versioning;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.relauncher.Side;
 

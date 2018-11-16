@@ -18,8 +18,8 @@
  */
 package net.minecraftforge.fml.server;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ImmutableList;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;

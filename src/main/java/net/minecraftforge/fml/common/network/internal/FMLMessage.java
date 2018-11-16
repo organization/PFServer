@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common.network.internal;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.PacketBuffer;

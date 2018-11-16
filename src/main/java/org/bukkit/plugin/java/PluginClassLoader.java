@@ -1,10 +1,10 @@
 package org.bukkit.plugin.java;
 
-import mgazul.PFServer.PFServer;
-import mgazul.PFServer.remapper.ClassInheritanceProvider;
-import mgazul.PFServer.remapper.MappingLoader;
-import mgazul.PFServer.remapper.PFServerRemapper;
-import mgazul.PFServer.remapper.ReflectionTransformer;
+import cn.pfcraft.server.PFServer;
+import cn.pfcraft.server.remapper.ClassInheritanceProvider;
+import cn.pfcraft.server.remapper.MappingLoader;
+import cn.pfcraft.server.remapper.PFServerRemapper;
+import cn.pfcraft.server.remapper.ReflectionTransformer;
 import net.md_5.specialsource.JarMapping;
 import net.md_5.specialsource.JarRemapper;
 import net.md_5.specialsource.provider.ClassLoaderProvider;
@@ -195,5 +195,11 @@ final class PluginClassLoader extends URLClassLoader {
         }
 
         return result;
+    }
+
+    protected Package getPackage(String name) {
+        if (name == "org.bukkit.craftbukkit")
+            name = "org.bukkit.craftbukkit." + PFServer.getNativeVersion();
+        return super.getPackage(name);
     }
 }

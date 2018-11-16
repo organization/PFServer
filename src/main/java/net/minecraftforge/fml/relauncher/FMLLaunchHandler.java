@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.relauncher;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.common.TracingPrintStream;
 import net.minecraftforge.fml.common.launcher.FMLTweaker;

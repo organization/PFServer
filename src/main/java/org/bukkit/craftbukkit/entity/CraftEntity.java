@@ -1,10 +1,10 @@
 package org.bukkit.craftbukkit.entity;
 
+import cn.pfcraft.server.entity.CraftCustomEntity;
+import cn.pfcraft.server.entity.CraftCustomProjectile;
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import mgazul.PFServer.entity.CraftCustomEntity;
-import mgazul.PFServer.entity.CraftCustomProjectile;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.EntityDragon;
@@ -28,12 +28,12 @@ import org.bukkit.World;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.*;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -256,6 +256,11 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public Vector getVelocity() {
+        // CatServer start - fix invalid vector
+        if (!NumberConversions.isFinite(entity.motionX)) entity.motionX = 0;
+        if (!NumberConversions.isFinite(entity.motionY)) entity.motionY = 0;
+        if (!NumberConversions.isFinite(entity.motionZ)) entity.motionZ = 0;
+        // CatServer end
         return new Vector(entity.motionX, entity.motionY, entity.motionZ);
     }
 
@@ -533,7 +538,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
         String name = getHandle().getCustomNameTag();
 
         if (name == null || name.length() == 0) {
-            if (getType() == EntityType.MOD_CUSTOM && this instanceof CraftLivingEntity) return ((CraftLivingEntity) this).entity.getName();
+            if (getType().getEntityClass() == CraftCustomEntity.class && this instanceof CraftLivingEntity) return ((CraftLivingEntity) this).entity.getName();
             return null;
         }
 

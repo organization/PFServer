@@ -216,7 +216,7 @@ public class EntityXPOrb extends Entity
     {
         this.xpOrbHealth = compound.getShort("Health");
         this.xpOrbAge = compound.getShort("Age");
-        this.xpValue = compound.getShort("Value");
+        this.xpValue = compound.getInteger("Value");
     }
 
     public void onCollideWithPlayer(EntityPlayer entityIn)

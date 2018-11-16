@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Joiner;
-import mgazul.PFServer.PFServer;
 
 import java.util.Iterator;
 import java.util.List;

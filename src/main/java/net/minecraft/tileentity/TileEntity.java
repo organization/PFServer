@@ -1,6 +1,6 @@
 package net.minecraft.tileentity;
 
-import mgazul.PFServer.inventory.CatCustomInventory;
+import cn.pfcraft.server.inventory.CatCustomInventory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
@@ -527,7 +527,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
         // Spigot start
         org.bukkit.block.Block block = world.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
         if (block == null) {
-            org.bukkit.Bukkit.getLogger().log(java.util.logging.Level.WARNING, "No block for owner at %s %d %d %d", new Object[]{world.getWorld(), pos.getX(), pos.getY(), pos.getZ()});
+            org.bukkit.Bukkit.getLogger().warn("No block for owner at %s %d %d %d", new Object[]{world.getWorld(), pos.getX(), pos.getY(), pos.getZ()});
             return null;
         }
         // Spigot end

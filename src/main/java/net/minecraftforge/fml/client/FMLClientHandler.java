@@ -18,6 +18,7 @@
  */
 package net.minecraftforge.fml.client;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -28,7 +29,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.*;

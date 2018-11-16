@@ -19,11 +19,11 @@
 
 package net.minecraftforge.fml.common.discovery.asm;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ModCandidate;

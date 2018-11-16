@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.client;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.client.resources.FileResourcePack;
 import net.minecraftforge.fml.common.FMLContainerHolder;
 import net.minecraftforge.fml.common.ModContainer;

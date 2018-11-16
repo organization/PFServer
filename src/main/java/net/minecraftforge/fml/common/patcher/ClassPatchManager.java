@@ -20,6 +20,7 @@
 package net.minecraftforge.fml.common.patcher;
 
 import LZMA.LzmaInputStream;
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -28,7 +29,6 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.relauncher.Side;

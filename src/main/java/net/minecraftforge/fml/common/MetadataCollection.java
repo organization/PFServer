@@ -19,11 +19,11 @@
 
 package net.minecraftforge.fml.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import mgazul.PFServer.PFServer;
 import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.VersionParser;
 

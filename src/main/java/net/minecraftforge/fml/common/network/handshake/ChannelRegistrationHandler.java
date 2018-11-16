@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.network.handshake;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.ImmutableSet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mgazul.PFServer.PFServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
@@ -43,19 +43,18 @@ public class ChannelRegistrationHandler extends SimpleChannelInboundHandler<FMLP
             msg.payload().readBytes(data);
             String channels = new String(data, StandardCharsets.UTF_8);
             String[] split = channels.split("\0");
-            final Set<String> channelSet = ImmutableSet.copyOf(split);
+            Set<String> channelSet = ImmutableSet.copyOf(split);
             FMLCommonHandler.instance().fireNetRegistrationEvent(manager, channelSet, msg.channel(), side);
             msg.payload().release();
             // handle REGISTER/UNREGISTER channel in Bukkit
-            final org.bukkit.craftbukkit.entity.CraftPlayer player = ((net.minecraft.network.NetHandlerPlayServer) ctx.attr(NetworkDispatcher.FML_DISPATCHER).get().getNetHandler()).getPlayer();
-            final boolean isAdd = msg.channel().equals("REGISTER");
-            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(new Runnable() {
-                public void run() {
-                    for (String channel : channelSet) {
-                        if (isAdd) player.addChannel(channel); else player.removeChannel(channel);
-                    }
-                }
-            });
+            org.bukkit.craftbukkit.entity.CraftPlayer player = ((net.minecraft.network.NetHandlerPlayServer) ctx.attr(NetworkDispatcher.FML_DISPATCHER).get().getNetHandler()).getPlayer();
+            if (msg.channel().equals("REGISTER")) {
+                for (String channel : channelSet)
+                    player.addChannel(channel);
+            } else {
+                for (String channel : channelSet)
+                    player.removeChannel(channel);
+            }
         }
         else
         {

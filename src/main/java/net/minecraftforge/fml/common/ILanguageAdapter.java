@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.common;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.reflect.Field;

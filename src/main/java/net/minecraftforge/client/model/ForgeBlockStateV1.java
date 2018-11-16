@@ -19,9 +19,9 @@
 
 package net.minecraftforge.client.model;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.*;
 import com.google.gson.*;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.util.JsonUtils;

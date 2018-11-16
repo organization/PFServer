@@ -19,7 +19,7 @@
 
 package net.minecraftforge.items;
 
-import mgazul.PFServer.inventory.CatCustomInventory;
+import cn.pfcraft.server.inventory.CatCustomInventory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDropper;
 import net.minecraft.block.BlockHopper;

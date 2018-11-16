@@ -19,9 +19,9 @@
 
 package net.minecraftforge.common.util;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import mgazul.PFServer.PFServer;
 import net.minecraft.block.BlockPressurePlate.Sensitivity;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnumEnchantmentType;

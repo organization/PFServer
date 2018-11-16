@@ -18,9 +18,9 @@
  */
 package net.minecraftforge.fml.relauncher.libraries;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
@@ -125,13 +125,13 @@ public class LibraryManager
 
             if (!comp.endsWith("/org/apache/maven/maven-artifact/"))
             {
-                PFServer.LOGGER.error("Apache Maven library folder was not in the format expected. Using default libraries directory.");
-                PFServer.LOGGER.error("Full: {}", new File(source.getLocation().toURI()));
-                PFServer.LOGGER.error("Trimmed: {}", comp);
+               // PFServer.LOGGER.error("Apache Maven library folder was not in the format expected. Using default libraries directory.");
+               // PFServer.LOGGER.error("Full: {}", new File(source.getLocation().toURI()));
+               // PFServer.LOGGER.error("Trimmed: {}", comp);
                 return new File(minecraftHome, "libraries");
             }
             //     maven-artifact  /maven          /apache         /org            /libraries
-            return apache          .getParentFile().getParentFile().getParentFile().getParentFile();
+            return apache.getParentFile().getParentFile().getParentFile().getParentFile();
         }
         catch (URISyntaxException e)
         {
@@ -426,7 +426,7 @@ public class LibraryManager
         List<File> list = new ArrayList<>();
 
         @SuppressWarnings("unchecked")
-        Map<String,String> args = (Map<String, String>)Launch.blackboard.get("launchArgs");
+        Map<String,String> args = (Map<String, String>)Launch.blackboard.get("forgeLaunchArgs");
         String extraMods = args.get("--mods");
         if (extraMods != null)
         {

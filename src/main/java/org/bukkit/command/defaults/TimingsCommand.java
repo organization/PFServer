@@ -234,7 +234,7 @@ public class TimingsCommand extends BukkitCommand {
             } catch ( IOException ex )
             {
                 sender.sendMessage( ChatColor.RED + "Error pasting timings, check your console for more information" );
-                Bukkit.getServer().getLogger().log( java.util.logging.Level.WARNING, "Could not paste timings", ex );
+                Bukkit.getServer().getLogger().warn("Could not paste timings", ex );
             }
         }
     }

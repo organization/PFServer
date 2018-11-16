@@ -18,9 +18,9 @@
  */
 package net.minecraftforge.registries;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.*;
-import mgazul.PFServer.PFServer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -171,7 +171,8 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
     @Override
     public ResourceLocation getKey(V value)
     {
-        return this.names.inverse().get(value);
+        ResourceLocation ret = this.names.inverse().get(value);
+        return ret == null ? this.defaultKey : ret;
     }
 
     @Override

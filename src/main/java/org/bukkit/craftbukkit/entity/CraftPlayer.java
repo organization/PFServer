@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.io.BaseEncoding;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
+import io.netty.util.internal.ConcurrentSet;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.PlayerAdvancements;
@@ -32,6 +33,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.MapDecoration;
+import net.minecraftforge.common.util.FakePlayer;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.*;
@@ -79,7 +81,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     private long lastPlayed = 0;
     private boolean hasPlayedBefore = false;
     private final ConversationTracker conversationTracker = new ConversationTracker();
-    private final Set<String> channels = new HashSet<String>();
+    private final Set<String> channels = new ConcurrentSet<String>();
     private final Map<UUID, Set<WeakReference<Plugin>>> hiddenPlayers = new HashMap<>();
     private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
     private int hash = 0;
@@ -476,7 +478,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
         EntityPlayerMP entity = getHandle();
 
-        if (getHealth() == 0 || entity.isDead) {
+        if (getHealth() == 0 || entity.isDead || entity instanceof FakePlayer) {
             return false;
         }
 
@@ -1371,7 +1373,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if ( healthMod >= Float.MAX_VALUE || healthMod <= 0 )
         {
             healthMod = 20; // Reset health
-            getServer().getLogger().warning( getName() + " tried to crash the server with a large health attribute" );
+            getServer().getLogger().warn( getName() + " tried to crash the server with a large health attribute" );
         }
         collection.add(new ModifiableAttributeInstance(getHandle().getAttributeMap(), (new RangedAttribute(null, "generic.maxHealth", healthMod, 0.0D, Float.MAX_VALUE)).setDescription("Max Health").setShouldWatch(true)));
         // Spigot end

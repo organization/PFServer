@@ -418,13 +418,13 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                 }
 
                 entity.setPositionAndRotation(d3, d4, d5, f, f1);
-                this.player.setPositionAndRotation(d3, d4, d5, f, f1); // Forge - Resync player position on vehicle moving
+                this.player.setPositionAndRotation(d3, d4, d5, this.player.rotationYaw, this.player.rotationPitch); // Forge - Resync player position on vehicle moving
                 boolean flag2 = worldserver.getCollisionBoxes(entity, entity.getEntityBoundingBox().shrink(0.0625D)).isEmpty();
 
                 if (flag && (flag1 || !flag2))
                 {
                     entity.setPositionAndRotation(d0, d1, d2, f, f1);
-                    this.player.setPositionAndRotation(d0, d1, d2, f, f1); // Forge - Resync player position on vehicle moving
+                    this.player.setPositionAndRotation(d0, d1, d2, this.player.rotationYaw, this.player.rotationPitch); // Forge - Resync player position on vehicle moving
                     this.netManager.sendPacket(new SPacketMoveVehicle(entity));
                     return;
                 }
@@ -2360,7 +2360,6 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
 
                 if (itemstack.getItem() == Items.WRITABLE_BOOK && itemstack.getItem() == itemstack1.getItem())
                 {
-                    itemstack1 = new ItemStack(Items.WRITABLE_BOOK);
                     itemstack1.setTagInfo("pages", itemstack.getTagCompound().getTagList("pages", 8));
                     CraftEventFactory.handleEditBookEvent(player, itemstack1);
                 }

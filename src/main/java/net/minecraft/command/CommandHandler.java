@@ -1,11 +1,11 @@
 package net.minecraft.command;
 
+import cn.pfcraft.server.command.BukkitCommandWrapper;
+import cn.pfcraft.server.command.CraftSimpleCommandMap;
+import cn.pfcraft.server.command.ModCustomCommand;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.command.BukkitCommandWrapper;
-import mgazul.PFServer.command.CraftSimpleCommandMap;
-import mgazul.PFServer.command.ModCustomCommand;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -30,11 +30,6 @@ public abstract class CommandHandler implements ICommandManager
     public int executeCommand(ICommandSender sender, String rawCommand)
     {
         rawCommand = rawCommand.trim();
-
-        if (rawCommand.startsWith("/"))
-        {
-            rawCommand = rawCommand.substring(1);
-        }
 
         String[] astring = rawCommand.split(" ");
         String s = astring[0];

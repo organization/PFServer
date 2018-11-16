@@ -19,11 +19,11 @@
 
 package net.minecraftforge.fml.common.network.simpleimpl;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Preconditions;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mgazul.PFServer.PFServer;
 import net.minecraft.network.INetHandler;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

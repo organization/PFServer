@@ -1,10 +1,11 @@
 package net.minecraft.world;
 
+import cn.pfcraft.server.PFSWorldConfig;
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import mgazul.PFServer.PFServer;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.FunctionManager;
 import net.minecraft.block.Block;
@@ -142,7 +143,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     public boolean populating;
     private int tickPosition;
     public final org.spigotmc.SpigotWorldConfig spigotConfig; // Spigot
-
+    public final cn.pfcraft.server.PFSWorldConfig pfserverConfig; // PFServer
     public final SpigotTimings.WorldTimingsHandler timings; // Spigot
 
     public static boolean haveWeSilencedAPhysicsCrash;
@@ -166,6 +167,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     protected World(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client, ChunkGenerator gen, org.bukkit.World.Environment env) {
         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( info.getWorldName() ); // Spigot
+        this.pfserverConfig = new PFSWorldConfig(info.getWorldName(), this.spigotConfig); // PFServer
         this.generator = gen;
         this.world = new CraftWorld((WorldServer) this, gen, env);
         this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
@@ -253,6 +255,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     protected World(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client)
     {
         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( info.getWorldName() ); // Spigot
+        this.pfserverConfig = new PFSWorldConfig(info.getWorldName(), this.spigotConfig); // PFServer
         this.world = DimensionManager.getWorld(0) != null ? DimensionManager.getWorld(0).getWorld() : null;
         this.eventListeners = Lists.newArrayList(this.pathListener);
         this.calendar = Calendar.getInstance();
@@ -2090,7 +2093,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             TileEntity tileentity = (TileEntity) this.tickableTileEntities.get(tileTickPosition);
             // Spigot start
             if (tileentity == null) {
-                getServer().getLogger().severe("Spigot has detected a null entity and has removed it, preventing a crash");
+                PFServer.LOGGER.error("Spigot has detected a null entity and has removed it, preventing a crash");
                 tilesThisCycle--;
                 this.tickableTileEntities.remove(tileTickPosition--);
                 continue;

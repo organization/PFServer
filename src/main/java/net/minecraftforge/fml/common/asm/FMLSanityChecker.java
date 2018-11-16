@@ -19,8 +19,8 @@
 
 package net.minecraftforge.fml.common.asm;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.io.ByteStreams;
-import mgazul.PFServer.PFServer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import net.minecraftforge.fml.common.CertificateHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;

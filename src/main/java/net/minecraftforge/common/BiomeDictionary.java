@@ -19,9 +19,9 @@
 
 package net.minecraftforge.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import mgazul.PFServer.PFServer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;

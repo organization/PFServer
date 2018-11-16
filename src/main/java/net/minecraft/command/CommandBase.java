@@ -834,6 +834,10 @@ public abstract class CommandBase implements ICommand
         return region.regionMatches(true, 0, original, 0, original.length());
     }
 
+    public static List<String> getListMatchingLast(String[] args, String... matches) {
+        return getListOfStringsMatchingLastWord(args, matches);
+    }
+
     public static List<String> getListOfStringsMatchingLastWord(String[] args, String... possibilities)
     {
         return getListOfStringsMatchingLastWord(args, Arrays.asList(possibilities));

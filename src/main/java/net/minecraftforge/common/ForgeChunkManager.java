@@ -19,10 +19,10 @@
 
 package net.minecraftforge.common;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.*;
-import mgazul.PFServer.PFServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;

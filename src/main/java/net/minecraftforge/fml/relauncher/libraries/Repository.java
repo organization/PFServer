@@ -18,9 +18,9 @@
  */
 package net.minecraftforge.fml.relauncher.libraries;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
-import mgazul.PFServer.PFServer;
 
 import java.io.File;
 import java.io.IOException;

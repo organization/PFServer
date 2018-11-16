@@ -19,9 +19,9 @@
 
 package net.minecraftforge.fml.common.network.internal;
 
+import cn.pfcraft.server.PFServer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import mgazul.PFServer.PFServer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;

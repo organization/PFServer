@@ -37,7 +37,7 @@ public class CraftBanner extends CraftBlockEntityState<TileEntityBanner> impleme
         if (banner.patterns != null) {
             for (int i = 0; i < banner.patterns.tagCount(); i++) {
                 NBTTagCompound p = (NBTTagCompound) banner.patterns.get(i);
-                patterns.add(new Pattern(DyeColor.getByDyeData((byte) p.getInteger("Color")), PatternType.getByIdentifier(p.getString("Pattern"))));
+                patterns.add(new Pattern(DyeColor.getByWoolData((byte) p.getInteger("Color")), PatternType.getByIdentifier(p.getString("Pattern"))));
             }
         }
     }
@@ -97,7 +97,7 @@ public class CraftBanner extends CraftBlockEntityState<TileEntityBanner> impleme
 
         for (Pattern p : patterns) {
             NBTTagCompound compound = new NBTTagCompound();
-            compound.setInteger("Color", p.getColor().getDyeData());
+            compound.setInteger("Color", p.getColor().getWoolData());
             compound.setString("Pattern", p.getPattern().getIdentifier());
             newPatterns.appendTag(compound);
         }

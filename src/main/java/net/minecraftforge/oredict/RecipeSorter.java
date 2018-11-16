@@ -19,11 +19,11 @@
 
 package net.minecraftforge.oredict;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import mgazul.PFServer.PFServer;
 import net.minecraft.item.crafting.*;
 import net.minecraft.item.crafting.RecipesBanners.RecipeAddPattern;
 import net.minecraft.item.crafting.RecipesBanners.RecipeDuplicatePattern;

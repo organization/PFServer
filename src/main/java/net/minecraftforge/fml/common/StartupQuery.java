@@ -19,7 +19,7 @@
 
 package net.minecraftforge.fml.common;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.server.MinecraftServer;
 
 import javax.annotation.Nullable;

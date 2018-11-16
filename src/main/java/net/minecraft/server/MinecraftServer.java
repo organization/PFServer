@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import cn.pfcraft.server.BukkitInjector;
+import cn.pfcraft.server.utils.CachedSizeConcurrentLinkedQueue;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Futures;
@@ -15,7 +17,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
-import mgazul.PFServer.BukkitInjector;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.FunctionManager;
 import net.minecraft.command.CommandBase;
@@ -56,8 +57,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.Main;
 import org.bukkit.craftbukkit.SpigotTimings;
 import org.spigotmc.SlackActivityAccountant;
@@ -83,6 +82,7 @@ import java.util.concurrent.FutureTask;
 
 public abstract class MinecraftServer implements ICommandSender, Runnable, IThreadListener, ISnooperInfo
 {
+    private static MinecraftServer SERVER;
     public static final Logger LOGGER = LogManager.getLogger();
     public static final File USER_CACHE_FILE = new File("usercache.json");
     public ISaveFormat anvilConverterForAnvilFile;
@@ -136,7 +136,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     private final GameProfileRepository profileRepo;
     private final PlayerProfileCache profileCache;
     private long nanoTimeSinceStatusRefresh;
-    public final Queue < FutureTask<? >> futureTaskQueue = new mgazul.PFServer.utils.CachedSizeConcurrentLinkedQueue<>(); // Paper - Make size() constant-time
+    public final Queue < FutureTask<? >> futureTaskQueue = new CachedSizeConcurrentLinkedQueue<>(); // Paper - Make size() constant-time
     private Thread serverThread;
     public long currentTime = getCurrentTimeMillis();
     @SideOnly(Side.CLIENT)
@@ -163,6 +163,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
 
     public MinecraftServer(OptionSet options, Proxy proxyIn, DataFixer dataFixerIn, YggdrasilAuthenticationService authServiceIn, MinecraftSessionService sessionServiceIn, GameProfileRepository profileRepoIn, PlayerProfileCache profileCacheIn)
     {
+        SERVER = this;
         this.serverProxy = proxyIn;
         this.authService = authServiceIn;
         this.sessionService = sessionServiceIn;
@@ -1499,11 +1500,9 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         return this;
     }
 
-    @Nullable
-    @Deprecated
     public static MinecraftServer getServerInst()
     {
-        return (Bukkit.getServer() instanceof CraftServer) ? ((CraftServer) Bukkit.getServer()).getServer() : null;
+        return SERVER;
     }
 
     public int getMaxWorldSize()

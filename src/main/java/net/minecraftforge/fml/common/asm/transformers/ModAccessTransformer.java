@@ -19,10 +19,10 @@
 
 package net.minecraftforge.fml.common.asm.transformers;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
-import mgazul.PFServer.PFServer;
 
 import java.io.IOException;
 import java.io.InputStream;

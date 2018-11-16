@@ -1,5 +1,6 @@
 package net.minecraft.entity;
 
+import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -98,7 +99,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     private static final List<ItemStack> EMPTY_EQUIPMENT = Collections.<ItemStack>emptyList();
     private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     private static double renderDistanceWeight = 1.0D;
-    private static int nextEntityID;
+    private static int nextEntityID = 1;
     private int entityId;
     public boolean preventEntitySpawning;
     public final List<Entity> riddenByEntities;  // Spigot
@@ -158,8 +159,11 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     private static final DataParameter<Boolean> NO_GRAVITY = EntityDataManager.<Boolean>createKey(Entity.class, DataSerializers.BOOLEAN);
     public boolean addedToChunk;
     public int chunkCoordX;
+    public int getChunkX() { return chunkCoordX; }
     public int chunkCoordY;
+    public int getChunkY() { return chunkCoordY; }
     public int chunkCoordZ;
+    public int getChunkZ() { return chunkCoordZ; }
     @SideOnly(Side.CLIENT)
     public long serverPosX;
     @SideOnly(Side.CLIENT)
@@ -387,7 +391,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
         if (yaw == Float.POSITIVE_INFINITY || yaw == Float.NEGATIVE_INFINITY) {
             if (this instanceof EntityPlayer) {
-                this.world.getServer().getLogger().warning(this.getName() + " was caught trying to crash the server with an invalid yaw");
+                PFServer.LOGGER.warn(this.getName() + " was caught trying to crash the server with an invalid yaw");
                 ((CraftPlayer) this.getBukkitEntity()).kickPlayer("Nope");
             }
             yaw = 0;
@@ -400,7 +404,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
         if (pitch == Float.POSITIVE_INFINITY || pitch == Float.NEGATIVE_INFINITY) {
             if (this instanceof EntityPlayer) {
-                this.world.getServer().getLogger().warning(this.getName() + " was caught trying to crash the server with an invalid pitch");
+                PFServer.LOGGER.warn(this.getName() + " was caught trying to crash the server with an invalid pitch");
                 ((CraftPlayer) this.getBukkitEntity()).kickPlayer("Nope");
             }
             pitch = 0;

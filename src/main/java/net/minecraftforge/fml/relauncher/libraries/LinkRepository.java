@@ -18,7 +18,7 @@
  */
 package net.minecraftforge.fml.relauncher.libraries;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 
 import java.io.File;
 import java.util.*;

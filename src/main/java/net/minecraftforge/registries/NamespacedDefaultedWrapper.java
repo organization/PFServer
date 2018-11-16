@@ -1,6 +1,6 @@
 package net.minecraftforge.registries;
 
-import mgazul.PFServer.PFServer;
+import cn.pfcraft.server.PFServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
 import org.apache.commons.lang3.Validate;
@@ -100,7 +100,7 @@ class NamespacedDefaultedWrapper<V extends IForgeRegistryEntry<V>> extends Regis
     public V getRandomObject(Random random)
     {
         Collection<V> values = this.delegate.getValuesCollection();
-        return values.stream().skip(random.nextInt(values.size())).findFirst().orElse(null);
+        return values.stream().skip(random.nextInt(values.size())).findFirst().orElse(this.delegate.getDefault());
     }
 
     //internal
