@@ -562,7 +562,7 @@ public class DimensionManager
 
         WorldServer world = (WorldServer) new WorldServerMulti(mcServer, saveHandler, dim, overworld, mcServer.profiler, worldinfo, env, gen).init();
         world.initialize(worldSettings);
-        
+
         world.provider.setDimension(dim); // Fix for TerrainControl injecting their own WorldProvider
         mcServer.getPlayerList().setPlayerManager(mcServer.worldServerList.toArray(new WorldServer[mcServer.worldServerList.size()]));
 
