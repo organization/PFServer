@@ -209,11 +209,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         if (this.worldInfo.getDimension() == 0)
         {
             generator = this.getServer().getGenerator(this.worldInfo.getWorldName());
-            if (generator != null)
-            {
-                getWorld().generator = generator;
-                getWorld().getPopulators().addAll(generator.getDefaultPopulators(getWorld()));
-            }
+            getWorld().generator = generator;
         }
         // PFServer end
         // CraftBukkit start
