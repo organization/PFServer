@@ -36,7 +36,7 @@ public class ItemBow extends Item
                 }
                 else
                 {
-                    return entityIn.getActiveItemStack().getItem() != Items.BOW ? 0.0F : (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F;
+                    return !(entityIn.getActiveItemStack().getItem() instanceof ItemBow) ? 0.0F : (float)(stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F;
                 }
             }
         });
@@ -110,6 +110,7 @@ public class ItemBow extends Item
                     {
                         ItemArrow itemarrow = (ItemArrow)(itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW);
                         EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
+                        entityarrow = this.customizeArrow(entityarrow);
                         entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
                         if (f == 1.0F)
@@ -228,5 +229,10 @@ public class ItemBow extends Item
     public int getItemEnchantability()
     {
         return 1;
+    }
+
+    public EntityArrow customizeArrow(EntityArrow arrow)
+    {
+           return arrow;
     }
 }

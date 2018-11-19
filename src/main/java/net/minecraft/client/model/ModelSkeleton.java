@@ -3,7 +3,6 @@ package net.minecraft.client.model;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
@@ -48,7 +47,7 @@ public class ModelSkeleton extends ModelBiped
         this.leftArmPose = ArmPose.EMPTY;
         ItemStack itemstack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
 
-        if (itemstack.getItem() == Items.BOW && ((AbstractSkeleton)entitylivingbaseIn).isSwingingArms())
+        if (itemstack.getItem() instanceof net.minecraft.item.ItemBow && ((AbstractSkeleton)entitylivingbaseIn).isSwingingArms())
         {
             if (entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT)
             {
@@ -69,7 +68,7 @@ public class ModelSkeleton extends ModelBiped
         ItemStack itemstack = ((EntityLivingBase)entityIn).getHeldItemMainhand();
         AbstractSkeleton abstractskeleton = (AbstractSkeleton)entityIn;
 
-        if (abstractskeleton.isSwingingArms() && (itemstack.isEmpty() || itemstack.getItem() != Items.BOW))
+        if (abstractskeleton.isSwingingArms() && (itemstack.isEmpty() || !(itemstack.getItem() instanceof net.minecraft.item.ItemBow)))
         {
             float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);

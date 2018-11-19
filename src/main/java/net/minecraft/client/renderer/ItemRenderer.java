@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -309,7 +308,7 @@ public class ItemRenderer
         {
             ItemStack itemstack = abstractclientplayer.getActiveItemStack();
 
-            if (!itemstack.isEmpty() && itemstack.getItem() == Items.BOW) //Forge: Data watcher can desync and cause this to NPE...
+            if (!itemstack.isEmpty() && itemstack.getItem() instanceof net.minecraft.item.ItemBow) //Forge: Data watcher can desync and cause this to NPE...
             {
                 EnumHand enumhand1 = abstractclientplayer.getActiveHand();
                 flag = enumhand1 == EnumHand.MAIN_HAND;
