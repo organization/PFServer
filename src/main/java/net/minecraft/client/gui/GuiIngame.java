@@ -496,6 +496,7 @@ public class GuiIngame extends Gui
                     if (potion.hasStatusIcon())
                     this.drawTexturedModalRect(k + 3, l + 3, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
                     potion.renderHUDEffect(k, l, potioneffect, mc, f);
+                    potion.renderHUDEffect(potioneffect, this, k, l, this.titlesTimer, f);
                 }
             }
         }
