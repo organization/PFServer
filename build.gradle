@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
     maven {
         name = "forge"
-        url = "http://files.minecraftforge.net/maven"
+        url = "https://files.minecraftforge.net/maven"
     }
     maven {
         name = "sonatype"
@@ -89,7 +89,7 @@ dependencies {
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile 'commons-lang:commons-lang:2.6' // Is needed for plugin compatibility
     compile 'net.md-5:SpecialSource:1.8.5'
-    compile 'org.scala-lang.modules:scala-parser-combinators_2.11:1.0.1'
+    compile 'org.scala-lang.modules:scala-parser-combinators_2.11:1.1.1'
     compile 'org.xerial:sqlite-jdbc:3.21.0.1'
     compile 'mysql:mysql-connector-java:5.1.46'
     compile 'net.md-5:bungeecord-chat:1.12-SNAPSHOT'

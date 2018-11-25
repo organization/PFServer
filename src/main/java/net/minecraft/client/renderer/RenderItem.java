@@ -91,6 +91,11 @@ public class RenderItem implements IResourceManagerReloadListener
 
     private void renderModel(IBakedModel model, int color, ItemStack stack)
     {
+        if (net.minecraftforge.common.ForgeModContainer.allowEmissiveItems)
+        {
+            net.minecraftforge.client.ForgeHooksClient.renderLitItem(this, model, color, stack);
+            return;
+        }
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
@@ -174,7 +179,7 @@ public class RenderItem implements IResourceManagerReloadListener
         this.putQuadNormal(renderer, quad);
     }
 
-    private void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack)
+    public void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack)
     {
         boolean flag = color == -1 && !stack.isEmpty();
         int i = 0;

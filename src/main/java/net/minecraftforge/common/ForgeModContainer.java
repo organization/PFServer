@@ -98,6 +98,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static boolean forgeCloudsEnabled = true;
     public static boolean disableStairSlabCulling = false; // Also known as the "DontCullStairsBecauseIUseACrappyTexturePackThatBreaksBasicBlockShapesSoICantTrustBasicBlockCulling" flag
     public static boolean alwaysSetupTerrainOffThread = false; // In RenderGlobal.setupTerrain, always force the chunk render updates to be queued to the thread
+    public static boolean allowEmissiveItems; // see RenderItem#renderModel(IBakedModel, int, ItemStack)
     public static int dimensionUnloadQueueDelay = 0;
     public static boolean logCascadingWorldGeneration = true; // see Chunk#logCascadingWorldGeneration()
     public static boolean fixVanillaCascading = false; // There are various places in vanilla that cause cascading worldgen. Enabling this WILL change where blocks are placed to prevent this.
@@ -209,6 +210,12 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         // If no tooltip language key is defined in your .lang file, the tooltip will default to the property comment field.
         prop.setLanguageKey("forge.configgui.disableVersionCheck");
         disableVersionCheck = prop.getBoolean(disableVersionCheck);
+        propOrder.add(prop.getName());
+
+        prop = config.get(Configuration.CATEGORY_CLIENT, "allowEmissiveItems", true,
+                "Allow item rendering to detect emissive quads and draw them properly. This allows glowing blocks to look the same in item form, but incurs a very slight performance hit.");
+        allowEmissiveItems = prop.getBoolean(true);
+        prop.setLanguageKey("forge.configgui.allowEmissiveItems");
         propOrder.add(prop.getName());
 
         prop = config.get(Configuration.CATEGORY_GENERAL, "clumpingThreshold", 64,

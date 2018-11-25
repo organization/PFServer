@@ -1767,6 +1767,7 @@ public class StructureVillagePieces
                             EntityZombieVillager entityzombievillager = new EntityZombieVillager(worldIn);
                             entityzombievillager.setLocationAndAngles((double)j + 0.5D, (double)k, (double)l + 0.5D, 0.0F, 0.0F);
                             entityzombievillager.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityzombievillager)), (IEntityLivingData)null);
+                            entityzombievillager.setForgeProfession(this.chooseForgeProfession(i, net.minecraftforge.fml.common.registry.VillagerRegistry.FARMER));
                             entityzombievillager.enablePersistence();
                             worldIn.addEntity(entityzombievillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CHUNK_GEN);
                         }
@@ -1774,6 +1775,7 @@ public class StructureVillagePieces
                         {
                             EntityVillager entityvillager = new EntityVillager(worldIn);
                             entityvillager.setLocationAndAngles((double)j + 0.5D, (double)k, (double)l + 0.5D, 0.0F, 0.0F);
+                            net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession(entityvillager, worldIn.rand);
                             entityvillager.setProfession(this.chooseForgeProfession(i, entityvillager.getProfessionForge()));
                             entityvillager.finalizeMobSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData)null, false);
                             worldIn.addEntity(entityvillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CHUNK_GEN);

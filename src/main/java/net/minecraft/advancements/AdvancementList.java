@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class AdvancementList
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final Map<ResourceLocation, Advancement> advancements = Maps.<ResourceLocation, Advancement>newHashMap();
+    public final Map<ResourceLocation, Advancement> advancements = Maps.<ResourceLocation, Advancement>newHashMap();
     private final Set<Advancement> roots = Sets.<Advancement>newLinkedHashSet();
     private final Set<Advancement> nonRoots = Sets.<Advancement>newLinkedHashSet();
     private Listener listener;

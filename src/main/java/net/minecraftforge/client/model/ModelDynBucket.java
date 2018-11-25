@@ -169,7 +169,7 @@ public final class ModelDynBucket implements IModel
             }
         }
 
-        return new BakedDynBucket(this, builder.build(), particleSprite, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap());
+        return new BakedDynBucket(this, builder.build(), particleSprite, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap(), transform.isIdentity());
     }
 
     /**
@@ -450,9 +450,10 @@ public final class ModelDynBucket implements IModel
                               TextureAtlasSprite particle,
                               VertexFormat format,
                               ImmutableMap<TransformType, TRSRTransformation> transforms,
-                              Map<String, IBakedModel> cache)
+                              Map<String, IBakedModel> cache,
+                              boolean untransformed)
         {
-            super(quads, particle, transforms, BakedDynBucketOverrideHandler.INSTANCE);
+            super(quads, particle, transforms, BakedDynBucketOverrideHandler.INSTANCE, untransformed);
             this.format = format;
             this.parent = parent;
             this.cache = cache;

@@ -50,7 +50,7 @@ public class LoadController
     private EventBus masterChannel;
     private ImmutableMap<String, EventBus> eventChannels;
     private LoaderState state;
-    private Multimap<String, ModState> modStates = ArrayListMultimap.create();
+    private Multimap<String, ModState> modStates = MultimapBuilder.hashKeys().enumSetValues(ModState.class).build();
     private List<ModContainer> activeModList = Lists.newArrayList();
     private ModContainer activeContainer;
     private BiMap<ModContainer, Object> modObjectList;
@@ -99,7 +99,7 @@ public class LoadController
             if (isActive)
             {
                 activeModList.add(mod);
-                modStates.put(mod.getModId(), ModState.UNLOADED);
+                modStates.put(mod.getModId(), ModState.LOADED);
                 eventBus.put(mod.getModId(), bus);
                 FMLCommonHandler.instance().addModToResourcePack(mod);
             }

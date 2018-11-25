@@ -83,6 +83,7 @@ public class WatchdogThread extends Thread
 
                 if ( restart )
                 {
+                    MinecraftServer.getServerInst().primaryThread.stop();
                     RestartCommand.restart();
                 }
                 break;

@@ -11,7 +11,6 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.GameType;
@@ -136,7 +135,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
             f = 1.0F;
         }
 
-        if (this.isHandActive() && this.getActiveItemStack().getItem() == Items.BOW)
+        if (this.isHandActive() && this.getActiveItemStack().getItem() instanceof net.minecraft.item.ItemBow)
         {
             int i = this.getItemInUseMaxCount();
             float f1 = (float)i / 20.0F;
