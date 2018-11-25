@@ -79,13 +79,9 @@ public class ReflectionMethods {
     }
 
     // ClassLoader.loadClass
-    public static Class<?> loadClass(String pClazzName) throws ClassNotFoundException {
-        return loadClass((ClassLoader)null, pClazzName);
-    }
-
-    public static Class<?> loadClass(ClassLoader pLoader, String pClazzName) throws ClassNotFoundException {
-        if (pClazzName.startsWith("net.minecraft."))
-            pClazzName = RemapUtils.mapClass(pClazzName.replace('.', '/')).replace('/', '.');
-        return pLoader == null ? Class.forName(pClazzName) : pLoader.loadClass(pClazzName);
+    public static Class<?> loadClass(ClassLoader inst, String className) throws ClassNotFoundException {
+        if (className.startsWith("net.minecraft."))
+            className = RemapUtils.mapClass(className.replace('.', '/')).replace('/', '.');
+        return inst.loadClass(className);
     }
 }
