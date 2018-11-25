@@ -89,7 +89,7 @@ public abstract class InventoryEffectRenderer extends GuiContainer
                     this.drawTexturedModalRect(i + 6, j + 7, 0 + i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
                 }
 
-                potion.renderInventoryEffect(i, j, potioneffect, mc);
+                potion.renderInventoryEffect(potioneffect, this, i, j, this.zLevel);
                 if (!potion.shouldRenderInvText(potioneffect)) { j += l; continue; }
                 String s1 = I18n.format(potion.getName());
 
