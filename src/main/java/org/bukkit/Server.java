@@ -916,7 +916,7 @@ public interface Server extends PluginMessageRecipient {
     Entity getEntity(UUID uuid);
 
     public double[] getTPS();
-    
+
     /**
      * Get the advancement specified by this key.
      *

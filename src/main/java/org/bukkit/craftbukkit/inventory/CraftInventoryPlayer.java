@@ -49,16 +49,6 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
     }
 
     @Override
-    public ItemStack getItemInHand() {
-        return getItemInMainHand();
-    }
-
-    @Override
-    public void setItemInHand(ItemStack stack) {
-        setItemInMainHand(stack);
-    }
-
-    @Override
     public void setItem(int index, ItemStack item) {
         super.setItem(index, item);
         if (this.getHolder() == null) return;
@@ -203,16 +193,6 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
     @Override
     public HumanEntity getHolder() {
         return (HumanEntity) inventory.getOwner();
-    }
-
-    @Override
-    public float getItemInHandDropChance() {
-        return getItemInMainHandDropChance();
-    }
-
-    @Override
-    public void setItemInHandDropChance(float chance) {
-        setItemInMainHandDropChance(chance);
     }
 
     @Override
