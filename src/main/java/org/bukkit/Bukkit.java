@@ -1121,6 +1121,10 @@ public final class Bukkit {
         return server.getEntity(uuid);
     }
 
+    public static double[] getTPS() {
+        return server.getTPS();
+    }
+
     /**
      * Get the advancement specified by this key.
      *
