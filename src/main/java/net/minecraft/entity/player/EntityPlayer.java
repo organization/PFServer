@@ -1096,7 +1096,7 @@ public abstract class EntityPlayer extends EntityLivingBase
             }
         } else {
             // This should never be called, but is implemented anyway
-            org.bukkit.OfflinePlayer thisPlayer = other.world.getServer().getOfflinePlayer(other.getName());
+            org.bukkit.OfflinePlayer thisPlayer = other.world.getServer().getOfflinePlayer(other.getUniqueID());
             team = other.world.getServer().getScoreboardManager().getMainScoreboard().getPlayerTeam(thisPlayer);
             if (team == null || team.allowFriendlyFire()) {
                 return true;
@@ -1105,7 +1105,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         if (this instanceof EntityPlayerMP) {
             return !team.hasEntry(((EntityPlayerMP) this).getBukkitEntity().getName());
         }
-        return !team.hasEntry(this.world.getServer().getOfflinePlayer(this.getName()).getName());
+        return !team.hasEntry(this.world.getServer().getOfflinePlayer(this.getUniqueID()).getName());
     }
 
     protected void damageArmor(float damage)
