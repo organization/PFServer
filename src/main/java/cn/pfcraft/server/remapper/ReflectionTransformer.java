@@ -57,7 +57,7 @@ public class ReflectionTransformer {
         reader.accept(node, 0); // Visit using ClassNode
         boolean remapCL = false;
         if (node.superName.equals("java/net/URLClassLoader")) {
-            node.superName = "catserver/server/remapper/CatURLClassLoader";
+            node.superName = "cn/pfcraft/server/remapper/PFServerURLClassLoader";
             remapCL = true;
         }
 
@@ -69,7 +69,7 @@ public class ReflectionTransformer {
                 if (next instanceof TypeInsnNode) {
                     TypeInsnNode insn = (TypeInsnNode) next;
                     if (insn.getOpcode() == Opcodes.NEW && insn.desc.equals("java/net/URLClassLoader")) { // remap new URLClassLoader
-                        insn.desc = "catserver/server/remapper/CatURLClassLoader";
+                        insn.desc = "cn/pfcraft/server/remapper/PFServerURLClassLoader";
                         remapCL = true;
                     }
                 }
@@ -140,6 +140,6 @@ public class ReflectionTransformer {
 
     public static void remapURLClassLoader(MethodInsnNode method) {
         if (!(method.owner.equals("java/net/URLClassLoader") && method.name.equals("<init>"))) return;
-        method.owner = "catserver/server/remapper/CatURLClassLoader";
+        method.owner = "cn/pfcraft/server/remapper/PFServerURLClassLoader";
     }
 }
