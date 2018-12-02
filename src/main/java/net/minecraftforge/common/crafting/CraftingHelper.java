@@ -719,38 +719,50 @@ public class CraftingHelper {
     }
 
     public static boolean findFiles(ModContainer mod, String base, Function<Path, Boolean> preprocessor, BiFunction<Path, Path, Boolean> processor,
-                                    boolean defaultUnfoundRoot, boolean visitAllFiles) {
+                                    boolean defaultUnfoundRoot, boolean visitAllFiles)
+    {
         File source = mod.getSource();
 
-        if ("minecraft".equals(mod.getModId())) {
+        if ("minecraft".equals(mod.getModId()))
+        {
             if (!DEBUG_LOAD_MINECRAFT)
                 return true;
 
-            try {
+            try
+            {
                 URI tmp = CraftingManager.class.getResource("/assets/.mcassetsroot").toURI();
                 source = new File(tmp.resolve("..").getPath());
-            } catch (URISyntaxException e) {
+            }
+            catch (URISyntaxException e)
+            {
                 PFServer.LOGGER.error("Error finding Minecraft jar: ", e);
                 return false;
             }
         }
 
         Path root = null;
-        if (source.isFile()) {
-            try (FileSystem fs = FileSystems.newFileSystem(source.toPath(), null);) {
+        if (source.isFile())
+        {
+            try (FileSystem fs = FileSystems.newFileSystem(source.toPath(), null);)
+            {
                 root = fs.getPath("/" + base);
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 PFServer.LOGGER.error("Error loading FileSystem from jar: ", e);
                 return false;
             }
-        } else if (source.isDirectory()) {
+        }
+        else if (source.isDirectory())
+        {
             root = source.toPath().resolve(base);
         }
 
         if (root == null || !Files.exists(root))
             return defaultUnfoundRoot;
 
-        if (preprocessor != null) {
+        if (preprocessor != null)
+        {
             Boolean cont = preprocessor.apply(root);
             if (cont == null || !cont.booleanValue())
                 return false;
@@ -758,21 +770,29 @@ public class CraftingHelper {
 
         boolean success = true;
 
-        if (processor != null) {
+        if (processor != null)
+        {
             Iterator<Path> itr = null;
-            try {
+            try
+            {
                 itr = Files.walk(root).iterator();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 PFServer.LOGGER.error("Error iterating filesystem for: {}", mod.getModId(), e);
                 return false;
             }
 
-            while (itr != null && itr.hasNext()) {
+            while (itr != null && itr.hasNext())
+            {
                 Boolean cont = processor.apply(root, itr.next());
 
-                if (visitAllFiles) {
+                if (visitAllFiles)
+                {
                     success &= cont != null && cont;
-                } else if (cont == null || !cont) {
+                }
+                else if (cont == null || !cont)
+                {
                     return false;
                 }
             }
