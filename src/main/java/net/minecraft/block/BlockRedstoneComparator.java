@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -226,10 +227,16 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
 
             if (flag && !flag1)
             {
+                if (CraftEventFactory.callRedstoneChange(worldIn, pos.getX(), pos.getY(), pos.getZ(), 15, 0).getNewCurrent() != 0) {
+                    return;
+                }
                 worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)), 2);
             }
             else if (!flag && flag1)
             {
+                if (CraftEventFactory.callRedstoneChange(worldIn, pos.getX(), pos.getY(), pos.getZ(), 0, 15).getNewCurrent() != 15) {
+                    return; 
+                }
                 worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 2);
             }
 
