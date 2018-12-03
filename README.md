@@ -1,5 +1,5 @@
 # PFServer
-#### Contact
+### Contact
 [**Discord**](https://discord.gg/HNmmrCV)
 
 ### Info
