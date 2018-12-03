@@ -73,7 +73,7 @@ public final class JavaPluginLoader implements PluginLoader {
         if (dataFolder.equals(oldDataFolder)) {
             // They are equal -- nothing needs to be done!
         } else if (dataFolder.isDirectory() && oldDataFolder.isDirectory()) {
-            server.getLogger().warn(String.format(
+            server.getLogger().warning(String.format(
                 "While loading %s (%s) found old-data folder: `%s' next to the new one `%s'",
                 description.getFullName(),
                 file,
@@ -84,7 +84,7 @@ public final class JavaPluginLoader implements PluginLoader {
             if (!oldDataFolder.renameTo(dataFolder)) {
                 throw new InvalidPluginException("Unable to rename old data folder: `" + oldDataFolder + "' to: `" + dataFolder + "'");
             }
-            server.getLogger().info(String.format(
+            server.getLogger().log(Level.INFO, String.format(
                 "While loading %s (%s) renamed data folder: `%s' to `%s'",
                 description.getFullName(),
                 file,
@@ -316,13 +316,13 @@ public final class JavaPluginLoader implements PluginLoader {
 
             if (!loaders.contains(pluginLoader)) {
                 loaders.add(pluginLoader);
-                server.getLogger().warn("Enabled plugin with unregistered PluginClassLoader " + plugin.getDescription().getFullName());
+                server.getLogger().log(Level.WARNING, "Enabled plugin with unregistered PluginClassLoader " + plugin.getDescription().getFullName());
             }
 
             try {
                 jPlugin.setEnabled(true);
             } catch (Throwable ex) {
-                server.getLogger().error("Error occurred while enabling " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
+                server.getLogger().log(Level.SEVERE, "Error occurred while enabling " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
             }
 
             // Perhaps abort here, rather than continue going, but as it stands,
@@ -346,7 +346,7 @@ public final class JavaPluginLoader implements PluginLoader {
             try {
                 jPlugin.setEnabled(false);
             } catch (Throwable ex) {
-                server.getLogger().error("Error occurred while disabling " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
+                server.getLogger().log(Level.SEVERE, "Error occurred while disabling " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
             }
 
             if (cloader instanceof PluginClassLoader) {
@@ -361,7 +361,7 @@ public final class JavaPluginLoader implements PluginLoader {
                 try {
                     loader.close();
                 } catch (IOException var9) {
-                    this.server.getLogger().warn("Error closing the Plugin Class Loader for " + plugin.getDescription().getFullName());
+                    this.server.getLogger().log(Level.WARNING, "Error closing the Plugin Class Loader for " + plugin.getDescription().getFullName());
                     var9.printStackTrace();
                 }
             }

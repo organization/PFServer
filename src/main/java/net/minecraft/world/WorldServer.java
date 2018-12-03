@@ -59,6 +59,7 @@ import org.bukkit.event.weather.LightningStrikeEvent;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class WorldServer extends World implements IThreadListener
@@ -291,7 +292,7 @@ public class WorldServer extends World implements IThreadListener
     }
 
     private TileEntity fixTileEntity(BlockPos pos, Block type, TileEntity found) {
-        this.getServer().getLogger().error("Block at {0},{1},{2} is {3} but has {4}" + ". "
+        this.getServer().getLogger().log(Level.SEVERE, "Block at {0},{1},{2} is {3} but has {4}" + ". "
                 + "Bukkit will attempt to fix this, but there may be additional damage that we cannot recover.", new Object[]{pos.getX(), pos.getY(), pos.getZ(), org.bukkit.Material.getBlockMaterial(Block.getIdFromBlock(type)).toString(), found});
         if (type instanceof ITileEntityProvider) {
             TileEntity replacement = ((ITileEntityProvider) type).createNewTileEntity(this, type.getMetaFromState(this.getBlockState(pos)));
@@ -299,7 +300,7 @@ public class WorldServer extends World implements IThreadListener
             this.setTileEntity(pos, replacement);
             return replacement;
         } else {
-            this.getServer().getLogger().error("Don't know how to fix for this type... Can't do anything! :(");
+            this.getServer().getLogger().severe("Don't know how to fix for this type... Can't do anything! :(");
             return found;
         }
     }

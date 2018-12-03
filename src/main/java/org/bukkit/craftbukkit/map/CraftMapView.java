@@ -9,6 +9,7 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public final class CraftMapView implements MapView {
 
@@ -141,7 +142,7 @@ public final class CraftMapView implements MapView {
             try {
                 renderer.render(this, canvas, player);
             } catch (Throwable ex) {
-                Bukkit.getLogger().error("Could not render map using renderer " + renderer.getClass().getName(), ex);
+                Bukkit.getLogger().log(Level.SEVERE, "Could not render map using renderer " + renderer.getClass().getName(), ex);
             }
 
             byte[] buf = canvas.getBuffer();

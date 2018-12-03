@@ -1264,7 +1264,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         for (ResourceLocation resourcelocation : p_193102_1_)
         {
             if (CraftingManager.getRecipe(resourcelocation) == null) {
-                Bukkit.getLogger().warn("Ignoring grant of non existent recipe " + resourcelocation);
+                Bukkit.getLogger().warning("Ignoring grant of non existent recipe " + resourcelocation);
                 continue;
             }
             list.add(CraftingManager.getRecipe(resourcelocation));

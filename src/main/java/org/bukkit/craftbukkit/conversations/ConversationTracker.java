@@ -48,7 +48,7 @@ public class ConversationTracker {
             try {
                 conversation.abandon(new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));
             } catch (Throwable t) {
-                Bukkit.getLogger().error("Unexpected exception while abandoning a conversation", t);
+                Bukkit.getLogger().log(Level.SEVERE, "Unexpected exception while abandoning a conversation", t);
             }
         }
     }

@@ -23,7 +23,7 @@ public class PluginLogger extends Logger {
         super(context.getClass().getCanonicalName(), null);
         String prefix = context.getDescription().getPrefix();
         pluginName = prefix != null ? new StringBuilder().append("[").append(prefix).append("] ").toString() : "[" + context.getDescription().getName() + "] ";
-        setParent(Logger.getLogger("PFServer"));
+        setParent(context.getServer().getLogger());
         setLevel(Level.ALL);
     }
 

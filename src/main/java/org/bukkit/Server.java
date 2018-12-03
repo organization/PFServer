@@ -1,7 +1,6 @@
 package org.bukkit;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.logging.log4j.Logger;
 import org.bukkit.Warning.WarningState;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.boss.BarColor;
@@ -34,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Represents a server implementation.
