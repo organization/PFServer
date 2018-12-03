@@ -7,6 +7,6 @@
 * We don't recommend it because we removed the outdated method unless you modify your plugin or mod
 
 ### Build
-1.Clone: git clone https://gitee.com/PFCraft/PFServer.git<br>
+1.Clone: git clone https://github.com/PFCraft/PFServer.git<br>
 2.Build: gradlew build<br>
 3.Dump libraries: gradlew dumpLibs
