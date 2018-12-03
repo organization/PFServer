@@ -40,7 +40,7 @@ public class EntityDataManager
 
     public static <T> DataParameter<T> createKey(Class <? extends Entity > clazz, DataSerializer<T> serializer)
     {
-        if (LOGGER.isDebugEnabled())
+        if (true || LOGGER.isDebugEnabled())
         {
             try
             {
@@ -48,7 +48,8 @@ public class EntityDataManager
 
                 if (!oclass.equals(clazz))
                 {
-                    LOGGER.debug("defineId called for: {} from {}", clazz, oclass, new RuntimeException());
+                    if (LOGGER.isDebugEnabled()) LOGGER.warn("defineId called for: {} from {}", clazz, oclass, new RuntimeException());
+                    else LOGGER.warn("defineId called for: {} from {}", clazz, oclass);
                 }
             }
             catch (ClassNotFoundException var5)

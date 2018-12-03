@@ -38,30 +38,6 @@ public interface EntityEquipment {
     void setItemInOffHand(ItemStack item);
 
     /**
-     * Gets a copy of the item the entity is currently holding
-     *
-     * @deprecated entities can duel wield now use the methods for the
-     *      specific hand instead
-     * @see #getItemInMainHand()
-     * @see #getItemInOffHand()
-     * @return the currently held item
-     */
-    @Deprecated
-    ItemStack getItemInHand();
-
-    /**
-     * Sets the item the entity is holding
-     *
-     * @deprecated entities can duel wield now use the methods for the
-     *      specific hand instead
-     * @see #setItemInMainHand(ItemStack)
-     * @see #setItemInOffHand(ItemStack)
-     * @param stack The item to put into the entities hand
-     */
-    @Deprecated
-    void setItemInHand(ItemStack stack);
-
-    /**
      * Gets a copy of the helmet currently being worn by the entity
      *
      * @return The helmet being worn
@@ -135,26 +111,6 @@ public interface EntityEquipment {
      * Clears the entity of all armor and held items
      */
     void clear();
-
-    /**
-     * @deprecated entities can duel wield now use the methods for the specific
-     * hand instead
-     * @see #getItemInMainHandDropChance()
-     * @see #getItemInOffHandDropChance()
-     * @return drop chance
-     */
-    @Deprecated
-    float getItemInHandDropChance();
-
-    /**
-     * @deprecated entities can duel wield now use the methods for the specific
-     * hand instead
-     * @see #setItemInMainHandDropChance(float)
-     * @see #setItemInOffHandDropChance(float)
-     * @param chance drop chance
-     */
-    @Deprecated
-    void setItemInHandDropChance(float chance);
 
     /**
      * Gets the chance of the main hand item being dropped upon this creature's

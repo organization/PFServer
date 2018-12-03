@@ -24,10 +24,6 @@ repositories {
         url = 'https://libraries.minecraft.net/'
     }
     maven {
-        name = 'sponge'
-        url = 'https://repo.spongepowered.org/maven'
-    }
-    maven {
         name = 'spigotmc-public'
         url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
     }
@@ -56,7 +52,7 @@ dependencies {
     compile 'com.paulscode:libraryjavasound:20101123'
     compile 'com.paulscode:librarylwjglopenal:20100824'
     compile 'com.paulscode:soundsystem:20120107'
-    compile 'io.netty:netty-all:4.1.30.Final'
+    compile 'io.netty:netty-all:4.1.31.Final'
     compile 'com.google.guava:guava:21.0'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'commons-io:commons-io:2.6'

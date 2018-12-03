@@ -22,6 +22,7 @@ package net.minecraftforge.fml.common.discovery;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import net.minecraftforge.fml.common.ModContainer;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -95,7 +96,7 @@ public class ASMDataTable
             return container.getSource().equals(data.candidate.getModContainer());
         }
     }
-    private SetMultimap<String, ASMData> globalAnnotationData = HashMultimap.create();
+    private final SetMultimap<String, ASMData> globalAnnotationData = HashMultimap.create();
     private Map<ModContainer, SetMultimap<String,ASMData>> containerAnnotationData;
 
     private List<ModContainer> containers = Lists.newArrayList();
@@ -105,13 +106,9 @@ public class ASMDataTable
     {
         if (containerAnnotationData == null)
         {
-            ImmutableMap.Builder<ModContainer, SetMultimap<String, ASMData>> mapBuilder = ImmutableMap.builder();
-            for (ModContainer cont : containers)
-            {
-                Multimap<String, ASMData> values = Multimaps.filterValues(globalAnnotationData, new ModContainerPredicate(cont));
-                mapBuilder.put(cont, ImmutableSetMultimap.copyOf(values));
-            }
-            containerAnnotationData = mapBuilder.build();
+            containerAnnotationData = containers.parallelStream()
+                    .map(cont -> Pair.of(cont, ImmutableSetMultimap.copyOf(Multimaps.filterValues(globalAnnotationData, new ModContainerPredicate(cont)))))
+                    .collect(ImmutableMap.toImmutableMap(Pair::getKey, Pair::getValue));
         }
         return containerAnnotationData.get(container);
     }

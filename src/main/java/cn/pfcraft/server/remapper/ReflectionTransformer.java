@@ -9,10 +9,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +26,7 @@ public class ReflectionTransformer {
     public static final Multimap<String, String> methodDeMapping = ArrayListMultimap.create();
     public static final Multimap<String, String> fieldDeMapping = ArrayListMultimap.create();
     public static final Multimap<String, String> methodFastMapping = ArrayListMultimap.create();
+
     private static boolean disable = false;
 
     public static void init() {
@@ -57,11 +55,25 @@ public class ReflectionTransformer {
         ClassReader reader = new ClassReader(code); // Turn from bytes into visitor
         ClassNode node = new ClassNode();
         reader.accept(node, 0); // Visit using ClassNode
+        boolean remapCL = false;
+        if (node.superName.equals("java/net/URLClassLoader")) {
+            node.superName = "cn/pfcraft/server/remapper/PFServerURLClassLoader";
+            remapCL = true;
+        }
 
         for (MethodNode method : node.methods) { // Taken from SpecialSource
             ListIterator<AbstractInsnNode> insnIterator = method.instructions.iterator();
             while (insnIterator.hasNext()) {
                 AbstractInsnNode next = insnIterator.next();
+
+                if (next instanceof TypeInsnNode) {
+                    TypeInsnNode insn = (TypeInsnNode) next;
+                    if (insn.getOpcode() == Opcodes.NEW && insn.desc.equals("java/net/URLClassLoader")) { // remap new URLClassLoader
+                        insn.desc = "cn/pfcraft/server/remapper/PFServerURLClassLoader";
+                        remapCL = true;
+                    }
+                }
+
                 if (!(next instanceof MethodInsnNode)) continue;
                 MethodInsnNode insn = (MethodInsnNode) next;
                 switch (insn.getOpcode()) {
@@ -71,27 +83,9 @@ public class ReflectionTransformer {
                     case Opcodes.INVOKESTATIC:
                         remapForName(insn);
                         break;
-                }
-
-                if (insn.name.equals("getName") && insn.getOpcode() >= 182 && insn.getOpcode() <= 186) {
-                    if (insn.owner.equals("java/lang/reflect/Field")) {
-                        insn.owner = DESC_ReflectionMethods;
-                        insn.name = "getName";
-                        insn.setOpcode(Opcodes.INVOKESTATIC);
-                        insn.desc = "(Ljava/lang/reflect/Field;)Ljava/lang/String;";
-                    } else if (insn.owner.equals("java/lang/reflect/Method")) {
-                        insn.owner = DESC_ReflectionMethods;
-                        insn.name = "getName";
-                        insn.setOpcode(Opcodes.INVOKESTATIC);
-                        insn.desc = "(Ljava/lang/reflect/Method;)Ljava/lang/String;";
-                    }
-                }
-
-                if (insn.owner.equals("java/lang/ClassLoader") && insn.name.equals("loadClass")) {
-                    insn.owner = DESC_ReflectionMethods;
-                    insn.name = "loadClass";
-                    insn.desc = "(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/lang/Class;";
-                    insn.setOpcode(Opcodes.INVOKESTATIC);
+                    case Opcodes.INVOKESPECIAL:
+                        if (remapCL) remapURLClassLoader(insn);
+                        break;
                 }
 
                 if(insn.owner.equals("javax/script/ScriptEngineManager") && insn.desc.equals("()V") && insn.name.equals("<init>")){
@@ -116,11 +110,22 @@ public class ReflectionTransformer {
     public static void remapVirtual(AbstractInsnNode insn) {
         MethodInsnNode method = (MethodInsnNode) insn;
 
-        if (!method.owner.equals("java/lang/Class") ||
-                !(method.name.equals("getField") || method.name.equals("getDeclaredField") ||
-                        method.name.equals("getMethod") || method.name.equals("getDeclaredMethod") ||
-                        method.name.equals("getSimpleName")))
-            return;
+        if (!(
+                (method.owner.equals("java/lang/Class") && (
+                        method.name.equals("getField") ||
+                                method.name.equals("getDeclaredField") ||
+                                method.name.equals("getMethod") ||
+                                method.name.equals("getDeclaredMethod") ||
+                                method.name.equals("getSimpleName"))
+                )
+                        ||
+                        (method.name.equals("getName") && (
+                                method.owner.equals("java/lang/reflect/Field") ||
+                                        method.owner.equals("java/lang/reflect/Method"))
+                        )
+                        ||
+                        (method.owner.equals("java/lang/ClassLoader") && method.name.equals("loadClass"))
+        )) return;
 
         Type returnType = Type.getReturnType(method.desc);
 
@@ -131,5 +136,10 @@ public class ReflectionTransformer {
         method.setOpcode(Opcodes.INVOKESTATIC);
         method.owner = DESC_ReflectionMethods;
         method.desc = Type.getMethodDescriptor(returnType, args.toArray(new Type[args.size()]));
+    }
+
+    public static void remapURLClassLoader(MethodInsnNode method) {
+        if (!(method.owner.equals("java/net/URLClassLoader") && method.name.equals("<init>"))) return;
+        method.owner = "cn/pfcraft/server/remapper/PFServerURLClassLoader";
     }
 }

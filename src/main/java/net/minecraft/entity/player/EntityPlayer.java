@@ -744,14 +744,22 @@ public abstract class EntityPlayer extends EntityLivingBase
             this.world.getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) {
-                org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
+                org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInMainHand();
+                org.bukkit.inventory.ItemStack cur1 = player.getInventory().getItemInOffHand();
                 if (traceItem && (cur == null || cur.getAmount() == 0)) {
                     // The complete stack was dropped
-                    player.getInventory().setItemInHand(drop.getItemStack());
+                    player.getInventory().setItemInMainHand(drop.getItemStack());
                 } else if (traceItem && cur.isSimilar(drop.getItemStack()) && cur.getAmount() < cur.getMaxStackSize() && drop.getItemStack().getAmount() == 1) {
                     // Only one item is dropped
                     cur.setAmount(cur.getAmount() + 1);
-                    player.getInventory().setItemInHand(cur);
+                    player.getInventory().setItemInMainHand(cur);
+                } else if (traceItem && (cur1 == null || cur1.getAmount() == 0)) {
+                    // The complete stack was dropped
+                    player.getInventory().setItemInOffHand(drop.getItemStack());
+                } else if (traceItem && cur1.isSimilar(drop.getItemStack()) && cur1.getAmount() < cur1.getMaxStackSize() && drop.getItemStack().getAmount() == 1) {
+                    // Only one item is dropped
+                    cur1.setAmount(cur1.getAmount() + 1);
+                    player.getInventory().setItemInOffHand(cur1);
                 } else {
                     // Fallback
                     player.getInventory().addItem(drop.getItemStack());
@@ -1088,7 +1096,7 @@ public abstract class EntityPlayer extends EntityLivingBase
             }
         } else {
             // This should never be called, but is implemented anyway
-            org.bukkit.OfflinePlayer thisPlayer = other.world.getServer().getOfflinePlayer(other.getName());
+            org.bukkit.OfflinePlayer thisPlayer = other.world.getServer().getOfflinePlayer(other.getUniqueID());
             team = other.world.getServer().getScoreboardManager().getMainScoreboard().getPlayerTeam(thisPlayer);
             if (team == null || team.allowFriendlyFire()) {
                 return true;
@@ -1097,7 +1105,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         if (this instanceof EntityPlayerMP) {
             return !team.hasEntry(((EntityPlayerMP) this).getBukkitEntity().getName());
         }
-        return !team.hasEntry(this.world.getServer().getOfflinePlayer(this.getName()).getName());
+        return !team.hasEntry(this.world.getServer().getOfflinePlayer(this.getUniqueID()).getName());
     }
 
     protected void damageArmor(float damage)

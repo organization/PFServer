@@ -647,7 +647,7 @@ public abstract class EntityLivingBase extends Entity
 
                 if (!potioneffect.onUpdate(this))
                 {
-                    if (!this.world.isRemote)
+                    if (!this.world.isRemote && !net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent(this, potioneffect)))
                     {
                         iterator.remove();
                         this.onFinishedPotionEffect(potioneffect);
@@ -760,7 +760,11 @@ public abstract class EntityLivingBase extends Entity
 
             while (iterator.hasNext())
             {
-                this.onFinishedPotionEffect(iterator.next());
+                PotionEffect effect = iterator.next();
+                if(net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent(this, effect))) continue;
+
+                this.onFinishedPotionEffect(effect);
+
                 iterator.remove();
             }
         }
@@ -797,6 +801,7 @@ public abstract class EntityLivingBase extends Entity
         {
             PotionEffect potioneffect = this.activePotionsMap.get(potioneffectIn.getPotion());
 
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent(this, potioneffect, potioneffectIn));
             if (potioneffect == null)
             {
                 this.activePotionsMap.put(potioneffectIn.getPotion(), potioneffectIn);
@@ -812,6 +817,9 @@ public abstract class EntityLivingBase extends Entity
 
     public boolean isPotionApplicable(PotionEffect potioneffectIn)
     {
+        net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent event = new net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent(this, potioneffectIn);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() != net.minecraftforge.fml.common.eventhandler.Event.Result.DEFAULT) return event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.ALLOW;
         if (this.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD)
         {
             Potion potion = potioneffectIn.getPotion();
@@ -842,6 +850,7 @@ public abstract class EntityLivingBase extends Entity
 
     public void removePotionEffect(Potion potionIn)
     {
+        if(net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent(this, potionIn))) return;
         PotionEffect potioneffect = this.removeActivePotionEffect(potionIn);
 
         if (potioneffect != null)

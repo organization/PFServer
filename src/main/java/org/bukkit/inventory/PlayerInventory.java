@@ -156,30 +156,6 @@ public interface PlayerInventory extends Inventory {
     void setItemInOffHand(ItemStack item);
 
     /**
-     * Gets a copy of the item the player is currently holding
-     *
-     * @deprecated players can duel wield now use the methods for the
-     *      specific hand instead
-     * @see #getItemInMainHand()
-     * @see #getItemInOffHand()
-     * @return the currently held item
-     */
-    @Deprecated
-    public ItemStack getItemInHand();
-
-    /**
-     * Sets the item the player is holding
-     *
-     * @deprecated players can duel wield now use the methods for the
-     *      specific hand instead
-     * @see #setItemInMainHand(ItemStack)
-     * @see #setItemInOffHand(ItemStack)
-     * @param stack The item to put into the player's hand
-     */
-    @Deprecated
-    public void setItemInHand(ItemStack stack);
-
-    /**
      * Get the slot number of the currently held item
      *
      * @return Held item slot number

@@ -13,6 +13,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
 
 import java.util.Random;
 
@@ -46,10 +47,16 @@ public class BlockObserver extends BlockDirectional
     {
         if (((Boolean)state.getValue(POWERED)).booleanValue())
         {
+            if (CraftEventFactory.callRedstoneChange(worldIn, pos.getX(), pos.getY(), pos.getZ(), 15, 0).getNewCurrent() != 0) {
+                return;
+            }
             worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)), 2);
         }
         else
         {
+            if (CraftEventFactory.callRedstoneChange(worldIn, pos.getX(), pos.getY(), pos.getZ(), 0, 15).getNewCurrent() != 15) {
+                return;
+            }
             worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 2);
             worldIn.scheduleUpdate(pos, this, 2);
         }
