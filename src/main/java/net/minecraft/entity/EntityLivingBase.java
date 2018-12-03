@@ -647,7 +647,7 @@ public abstract class EntityLivingBase extends Entity
 
                 if (!potioneffect.onUpdate(this))
                 {
-                    if (!this.world.isRemote)
+                    if (!this.world.isRemote && !net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent(this, potioneffect)))
                     {
                         iterator.remove();
                         this.onFinishedPotionEffect(potioneffect);
@@ -760,7 +760,11 @@ public abstract class EntityLivingBase extends Entity
 
             while (iterator.hasNext())
             {
-                this.onFinishedPotionEffect(iterator.next());
+                PotionEffect effect = iterator.next();
+                if(net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent(this, effect))) continue;
+
+                this.onFinishedPotionEffect(effect);
+
                 iterator.remove();
             }
         }
