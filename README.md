@@ -1,7 +1,6 @@
 # PFServer
 ### Contact
-   [**Discord**](https://discord.gg/HNmmrCV)
-   [**bStats**](https://bstats.org/plugin/bukkit/PFServer) 
+[**Discord**](https://discord.gg/HNmmrCV)
 
 ### Info
 * jdk1.8.0_191+

@@ -52,7 +52,6 @@ public class PFSConfig {
         for (Map.Entry<String, Command> entry : commands.entrySet()) {
             MinecraftServer.getServerInst().server.getCommandMap().register(entry.getKey(), "PFServer", entry.getValue());
         }
-        new Metrics();
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
