@@ -1,9 +1,5 @@
 package org.spigotmc;
 
-<<<<<<< HEAD
-import cn.pfcraft.server.PFServer;
-=======
->>>>>>> parent of effb38f6... 使用log4j.Logger作为输出
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 

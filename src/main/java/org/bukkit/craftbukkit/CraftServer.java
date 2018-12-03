@@ -16,11 +16,6 @@ import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import jline.console.ConsoleReader;
-<<<<<<< HEAD
-=======
-import mgazul.PFServer.command.CraftSimpleCommandMap;
-import mgazul.PFServer.remapper.ReflectionTransformer;
->>>>>>> parent of effb38f6... 使用log4j.Logger作为输出
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
@@ -117,14 +112,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class CraftServer implements Server {
-<<<<<<< HEAD
     private final String serverVersion;
-=======
-    private final String serverName = "CraftBukkit";
-    private final String serverVersion;
-    private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
->>>>>>> parent of effb38f6... 使用log4j.Logger作为输出
     private final ServicesManager servicesManager = new SimpleServicesManager();
     private final CraftScheduler scheduler = new CraftScheduler();
     private final CraftSimpleCommandMap craftCommandMap = new CraftSimpleCommandMap(this);
