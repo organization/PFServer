@@ -148,16 +148,12 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
     public org.bukkit.command.ConsoleCommandSender console;
     public org.bukkit.command.RemoteConsoleCommandSender remoteConsole;
     public ConsoleReader reader;
-    public static int currentTick = (int) (System.currentTimeMillis() / 50);
+    public static int currentTick = 0;
     public Thread primaryThread;
     public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<Runnable>();
     public int autosavePeriod;
     // CraftBukkit end
     // Spigot start
-    public static final int TPS = 20;
-    public static final int TICK_TIME = 1000000000 / TPS;
-    private static final int SAMPLE_INTERVAL = 100;
-    public final double[] recentTps = new double[ 3 ];
     public final SlackActivityAccountant slackActivityAccountant = new SlackActivityAccountant();
     // Spigot end
 
@@ -558,12 +554,52 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
         this.serverRunning = false;
     }
 
-    // Spigot Start
-    private static double calcTps(double avg, double exp, double tps)
-    {
-        return ( avg * exp ) + ( tps * ( 1 - exp ) );
+    private static final int TPS = 20;
+    private static final long SEC_IN_NANO = 1000000000;
+    public static final long TICK_TIME = SEC_IN_NANO / TPS;
+    private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
+    private static final int SAMPLE_INTERVAL = 20;
+    public final RollingAverage tps1 = new RollingAverage(60);
+    public final RollingAverage tps5 = new RollingAverage(60 * 5);
+    public final RollingAverage tps15 = new RollingAverage(60 * 15);
+    public double[] recentTps = new double[3];
+
+    public static class RollingAverage {
+        private final int size;
+        private long time;
+        private double total;
+        private int index = 0;
+        private final double[] samples;
+        private final long[] times;
+
+              RollingAverage(int size) {
+                  this.size = size;
+                  this.time = size * SEC_IN_NANO;
+                  this.total = TPS * SEC_IN_NANO * size;
+                  this.samples = new double[size];
+                  this.times = new long[size];
+                  for (int i = 0; i < size; i++) {
+                          this.samples[i] = TPS;
+                          this.times[i] = SEC_IN_NANO;
+                      }
+              }
+
+              public void add(double x, long t) {
+                  time -= times[index];
+                  total -= samples[index] * times[index];
+                  samples[index] = x;
+                  times[index] = t;
+                  time += t;
+                  total += x * t;
+                  if (++index == size) {
+                          index = 0;
+                      }
+              }
+
+              public double getAverage() {
+                  return total / time;
+              }
     }
-    // Spigot End
 
     public void run()
     {
@@ -580,25 +616,40 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
 
                 // Spigot start
                 Arrays.fill( recentTps, 20 );
-                long lastTick = System.nanoTime(), catchupTime = 0, curTime, wait, tickSection = lastTick;
+                long start = System.nanoTime(), lastTick = start - TICK_TIME, catchupTime = 0, curTime, wait, tickSection = start;
                 while (this.serverRunning)
                 {
                     curTime = System.nanoTime();
-                    wait = TICK_TIME - (curTime - lastTick) - catchupTime;
+                    wait = TICK_TIME - (curTime - lastTick);
+                    if (wait > 0) {
+                        if (catchupTime < 2E6) {
+                            wait += Math.abs(catchupTime);
+                        } else if (wait < catchupTime) {
+                            catchupTime -= wait;
+                            wait = 0;
+                        } else {
+                            wait -= catchupTime;
+                            catchupTime = 0;
+                        }
+                    }
                     if (wait > 0) {
                         Thread.sleep(wait / 1000000);
-                        catchupTime = 0;
-                        continue;
-                    } else {
-                        catchupTime = Math.min(1000000000, Math.abs(wait));
+                        curTime = System.nanoTime();
+                        wait = TICK_TIME - (curTime - lastTick);
                     }
 
-                    if ( MinecraftServer.currentTick++ % SAMPLE_INTERVAL == 0 )
+                    catchupTime = Math.min(MAX_CATCHUP_BUFFER, catchupTime - wait);
+                    if ( ++MinecraftServer.currentTick % SAMPLE_INTERVAL == 0 )
                     {
-                        double currentTps = 1E9 / ( curTime - tickSection ) * SAMPLE_INTERVAL;
-                        recentTps[0] = calcTps( recentTps[0], 0.92, currentTps ); // 1/exp(5sec/1min)
-                        recentTps[1] = calcTps( recentTps[1], 0.9835, currentTps ); // 1/exp(5sec/5min)
-                        recentTps[2] = calcTps( recentTps[2], 0.9945, currentTps ); // 1/exp(5sec/15min)
+                        final long diff = curTime - tickSection;
+                        double currentTps = 1E9 / diff * SAMPLE_INTERVAL;
+                        tps1.add(currentTps, diff);
+                        tps5.add(currentTps, diff);
+                        tps15.add(currentTps, diff);
+                        // Backwards compat with bad plugins
+                        recentTps[0] = tps1.getAverage();
+                        recentTps[1] = tps5.getAverage();
+                        recentTps[2] = tps15.getAverage();
                         tickSection = curTime;
                     }
                     lastTick = curTime;

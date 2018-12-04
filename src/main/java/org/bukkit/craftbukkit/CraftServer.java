@@ -1645,11 +1645,6 @@ public final class CraftServer implements Server {
     }
 
     @Override
-    public double[] getTPS() {
-        return Bukkit.getTPS();
-    }
-
-    @Override
     public org.bukkit.advancement.Advancement getAdvancement(NamespacedKey key) {
         Preconditions.checkArgument(key != null, "key");
 
@@ -1693,6 +1688,15 @@ public final class CraftServer implements Server {
             }
         }
     };
+
+    @Override
+    public double[] getTPS() {
+        return new double[] {
+                MinecraftServer.getServerInst().tps1.getAverage(),
+                MinecraftServer.getServerInst().tps5.getAverage(),
+                MinecraftServer.getServerInst().tps15.getAverage()
+        };
+    }
 
     public Spigot spigot() {
         return spigot;
