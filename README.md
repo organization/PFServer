@@ -12,3 +12,9 @@
 1.Clone: git clone https://github.com/PFCraft/PFServer.git<br>
 2.Build: gradlew build<br>
 3.Dump libraries: gradlew dumpLibs
+
+### Installation
+1.Create a new folder, add libraries file and PFServer-xxx-server.jar<br>
+2.run.bat java -Xms2G -Xmx4G -jar PFServer-xxx-server.jar<br>
+3.eula.txt set eula=true<br>
+4.Forge Mod put Mods File or Bukkit/Spigot plugin put plugins File
