@@ -113,31 +113,31 @@ public class GameSettings
     public boolean realmsNotifications = true;
     public boolean autoJump = true;
     public TutorialSteps tutorialStep = TutorialSteps.MOVEMENT;
-    public KeyBinding keyBindForward = new KeyBinding("key.forward", 17, "key.categories.movement");
-    public KeyBinding keyBindLeft = new KeyBinding("key.left", 30, "key.categories.movement");
-    public KeyBinding keyBindBack = new KeyBinding("key.back", 31, "key.categories.movement");
-    public KeyBinding keyBindRight = new KeyBinding("key.right", 32, "key.categories.movement");
-    public KeyBinding keyBindJump = new KeyBinding("key.jump", 57, "key.categories.movement");
-    public KeyBinding keyBindSneak = new KeyBinding("key.sneak", 42, "key.categories.movement");
-    public KeyBinding keyBindSprint = new KeyBinding("key.sprint", 29, "key.categories.movement");
-    public KeyBinding keyBindInventory = new KeyBinding("key.inventory", 18, "key.categories.inventory");
-    public KeyBinding keyBindSwapHands = new KeyBinding("key.swapHands", 33, "key.categories.inventory");
-    public KeyBinding keyBindDrop = new KeyBinding("key.drop", 16, "key.categories.inventory");
-    public KeyBinding keyBindUseItem = new KeyBinding("key.use", -99, "key.categories.gameplay");
-    public KeyBinding keyBindAttack = new KeyBinding("key.attack", -100, "key.categories.gameplay");
-    public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98, "key.categories.gameplay");
-    public KeyBinding keyBindChat = new KeyBinding("key.chat", 20, "key.categories.multiplayer");
-    public KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15, "key.categories.multiplayer");
-    public KeyBinding keyBindCommand = new KeyBinding("key.command", 53, "key.categories.multiplayer");
-    public KeyBinding keyBindScreenshot = new KeyBinding("key.screenshot", 60, "key.categories.misc");
-    public KeyBinding keyBindTogglePerspective = new KeyBinding("key.togglePerspective", 63, "key.categories.misc");
-    public KeyBinding keyBindSmoothCamera = new KeyBinding("key.smoothCamera", 0, "key.categories.misc");
-    public KeyBinding keyBindFullscreen = new KeyBinding("key.fullscreen", 87, "key.categories.misc");
-    public KeyBinding keyBindSpectatorOutlines = new KeyBinding("key.spectatorOutlines", 0, "key.categories.misc");
-    public KeyBinding keyBindAdvancements = new KeyBinding("key.advancements", 38, "key.categories.misc");
-    public KeyBinding[] keyBindsHotbar = new KeyBinding[] {new KeyBinding("key.hotbar.1", 2, "key.categories.inventory"), new KeyBinding("key.hotbar.2", 3, "key.categories.inventory"), new KeyBinding("key.hotbar.3", 4, "key.categories.inventory"), new KeyBinding("key.hotbar.4", 5, "key.categories.inventory"), new KeyBinding("key.hotbar.5", 6, "key.categories.inventory"), new KeyBinding("key.hotbar.6", 7, "key.categories.inventory"), new KeyBinding("key.hotbar.7", 8, "key.categories.inventory"), new KeyBinding("key.hotbar.8", 9, "key.categories.inventory"), new KeyBinding("key.hotbar.9", 10, "key.categories.inventory")};
-    public KeyBinding keyBindSaveToolbar = new KeyBinding("key.saveToolbarActivator", 46, "key.categories.creative");
-    public KeyBinding keyBindLoadToolbar = new KeyBinding("key.loadToolbarActivator", 45, "key.categories.creative");
+    public final KeyBinding keyBindForward = new KeyBinding("key.forward", 17, "key.categories.movement");
+    public final KeyBinding keyBindLeft = new KeyBinding("key.left", 30, "key.categories.movement");
+    public final KeyBinding keyBindBack = new KeyBinding("key.back", 31, "key.categories.movement");
+    public final KeyBinding keyBindRight = new KeyBinding("key.right", 32, "key.categories.movement");
+    public final KeyBinding keyBindJump = new KeyBinding("key.jump", 57, "key.categories.movement");
+    public final KeyBinding keyBindSneak = new KeyBinding("key.sneak", 42, "key.categories.movement");
+    public final KeyBinding keyBindSprint = new KeyBinding("key.sprint", 29, "key.categories.movement");
+    public final KeyBinding keyBindInventory = new KeyBinding("key.inventory", 18, "key.categories.inventory");
+    public final KeyBinding keyBindSwapHands = new KeyBinding("key.swapHands", 33, "key.categories.inventory");
+    public final KeyBinding keyBindDrop = new KeyBinding("key.drop", 16, "key.categories.inventory");
+    public final KeyBinding keyBindUseItem = new KeyBinding("key.use", -99, "key.categories.gameplay");
+    public final KeyBinding keyBindAttack = new KeyBinding("key.attack", -100, "key.categories.gameplay");
+    public final KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98, "key.categories.gameplay");
+    public final KeyBinding keyBindChat = new KeyBinding("key.chat", 20, "key.categories.multiplayer");
+    public final KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15, "key.categories.multiplayer");
+    public final KeyBinding keyBindCommand = new KeyBinding("key.command", 53, "key.categories.multiplayer");
+    public final KeyBinding keyBindScreenshot = new KeyBinding("key.screenshot", 60, "key.categories.misc");
+    public final KeyBinding keyBindTogglePerspective = new KeyBinding("key.togglePerspective", 63, "key.categories.misc");
+    public final KeyBinding keyBindSmoothCamera = new KeyBinding("key.smoothCamera", 0, "key.categories.misc");
+    public final KeyBinding keyBindFullscreen = new KeyBinding("key.fullscreen", 87, "key.categories.misc");
+    public final KeyBinding keyBindSpectatorOutlines = new KeyBinding("key.spectatorOutlines", 0, "key.categories.misc");
+    public final KeyBinding keyBindAdvancements = new KeyBinding("key.advancements", 38, "key.categories.misc");
+    public final KeyBinding[] keyBindsHotbar = new KeyBinding[] {new KeyBinding("key.hotbar.1", 2, "key.categories.inventory"), new KeyBinding("key.hotbar.2", 3, "key.categories.inventory"), new KeyBinding("key.hotbar.3", 4, "key.categories.inventory"), new KeyBinding("key.hotbar.4", 5, "key.categories.inventory"), new KeyBinding("key.hotbar.5", 6, "key.categories.inventory"), new KeyBinding("key.hotbar.6", 7, "key.categories.inventory"), new KeyBinding("key.hotbar.7", 8, "key.categories.inventory"), new KeyBinding("key.hotbar.8", 9, "key.categories.inventory"), new KeyBinding("key.hotbar.9", 10, "key.categories.inventory")};
+    public final KeyBinding keyBindSaveToolbar = new KeyBinding("key.saveToolbarActivator", 46, "key.categories.creative");
+    public final KeyBinding keyBindLoadToolbar = new KeyBinding("key.loadToolbarActivator", 45, "key.categories.creative");
     public KeyBinding[] keyBindings;
     protected Minecraft mc;
     private File optionsFile;
@@ -847,33 +847,31 @@ public class GameSettings
 
                     if ("renderClouds".equals(s1))
                     {
-                        if ("true".equals(s2))
-                        {
-                            this.clouds = 2;
-                        }
-                        else if ("false".equals(s2))
-                        {
-                            this.clouds = 0;
-                        }
-                        else if ("fast".equals(s2))
-                        {
-                            this.clouds = 1;
+                        switch (s2) {
+                            case "true":
+                                this.clouds = 2;
+                                break;
+                            case "false":
+                                this.clouds = 0;
+                                break;
+                            case "fast":
+                                this.clouds = 1;
+                                break;
                         }
                     }
 
                     if ("attackIndicator".equals(s1))
                     {
-                        if ("0".equals(s2))
-                        {
-                            this.attackIndicator = 0;
-                        }
-                        else if ("1".equals(s2))
-                        {
-                            this.attackIndicator = 1;
-                        }
-                        else if ("2".equals(s2))
-                        {
-                            this.attackIndicator = 2;
+                        switch (s2) {
+                            case "0":
+                                this.attackIndicator = 0;
+                                break;
+                            case "1":
+                                this.attackIndicator = 1;
+                                break;
+                            case "2":
+                                this.attackIndicator = 2;
+                                break;
                         }
                     }
 
@@ -1079,7 +1077,7 @@ public class GameSettings
                     {
                         if (s1.equals("soundCategory_" + soundcategory.getName()))
                         {
-                            this.soundLevels.put(soundcategory, Float.valueOf(this.parseFloat(s2)));
+                            this.soundLevels.put(soundcategory, this.parseFloat(s2));
                         }
                     }
 
@@ -1113,9 +1111,8 @@ public class GameSettings
         {
             i = Integer.parseInt(p_189988_1_.getString("version"));
         }
-        catch (RuntimeException var4)
+        catch (RuntimeException ignored)
         {
-            ;
         }
 
         return this.mc.getDataFixer().process(FixTypes.OPTIONS, p_189988_1_, i);
@@ -1238,13 +1235,13 @@ public class GameSettings
 
     public float getSoundLevel(SoundCategory category)
     {
-        return this.soundLevels.containsKey(category) ? ((Float)this.soundLevels.get(category)).floatValue() : 1.0F;
+        return this.soundLevels.containsKey(category) ? (Float) this.soundLevels.get(category) : 1.0F;
     }
 
     public void setSoundLevel(SoundCategory category, float volume)
     {
         this.mc.getSoundHandler().setSoundLevel(category, volume);
-        this.soundLevels.put(category, Float.valueOf(volume));
+        this.soundLevels.put(category, volume);
     }
 
     public void sendSettingsToServer()
@@ -1353,7 +1350,7 @@ public class GameSettings
         private final boolean isBoolean;
         private final String translation;
         private final float valueStep;
-        private float valueMin;
+        private final float valueMin;
         private float valueMax;
 
         public static Options byOrdinal(int ordinal)

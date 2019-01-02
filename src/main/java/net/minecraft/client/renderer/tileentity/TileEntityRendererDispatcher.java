@@ -25,7 +25,7 @@ import java.util.Map;
 public class TileEntityRendererDispatcher
 {
     public final Map < Class <? extends TileEntity > , TileEntitySpecialRenderer <? extends TileEntity >> renderers = Maps. < Class <? extends TileEntity > , TileEntitySpecialRenderer <? extends TileEntity >> newHashMap();
-    public static TileEntityRendererDispatcher instance = new TileEntityRendererDispatcher();
+    public static final TileEntityRendererDispatcher instance = new TileEntityRendererDispatcher();
     public FontRenderer fontRenderer;
     public static double staticPlayerX;
     public static double staticPlayerY;
@@ -170,7 +170,7 @@ public class TileEntityRendererDispatcher
     /**
      * Buffer used for batched TESRs
      */
-    private net.minecraft.client.renderer.Tessellator batchBuffer = new net.minecraft.client.renderer.Tessellator(0x200000);
+    private final net.minecraft.client.renderer.Tessellator batchBuffer = new net.minecraft.client.renderer.Tessellator(0x200000);
     private boolean drawingBatch = false;
 
     /**

@@ -80,7 +80,7 @@ public class EntityShulker extends EntityGolem implements IMob
         this.tasks.addTask(4, new AIAttack());
         this.tasks.addTask(7, new AIPeek());
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new AIAttackNearest(this));
         this.targetTasks.addTask(3, new AIDefenseAttack(this));
     }
@@ -123,8 +123,8 @@ public class EntityShulker extends EntityGolem implements IMob
         super.entityInit();
         this.dataManager.register(ATTACHED_FACE, EnumFacing.DOWN);
         this.dataManager.register(ATTACHED_BLOCK_POS, Optional.absent());
-        this.dataManager.register(PEEK_TICK, Byte.valueOf((byte)0));
-        this.dataManager.register(COLOR, Byte.valueOf((byte)DEFAULT_COLOR.getMetadata()));
+        this.dataManager.register(PEEK_TICK, (byte) 0);
+        this.dataManager.register(COLOR, (byte) DEFAULT_COLOR.getMetadata());
     }
 
     protected void applyEntityAttributes()
@@ -147,8 +147,8 @@ public class EntityShulker extends EntityGolem implements IMob
     {
         super.readEntityFromNBT(compound);
         this.dataManager.set(ATTACHED_FACE, EnumFacing.getFront(compound.getByte("AttachFace")));
-        this.dataManager.set(PEEK_TICK, Byte.valueOf(compound.getByte("Peek")));
-        this.dataManager.set(COLOR, Byte.valueOf(compound.getByte("Color")));
+        this.dataManager.set(PEEK_TICK, compound.getByte("Peek"));
+        this.dataManager.set(COLOR, compound.getByte("Color"));
 
         if (compound.hasKey("APX"))
         {
@@ -167,8 +167,8 @@ public class EntityShulker extends EntityGolem implements IMob
     {
         super.writeEntityToNBT(compound);
         compound.setByte("AttachFace", (byte)((EnumFacing)this.dataManager.get(ATTACHED_FACE)).getIndex());
-        compound.setByte("Peek", ((Byte)this.dataManager.get(PEEK_TICK)).byteValue());
-        compound.setByte("Color", ((Byte)this.dataManager.get(COLOR)).byteValue());
+        compound.setByte("Peek", (Byte) this.dataManager.get(PEEK_TICK));
+        compound.setByte("Color", (Byte) this.dataManager.get(COLOR));
         BlockPos blockpos = this.getAttachmentPos();
 
         if (blockpos != null)
@@ -384,7 +384,7 @@ public class EntityShulker extends EntityGolem implements IMob
             if (!optional1.equals(optional))
             {
                 this.dataManager.set(ATTACHED_BLOCK_POS, optional1);
-                this.dataManager.set(PEEK_TICK, Byte.valueOf((byte)0));
+                this.dataManager.set(PEEK_TICK, (byte) 0);
                 this.isAirBorne = true;
             }
         }
@@ -431,7 +431,7 @@ public class EntityShulker extends EntityGolem implements IMob
                     {
                         this.playSound(SoundEvents.ENTITY_SHULKER_TELEPORT, 1.0F, 1.0F);
                         this.dataManager.set(ATTACHED_BLOCK_POS, Optional.of(blockpos1));
-                        this.dataManager.set(PEEK_TICK, Byte.valueOf((byte)0));
+                        this.dataManager.set(PEEK_TICK, (byte) 0);
                         this.setAttackTarget((EntityLivingBase)null);
                         return true;
                     }
@@ -551,7 +551,7 @@ public class EntityShulker extends EntityGolem implements IMob
 
     public int getPeekTick()
     {
-        return ((Byte)this.dataManager.get(PEEK_TICK)).byteValue();
+        return (Byte) this.dataManager.get(PEEK_TICK);
     }
 
     public void updateArmorModifier(int p_184691_1_)
@@ -571,7 +571,7 @@ public class EntityShulker extends EntityGolem implements IMob
             }
         }
 
-        this.dataManager.set(PEEK_TICK, Byte.valueOf((byte)p_184691_1_));
+        this.dataManager.set(PEEK_TICK, (byte) p_184691_1_);
     }
 
     @SideOnly(Side.CLIENT)
@@ -631,7 +631,7 @@ public class EntityShulker extends EntityGolem implements IMob
     @SideOnly(Side.CLIENT)
     public EnumDyeColor getColor()
     {
-        return EnumDyeColor.byMetadata(((Byte)this.dataManager.get(COLOR)).byteValue());
+        return EnumDyeColor.byMetadata((Byte) this.dataManager.get(COLOR));
     }
 
     class AIAttack extends EntityAIBase
@@ -706,7 +706,7 @@ public class EntityShulker extends EntityGolem implements IMob
 
         public boolean shouldExecute()
         {
-            return EntityShulker.this.world.getDifficulty() == EnumDifficulty.PEACEFUL ? false : super.shouldExecute();
+            return EntityShulker.this.world.getDifficulty() != EnumDifficulty.PEACEFUL && super.shouldExecute();
         }
 
         protected AxisAlignedBB getTargetableArea(double targetDistance)
@@ -728,18 +728,12 @@ public class EntityShulker extends EntityGolem implements IMob
         {
             public AIDefenseAttack(EntityShulker shulker)
             {
-                super(shulker, EntityLivingBase.class, 10, true, false, new Predicate<EntityLivingBase>()
-                {
-                    public boolean apply(@Nullable EntityLivingBase p_apply_1_)
-                    {
-                        return p_apply_1_ instanceof IMob;
-                    }
-                });
+                super(shulker, EntityLivingBase.class, 10, true, false, p_apply_1_ -> p_apply_1_ instanceof IMob);
             }
 
             public boolean shouldExecute()
             {
-                return this.taskOwner.getTeam() == null ? false : super.shouldExecute();
+                return this.taskOwner.getTeam() != null && super.shouldExecute();
             }
 
             protected AxisAlignedBB getTargetableArea(double targetDistance)

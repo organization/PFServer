@@ -76,9 +76,8 @@ public class NetHandlerStatusServer implements INetHandlerStatusServer
                             if (player != null) {
                                 return true;
                             }
-                            final Object[] currentPlayers = players;
-                            for (int length = currentPlayers.length, i = this.i; i < length; i++) {
-                                final EntityPlayerMP player = (EntityPlayerMP) currentPlayers[i];
+                            for (int length = players.length, i = this.i; i < length; i++) {
+                                final EntityPlayerMP player = (EntityPlayerMP) players[i];
                                 if (player != null) {
                                     this.i = i + 1;
                                     this.player = player;
@@ -101,12 +100,11 @@ public class NetHandlerStatusServer implements INetHandlerStatusServer
 
                         @Override
                         public void remove() {
-                            final Object[] currentPlayers = players;
                             final int i = this.ret;
-                            if (i < 0 || currentPlayers[i] == null) {
+                            if (i < 0 || players[i] == null) {
                                 throw new IllegalStateException();
                             }
-                            currentPlayers[i] = null;
+                            players[i] = null;
                         }
                     };
                 }
@@ -115,7 +113,7 @@ public class NetHandlerStatusServer implements INetHandlerStatusServer
             ServerListPingEvent event = new ServerListPingEvent();
             this.server.server.getPluginManager().callEvent(event);
 
-            java.util.List<GameProfile> profiles = new java.util.ArrayList<GameProfile>(players.length);
+            java.util.List<GameProfile> profiles = new java.util.ArrayList<>(players.length);
             for (Object player : players) {
                 if (player != null) {
                     profiles.add(((EntityPlayerMP) player).getGameProfile());

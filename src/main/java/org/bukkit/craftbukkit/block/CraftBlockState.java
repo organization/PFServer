@@ -20,6 +20,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CraftBlockState implements BlockState {
     private final CraftWorld world;
@@ -256,7 +257,7 @@ public class CraftBlockState implements BlockState {
             return false;
         }
         final CraftBlockState other = (CraftBlockState) obj;
-        if (this.world != other.world && (this.world == null || !this.world.equals(other.world))) {
+        if (!Objects.equals(this.world, other.world)) {
             return false;
         }
         if (this.x != other.x) {
@@ -271,13 +272,10 @@ public class CraftBlockState implements BlockState {
         if (this.type != other.type) {
             return false;
         }
-        if (this.data != other.data && (this.data == null || !this.data.equals(other.data))) {
+        if (!Objects.equals(this.data, other.data)) {
             return false;
         }
-        if (this.nbt != other.nbt && (this.nbt == null || !this.nbt.equals(other.nbt))) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.nbt, other.nbt);
     }
 
     @Override

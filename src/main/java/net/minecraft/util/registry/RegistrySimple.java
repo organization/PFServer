@@ -56,7 +56,7 @@ public class RegistrySimple<K, V> implements IRegistry<K, V>
                 return (V)null;
             }
 
-            this.values = collection.toArray(new Object[collection.size()]);
+            this.values = collection.toArray(new Object[0]);
         }
 
         return (V)this.values[random.nextInt(this.values.length)];

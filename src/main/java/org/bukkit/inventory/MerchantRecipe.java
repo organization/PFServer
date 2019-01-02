@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class MerchantRecipe implements Recipe {
 
-    private ItemStack result;
-    private List<ItemStack> ingredients = new ArrayList<ItemStack>();
+    private final ItemStack result;
+    private List<ItemStack> ingredients = new ArrayList<>();
     private int uses;
     private int maxUses;
     private boolean experienceReward;
@@ -53,14 +53,14 @@ public class MerchantRecipe implements Recipe {
     }
 
     public void setIngredients(List<ItemStack> ingredients) {
-        this.ingredients = new ArrayList<ItemStack>();
+        this.ingredients = new ArrayList<>();
         for (ItemStack item : ingredients) {
             this.ingredients.add(item.clone());
         }
     }
 
     public List<ItemStack> getIngredients() {
-        List<ItemStack> copy = new ArrayList<ItemStack>();
+        List<ItemStack> copy = new ArrayList<>();
         for (ItemStack item : ingredients) {
             copy.add(item.clone());
         }

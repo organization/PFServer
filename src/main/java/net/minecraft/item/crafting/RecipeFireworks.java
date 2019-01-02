@@ -134,7 +134,7 @@ public class RecipeFireworks extends ShapelessRecipes implements IRecipe
                     {
                         if (net.minecraftforge.oredict.DyeUtils.isDye(itemstack2))
                         {
-                            list.add(Integer.valueOf(ItemDye.DYE_COLORS[net.minecraftforge.oredict.DyeUtils.rawDyeDamageFromStack(itemstack2) & 15]));
+                            list.add(ItemDye.DYE_COLORS[net.minecraftforge.oredict.DyeUtils.rawDyeDamageFromStack(itemstack2) & 15]);
                         }
                         else if (itemstack2.getItem() == Items.GLOWSTONE_DUST)
                         {
@@ -167,7 +167,7 @@ public class RecipeFireworks extends ShapelessRecipes implements IRecipe
 
                 for (int l2 = 0; l2 < aint1.length; ++l2)
                 {
-                    aint1[l2] = ((Integer)list.get(l2)).intValue();
+                    aint1[l2] = (Integer) list.get(l2);
                 }
 
                 nbttagcompound2.setIntArray("Colors", aint1);
@@ -188,7 +188,7 @@ public class RecipeFireworks extends ShapelessRecipes implements IRecipe
                     {
                         if (net.minecraftforge.oredict.DyeUtils.isDye(itemstack1))
                         {
-                            list1.add(Integer.valueOf(ItemDye.DYE_COLORS[net.minecraftforge.oredict.DyeUtils.rawDyeDamageFromStack(itemstack1) & 15]));
+                            list1.add(ItemDye.DYE_COLORS[net.minecraftforge.oredict.DyeUtils.rawDyeDamageFromStack(itemstack1) & 15]);
                         }
                         else if (itemstack1.getItem() == Items.FIREWORK_CHARGE)
                         {
@@ -202,7 +202,7 @@ public class RecipeFireworks extends ShapelessRecipes implements IRecipe
 
                 for (int j2 = 0; j2 < aint.length; ++j2)
                 {
-                    aint[j2] = ((Integer)list1.get(j2)).intValue();
+                    aint[j2] = (Integer) list1.get(j2);
                 }
 
                 if (!this.resultItem.isEmpty() && this.resultItem.hasTagCompound())

@@ -51,10 +51,10 @@ public class ClassPatchManager {
 
     public static final ClassPatchManager INSTANCE = new ClassPatchManager();
 
-    private GDiffPatcher patcher = new GDiffPatcher();
+    private final GDiffPatcher patcher = new GDiffPatcher();
     private ListMultimap<String, ClassPatch> patches;
 
-    private Map<String,byte[]> patchedClasses = Maps.newHashMap();
+    private final Map<String,byte[]> patchedClasses = Maps.newHashMap();
     private File tempDir;
     private ClassPatchManager()
     {
@@ -208,7 +208,7 @@ public class ClassPatchManager {
                     jis.closeEntry();
                 }
             }
-            catch (IOException e)
+            catch (IOException ignored)
             {
             }
         } while (true);

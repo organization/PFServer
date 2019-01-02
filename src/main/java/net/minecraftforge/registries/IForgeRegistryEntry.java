@@ -60,8 +60,8 @@ public interface IForgeRegistryEntry<V>
     @SuppressWarnings({ "serial", "unchecked" })
     public static class Impl<T  extends IForgeRegistryEntry<T>> implements IForgeRegistryEntry<T>
     {
-        private TypeToken<T> token = new TypeToken<T>(getClass()){};
-        public final IRegistryDelegate<T> delegate = new RegistryDelegate<T>((T)this, (Class<T>)token.getRawType());
+        private final TypeToken<T> token = new TypeToken<T>(getClass()){};
+        public final IRegistryDelegate<T> delegate = new RegistryDelegate<>((T) this, (Class<T>) token.getRawType());
         private ResourceLocation registryName = null;
 
         public final T setRegistryName(String name)
@@ -82,10 +82,10 @@ public interface IForgeRegistryEntry<V>
         public final ResourceLocation getRegistryName()
         {
             if (delegate.name() != null) return delegate.name();
-            return registryName != null ? registryName : null;
+            return registryName;
         }
 
         @Override
-        public final Class<T> getRegistryType() { return (Class<T>) token.getRawType(); };
+        public final Class<T> getRegistryType() { return (Class<T>) token.getRawType(); }
     }
 }

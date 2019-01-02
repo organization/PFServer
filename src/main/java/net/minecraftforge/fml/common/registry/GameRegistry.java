@@ -66,11 +66,11 @@ import java.util.*;
 
 public class GameRegistry
 {
-    private static Set<IWorldGenerator> worldGenerators = Sets.newHashSet();
-    private static Map<IWorldGenerator, Integer> worldGeneratorIndex = Maps.newHashMap();
-    private static List<IFuelHandler> fuelHandlers = Lists.newArrayList();
+    private static final Set<IWorldGenerator> worldGenerators = Sets.newHashSet();
+    private static final Map<IWorldGenerator, Integer> worldGeneratorIndex = Maps.newHashMap();
+    private static final List<IFuelHandler> fuelHandlers = Lists.newArrayList();
     private static List<IWorldGenerator> sortedGeneratorList;
-    private static List<IEntitySelectorFactory> entitySelectorFactories = Lists.newArrayList();
+    private static final List<IEntitySelectorFactory> entitySelectorFactories = Lists.newArrayList();
 
     /**
      * Register a world generator - something that inserts new block types into the world
@@ -164,7 +164,7 @@ public class GameRegistry
     private static void computeSortedGeneratorList()
     {
         ArrayList<IWorldGenerator> list = Lists.newArrayList(worldGenerators);
-        list.sort(Comparator.comparingInt(o -> worldGeneratorIndex.get(o)));
+        list.sort(Comparator.comparingInt(worldGeneratorIndex::get));
         sortedGeneratorList = ImmutableList.copyOf(list);
     }
 
@@ -199,8 +199,7 @@ public class GameRegistry
     public static void addShapelessRecipe(ResourceLocation name, ResourceLocation group, @Nonnull ItemStack output, Ingredient... params)
     {
         NonNullList<Ingredient> lst = NonNullList.create();
-        for (Ingredient i : params)
-            lst.add(i);
+        lst.addAll(Arrays.asList(params));
         register(new ShapelessRecipes(group == null ? "" : group.toString(), output, lst).setRegistryName(name));
     }
 

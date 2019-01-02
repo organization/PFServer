@@ -35,7 +35,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
 
     protected String title;
     protected String author;
-    public List<ITextComponent> pages = new ArrayList<ITextComponent>();
+    public List<ITextComponent> pages = new ArrayList<>();
     protected Integer generation;
 
     CraftMetaBook(CraftMetaItem meta) {
@@ -284,7 +284,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
     @Override
     public CraftMetaBook clone() {
         CraftMetaBook meta = (CraftMetaBook) super.clone();
-        meta.pages = new ArrayList<ITextComponent>(pages);
+        meta.pages = new ArrayList<>(pages);
         return meta;
     }
 
@@ -341,7 +341,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
         }
 
         if (hasPages()) {
-            List<String> pagesString = new ArrayList<String>();
+            List<String> pagesString = new ArrayList<>();
             for (ITextComponent comp : pages) {
                 pagesString.add(CraftChatMessage.fromComponent(comp));
             }

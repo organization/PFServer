@@ -66,7 +66,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     private boolean hasValidHealth;
     private String serverBrand;
     public MovementInput movementInput;
-    protected Minecraft mc;
+    protected final Minecraft mc;
     protected int sprintToggleTimer;
     public int sprintingTicksLeft;
     public float renderArmYaw;
@@ -591,8 +591,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (HAND_STATES.equals(key))
         {
-            boolean flag = (((Byte)this.dataManager.get(HAND_STATES)).byteValue() & 1) > 0;
-            EnumHand enumhand = (((Byte)this.dataManager.get(HAND_STATES)).byteValue() & 2) > 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
+            boolean flag = ((Byte) this.dataManager.get(HAND_STATES) & 1) > 0;
+            EnumHand enumhand = ((Byte) this.dataManager.get(HAND_STATES) & 2) > 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
 
             if (flag && !this.handActive)
             {
@@ -701,17 +701,16 @@ public class EntityPlayerSP extends AbstractClientPlayer
     {
         String s = guiOwner.getGuiID();
 
-        if ("minecraft:crafting_table".equals(s))
-        {
-            this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.world));
-        }
-        else if ("minecraft:enchanting_table".equals(s))
-        {
-            this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.world, guiOwner));
-        }
-        else if ("minecraft:anvil".equals(s))
-        {
-            this.mc.displayGuiScreen(new GuiRepair(this.inventory, this.world));
+        switch (s) {
+            case "minecraft:crafting_table":
+                this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.world));
+                break;
+            case "minecraft:enchanting_table":
+                this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.world, guiOwner));
+                break;
+            case "minecraft:anvil":
+                this.mc.displayGuiScreen(new GuiRepair(this.inventory, this.world));
+                break;
         }
     }
 
@@ -1100,7 +1099,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
                                 if (!list.isEmpty())
                                 {
-                                    ;
                                 }
 
                                 float f11 = Float.MIN_VALUE;

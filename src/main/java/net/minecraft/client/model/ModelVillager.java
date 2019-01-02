@@ -8,12 +8,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelVillager extends ModelBase
 {
-    public ModelRenderer villagerHead;
-    public ModelRenderer villagerBody;
-    public ModelRenderer villagerArms;
-    public ModelRenderer rightVillagerLeg;
-    public ModelRenderer leftVillagerLeg;
-    public ModelRenderer villagerNose;
+    public final ModelRenderer villagerHead;
+    public final ModelRenderer villagerBody;
+    public final ModelRenderer villagerArms;
+    public final ModelRenderer rightVillagerLeg;
+    public final ModelRenderer leftVillagerLeg;
+    public final ModelRenderer villagerNose;
 
     public ModelVillager(float scale)
     {

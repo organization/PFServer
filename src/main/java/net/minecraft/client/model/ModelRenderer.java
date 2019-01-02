@@ -27,7 +27,7 @@ public class ModelRenderer
     public boolean mirror;
     public boolean showModel;
     public boolean isHidden;
-    public List<ModelBox> cubeList;
+    public final List<ModelBox> cubeList;
     public List<ModelRenderer> childModels;
     public final String boxName;
     private final ModelBase baseModel;
@@ -130,9 +130,8 @@ public class ModelRenderer
 
                         if (this.childModels != null)
                         {
-                            for (int k = 0; k < this.childModels.size(); ++k)
-                            {
-                                ((ModelRenderer)this.childModels.get(k)).render(scale);
+                            for (ModelRenderer childModel : this.childModels) {
+                                ((ModelRenderer) childModel).render(scale);
                             }
                         }
                     }
@@ -143,9 +142,8 @@ public class ModelRenderer
 
                         if (this.childModels != null)
                         {
-                            for (int j = 0; j < this.childModels.size(); ++j)
-                            {
-                                ((ModelRenderer)this.childModels.get(j)).render(scale);
+                            for (ModelRenderer childModel : this.childModels) {
+                                ((ModelRenderer) childModel).render(scale);
                             }
                         }
 
@@ -176,9 +174,8 @@ public class ModelRenderer
 
                     if (this.childModels != null)
                     {
-                        for (int i = 0; i < this.childModels.size(); ++i)
-                        {
-                            ((ModelRenderer)this.childModels.get(i)).render(scale);
+                        for (ModelRenderer childModel : this.childModels) {
+                            ((ModelRenderer) childModel).render(scale);
                         }
                     }
 
@@ -275,9 +272,8 @@ public class ModelRenderer
         GlStateManager.glNewList(this.displayList, 4864);
         BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
 
-        for (int i = 0; i < this.cubeList.size(); ++i)
-        {
-            ((ModelBox)this.cubeList.get(i)).render(bufferbuilder, scale);
+        for (ModelBox modelBox : this.cubeList) {
+            ((ModelBox) modelBox).render(bufferbuilder, scale);
         }
 
         GlStateManager.glEndList();

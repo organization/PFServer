@@ -31,7 +31,7 @@ import java.util.List;
 
 public class GuiModsMissing extends GuiErrorBase
 {
-    private MissingModsException modsMissing;
+    private final MissingModsException modsMissing;
 
     public GuiModsMissing(MissingModsException modsMissing)
     {

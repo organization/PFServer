@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public class DamageSourcePredicate
 {
-    public static DamageSourcePredicate ANY = new DamageSourcePredicate();
+    public static final DamageSourcePredicate ANY = new DamageSourcePredicate();
     private final Boolean isProjectile;
     private final Boolean isExplosion;
     private final Boolean bypassesArmor;
@@ -53,31 +53,31 @@ public class DamageSourcePredicate
         {
             return true;
         }
-        else if (this.isProjectile != null && this.isProjectile.booleanValue() != source.isProjectile())
+        else if (this.isProjectile != null && this.isProjectile != source.isProjectile())
         {
             return false;
         }
-        else if (this.isExplosion != null && this.isExplosion.booleanValue() != source.isExplosion())
+        else if (this.isExplosion != null && this.isExplosion != source.isExplosion())
         {
             return false;
         }
-        else if (this.bypassesArmor != null && this.bypassesArmor.booleanValue() != source.isUnblockable())
+        else if (this.bypassesArmor != null && this.bypassesArmor != source.isUnblockable())
         {
             return false;
         }
-        else if (this.bypassesInvulnerability != null && this.bypassesInvulnerability.booleanValue() != source.canHarmInCreative())
+        else if (this.bypassesInvulnerability != null && this.bypassesInvulnerability != source.canHarmInCreative())
         {
             return false;
         }
-        else if (this.bypassesMagic != null && this.bypassesMagic.booleanValue() != source.isDamageAbsolute())
+        else if (this.bypassesMagic != null && this.bypassesMagic != source.isDamageAbsolute())
         {
             return false;
         }
-        else if (this.isFire != null && this.isFire.booleanValue() != source.isFireDamage())
+        else if (this.isFire != null && this.isFire != source.isFireDamage())
         {
             return false;
         }
-        else if (this.isMagic != null && this.isMagic.booleanValue() != source.isMagicDamage())
+        else if (this.isMagic != null && this.isMagic != source.isMagicDamage())
         {
             return false;
         }

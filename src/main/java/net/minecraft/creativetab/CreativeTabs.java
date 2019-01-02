@@ -80,7 +80,7 @@ public abstract class CreativeTabs
         {
             return new ItemStack(Items.IRON_AXE);
         }
-    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.ALL, EnumEnchantmentType.DIGGER, EnumEnchantmentType.FISHING_ROD, EnumEnchantmentType.BREAKABLE});
+    }).setRelevantEnchantmentTypes(EnumEnchantmentType.ALL, EnumEnchantmentType.DIGGER, EnumEnchantmentType.FISHING_ROD, EnumEnchantmentType.BREAKABLE);
     public static final CreativeTabs COMBAT = (new CreativeTabs(9, "combat")
     {
         @SideOnly(Side.CLIENT)
@@ -88,7 +88,7 @@ public abstract class CreativeTabs
         {
             return new ItemStack(Items.GOLDEN_SWORD);
         }
-    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.ALL, EnumEnchantmentType.ARMOR, EnumEnchantmentType.ARMOR_FEET, EnumEnchantmentType.ARMOR_HEAD, EnumEnchantmentType.ARMOR_LEGS, EnumEnchantmentType.ARMOR_CHEST, EnumEnchantmentType.BOW, EnumEnchantmentType.WEAPON, EnumEnchantmentType.WEARABLE, EnumEnchantmentType.BREAKABLE});
+    }).setRelevantEnchantmentTypes(EnumEnchantmentType.ALL, EnumEnchantmentType.ARMOR, EnumEnchantmentType.ARMOR_FEET, EnumEnchantmentType.ARMOR_HEAD, EnumEnchantmentType.ARMOR_LEGS, EnumEnchantmentType.ARMOR_CHEST, EnumEnchantmentType.BOW, EnumEnchantmentType.WEAPON, EnumEnchantmentType.WEARABLE, EnumEnchantmentType.BREAKABLE);
     public static final CreativeTabs BREWING = new CreativeTabs(10, "brewing")
     {
         @SideOnly(Side.CLIENT)
@@ -142,10 +142,8 @@ public abstract class CreativeTabs
         if (index >= CREATIVE_TAB_ARRAY.length)
         {
             CreativeTabs[] tmp = new CreativeTabs[index + 1];
-            for (int x = 0; x < CREATIVE_TAB_ARRAY.length; x++)
-            {
-                tmp[x] = CREATIVE_TAB_ARRAY[x];
-            }
+            if (CREATIVE_TAB_ARRAY.length >= 0)
+                System.arraycopy(CREATIVE_TAB_ARRAY, 0, tmp, 0, CREATIVE_TAB_ARRAY.length);
             CREATIVE_TAB_ARRAY = tmp;
         }
         this.tabIndex = index;

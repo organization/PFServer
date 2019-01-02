@@ -43,7 +43,7 @@ public class FluidHandlerConcatenate implements IFluidHandler
 
     public FluidHandlerConcatenate(Collection<IFluidHandler> subHandlers)
     {
-        this.subHandlers = subHandlers.toArray(new IFluidHandler[subHandlers.size()]);
+        this.subHandlers = subHandlers.toArray(new IFluidHandler[0]);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class FluidHandlerConcatenate implements IFluidHandler
         {
             Collections.addAll(tanks, handler.getTankProperties());
         }
-        return tanks.toArray(new IFluidTankProperties[tanks.size()]);
+        return tanks.toArray(new IFluidTankProperties[0]);
     }
 
     @Override

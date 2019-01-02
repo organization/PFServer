@@ -67,20 +67,20 @@ public class GuiIngameForge extends GuiIngame
     //Flags to toggle the rendering of certain aspects of the HUD, valid conditions
     //must be met for them to render normally. If those conditions are met, but this flag
     //is false, they will not be rendered.
-    public static boolean renderVignette = true;
-    public static boolean renderHelmet = true;
-    public static boolean renderPortal = true;
-    public static boolean renderHotbar = true;
-    public static boolean renderCrosshairs = true;
-    public static boolean renderBossHealth = true;
-    public static boolean renderHealth = true;
-    public static boolean renderArmor = true;
+    public static final boolean renderVignette = true;
+    public static final boolean renderHelmet = true;
+    public static final boolean renderPortal = true;
+    public static final boolean renderHotbar = true;
+    public static final boolean renderCrosshairs = true;
+    public static final boolean renderBossHealth = true;
+    public static final boolean renderHealth = true;
+    public static final boolean renderArmor = true;
     public static boolean renderFood = true;
     public static boolean renderHealthMount = true;
-    public static boolean renderAir = true;
-    public static boolean renderExperiance = true;
+    public static final boolean renderAir = true;
+    public static final boolean renderExperiance = true;
     public static boolean renderJumpBar = true;
-    public static boolean renderObjective = true;
+    public static final boolean renderObjective = true;
 
     public static int left_height = 39;
     public static int right_height = 39;
@@ -89,7 +89,7 @@ public class GuiIngameForge extends GuiIngame
     private FontRenderer fontrenderer = null;
     private RenderGameOverlayEvent eventParent;
     //private static final String MC_VERSION = MinecraftForge.MC_VERSION;
-    private GuiOverlayDebugForge debugOverlay;
+    private final GuiOverlayDebugForge debugOverlay;
 
     public GuiIngameForge(Minecraft mc)
     {
@@ -685,8 +685,8 @@ public class GuiIngameForge extends GuiIngame
     {
         mc.mcProfiler.startSection("forgeHudText");
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-        ArrayList<String> listL = new ArrayList<String>();
-        ArrayList<String> listR = new ArrayList<String>();
+        ArrayList<String> listL = new ArrayList<>();
+        ArrayList<String> listR = new ArrayList<>();
 
         if (mc.isDemo())
         {
@@ -912,7 +912,7 @@ public class GuiIngameForge extends GuiIngame
 
     private class GuiOverlayDebugForge extends GuiOverlayDebug
     {
-        private Minecraft mc;
+        private final Minecraft mc;
         private GuiOverlayDebugForge(Minecraft mc)
         {
             super(mc);

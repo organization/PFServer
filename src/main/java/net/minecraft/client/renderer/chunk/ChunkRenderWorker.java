@@ -168,13 +168,7 @@ public class ChunkRenderWorker implements Runnable
             }
 
             final ListenableFuture<List<Object>> listenablefuture = Futures.allAsList(arraylist);
-            generator.addFinishRunnable(new Runnable()
-            {
-                public void run()
-                {
-                    listenablefuture.cancel(false);
-                }
-            });
+            generator.addFinishRunnable(() -> listenablefuture.cancel(false));
             Futures.addCallback(listenablefuture, new FutureCallback<List<Object>>()
             {
                 public void onSuccess(@Nullable List<Object> p_onSuccess_1_)

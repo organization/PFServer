@@ -30,6 +30,7 @@ import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class ItemHandlerHelper
 {
@@ -56,7 +57,7 @@ public class ItemHandlerHelper
         if (a.isEmpty() || !a.isItemEqual(b) || a.hasTagCompound() != b.hasTagCompound())
             return false;
 
-        return (!a.hasTagCompound() || a.getTagCompound().equals(b.getTagCompound())) && a.areCapsCompatible(b);
+        return (!a.hasTagCompound() || Objects.equals(a.getTagCompound(), b.getTagCompound())) && a.areCapsCompatible(b);
     }
 
     /**
@@ -80,7 +81,7 @@ public class ItemHandlerHelper
         if (a.hasTagCompound() != b.hasTagCompound())
             return false;
 
-        return (!a.hasTagCompound() || a.getTagCompound().equals(b.getTagCompound())) && a.areCapsCompatible(b);
+        return (!a.hasTagCompound() || Objects.equals(a.getTagCompound(), b.getTagCompound())) && a.areCapsCompatible(b);
     }
 
     @Nonnull

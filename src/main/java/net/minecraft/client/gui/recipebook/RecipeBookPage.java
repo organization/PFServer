@@ -15,11 +15,11 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class RecipeBookPage
 {
-    private List<GuiButtonRecipe> buttons = Lists.<GuiButtonRecipe>newArrayListWithCapacity(20);
+    private final List<GuiButtonRecipe> buttons = Lists.<GuiButtonRecipe>newArrayListWithCapacity(20);
     private GuiButtonRecipe hoveredButton;
-    private GuiRecipeOverlay overlay = new GuiRecipeOverlay();
+    private final GuiRecipeOverlay overlay = new GuiRecipeOverlay();
     private Minecraft minecraft;
-    private List<IRecipeUpdateListener> listeners = Lists.<IRecipeUpdateListener>newArrayList();
+    private final List<IRecipeUpdateListener> listeners = Lists.<IRecipeUpdateListener>newArrayList();
     private List<RecipeList> recipeLists;
     private GuiButtonToggle forwardButton;
     private GuiButtonToggle backButton;

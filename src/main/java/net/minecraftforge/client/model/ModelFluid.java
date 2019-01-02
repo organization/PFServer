@@ -251,8 +251,8 @@ public final class ModelFluid implements IModel
 
     private static class BakedFluid implements IBakedModel
     {
-        private static final int x[] = { 0, 0, 1, 1 };
-        private static final int z[] = { 0, 1, 1, 0 };
+        private static final int[] x = {0, 0, 1, 1};
+        private static final int[] z = {0, 1, 1, 0};
         private static final float eps = 1e-3f;
 
         protected final Optional<TRSRTransformation> transformation;

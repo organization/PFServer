@@ -86,11 +86,8 @@ public final class VanillaCommandWrapper extends BukkitCommand {
                     String s2 = as[i];
 
                     icommandlistener.setCommandStat(CommandResultStats.Type.AFFECTED_ENTITIES, list.size());
-                    Iterator<Entity> iterator = list.iterator();
 
-                    while (iterator.hasNext()) {
-                        Entity entity = iterator.next();
-
+                    for (Entity entity : list) {
                         CommandSender oldSender = lastSender;
                         lastSender = bSender;
                         try {
@@ -98,7 +95,7 @@ public final class VanillaCommandWrapper extends BukkitCommand {
                             vanillaCommand.execute(server, icommandlistener, as);
                             j++;
                         } catch (WrongUsageException exceptionusage) {
-                            TextComponentTranslation chatmessage = new TextComponentTranslation("commands.generic.usage", new Object[] { new TextComponentTranslation(exceptionusage.getMessage(), exceptionusage.getErrorObjects())});
+                            TextComponentTranslation chatmessage = new TextComponentTranslation("commands.generic.usage", new TextComponentTranslation(exceptionusage.getMessage(), exceptionusage.getErrorObjects()));
                             chatmessage.getStyle().setColor(TextFormatting.RED);
                             icommandlistener.sendMessage(chatmessage);
                         } catch (CommandException commandexception) {
@@ -114,18 +111,18 @@ public final class VanillaCommandWrapper extends BukkitCommand {
                     j++;
                 }
             } else {
-                TextComponentTranslation chatmessage = new TextComponentTranslation("commands.generic.permission", new Object[0]);
+                TextComponentTranslation chatmessage = new TextComponentTranslation("commands.generic.permission");
                 chatmessage.getStyle().setColor(TextFormatting.RED);
                 icommandlistener.sendMessage(chatmessage);
             }
         } catch (WrongUsageException exceptionusage) {
-            TextComponentTranslation chatmessage1 = new TextComponentTranslation("commands.generic.usage", new Object[] { new TextComponentTranslation(exceptionusage.getMessage(), exceptionusage.getErrorObjects()) });
+            TextComponentTranslation chatmessage1 = new TextComponentTranslation("commands.generic.usage", new TextComponentTranslation(exceptionusage.getMessage(), exceptionusage.getErrorObjects()));
             chatmessage1.getStyle().setColor(TextFormatting.RED);
             icommandlistener.sendMessage(chatmessage1);
         } catch (CommandException commandexception) {
             CommandBase.notifyCommandListener(icommandlistener, vanillaCommand, 0, commandexception.getMessage(), commandexception.getErrorObjects());
         } catch (Throwable throwable) {
-            TextComponentTranslation chatmessage3 = new TextComponentTranslation("commands.generic.exception", new Object[0]);
+            TextComponentTranslation chatmessage3 = new TextComponentTranslation("commands.generic.exception");
             chatmessage3.getStyle().setColor(TextFormatting.RED);
             icommandlistener.sendMessage(chatmessage3);
             if (icommandlistener.getCommandSenderEntity() instanceof EntityMinecartCommandBlock) {
@@ -134,7 +131,7 @@ public final class VanillaCommandWrapper extends BukkitCommand {
                 CommandBlockBaseLogic listener = (CommandBlockBaseLogic) icommandlistener;
                 MinecraftServer.LOGGER.log(Level.WARN, String.format("CommandBlock at (%d,%d,%d) failed to handle command", listener.getPosition().getX(), listener.getPosition().getY(), listener.getPosition().getZ()), throwable);
             } else {
-                MinecraftServer.LOGGER.log(Level.WARN, String.format("Unknown CommandBlock failed to handle command"), throwable);
+                MinecraftServer.LOGGER.log(Level.WARN, "Unknown CommandBlock failed to handle command", throwable);
             }
         } finally {
             icommandlistener.setCommandStat(CommandResultStats.Type.SUCCESS_COUNT, j);
@@ -168,7 +165,7 @@ public final class VanillaCommandWrapper extends BukkitCommand {
         throw new IllegalArgumentException("Cannot make " + sender + " a vanilla command listener");
     }
 
-    private int getPlayerListSize(String as[]) throws CommandException {
+    private int getPlayerListSize(String[] as) throws CommandException {
         for (int i = 0; i < as.length; i++) {
             if (vanillaCommand.isUsernameIndex(as, i) && EntitySelector.matchesMultiplePlayersDefault(as[i])) {
                 return i;
@@ -177,11 +174,9 @@ public final class VanillaCommandWrapper extends BukkitCommand {
         return -1;
     }
 
-    public static String[] dropFirstArgument(String as[]) {
-        String as1[] = new String[as.length - 1];
-        for (int i = 1; i < as.length; i++) {
-            as1[i - 1] = as[i];
-        }
+    public static String[] dropFirstArgument(String[] as) {
+        String[] as1 = new String[as.length - 1];
+        if (as.length - 1 >= 0) System.arraycopy(as, 1, as1, 0, as.length - 1);
 
         return as1;
     }

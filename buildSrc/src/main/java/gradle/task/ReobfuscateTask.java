@@ -41,7 +41,7 @@ public class ReobfuscateTask extends DefaultTask {
 
     @Getter
     @Setter
-    private File outputJar = new File(getProject().getBuildDir(), "localCache/reobfuscated.jar");
+    private final File outputJar = new File(getProject().getBuildDir(), "localCache/reobfuscated.jar");
 
     @TaskAction
     void doTask() throws IOException {

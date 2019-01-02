@@ -5,7 +5,7 @@ import net.minecraft.entity.passive.EntityTameable;
 
 public class EntityAIOwnerHurtByTarget extends EntityAITarget
 {
-    EntityTameable tameable;
+    final EntityTameable tameable;
     EntityLivingBase attacker;
     private int timestamp;
 

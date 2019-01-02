@@ -31,7 +31,7 @@ public class NBTTagByteArray extends NBTBase
         for (int i = 0; i < p_193589_0_.size(); ++i)
         {
             Byte obyte = p_193589_0_.get(i);
-            abyte[i] = obyte == null ? 0 : obyte.byteValue();
+            abyte[i] = obyte == null ? 0 : obyte;
         }
 
         return abyte;

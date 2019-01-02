@@ -47,8 +47,8 @@ import java.util.EnumMap;
  *
  */
 public class FMLEventChannel {
-    private EnumMap<Side, FMLEmbeddedChannel> channels;
-    private EventBus eventBus;
+    private final EnumMap<Side, FMLEmbeddedChannel> channels;
+    private final EventBus eventBus;
 
     /*
      * This is done this way so that the CLIENT specific code in the factory only loads on the client
@@ -94,7 +94,7 @@ public class FMLEventChannel {
         abstract FMLNetworkEvent.CustomPacketEvent<?> make(FMLProxyPacket msg);
     }
 
-    private static EventFactory factory = FMLCommonHandler.instance().getSide() == Side.CLIENT ? EventFactory.CLIENT : EventFactory.SERVER;
+    private static final EventFactory factory = FMLCommonHandler.instance().getSide() == Side.CLIENT ? EventFactory.CLIENT : EventFactory.SERVER;
     FMLEventChannel(String name)
     {
         this.channels = NetworkRegistry.INSTANCE.newChannel(name, new NetworkEventFiringHandler(this));

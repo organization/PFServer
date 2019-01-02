@@ -44,7 +44,7 @@ public abstract class CommandHandler implements ICommandManager
 
             if (icommand == null)
             {
-                TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.generic.notFound", new Object[0]);
+                TextComponentTranslation textcomponenttranslation1 = new TextComponentTranslation("commands.generic.notFound");
                 textcomponenttranslation1.getStyle().setColor(TextFormatting.RED);
                 sender.sendMessage(textcomponenttranslation1);
             }
@@ -69,7 +69,7 @@ public abstract class CommandHandler implements ICommandManager
 
                     if (list.isEmpty())
                     {
-                        throw new PlayerNotFoundException("commands.generic.selector.notFound", new Object[] {astring[j]});
+                        throw new PlayerNotFoundException("commands.generic.selector.notFound", astring[j]);
                     }
 
                     for (Entity entity : list)
@@ -96,7 +96,7 @@ public abstract class CommandHandler implements ICommandManager
             }
             else
             {
-                TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.permission", new Object[0]);
+                TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.permission");
                 textcomponenttranslation2.getStyle().setColor(TextFormatting.RED);
                 sender.sendMessage(textcomponenttranslation2);
             }
@@ -121,7 +121,7 @@ public abstract class CommandHandler implements ICommandManager
         }
         catch (WrongUsageException wrongusageexception)
         {
-            TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.usage", new Object[] {new TextComponentTranslation(wrongusageexception.getMessage(), wrongusageexception.getErrorObjects())});
+            TextComponentTranslation textcomponenttranslation2 = new TextComponentTranslation("commands.generic.usage", new TextComponentTranslation(wrongusageexception.getMessage(), wrongusageexception.getErrorObjects()));
             textcomponenttranslation2.getStyle().setColor(TextFormatting.RED);
             sender.sendMessage(textcomponenttranslation2);
         }
@@ -133,7 +133,7 @@ public abstract class CommandHandler implements ICommandManager
         }
         catch (Throwable throwable)
         {
-            TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.generic.exception", new Object[0]);
+            TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.generic.exception");
             textcomponenttranslation.getStyle().setColor(TextFormatting.RED);
             sender.sendMessage(textcomponenttranslation);
             LOGGER.warn("Couldn't process command: " + input, throwable);

@@ -6,7 +6,7 @@ package cn.pfcraft.server.remapper;
  */
 public class ReflectionUtils {
 
-    private static SecurityManager sm = new SecurityManager();
+    private static final SecurityManager sm = new SecurityManager();
 
     public static Class<?> getCallerClass(int skip) {
         return sm.getCallerClass(skip);

@@ -29,7 +29,7 @@ public class ShrinkJarTask extends DefaultTask {
 
     @Getter
     @OutputDirectory
-    private File classesServer = new File(new File(getProject().getBuildDir(), getName()), "classes_server");
+    private final File classesServer = new File(new File(getProject().getBuildDir(), getName()), "classes_server");
 
     @TaskAction
     private void doTask() throws IOException {
@@ -75,8 +75,8 @@ public class ShrinkJarTask extends DefaultTask {
 
     private class ProcessClassesTask extends RecursiveAction {
 
-        private List<String> classesSet;
-        private Jar inputJar;
+        private final List<String> classesSet;
+        private final Jar inputJar;
 
         ProcessClassesTask(List<String> classesSet, Jar inputJar) {
             this.classesSet = classesSet;

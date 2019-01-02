@@ -28,7 +28,7 @@ public abstract class GuiContainer extends GuiScreen
     public static final ResourceLocation INVENTORY_BACKGROUND = new ResourceLocation("textures/gui/container/inventory.png");
     protected int xSize = 176;
     protected int ySize = 166;
-    public Container inventorySlots;
+    public final Container inventorySlots;
     protected int guiLeft;
     protected int guiTop;
     private Slot hoveredSlot;

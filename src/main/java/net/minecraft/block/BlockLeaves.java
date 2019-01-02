@@ -69,7 +69,7 @@ public abstract class BlockLeaves extends Block implements net.minecraftforge.co
     {
         if (!worldIn.isRemote)
         {
-            if (((Boolean)state.getValue(CHECK_DECAY)).booleanValue() && ((Boolean)state.getValue(DECAYABLE)).booleanValue())
+            if ((Boolean) state.getValue(CHECK_DECAY) && (Boolean) state.getValue(DECAYABLE))
             {
                 int i = 4;
                 int j = 5;
@@ -168,7 +168,7 @@ public abstract class BlockLeaves extends Block implements net.minecraftforge.co
 
                 if (l2 >= 0)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(CHECK_DECAY, Boolean.valueOf(false)), 4);
+                    worldIn.setBlockState(pos, state.withProperty(CHECK_DECAY, Boolean.FALSE), 4);
                 }
                 else
                 {
@@ -298,6 +298,6 @@ public abstract class BlockLeaves extends Block implements net.minecraftforge.co
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return !this.leavesFancy && blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return (this.leavesFancy || blockAccess.getBlockState(pos.offset(side)).getBlock() != this) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 }

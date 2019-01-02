@@ -115,8 +115,7 @@ public class PathFinder
         }
         else
         {
-            Path path = this.createPath(pathFrom, pathpoint);
-            return path;
+            return this.createPath(pathFrom, pathpoint);
         }
     }
 

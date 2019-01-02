@@ -52,7 +52,7 @@ public class ItemBoat extends Item
 
         if (raytraceresult == null)
         {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+            return new ActionResult<>(EnumActionResult.PASS, itemstack);
         }
         else
         {
@@ -60,16 +60,11 @@ public class ItemBoat extends Item
             boolean flag = false;
             List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.x * 5.0D, vec3d2.y * 5.0D, vec3d2.z * 5.0D).grow(1.0D));
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity = list.get(i);
+            for (Entity entity : list) {
+                if (entity.canBeCollidedWith()) {
+                    AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double) entity.getCollisionBorderSize());
 
-                if (entity.canBeCollidedWith())
-                {
-                    AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
-
-                    if (axisalignedbb.contains(vec3d))
-                    {
+                    if (axisalignedbb.contains(vec3d)) {
                         flag = true;
                     }
                 }
@@ -77,11 +72,11 @@ public class ItemBoat extends Item
 
             if (flag)
             {
-                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+                return new ActionResult<>(EnumActionResult.PASS, itemstack);
             }
             else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
             {
-                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+                return new ActionResult<>(EnumActionResult.PASS, itemstack);
             }
             else
             {
@@ -98,7 +93,7 @@ public class ItemBoat extends Item
 
                 if (!worldIn.getCollisionBoxes(entityboat, entityboat.getEntityBoundingBox().grow(-0.1D)).isEmpty())
                 {
-                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                    return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                 }
                 else
                 {
@@ -115,7 +110,7 @@ public class ItemBoat extends Item
                     }
 
                     playerIn.addStat(StatList.getObjectUseStats(this));
-                    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
                 }
             }
         }

@@ -48,7 +48,7 @@ public class Event
 
     private boolean isCanceled = false;
     private Result result = Result.DEFAULT;
-    private static ListenerList listeners = new ListenerList();
+    private static final ListenerList listeners = new ListenerList();
     private EventPriority phase = null;
 
     public Event()

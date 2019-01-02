@@ -476,7 +476,7 @@ public class BlockStairs extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, HALF, SHAPE});
+        return new BlockStateContainer(this, FACING, HALF, SHAPE);
     }
 
     @Override
@@ -498,8 +498,7 @@ public class BlockStairs extends Block
         if (shape == EnumShape.OUTER_LEFT || shape == EnumShape.OUTER_RIGHT) return false;
         if (face == side) return true;
         if (shape == EnumShape.INNER_LEFT && face.rotateY() == side) return true;
-        if (shape == EnumShape.INNER_RIGHT && face.rotateYCCW() == side) return true;
-        return false;
+        return shape == EnumShape.INNER_RIGHT && face.rotateYCCW() == side;
     }
 
     public static enum EnumHalf implements IStringSerializable

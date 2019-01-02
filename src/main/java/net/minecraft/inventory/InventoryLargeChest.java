@@ -21,10 +21,10 @@ public class InventoryLargeChest implements ILockableContainer
     public final ILockableContainer upperChest;
     public final ILockableContainer lowerChest;
 
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
 
     public List<ItemStack> getContents() {
-        List<ItemStack> result = new ArrayList<ItemStack>(this.getSizeInventory());
+        List<ItemStack> result = new ArrayList<>(this.getSizeInventory());
         for (int i = 0; i < this.getSizeInventory(); i++) {
             result.add(this.getStackInSlot(i));
         }

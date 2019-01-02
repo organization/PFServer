@@ -34,15 +34,15 @@ import java.util.Map;
  */
 public class Conversation {
 
-    private Prompt firstPrompt;
+    private final Prompt firstPrompt;
     private boolean abandoned;
     protected Prompt currentPrompt;
-    protected ConversationContext context;
+    protected final ConversationContext context;
     protected boolean modal;
     protected boolean localEchoEnabled;
     protected ConversationPrefix prefix;
-    protected List<ConversationCanceller> cancellers;
-    protected List<ConversationAbandonedListener> abandonedListeners;
+    protected final List<ConversationCanceller> cancellers;
+    protected final List<ConversationAbandonedListener> abandonedListeners;
 
     /**
      * Initializes a new Conversation.
@@ -52,7 +52,7 @@ public class Conversation {
      * @param firstPrompt The first prompt in the conversation graph.
      */
     public Conversation(Plugin plugin, Conversable forWhom, Prompt firstPrompt) {
-        this(plugin, forWhom, firstPrompt, new HashMap<Object, Object>());
+        this(plugin, forWhom, firstPrompt, new HashMap<>());
     }
 
     /**
@@ -70,8 +70,8 @@ public class Conversation {
         this.modal = true;
         this.localEchoEnabled = true;
         this.prefix = new NullConversationPrefix();
-        this.cancellers = new ArrayList<ConversationCanceller>();
-        this.abandonedListeners = new ArrayList<ConversationAbandonedListener>();
+        this.cancellers = new ArrayList<>();
+        this.abandonedListeners = new ArrayList<>();
     }
 
     /**

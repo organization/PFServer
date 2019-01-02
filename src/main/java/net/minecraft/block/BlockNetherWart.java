@@ -26,14 +26,14 @@ public class BlockNetherWart extends BlockBush
     protected BlockNetherWart()
     {
         super(Material.PLANTS, MapColor.RED);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         this.setTickRandomly(true);
         this.setCreativeTab((CreativeTabs)null);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return NETHER_WART_AABB[((Integer)state.getValue(AGE)).intValue()];
+        return NETHER_WART_AABB[(Integer) state.getValue(AGE)];
     }
 
     protected boolean canSustainBush(IBlockState state)
@@ -69,7 +69,7 @@ public class BlockNetherWart extends BlockBush
         {
             int i = 1;
 
-            if (((Integer)state.getValue(AGE)).intValue() >= 3)
+            if ((Integer) state.getValue(AGE) >= 3)
             {
                 i = 2 + worldIn.rand.nextInt(3);
 
@@ -103,12 +103,12 @@ public class BlockNetherWart extends BlockBush
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     @Override
@@ -130,6 +130,6 @@ public class BlockNetherWart extends BlockBush
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 }

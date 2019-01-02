@@ -181,6 +181,6 @@ public class BlockRail extends BlockRailBase
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {SHAPE});
+        return new BlockStateContainer(this, SHAPE);
     }
 }

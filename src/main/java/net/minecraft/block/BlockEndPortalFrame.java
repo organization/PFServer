@@ -41,7 +41,7 @@ public class BlockEndPortalFrame extends Block
     public BlockEndPortalFrame()
     {
         super(Material.ROCK, MapColor.GREEN);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(EYE, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(EYE, Boolean.FALSE));
     }
 
     public boolean isOpaqueCube(IBlockState state)
@@ -58,7 +58,7 @@ public class BlockEndPortalFrame extends Block
     {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BLOCK);
 
-        if (((Boolean)worldIn.getBlockState(pos).getValue(EYE)).booleanValue())
+        if ((Boolean) worldIn.getBlockState(pos).getValue(EYE))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_EYE);
         }
@@ -71,7 +71,7 @@ public class BlockEndPortalFrame extends Block
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(EYE, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(EYE, Boolean.FALSE);
     }
 
     public boolean hasComparatorInputOverride(IBlockState state)
@@ -81,12 +81,12 @@ public class BlockEndPortalFrame extends Block
 
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        return ((Boolean)blockState.getValue(EYE)).booleanValue() ? 15 : 0;
+        return (Boolean) blockState.getValue(EYE) ? 15 : 0;
     }
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(EYE, Boolean.valueOf((meta & 4) != 0)).withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
+        return this.getDefaultState().withProperty(EYE, (meta & 4) != 0).withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
     }
 
     public int getMetaFromState(IBlockState state)
@@ -94,7 +94,7 @@ public class BlockEndPortalFrame extends Block
         int i = 0;
         i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
 
-        if (((Boolean)state.getValue(EYE)).booleanValue())
+        if ((Boolean) state.getValue(EYE))
         {
             i |= 4;
         }
@@ -114,7 +114,7 @@ public class BlockEndPortalFrame extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, EYE});
+        return new BlockStateContainer(this, FACING, EYE);
     }
 
     public boolean isFullCube(IBlockState state)
@@ -126,7 +126,7 @@ public class BlockEndPortalFrame extends Block
     {
         if (portalShape == null)
         {
-            portalShape = FactoryBlockPattern.start().aisle("?vvv?", ">???<", ">???<", ">???<", "?^^^?").where('?', BlockWorldState.hasState(BlockStateMatcher.ANY)).where('^', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.valueOf(true))).where(FACING, Predicates.equalTo(EnumFacing.SOUTH)))).where('>', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.valueOf(true))).where(FACING, Predicates.equalTo(EnumFacing.WEST)))).where('v', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.valueOf(true))).where(FACING, Predicates.equalTo(EnumFacing.NORTH)))).where('<', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.valueOf(true))).where(FACING, Predicates.equalTo(EnumFacing.EAST)))).build();
+            portalShape = FactoryBlockPattern.start().aisle("?vvv?", ">???<", ">???<", ">???<", "?^^^?").where('?', BlockWorldState.hasState(BlockStateMatcher.ANY)).where('^', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.TRUE)).where(FACING, Predicates.equalTo(EnumFacing.SOUTH)))).where('>', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.TRUE)).where(FACING, Predicates.equalTo(EnumFacing.WEST)))).where('v', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.TRUE)).where(FACING, Predicates.equalTo(EnumFacing.NORTH)))).where('<', BlockWorldState.hasState(BlockStateMatcher.forBlock(Blocks.END_PORTAL_FRAME).where(EYE, Predicates.equalTo(Boolean.TRUE)).where(FACING, Predicates.equalTo(EnumFacing.EAST)))).build();
         }
 
         return portalShape;

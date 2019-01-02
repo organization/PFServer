@@ -141,7 +141,7 @@ public abstract class SimpleModelFontRenderer extends FontRenderer {
     {
         super.onResourceManagerReload(resourceManager);
         String p = locationFontTexture.getResourcePath();
-        if(p.startsWith("textures/")) p = p.substring("textures/".length(), p.length());
+        if(p.startsWith("textures/")) p = p.substring("textures/".length());
         if(p.endsWith(".png")) p = p.substring(0, p.length() - ".png".length());
         String f = locationFontTexture.getResourceDomain() + ":" + p;
         sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(f);

@@ -118,7 +118,7 @@ public class GuiConfig extends GuiScreen
         }
         else
         {
-            toReturn = new ArrayList<IConfigElement>();
+            toReturn = new ArrayList<>();
             for(Class<?> clazz : configClasses)
             {
                 toReturn.add(ConfigElement.from(clazz));
@@ -212,7 +212,7 @@ public class GuiConfig extends GuiScreen
         this.parentScreen = parentScreen;
         this.configElements = configElements;
         this.entryList = new GuiConfigEntries(this, mc);
-        this.initEntries = new ArrayList<IConfigEntry>(entryList.listEntries);
+        this.initEntries = new ArrayList<>(entryList.listEntries);
         this.allRequireWorldRestart = allRequireWorldRestart;
         IF:if (!allRequireWorldRestart)
         {

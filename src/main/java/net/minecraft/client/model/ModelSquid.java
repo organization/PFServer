@@ -7,8 +7,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelSquid extends ModelBase
 {
-    ModelRenderer squidBody;
-    ModelRenderer[] squidTentacles = new ModelRenderer[8];
+    final ModelRenderer squidBody;
+    final ModelRenderer[] squidTentacles = new ModelRenderer[8];
 
     public ModelSquid()
     {

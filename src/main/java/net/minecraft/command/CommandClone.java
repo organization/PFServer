@@ -40,7 +40,7 @@ public class CommandClone extends CommandBase
     {
         if (args.length < 9)
         {
-            throw new WrongUsageException("commands.clone.usage", new Object[0]);
+            throw new WrongUsageException("commands.clone.usage");
         }
         else
         {
@@ -54,7 +54,7 @@ public class CommandClone extends CommandBase
 
             if (i > 32768)
             {
-                throw new CommandException("commands.clone.tooManyBlocks", new Object[] {i, Integer.valueOf(32768)});
+                throw new CommandException("commands.clone.tooManyBlocks", i, 32768);
             }
             else
             {
@@ -64,7 +64,7 @@ public class CommandClone extends CommandBase
 
                 if ((args.length < 11 || !"force".equals(args[10]) && !"move".equals(args[10])) && structureboundingbox.intersectsWith(structureboundingbox1))
                 {
-                    throw new CommandException("commands.clone.noOverlap", new Object[0]);
+                    throw new CommandException("commands.clone.noOverlap");
                 }
                 else
                 {
@@ -91,7 +91,7 @@ public class CommandClone extends CommandBase
                                 {
                                     if (args.length < 12)
                                     {
-                                        throw new WrongUsageException("commands.clone.usage", new Object[0]);
+                                        throw new WrongUsageException("commands.clone.usage");
                                     }
 
                                     block = getBlockByText(sender, args[11]);
@@ -229,22 +229,22 @@ public class CommandClone extends CommandBase
 
                             if (i <= 0)
                             {
-                                throw new CommandException("commands.clone.failed", new Object[0]);
+                                throw new CommandException("commands.clone.failed");
                             }
                             else
                             {
                                 sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, i);
-                                notifyCommandListener(sender, this, "commands.clone.success", new Object[] {i});
+                                notifyCommandListener(sender, this, "commands.clone.success", i);
                             }
                         }
                         else
                         {
-                            throw new CommandException("commands.clone.outOfWorld", new Object[0]);
+                            throw new CommandException("commands.clone.outOfWorld");
                         }
                     }
                     else
                     {
-                        throw new CommandException("commands.clone.outOfWorld", new Object[0]);
+                        throw new CommandException("commands.clone.outOfWorld");
                     }
                 }
             }
@@ -267,11 +267,11 @@ public class CommandClone extends CommandBase
         }
         else if (args.length == 10)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"replace", "masked", "filtered"});
+            return getListOfStringsMatchingLastWord(args, "replace", "masked", "filtered");
         }
         else if (args.length == 11)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"normal", "force", "move"});
+            return getListOfStringsMatchingLastWord(args, "normal", "force", "move");
         }
         else
         {

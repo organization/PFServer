@@ -25,18 +25,18 @@ public class BlockPressurePlate extends BlockBasePressurePlate
     protected BlockPressurePlate(Material materialIn, Sensitivity sensitivityIn)
     {
         super(materialIn);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, Boolean.FALSE));
         this.sensitivity = sensitivityIn;
     }
 
     protected int getRedstoneStrength(IBlockState state)
     {
-        return ((Boolean)state.getValue(POWERED)).booleanValue() ? 15 : 0;
+        return (Boolean) state.getValue(POWERED) ? 15 : 0;
     }
 
     protected IBlockState setRedstoneStrength(IBlockState state, int strength)
     {
-        return state.withProperty(POWERED, Boolean.valueOf(strength > 0));
+        return state.withProperty(POWERED, strength > 0);
     }
 
     protected void playClickOnSound(World worldIn, BlockPos color)
@@ -114,22 +114,22 @@ public class BlockPressurePlate extends BlockBasePressurePlate
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(POWERED, Boolean.valueOf(meta == 1));
+        return this.getDefaultState().withProperty(POWERED, meta == 1);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean)state.getValue(POWERED)).booleanValue() ? 1 : 0;
+        return (Boolean) state.getValue(POWERED) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWERED});
+        return new BlockStateContainer(this, POWERED);
     }
 
     public static enum Sensitivity
     {
         EVERYTHING,
-        MOBS;
+        MOBS
     }
 }

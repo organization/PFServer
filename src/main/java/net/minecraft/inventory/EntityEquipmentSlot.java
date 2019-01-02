@@ -57,6 +57,6 @@ public enum EntityEquipmentSlot
 
     public static enum Type {
         HAND,
-        ARMOR;
+        ARMOR
     }
 }

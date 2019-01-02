@@ -5,9 +5,9 @@ import java.util.Random;
 public class NoiseGeneratorImproved extends NoiseGenerator
 {
     private final int[] permutations;
-    public double xCoord;
-    public double yCoord;
-    public double zCoord;
+    public final double xCoord;
+    public final double yCoord;
+    public final double zCoord;
     private static final double[] GRAD_X = new double[] {1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 0.0D, -1.0D, 0.0D};
     private static final double[] GRAD_Y = new double[] {1.0D, 1.0D, -1.0D, -1.0D, 0.0D, 0.0D, 0.0D, 0.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D};
     private static final double[] GRAD_Z = new double[] {0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D, -1.0D, -1.0D, 1.0D, 1.0D, -1.0D, -1.0D, 0.0D, 1.0D, 0.0D, -1.0D};
@@ -28,7 +28,6 @@ public class NoiseGeneratorImproved extends NoiseGenerator
 
         for (int i = 0; i < 256; this.permutations[i] = i++)
         {
-            ;
         }
 
         for (int l = 0; l < 256; ++l)

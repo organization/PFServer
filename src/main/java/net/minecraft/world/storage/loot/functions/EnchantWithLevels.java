@@ -40,7 +40,7 @@ public class EnchantWithLevels extends LootFunction
             public void serialize(JsonObject object, EnchantWithLevels functionClazz, JsonSerializationContext serializationContext)
             {
                 object.add("levels", serializationContext.serialize(functionClazz.randomLevel));
-                object.addProperty("treasure", Boolean.valueOf(functionClazz.isTreasure));
+                object.addProperty("treasure", functionClazz.isTreasure);
             }
 
             public EnchantWithLevels deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn)

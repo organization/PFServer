@@ -36,7 +36,7 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
     public BlockCocoa()
     {
         super(Material.PLANTS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(AGE, 0));
         this.setTickRandomly(true);
     }
 
@@ -48,7 +48,7 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
         }
         else
         {
-            int i = ((Integer)state.getValue(AGE)).intValue();
+            int i = (Integer) state.getValue(AGE);
 
             if (i < 2 && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt(Math.max(1, (int) (100.0F / worldIn.spigotConfig.cocoaModifier) * 5)) == 0)) // Spigot
 
@@ -79,7 +79,7 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        int i = ((Integer)state.getValue(AGE)).intValue();
+        int i = (Integer) state.getValue(AGE);
 
         switch ((EnumFacing)state.getValue(FACING))
         {
@@ -118,7 +118,7 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
             facing = EnumFacing.NORTH;
         }
 
-        return this.getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(AGE, Integer.valueOf(0));
+        return this.getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(AGE, 0);
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
@@ -144,7 +144,7 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
     public void getDrops(net.minecraft.util.NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
         super.getDrops(drops, world, pos, state, fortune);
-        int i = ((Integer)state.getValue(AGE)).intValue();
+        int i = (Integer) state.getValue(AGE);
         int j = 1;
 
         if (i >= 2)
@@ -165,7 +165,7 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
 
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
-        return ((Integer)state.getValue(AGE)).intValue() < 2;
+        return (Integer) state.getValue(AGE) < 2;
     }
 
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
@@ -187,20 +187,20 @@ public class BlockCocoa extends BlockHorizontal implements IGrowable
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(AGE, Integer.valueOf((meta & 15) >> 2));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(AGE, (meta & 15) >> 2);
     }
 
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
         i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-        i = i | ((Integer)state.getValue(AGE)).intValue() << 2;
+        i = i | (Integer) state.getValue(AGE) << 2;
         return i;
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, AGE});
+        return new BlockStateContainer(this, FACING, AGE);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class BlockRedstoneTorch extends BlockTorch
 {
-    private static final Map<World, List<Toggle>> toggles = new java.util.WeakHashMap<World, List<Toggle>>(); // FORGE - fix vanilla MC-101233
+    private static final Map<World, List<Toggle>> toggles = new java.util.WeakHashMap<>(); // FORGE - fix vanilla MC-101233
     private final boolean isOn;
 
     private boolean isBurnedOut(World worldIn, BlockPos pos, boolean turnOff)
@@ -43,16 +43,11 @@ public class BlockRedstoneTorch extends BlockTorch
 
         int i = 0;
 
-        for (int j = 0; j < list.size(); ++j)
-        {
-            Toggle blockredstonetorch$toggle = list.get(j);
-
-            if (blockredstonetorch$toggle.pos.equals(pos))
-            {
+        for (Toggle blockredstonetorch$toggle : list) {
+            if (blockredstonetorch$toggle.pos.equals(pos)) {
                 ++i;
 
-                if (i >= 8)
-                {
+                if (i >= 8) {
                     return true;
                 }
             }
@@ -236,8 +231,8 @@ public class BlockRedstoneTorch extends BlockTorch
 
     static class Toggle
         {
-            BlockPos pos;
-            long time;
+            final BlockPos pos;
+            final long time;
             final long getTime() { return this.time; } // Paper - OBFHELPER;
 
             public Toggle(BlockPos pos, long time)

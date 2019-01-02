@@ -57,13 +57,7 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
     private final int[] idleHeadUpdates = new int[2];
     private int blockBreakCounter;
     private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
-    private static final Predicate<Entity> NOT_UNDEAD = new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_ instanceof EntityLivingBase && ((EntityLivingBase)p_apply_1_).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)p_apply_1_).attackable();
-        }
-    };
+    private static final Predicate<Entity> NOT_UNDEAD = p_apply_1_ -> p_apply_1_ instanceof EntityLivingBase && ((EntityLivingBase)p_apply_1_).getCreatureAttribute() != EnumCreatureAttribute.UNDEAD && ((EntityLivingBase)p_apply_1_).attackable();
 
     public EntityWither(World worldIn)
     {
@@ -83,17 +77,17 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, false, NOT_UNDEAD));
     }
 
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(FIRST_HEAD_TARGET, Integer.valueOf(0));
-        this.dataManager.register(SECOND_HEAD_TARGET, Integer.valueOf(0));
-        this.dataManager.register(THIRD_HEAD_TARGET, Integer.valueOf(0));
-        this.dataManager.register(INVULNERABILITY_TIME, Integer.valueOf(0));
+        this.dataManager.register(FIRST_HEAD_TARGET, 0);
+        this.dataManager.register(SECOND_HEAD_TARGET, 0);
+        this.dataManager.register(THIRD_HEAD_TARGET, 0);
+        this.dataManager.register(INVULNERABILITY_TIME, 0);
     }
 
     public static void registerFixesWither(DataFixer fixer)
@@ -636,22 +630,22 @@ public class EntityWither extends EntityMob implements IRangedAttackMob
 
     public int getInvulTime()
     {
-        return ((Integer)this.dataManager.get(INVULNERABILITY_TIME)).intValue();
+        return (Integer) this.dataManager.get(INVULNERABILITY_TIME);
     }
 
     public void setInvulTime(int time)
     {
-        this.dataManager.set(INVULNERABILITY_TIME, Integer.valueOf(time));
+        this.dataManager.set(INVULNERABILITY_TIME, time);
     }
 
     public int getWatchedTargetId(int head)
     {
-        return ((Integer)this.dataManager.get(HEAD_TARGETS[head])).intValue();
+        return (Integer) this.dataManager.get(HEAD_TARGETS[head]);
     }
 
     public void updateWatchedTargetId(int targetOffset, int newId)
     {
-        this.dataManager.set(HEAD_TARGETS[targetOffset], Integer.valueOf(newId));
+        this.dataManager.set(HEAD_TARGETS[targetOffset], newId);
     }
 
     public boolean isArmored()

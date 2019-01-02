@@ -27,7 +27,7 @@ public class CraftChunk implements Chunk {
     private static final byte[] emptySkyLight = new byte[2048];
 
     public CraftChunk(net.minecraft.world.chunk.Chunk chunk) {
-        this.weakChunk = new WeakReference<net.minecraft.world.chunk.Chunk>(chunk);
+        this.weakChunk = new WeakReference<>(chunk);
 
         worldServer = (WorldServer) getHandle().getWorld();
         x = getHandle().x;

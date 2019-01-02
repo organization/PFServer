@@ -10,10 +10,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelArmorStand extends ModelArmorStandArmor
 {
-    public ModelRenderer standRightSide;
-    public ModelRenderer standLeftSide;
-    public ModelRenderer standWaist;
-    public ModelRenderer standBase;
+    public final ModelRenderer standRightSide;
+    public final ModelRenderer standLeftSide;
+    public final ModelRenderer standWaist;
+    public final ModelRenderer standBase;
 
     public ModelArmorStand()
     {

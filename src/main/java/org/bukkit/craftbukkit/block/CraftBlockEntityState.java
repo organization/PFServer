@@ -44,9 +44,8 @@ public class CraftBlockEntityState<T extends TileEntity> extends CraftBlockState
         }
 
         NBTTagCompound nbtTagCompound = tileEntity.writeToNBT(new NBTTagCompound());
-        T snapshot = (T) TileEntity.create(tileEntity.getWorld(), nbtTagCompound);
 
-        return snapshot;
+        return (T) TileEntity.create(tileEntity.getWorld(), nbtTagCompound);
     }
 
     // copies the TileEntity-specific data, retains the position

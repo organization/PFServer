@@ -9,7 +9,7 @@ public class Instrument {
 	public int volume_fade_out;
 	
 	private Envelope volume_envelope, panning_envelope;
-	private int[] key_to_sample;
+	private final int[] key_to_sample;
 	private Sample[] samples;
 
 	public Instrument() {

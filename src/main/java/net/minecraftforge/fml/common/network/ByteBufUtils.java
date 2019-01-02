@@ -333,7 +333,7 @@ public class ByteBufUtils {
     public static String getContentDump(ByteBuf buffer)
     {
         int currentLength = buffer.readableBytes();
-        StringBuffer returnString = new StringBuffer((currentLength * 3) + // The
+        StringBuilder returnString = new StringBuilder((currentLength * 3) + // The
                                                                            // hex
                 (currentLength) + // The ascii
                 (currentLength / 4) + // The tabs/\n's
@@ -358,7 +358,7 @@ public class ByteBufUtils {
                 returnString.append("\n");
             }
 
-            returnString.append(Integer.toString((buffer.getByte(i) & 0xF0) >> 4, 16) + Integer.toString((buffer.getByte(i) & 0x0F) >> 0, 16));
+            returnString.append(Integer.toString((buffer.getByte(i) & 0xF0) >> 4, 16)).append(Integer.toString((buffer.getByte(i) & 0x0F), 16));
             returnString.append(' ');
         }
 
@@ -394,7 +394,7 @@ public class ByteBufUtils {
 
         // Finally, tidy it all up with a newline
         returnString.append('\n');
-        returnString.append("Length: " + currentLength);
+        returnString.append("Length: ").append(currentLength);
 
         return returnString.toString();
 

@@ -7,8 +7,8 @@ import org.bukkit.plugin.Plugin;
  * a period of inactivity by the user.
  */
 public class InactivityConversationCanceller implements ConversationCanceller {
-    protected Plugin plugin;
-    protected int timeoutSeconds;
+    protected final Plugin plugin;
+    protected final int timeoutSeconds;
     protected Conversation conversation;
     private int taskId = -1;
 
@@ -43,14 +43,12 @@ public class InactivityConversationCanceller implements ConversationCanceller {
      * Starts an inactivity timer.
      */
     private void startTimer() {
-        taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                if (conversation.getState() == Conversation.ConversationState.UNSTARTED) {
-                    startTimer();
-                } else if (conversation.getState() == Conversation.ConversationState.STARTED) {
-                    cancelling(conversation);
-                    conversation.abandon(new ConversationAbandonedEvent(conversation, InactivityConversationCanceller.this));
-                }
+        taskId = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            if (conversation.getState() == Conversation.ConversationState.UNSTARTED) {
+                startTimer();
+            } else if (conversation.getState() == Conversation.ConversationState.STARTED) {
+                cancelling(conversation);
+                conversation.abandon(new ConversationAbandonedEvent(conversation, InactivityConversationCanceller.this));
             }
         }, timeoutSeconds * 20);
     }

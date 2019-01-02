@@ -28,7 +28,7 @@ public class ParticleSimpleAnimated extends Particle
     {
         float f = (float)((p_187146_1_ & 16711680) >> 16) / 255.0F;
         float f1 = (float)((p_187146_1_ & 65280) >> 8) / 255.0F;
-        float f2 = (float)((p_187146_1_ & 255) >> 0) / 255.0F;
+        float f2 = (float)((p_187146_1_ & 255)) / 255.0F;
         float f3 = 1.0F;
         this.setRBGColorF(f * 1.0F, f1 * 1.0F, f2 * 1.0F);
     }
@@ -37,7 +37,7 @@ public class ParticleSimpleAnimated extends Particle
     {
         this.fadeTargetRed = (float)((rgb & 16711680) >> 16) / 255.0F;
         this.fadeTargetGreen = (float)((rgb & 65280) >> 8) / 255.0F;
-        this.fadeTargetBlue = (float)((rgb & 255) >> 0) / 255.0F;
+        this.fadeTargetBlue = (float)((rgb & 255)) / 255.0F;
         this.fadingColor = true;
     }
 

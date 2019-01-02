@@ -35,13 +35,7 @@ public class BlockPumpkin extends BlockHorizontal
     private BlockPattern snowmanPattern;
     private BlockPattern golemBasePattern;
     private BlockPattern golemPattern;
-    private static final Predicate<IBlockState> IS_PUMPKIN = new Predicate<IBlockState>()
-    {
-        public boolean apply(@Nullable IBlockState p_apply_1_)
-        {
-            return p_apply_1_ != null && (p_apply_1_.getBlock() == Blocks.PUMPKIN || p_apply_1_.getBlock() == Blocks.LIT_PUMPKIN);
-        }
-    };
+    private static final Predicate<IBlockState> IS_PUMPKIN = p_apply_1_ -> p_apply_1_ != null && (p_apply_1_.getBlock() == Blocks.PUMPKIN || p_apply_1_.getBlock() == Blocks.LIT_PUMPKIN);
 
     protected BlockPumpkin()
     {
@@ -170,7 +164,7 @@ public class BlockPumpkin extends BlockHorizontal
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     protected BlockPattern getSnowmanBasePattern()

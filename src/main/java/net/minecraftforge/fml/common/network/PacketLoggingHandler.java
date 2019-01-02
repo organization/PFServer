@@ -38,7 +38,7 @@ public class PacketLoggingHandler
         {
             pipeline.addBefore("packet_handler", "splitter", new SimpleChannelInboundHandler<Packet<?>>()
             {
-                String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: C->S" : "CLIENT: S->C");
+                final String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: C->S" : "CLIENT: S->C");
                 @Override
                 protected void channelRead0(ChannelHandlerContext ctx, Packet<?> msg) throws Exception
                 {
@@ -50,7 +50,7 @@ public class PacketLoggingHandler
             });
             pipeline.addBefore("splitter", "prepender", new ChannelOutboundHandlerAdapter()
             {
-                String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: S->C" : "CLIENT: C->S");
+                final String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: S->C" : "CLIENT: C->S");
                 @Override
                 public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception
                 {
@@ -68,15 +68,13 @@ public class PacketLoggingHandler
         {
             pipeline.replace("splitter", "splitter", new NettyVarint21FrameDecoder()
             {
-                String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: C->S" : "CLIENT: S->C");
+                final String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: C->S" : "CLIENT: S->C");
                 @Override
                 protected void decode(ChannelHandlerContext context, ByteBuf input, List<Object> output) throws Exception
                 {
                     super.decode(context, input, output);
-                    Iterator<Object> itr = output.iterator();
-                    while (itr.hasNext())
-                    {
-                        ByteBuf pkt = (ByteBuf)itr.next();
+                    for (Object o : output) {
+                        ByteBuf pkt = (ByteBuf) o;
                         pkt.markReaderIndex();
                         PFServer.LOGGER.debug("{}:\n{}", prefix, ByteBufUtils.getContentDump(pkt));
                         pkt.resetReaderIndex();
@@ -85,7 +83,7 @@ public class PacketLoggingHandler
             });
             pipeline.replace("prepender", "prepender", new NettyVarint21FrameEncoder()
             {
-                String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: S->C" : "CLIENT: C->S");
+                final String prefix = (direction == EnumPacketDirection.SERVERBOUND ? "SERVER: S->C" : "CLIENT: C->S");
                 @Override
                 protected void encode(ChannelHandlerContext context, ByteBuf input, ByteBuf output) throws Exception
                 {

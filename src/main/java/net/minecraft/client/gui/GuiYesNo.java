@@ -11,13 +11,13 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiYesNo extends GuiScreen
 {
-    protected GuiYesNoCallback parentScreen;
-    protected String messageLine1;
+    protected final GuiYesNoCallback parentScreen;
+    protected final String messageLine1;
     private final String messageLine2;
     private final List<String> listLines = Lists.<String>newArrayList();
     protected String confirmButtonText;
     protected String cancelButtonText;
-    protected int parentButtonClickedId;
+    protected final int parentButtonClickedId;
     private int ticksUntilEnable;
 
     public GuiYesNo(GuiYesNoCallback parentScreenIn, String messageLine1In, String messageLine2In, int parentButtonClickedIdIn)

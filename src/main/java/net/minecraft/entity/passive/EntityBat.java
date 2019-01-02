@@ -37,7 +37,7 @@ public class EntityBat extends EntityAmbientCreature
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(HANGING, Byte.valueOf((byte)0));
+        this.dataManager.register(HANGING, (byte) 0);
     }
 
     protected float getSoundVolume()
@@ -87,20 +87,20 @@ public class EntityBat extends EntityAmbientCreature
 
     public boolean getIsBatHanging()
     {
-        return (((Byte)this.dataManager.get(HANGING)).byteValue() & 1) != 0;
+        return ((Byte) this.dataManager.get(HANGING) & 1) != 0;
     }
 
     public void setIsBatHanging(boolean isHanging)
     {
-        byte b0 = ((Byte)this.dataManager.get(HANGING)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(HANGING);
 
         if (isHanging)
         {
-            this.dataManager.set(HANGING, Byte.valueOf((byte)(b0 | 1)));
+            this.dataManager.set(HANGING, (byte) (b0 | 1));
         }
         else
         {
-            this.dataManager.set(HANGING, Byte.valueOf((byte)(b0 & -2)));
+            this.dataManager.set(HANGING, (byte) (b0 & -2));
         }
     }
 
@@ -221,13 +221,13 @@ public class EntityBat extends EntityAmbientCreature
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.dataManager.set(HANGING, Byte.valueOf(compound.getByte("BatFlags")));
+        this.dataManager.set(HANGING, compound.getByte("BatFlags"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
-        compound.setByte("BatFlags", ((Byte)this.dataManager.get(HANGING)).byteValue());
+        compound.setByte("BatFlags", (Byte) this.dataManager.get(HANGING));
     }
 
     public boolean getCanSpawnHere()
@@ -252,13 +252,13 @@ public class EntityBat extends EntityAmbientCreature
                 return false;
             }
 
-            return i > this.rand.nextInt(j) ? false : super.getCanSpawnHere();
+            return i <= this.rand.nextInt(j) && super.getCanSpawnHere();
         }
     }
 
     private boolean isDateAroundHalloween(Calendar p_175569_1_)
     {
-        return p_175569_1_.get(2) + 1 == 10 && p_175569_1_.get(5) >= 20 || p_175569_1_.get(2) + 1 == 11 && p_175569_1_.get(5) <= 3;
+        return p_175569_1_.get(Calendar.MONTH) + 1 == 10 && p_175569_1_.get(Calendar.DATE) >= 20 || p_175569_1_.get(Calendar.MONTH) + 1 == 11 && p_175569_1_.get(Calendar.DATE) <= 3;
     }
 
     public float getEyeHeight()

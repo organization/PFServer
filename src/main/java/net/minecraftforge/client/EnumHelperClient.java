@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 public class EnumHelperClient extends EnumHelper
 {
-    private static Class<?>[][] clientTypes =
+    private static final Class<?>[][] clientTypes =
     {
         {GameType.class, int.class, String.class, String.class},
         {Options.class, String.class, boolean.class, boolean.class},

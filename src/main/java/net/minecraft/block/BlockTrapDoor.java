@@ -37,7 +37,7 @@ public class BlockTrapDoor extends Block
     protected BlockTrapDoor(Material materialIn)
     {
         super(materialIn);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(OPEN, Boolean.valueOf(false)).withProperty(HALF, DoorHalf.BOTTOM));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(OPEN, Boolean.FALSE).withProperty(HALF, DoorHalf.BOTTOM));
         this.setCreativeTab(CreativeTabs.REDSTONE);
     }
 
@@ -45,7 +45,7 @@ public class BlockTrapDoor extends Block
     {
         AxisAlignedBB axisalignedbb;
 
-        if (((Boolean)state.getValue(OPEN)).booleanValue())
+        if ((Boolean) state.getValue(OPEN))
         {
             switch ((EnumFacing)state.getValue(FACING))
             {
@@ -87,7 +87,7 @@ public class BlockTrapDoor extends Block
 
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        return !((Boolean)worldIn.getBlockState(pos).getValue(OPEN)).booleanValue();
+        return !(Boolean) worldIn.getBlockState(pos).getValue(OPEN);
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -100,7 +100,7 @@ public class BlockTrapDoor extends Block
         {
             state = state.cycleProperty(OPEN);
             worldIn.setBlockState(pos, state, 2);
-            this.playSound(playerIn, worldIn, pos, ((Boolean)state.getValue(OPEN)).booleanValue());
+            this.playSound(playerIn, worldIn, pos, (Boolean) state.getValue(OPEN));
             return true;
         }
     }
@@ -139,11 +139,11 @@ public class BlockTrapDoor extends Block
                     flag = eventRedstone.getNewCurrent() > 0;
                 }
 
-                boolean flag1 = ((Boolean)state.getValue(OPEN)).booleanValue();
+                boolean flag1 = (Boolean) state.getValue(OPEN);
 
                 if (flag1 != flag)
                 {
-                    worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
+                    worldIn.setBlockState(pos, state.withProperty(OPEN, flag), 2);
                     this.playSound((EntityPlayer)null, worldIn, pos, flag);
                 }
             }
@@ -156,18 +156,18 @@ public class BlockTrapDoor extends Block
 
         if (facing.getAxis().isHorizontal())
         {
-            iblockstate = iblockstate.withProperty(FACING, facing).withProperty(OPEN, Boolean.valueOf(false));
+            iblockstate = iblockstate.withProperty(FACING, facing).withProperty(OPEN, Boolean.FALSE);
             iblockstate = iblockstate.withProperty(HALF, hitY > 0.5F ? DoorHalf.TOP : DoorHalf.BOTTOM);
         }
         else
         {
-            iblockstate = iblockstate.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, Boolean.valueOf(false));
+            iblockstate = iblockstate.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, Boolean.FALSE);
             iblockstate = iblockstate.withProperty(HALF, facing == EnumFacing.UP ? DoorHalf.BOTTOM : DoorHalf.TOP);
         }
 
         if (worldIn.isBlockPowered(pos))
         {
-            iblockstate = iblockstate.withProperty(OPEN, Boolean.valueOf(true));
+            iblockstate = iblockstate.withProperty(OPEN, Boolean.TRUE);
         }
 
         return iblockstate;
@@ -212,7 +212,7 @@ public class BlockTrapDoor extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, getFacing(meta)).withProperty(OPEN, Boolean.valueOf((meta & 4) != 0)).withProperty(HALF, (meta & 8) == 0 ? DoorHalf.BOTTOM : DoorHalf.TOP);
+        return this.getDefaultState().withProperty(FACING, getFacing(meta)).withProperty(OPEN, (meta & 4) != 0).withProperty(HALF, (meta & 8) == 0 ? DoorHalf.BOTTOM : DoorHalf.TOP);
     }
 
     @SideOnly(Side.CLIENT)
@@ -226,7 +226,7 @@ public class BlockTrapDoor extends Block
         int i = 0;
         i = i | getMetaForFacing((EnumFacing)state.getValue(FACING));
 
-        if (((Boolean)state.getValue(OPEN)).booleanValue())
+        if ((Boolean) state.getValue(OPEN))
         {
             i |= 4;
         }
@@ -251,12 +251,12 @@ public class BlockTrapDoor extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, OPEN, HALF});
+        return new BlockStateContainer(this, FACING, OPEN, HALF);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return (face == EnumFacing.UP && state.getValue(HALF) == DoorHalf.TOP || face == EnumFacing.DOWN && state.getValue(HALF) == DoorHalf.BOTTOM) && !((Boolean)state.getValue(OPEN)).booleanValue() ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+        return (face == EnumFacing.UP && state.getValue(HALF) == DoorHalf.TOP || face == EnumFacing.DOWN && state.getValue(HALF) == DoorHalf.BOTTOM) && !(Boolean) state.getValue(OPEN) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override

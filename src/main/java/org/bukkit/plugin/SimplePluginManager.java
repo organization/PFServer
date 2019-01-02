@@ -29,23 +29,23 @@ import java.util.regex.Pattern;
  */
 public final class SimplePluginManager implements PluginManager {
     private final Server server;
-    private final Map<Pattern, PluginLoader> fileAssociations = new HashMap<Pattern, PluginLoader>();
-    private final List<Plugin> plugins = new ArrayList<Plugin>();
-    private final Map<String, Plugin> lookupNames = new HashMap<String, Plugin>();
+    private final Map<Pattern, PluginLoader> fileAssociations = new HashMap<>();
+    private final List<Plugin> plugins = new ArrayList<>();
+    private final Map<String, Plugin> lookupNames = new HashMap<>();
     private File updateDirectory;
     private final SimpleCommandMap commandMap;
-    private final Map<String, Permission> permissions = new HashMap<String, Permission>();
-    private final Map<Boolean, Set<Permission>> defaultPerms = new LinkedHashMap<Boolean, Set<Permission>>();
-    private final Map<String, Map<Permissible, Boolean>> permSubs = new HashMap<String, Map<Permissible, Boolean>>();
-    private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<Boolean, Map<Permissible, Boolean>>();
+    private final Map<String, Permission> permissions = new HashMap<>();
+    private final Map<Boolean, Set<Permission>> defaultPerms = new LinkedHashMap<>();
+    private final Map<String, Map<Permissible, Boolean>> permSubs = new HashMap<>();
+    private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<>();
     private boolean useTimings = false;
 
     public SimplePluginManager(Server instance, SimpleCommandMap commandMap) {
         server = instance;
         this.commandMap = commandMap;
 
-        defaultPerms.put(true, new HashSet<Permission>());
-        defaultPerms.put(false, new HashSet<Permission>());
+        defaultPerms.put(true, new HashSet<>());
+        defaultPerms.put(false, new HashSet<>());
     }
 
     /**
@@ -94,17 +94,17 @@ public final class SimplePluginManager implements PluginManager {
         Validate.notNull(directory, "Directory cannot be null");
         Validate.isTrue(directory.isDirectory(), "Directory must be a directory");
 
-        List<Plugin> result = new ArrayList<Plugin>();
+        List<Plugin> result = new ArrayList<>();
         Set<Pattern> filters = fileAssociations.keySet();
 
         if (!(server.getUpdateFolder().equals(""))) {
             updateDirectory = new File(directory, server.getUpdateFolder());
         }
 
-        Map<String, File> plugins = new HashMap<String, File>();
-        Set<String> loadedPlugins = new HashSet<String>();
-        Map<String, Collection<String>> dependencies = new HashMap<String, Collection<String>>();
-        Map<String, Collection<String>> softDependencies = new HashMap<String, Collection<String>>();
+        Map<String, File> plugins = new HashMap<>();
+        Set<String> loadedPlugins = new HashSet<>();
+        Map<String, Collection<String>> dependencies = new HashMap<>();
+        Map<String, Collection<String>> softDependencies = new HashMap<>();
 
         // This is where it figures out all possible plugins
         for (File file : directory.listFiles()) {
@@ -151,13 +151,13 @@ public final class SimplePluginManager implements PluginManager {
                     // Duplicates do not matter, they will be removed together if applicable
                     softDependencies.get(description.getName()).addAll(softDependencySet);
                 } else {
-                    softDependencies.put(description.getName(), new LinkedList<String>(softDependencySet));
+                    softDependencies.put(description.getName(), new LinkedList<>(softDependencySet));
                 }
             }
 
             Collection<String> dependencySet = description.getDepend();
             if (dependencySet != null && !dependencySet.isEmpty()) {
-                dependencies.put(description.getName(), new LinkedList<String>(dependencySet));
+                dependencies.put(description.getName(), new LinkedList<>(dependencySet));
             }
 
             Collection<String> loadBeforeSet = description.getLoadBefore();
@@ -167,7 +167,7 @@ public final class SimplePluginManager implements PluginManager {
                         softDependencies.get(loadBeforeTarget).add(description.getName());
                     } else {
                         // softDependencies is never iterated, so 'ghost' plugins aren't an issue
-                        Collection<String> shortSoftDependency = new LinkedList<String>();
+                        Collection<String> shortSoftDependency = new LinkedList<>();
                         shortSoftDependency.add(description.getName());
                         softDependencies.put(loadBeforeTarget, shortSoftDependency);
                     }
@@ -213,16 +213,9 @@ public final class SimplePluginManager implements PluginManager {
                     }
                 }
                 if (softDependencies.containsKey(plugin)) {
-                    Iterator<String> softDependencyIterator = softDependencies.get(plugin).iterator();
 
-                    while (softDependencyIterator.hasNext()) {
-                        String softDependency = softDependencyIterator.next();
-
-                        // Soft depend is no longer around
-                        if (!plugins.containsKey(softDependency)) {
-                            softDependencyIterator.remove();
-                        }
-                    }
+                    // Soft depend is no longer around
+                    softDependencies.get(plugin).removeIf(softDependency -> !plugins.containsKey(softDependency));
 
                     if (softDependencies.get(plugin).isEmpty()) {
                         softDependencies.remove(plugin);
@@ -283,7 +276,7 @@ public final class SimplePluginManager implements PluginManager {
             }
         }
 
-        return result.toArray(new Plugin[result.size()]);
+        return result.toArray(new Plugin[0]);
     }
 
     /**
@@ -349,7 +342,7 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public synchronized Plugin[] getPlugins() {
-        return plugins.toArray(new Plugin[plugins.size()]);
+        return plugins.toArray(new Plugin[0]);
     }
 
     /**
@@ -647,12 +640,7 @@ public final class SimplePluginManager implements PluginManager {
 
     public void subscribeToPermission(String permission, Permissible permissible) {
         String name = permission.toLowerCase(java.util.Locale.ENGLISH);
-        Map<Permissible, Boolean> map = permSubs.get(name);
-
-        if (map == null) {
-            map = new WeakHashMap<Permissible, Boolean>();
-            permSubs.put(name, map);
-        }
+        Map<Permissible, Boolean> map = permSubs.computeIfAbsent(name, k -> new WeakHashMap<>());
 
         map.put(permissible, true);
     }
@@ -682,12 +670,7 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public void subscribeToDefaultPerms(boolean op, Permissible permissible) {
-        Map<Permissible, Boolean> map = defSubs.get(op);
-
-        if (map == null) {
-            map = new WeakHashMap<Permissible, Boolean>();
-            defSubs.put(op, map);
-        }
+        Map<Permissible, Boolean> map = defSubs.computeIfAbsent(op, k -> new WeakHashMap<>());
 
         map.put(permissible, true);
     }
@@ -715,7 +698,7 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public Set<Permission> getPermissions() {
-        return new HashSet<Permission>(permissions.values());
+        return new HashSet<>(permissions.values());
     }
 
     public boolean useTimings() {

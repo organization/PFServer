@@ -201,7 +201,7 @@ public class GlStateManager
     {
         BUF_FLOAT_4.put(0, (float)(color >> 16 & 255) / 255.0F);
         BUF_FLOAT_4.put(1, (float)(color >> 8 & 255) / 255.0F);
-        BUF_FLOAT_4.put(2, (float)(color >> 0 & 255) / 255.0F);
+        BUF_FLOAT_4.put(2, (float)(color & 255) / 255.0F);
         BUF_FLOAT_4.put(3, (float)(color >> 24 & 255) / 255.0F);
         glTexEnv(8960, 8705, BUF_FLOAT_4);
         glTexEnvi(8960, 8704, 34160);
@@ -865,7 +865,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class AlphaState
         {
-            public BooleanState alphaTest;
+            public final BooleanState alphaTest;
             public int func;
             public float ref;
 
@@ -880,7 +880,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class BlendState
         {
-            public BooleanState blend;
+            public final BooleanState blend;
             public int srcFactor;
             public int dstFactor;
             public int srcFactorAlpha;
@@ -939,7 +939,7 @@ public class GlStateManager
     static class ClearState
         {
             public double depth;
-            public Color color;
+            public final Color color;
 
             private ClearState()
             {
@@ -977,7 +977,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class ColorLogicState
         {
-            public BooleanState colorLogicOp;
+            public final BooleanState colorLogicOp;
             public int opcode;
 
             private ColorLogicState()
@@ -1007,7 +1007,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class ColorMaterialState
         {
-            public BooleanState colorMaterial;
+            public final BooleanState colorMaterial;
             public int face;
             public int mode;
 
@@ -1037,7 +1037,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class CullState
         {
-            public BooleanState cullFace;
+            public final BooleanState cullFace;
             public int mode;
 
             private CullState()
@@ -1050,7 +1050,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class DepthState
         {
-            public BooleanState depthTest;
+            public final BooleanState depthTest;
             public boolean maskEnabled;
             public int depthFunc;
 
@@ -1106,7 +1106,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class FogState
         {
-            public BooleanState fog;
+            public final BooleanState fog;
             public int mode;
             public float density;
             public float start;
@@ -1152,8 +1152,8 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class PolygonOffsetState
         {
-            public BooleanState polygonOffsetFill;
-            public BooleanState polygonOffsetLine;
+            public final BooleanState polygonOffsetFill;
+            public final BooleanState polygonOffsetLine;
             public float factor;
             public float units;
 
@@ -1344,8 +1344,8 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class StencilFunc
         {
-            public int func;
-            public int mask;
+            public final int func;
+            public final int mask;
 
             private StencilFunc()
             {
@@ -1357,11 +1357,11 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class StencilState
         {
-            public StencilFunc func;
-            public int mask;
-            public int fail;
-            public int zfail;
-            public int zpass;
+            public final StencilFunc func;
+            public final int mask;
+            public final int fail;
+            public final int zfail;
+            public final int zpass;
 
             private StencilState()
             {
@@ -1379,14 +1379,14 @@ public class GlStateManager
         S,
         T,
         R,
-        Q;
+        Q
     }
 
     @SideOnly(Side.CLIENT)
     static class TexGenCoord
         {
-            public BooleanState textureGen;
-            public int coord;
+            public final BooleanState textureGen;
+            public final int coord;
             public int param = -1;
 
             public TexGenCoord(int coordIn, int capabilityIn)
@@ -1399,10 +1399,10 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class TexGenState
         {
-            public TexGenCoord s;
-            public TexGenCoord t;
-            public TexGenCoord r;
-            public TexGenCoord q;
+            public final TexGenCoord s;
+            public final TexGenCoord t;
+            public final TexGenCoord r;
+            public final TexGenCoord q;
 
             private TexGenState()
             {
@@ -1416,7 +1416,7 @@ public class GlStateManager
     @SideOnly(Side.CLIENT)
     static class TextureState
         {
-            public BooleanState texture2DState;
+            public final BooleanState texture2DState;
             public int textureName;
 
             private TextureState()

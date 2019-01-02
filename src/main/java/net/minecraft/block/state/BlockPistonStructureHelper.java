@@ -60,12 +60,8 @@ public class BlockPistonStructureHelper
         }
         else
         {
-            for (int i = 0; i < this.toMove.size(); ++i)
-            {
-                BlockPos blockpos = this.toMove.get(i);
-
-                if (this.world.getBlockState(blockpos).getBlock().isStickyBlock(this.world.getBlockState(blockpos)) && !this.addBranchingBlocks(blockpos))
-                {
+            for (BlockPos blockpos : this.toMove) {
+                if (this.world.getBlockState(blockpos).getBlock().isStickyBlock(this.world.getBlockState(blockpos)) && !this.addBranchingBlocks(blockpos)) {
                     return false;
                 }
             }

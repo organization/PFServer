@@ -11,15 +11,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelIllager extends ModelBase
 {
-    public ModelRenderer head;
-    public ModelRenderer hat;
-    public ModelRenderer body;
-    public ModelRenderer arms;
-    public ModelRenderer leg0;
-    public ModelRenderer leg1;
-    public ModelRenderer nose;
-    public ModelRenderer rightArm;
-    public ModelRenderer leftArm;
+    public final ModelRenderer head;
+    public final ModelRenderer hat;
+    public final ModelRenderer body;
+    public final ModelRenderer arms;
+    public final ModelRenderer leg0;
+    public final ModelRenderer leg1;
+    public final ModelRenderer nose;
+    public final ModelRenderer rightArm;
+    public final ModelRenderer leftArm;
 
     public ModelIllager(float scaleFactor, float p_i47227_2_, int textureWidthIn, int textureHeightIn)
     {

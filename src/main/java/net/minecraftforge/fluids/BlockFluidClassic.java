@@ -46,10 +46,10 @@ public class BlockFluidClassic extends BlockFluidBase
     protected static final List<EnumFacing> SIDES = Collections.unmodifiableList(Arrays.asList(
             EnumFacing.WEST, EnumFacing.EAST, EnumFacing.NORTH, EnumFacing.SOUTH));
 
-    protected boolean[] isOptimalFlowDirection = new boolean[4];
-    protected int[] flowCost = new int[4];
+    protected final boolean[] isOptimalFlowDirection = new boolean[4];
+    protected final int[] flowCost = new int[4];
 
-    protected boolean canCreateSources = false;
+    protected final boolean canCreateSources = false;
 
     protected FluidStack stack;
     public BlockFluidClassic(Fluid fluid, Material material)
@@ -178,7 +178,7 @@ public class BlockFluidClassic extends BlockFluidBase
             {
                 flowMeta = 1;
             }
-            boolean flowTo[] = getOptimalFlowDirections(world, pos);
+            boolean[] flowTo = getOptimalFlowDirections(world, pos);
 
             for (int i = 0; i < 4; i++)
             {

@@ -68,7 +68,6 @@ public class BlockPortal extends BlockBreakable
 
             for (blockpos = pos; !worldIn.getBlockState(blockpos).isTopSolid() && blockpos.getY() > 0; blockpos = blockpos.down())
             {
-                ;
             }
 
             if (i > 0 && !worldIn.getBlockState(blockpos.up()).isNormalCube())
@@ -299,7 +298,7 @@ public class BlockPortal extends BlockBreakable
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AXIS});
+        return new BlockStateContainer(this, AXIS);
     }
 
     public BlockPattern.PatternHelper createPatternHelper(World worldIn, BlockPos p_181089_2_)
@@ -371,7 +370,7 @@ public class BlockPortal extends BlockBreakable
             private BlockPos bottomLeft;
             private int height;
             private int width;
-            java.util.Collection<org.bukkit.block.Block> blocks = new java.util.HashSet<org.bukkit.block.Block>();
+            final java.util.Collection<org.bukkit.block.Block> blocks = new java.util.HashSet<>();
 
             public Size(World worldIn, BlockPos p_i45694_2_, EnumFacing.Axis p_i45694_3_)
             {
@@ -391,7 +390,6 @@ public class BlockPortal extends BlockBreakable
 
                 for (BlockPos blockpos = p_i45694_2_; p_i45694_2_.getY() > blockpos.getY() - 21 && p_i45694_2_.getY() > 0 && this.isEmptyBlock(worldIn.getBlockState(p_i45694_2_.down()).getBlock()); p_i45694_2_ = p_i45694_2_.down())
                 {
-                    ;
                 }
 
                 int i = this.getDistanceUntilEdge(p_i45694_2_, this.leftDir) - 1;

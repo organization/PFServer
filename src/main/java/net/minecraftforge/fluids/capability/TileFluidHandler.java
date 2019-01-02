@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class TileFluidHandler extends TileEntity
 {
-    protected FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME);
+    protected final FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME);
 
     @Override
     public void readFromNBT(NBTTagCompound tag)

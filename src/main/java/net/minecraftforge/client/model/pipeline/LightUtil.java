@@ -302,8 +302,8 @@ public class LightUtil
     {
         private int vertices = 0;
 
-        private float[] auxColor = new float[]{1, 1, 1, 1};
-        private float[] buf = new float[4];
+        private final float[] auxColor = new float[]{1, 1, 1, 1};
+        private final float[] buf = new float[4];
 
         public ItemConsumer(IVertexConsumer parent)
         {

@@ -133,7 +133,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         meta.logoFile    = "/forge_logo.png";
         try {
             updateJSONUrl    = new URL("http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json");
-        } catch (MalformedURLException e) {}
+        } catch (MalformedURLException ignored) {}
 
         config = null;
         File cfgFile = new File(Loader.instance().getConfigDir(), "forge.cfg");
@@ -174,7 +174,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     {
         // By adding a property order list we are defining the order that the properties will appear both in the config file and on the GUIs.
         // Property order lists are defined per-ConfigCategory.
-        List<String> propOrder = new ArrayList<String>();
+        List<String> propOrder = new ArrayList<>();
 
         if (!config.isChild)
         {
@@ -296,14 +296,14 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
 
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
 
-        propOrder = new ArrayList<String>();
+        propOrder = new ArrayList<>();
         prop = config.get(VERSION_CHECK_CAT, "Global", true, "Enable the entire mod update check system. This only applies to mods using the Forge system.");
         propOrder.add("Global");
 
         config.setCategoryPropertyOrder(VERSION_CHECK_CAT, propOrder);
 
         // Client-Side only properties
-        propOrder = new ArrayList<String>();
+        propOrder = new ArrayList<>();
 
         prop = config.get(Configuration.CATEGORY_CLIENT, "zoomInMissingModelTextInGui", false,
         "Toggle off to make missing model text in the gui fit inside the slot.");

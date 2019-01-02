@@ -12,7 +12,7 @@ public class ContainerChest extends Container
     private final int numRows;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerChest(IInventory playerInventory, IInventory chestInventory, EntityPlayer player)
     {

@@ -54,7 +54,7 @@ public class BlockSandStone extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {TYPE});
+        return new BlockStateContainer(this, TYPE);
     }
 
     public static enum EnumType implements IStringSerializable

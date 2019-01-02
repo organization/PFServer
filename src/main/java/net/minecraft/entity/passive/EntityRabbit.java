@@ -149,7 +149,7 @@ public class EntityRabbit extends EntityAnimal
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(RABBIT_TYPE, Integer.valueOf(0));
+        this.dataManager.register(RABBIT_TYPE, 0);
     }
 
     public void updateAITasks()
@@ -336,7 +336,7 @@ public class EntityRabbit extends EntityAnimal
 
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
+        return !this.isEntityInvulnerable(source) && super.attackEntityFrom(source, amount);
     }
 
     @Nullable
@@ -378,7 +378,7 @@ public class EntityRabbit extends EntityAnimal
 
     public int getRabbitType()
     {
-        return ((Integer)this.dataManager.get(RABBIT_TYPE)).intValue();
+        return (Integer) this.dataManager.get(RABBIT_TYPE);
     }
 
     public void setRabbitType(int rabbitTypeId)
@@ -387,7 +387,7 @@ public class EntityRabbit extends EntityAnimal
         {
             this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
             this.tasks.addTask(4, new AIEvilAttack(this));
-            this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+            this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
             this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
             this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityWolf.class, true));
 
@@ -397,7 +397,7 @@ public class EntityRabbit extends EntityAnimal
             }
         }
 
-        this.dataManager.set(RABBIT_TYPE, Integer.valueOf(rabbitTypeId));
+        this.dataManager.set(RABBIT_TYPE, rabbitTypeId);
     }
 
     @Nullable
@@ -570,7 +570,7 @@ public class EntityRabbit extends EntityAnimal
                     {
                         Integer integer = (Integer)iblockstate.getValue(BlockCarrot.AGE);
 
-                        if (integer.intValue() == 0)
+                        if (integer == 0)
                         {
                             if (org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(this.rabbit, blockpos, Blocks.AIR, 0).isCancelled()) {
                                 return;
@@ -583,11 +583,11 @@ public class EntityRabbit extends EntityAnimal
                             if (org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(
                                     this.rabbit,
                                     blockpos,
-                                    block, block.getMetaFromState(iblockstate.withProperty(BlockCarrot.AGE, Integer.valueOf(integer.intValue() - 1)))
+                                    block, block.getMetaFromState(iblockstate.withProperty(BlockCarrot.AGE, integer - 1))
                             ).isCancelled()) {
                                 return;
                             }
-                            world.setBlockState(blockpos, iblockstate.withProperty(BlockCarrot.AGE, Integer.valueOf(integer.intValue() - 1)), 2);
+                            world.setBlockState(blockpos, iblockstate.withProperty(BlockCarrot.AGE, integer - 1), 2);
                             world.playEvent(2001, blockpos, Block.getStateId(iblockstate));
                         }
 
@@ -699,7 +699,7 @@ public class EntityRabbit extends EntityAnimal
 
     public static class RabbitTypeData implements IEntityLivingData
         {
-            public int typeData;
+            public final int typeData;
 
             public RabbitTypeData(int type)
             {

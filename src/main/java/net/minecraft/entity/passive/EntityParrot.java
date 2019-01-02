@@ -44,13 +44,7 @@ import java.util.Set;
 public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 {
     private static final DataParameter<Integer> VARIANT = EntityDataManager.<Integer>createKey(EntityParrot.class, DataSerializers.VARINT);
-    private static final Predicate<EntityLiving> CAN_MIMIC = new Predicate<EntityLiving>()
-    {
-        public boolean apply(@Nullable EntityLiving p_apply_1_)
-        {
-            return p_apply_1_ != null && EntityParrot.MIMIC_SOUNDS.containsKey(p_apply_1_.getClass());
-        }
-    };
+    private static final Predicate<EntityLiving> CAN_MIMIC = p_apply_1_ -> p_apply_1_ != null && EntityParrot.MIMIC_SOUNDS.containsKey(p_apply_1_.getClass());
     private static final Item DEADLY_ITEM = Items.COOKIE;
     private static final Set<Item> TAME_ITEMS = Sets.newHashSet(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
     private static final java.util.Map<Class<? extends Entity>, SoundEvent> MIMIC_SOUNDS = Maps.newHashMapWithExpectedSize(32);
@@ -304,7 +298,7 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
     {
         if (random.nextInt(1000) == 0)
         {
-            List<SoundEvent> list = new ArrayList<SoundEvent>(MIMIC_SOUNDS.values());
+            List<SoundEvent> list = new ArrayList<>(MIMIC_SOUNDS.values());
             SoundEvent ret = list.get(random.nextInt(list.size()));
             return ret == null ? SoundEvents.ENTITY_PARROT_AMBIENT : ret;
         }
@@ -388,18 +382,18 @@ public class EntityParrot extends EntityShoulderRiding implements EntityFlying
 
     public int getVariant()
     {
-        return MathHelper.clamp(((Integer)this.dataManager.get(VARIANT)).intValue(), 0, 4);
+        return MathHelper.clamp((Integer) this.dataManager.get(VARIANT), 0, 4);
     }
 
     public void setVariant(int p_191997_1_)
     {
-        this.dataManager.set(VARIANT, Integer.valueOf(p_191997_1_));
+        this.dataManager.set(VARIANT, p_191997_1_);
     }
 
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
+        this.dataManager.register(VARIANT, 0);
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

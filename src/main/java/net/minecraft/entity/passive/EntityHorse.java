@@ -51,15 +51,15 @@ public class EntityHorse extends AbstractHorse
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(HORSE_VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HORSE_ARMOR, Integer.valueOf(HorseArmorType.NONE.getOrdinal()));
+        this.dataManager.register(HORSE_VARIANT, 0);
+        this.dataManager.register(HORSE_ARMOR, HorseArmorType.NONE.getOrdinal());
         this.dataManager.register(HORSE_ARMOR_STACK, ItemStack.EMPTY);
     }
 
     public static void registerFixesHorse(DataFixer fixer)
     {
         AbstractHorse.registerFixesAbstractHorse(fixer, EntityHorse.class);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityHorse.class, new String[] {"ArmorItem"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityHorse.class, "ArmorItem"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
@@ -93,13 +93,13 @@ public class EntityHorse extends AbstractHorse
 
     public void setHorseVariant(int variant)
     {
-        this.dataManager.set(HORSE_VARIANT, Integer.valueOf(variant));
+        this.dataManager.set(HORSE_VARIANT, variant);
         this.resetTexturePrefix();
     }
 
     public int getHorseVariant()
     {
-        return ((Integer)this.dataManager.get(HORSE_VARIANT)).intValue();
+        return (Integer) this.dataManager.get(HORSE_VARIANT);
     }
 
     private void resetTexturePrefix()
@@ -152,7 +152,7 @@ public class EntityHorse extends AbstractHorse
     public void setHorseArmorStack(ItemStack itemStackIn)
     {
         HorseArmorType horsearmortype = HorseArmorType.getByItemStack(itemStackIn);
-        this.dataManager.set(HORSE_ARMOR, Integer.valueOf(horsearmortype.getOrdinal()));
+        this.dataManager.set(HORSE_ARMOR, horsearmortype.getOrdinal());
         this.dataManager.set(HORSE_ARMOR_STACK, itemStackIn);
         this.resetTexturePrefix();
 
@@ -415,7 +415,7 @@ public class EntityHorse extends AbstractHorse
 
     public static class GroupData implements IEntityLivingData
         {
-            public int variant;
+            public final int variant;
 
             public GroupData(int variantIn)
             {

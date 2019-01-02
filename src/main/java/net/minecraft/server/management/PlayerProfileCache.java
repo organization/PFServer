@@ -107,7 +107,7 @@ public class PlayerProfileCache
         {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(2, 1);
+            calendar.add(Calendar.MONTH, 1);
             expirationDate = calendar.getTime();
         }
 
@@ -165,7 +165,7 @@ public class PlayerProfileCache
     public String[] getUsernames()
     {
         List<String> list = Lists.newArrayList(this.usernameToProfileEntryMap.keySet());
-        return (String[])list.toArray(new String[list.size()]);
+        return (String[])list.toArray(new String[0]);
     }
 
     @Nullable
@@ -212,15 +212,9 @@ public class PlayerProfileCache
                 }
             }
         }
-        catch (FileNotFoundException var9)
+        catch (FileNotFoundException | JsonParseException ignored)
         {
-            ;
-        }
-        catch (JsonParseException var10)
-        {
-            ;
-        }
-        finally
+        } finally
         {
             IOUtils.closeQuietly((Reader)bufferedreader);
         }
@@ -237,9 +231,8 @@ public class PlayerProfileCache
             bufferedwriter.write(s);
             return;
         }
-        catch (FileNotFoundException var8)
+        catch (FileNotFoundException ignored)
         {
-            ;
         }
         catch (IOException var9)
         {

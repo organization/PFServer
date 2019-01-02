@@ -16,7 +16,7 @@ public class NetHandlerHandshakeTCP implements INetHandlerHandshakeServer {
     private final MinecraftServer server;
     private final NetworkManager networkManager;
 
-    private static final HashMap<InetAddress, Long> throttleTracker = new HashMap<InetAddress, Long>();
+    private static final HashMap<InetAddress, Long> throttleTracker = new HashMap<>();
     private static int throttleCounter = 0;
     private static final com.google.gson.Gson gson = new com.google.gson.Gson(); // Spigot
 
@@ -68,11 +68,11 @@ public class NetHandlerHandshakeTCP implements INetHandlerHandshakeServer {
                 // CraftBukkit end
 
                 if (packetIn.getProtocolVersion() > 340) {
-                    ITextComponent itextcomponent = new TextComponentTranslation(org.spigotmc.SpigotConfig.outdatedServerMessage.replaceAll("'", "''"), new Object[] {"1.12.2"}); // Spigot
+                    ITextComponent itextcomponent = new TextComponentTranslation(org.spigotmc.SpigotConfig.outdatedServerMessage.replaceAll("'", "''"), "1.12.2"); // Spigot
                     this.networkManager.sendPacket(new SPacketDisconnect(itextcomponent));
                     this.networkManager.closeChannel(itextcomponent);
                 } else if (packetIn.getProtocolVersion() < 340) {
-                    ITextComponent itextcomponent1 = new TextComponentTranslation(org.spigotmc.SpigotConfig.outdatedClientMessage.replaceAll("'", "''"), new Object[] {"1.12.2"}); // Spigot
+                    ITextComponent itextcomponent1 = new TextComponentTranslation(org.spigotmc.SpigotConfig.outdatedClientMessage.replaceAll("'", "''"), "1.12.2"); // Spigot
                     this.networkManager.sendPacket(new SPacketDisconnect(itextcomponent1));
                     this.networkManager.closeChannel(itextcomponent1);
                 } else {

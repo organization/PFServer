@@ -36,8 +36,8 @@ public class TopologicalSort
 {
     public static class DirectedGraph<T> implements Iterable<T>
     {
-        private final Map<T, SortedSet<T>> graph = new HashMap<T, SortedSet<T>>();
-        private List<T> orderedNodes = new ArrayList<T>();
+        private final Map<T, SortedSet<T>> graph = new HashMap<>();
+        private final List<T> orderedNodes = new ArrayList<>();
 
         public boolean addNode(T node)
         {
@@ -48,7 +48,7 @@ public class TopologicalSort
             }
 
             orderedNodes.add(node);
-            graph.put(node, new TreeSet<T>(Comparator.comparingInt(o -> orderedNodes.indexOf(o))));
+            graph.put(node, new TreeSet<>(Comparator.comparingInt(orderedNodes::indexOf)));
             return true;
         }
 
@@ -124,10 +124,10 @@ public class TopologicalSort
     public static <T> List<T> topologicalSort(DirectedGraph<T> graph)
     {
         DirectedGraph<T> rGraph = reverse(graph);
-        List<T> sortedResult = new ArrayList<T>();
-        Set<T> visitedNodes = new HashSet<T>();
+        List<T> sortedResult = new ArrayList<>();
+        Set<T> visitedNodes = new HashSet<>();
         // A list of "fully explored" nodes. Leftovers in here indicate cycles in the graph
-        Set<T> expandedNodes = new HashSet<T>();
+        Set<T> expandedNodes = new HashSet<>();
 
         for (T node : rGraph)
         {
@@ -139,7 +139,7 @@ public class TopologicalSort
 
     public static <T> DirectedGraph<T> reverse(DirectedGraph<T> graph)
     {
-        DirectedGraph<T> result = new DirectedGraph<T>();
+        DirectedGraph<T> result = new DirectedGraph<>();
 
         for (T node : graph)
         {

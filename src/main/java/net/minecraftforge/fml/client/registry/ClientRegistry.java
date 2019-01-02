@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ClientRegistry
 {
-    private static Map<Class<? extends Entity>, ResourceLocation> entityShaderMap = Maps.newHashMap();
+    private static final Map<Class<? extends Entity>, ResourceLocation> entityShaderMap = Maps.newHashMap();
 
     /**
      *

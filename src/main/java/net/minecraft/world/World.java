@@ -55,6 +55,7 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.bukkit.Bukkit;
@@ -79,7 +80,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
      * Modders should change this variable to a higher value if it is less then the radius
      * of one of there entities.
      */
-    public static double MAX_ENTITY_RADIUS = 2.0D;
+    public static final double MAX_ENTITY_RADIUS = 2.0D;
 
     private int seaLevel = 63;
     protected boolean scheduledUpdatesAreImmediate;
@@ -91,7 +92,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     private final List<TileEntity> tileEntitiesToBeRemoved = Lists.<TileEntity>newArrayList();
     public final List<EntityPlayer> playerEntities = Lists.<EntityPlayer>newArrayList();
     public final List<Entity> weatherEffects = Lists.<Entity>newArrayList();
-    protected final IntHashMap<Entity> entitiesById = new IntHashMap<Entity>();
+    protected final IntHashMap<Entity> entitiesById = new IntHashMap<>();
     private final long cloudColour = 16777215L;
     private int skylightSubtracted;
     protected int updateLCG = (new Random()).nextInt();
@@ -103,11 +104,11 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     private int lastLightningBolt;
     public final Random rand = new Random();
     public WorldProvider provider;
-    protected PathWorldListener pathListener = new PathWorldListener();
-    protected List<IWorldEventListener> eventListeners;
+    protected final PathWorldListener pathListener = new PathWorldListener();
+    protected final List<IWorldEventListener> eventListeners;
     protected IChunkProvider chunkProvider;
     protected final ISaveHandler saveHandler;
-    public WorldInfo worldInfo;
+    public final WorldInfo worldInfo;
     protected boolean findingSpawnPoint;
     public MapStorage mapStorage;
     public VillageCollection villageCollection;
@@ -122,11 +123,11 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     public boolean spawnPeacefulMobs;
     private boolean processingLoadedTiles;
     private final WorldBorder worldBorder;
-    int[] lightUpdateBlockList;
+    final int[] lightUpdateBlockList;
 
     public boolean restoringBlockSnapshots = false;
     public boolean captureBlockSnapshots = false;
-    public java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot> capturedBlockSnapshots = new java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot>();
+    public final java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot> capturedBlockSnapshots = new java.util.ArrayList<>();
     private net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities;
     private net.minecraftforge.common.util.WorldCapabilityData capabilityData;
 
@@ -148,8 +149,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public static boolean haveWeSilencedAPhysicsCrash;
     public static String blockLocation;
-    private org.spigotmc.TickLimiter entityLimiter;
-    private org.spigotmc.TickLimiter tileLimiter;
+    private final org.spigotmc.TickLimiter entityLimiter;
+    private final org.spigotmc.TickLimiter tileLimiter;
     private int tileTickPosition;
     public final Map<Explosion.CacheKey, Float> explosionDensityCache = new HashMap<>(); // Paper - Optimize explosions
 
@@ -296,13 +297,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting biome");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Coordinates of biome request");
-                crashreportcategory.addDetail("Location", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return CrashReportCategory.getCoordinateInfo(pos);
-                    }
-                });
+                crashreportcategory.addDetail("Location", () -> CrashReportCategory.getCoordinateInfo(pos));
                 throw new ReportedException(crashreport);
             }
         }
@@ -342,7 +337,6 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
         for (blockpos = new BlockPos(pos.getX(), this.getSeaLevel(), pos.getZ()); !this.isAirBlock(blockpos.up()); blockpos = blockpos.up())
         {
-            ;
         }
 
         return this.getBlockState(blockpos);
@@ -445,7 +439,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public boolean isChunkGeneratedAt(int x, int z)
     {
-        return this.isChunkLoaded(x, z, false) ? true : this.chunkProvider.isChunkGeneratedAt(x, z);
+        return this.isChunkLoaded(x, z, false) || this.chunkProvider.isChunkGeneratedAt(x, z);
     }
 
     public boolean setBlockState(BlockPos pos, IBlockState newState, int flags)
@@ -582,9 +576,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void notifyBlockUpdate(BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).notifyBlockUpdate(this, pos, oldState, newState, flags);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).notifyBlockUpdate(this, pos, oldState, newState, flags);
         }
     }
 
@@ -626,9 +619,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).markBlockRangeForRenderUpdate(x1, y1, z1, x2, y2, z2);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).markBlockRangeForRenderUpdate(x1, y1, z1, x2, y2, z2);
         }
     }
 
@@ -721,18 +713,14 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while updating neighbours");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being updated");
-                crashreportcategory.addDetail("Source block type", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
+                crashreportcategory.addDetail("Source block type", () -> {
+                    try
                     {
-                        try
-                        {
-                            return String.format("ID #%d (%s // %s // %s)", Block.getIdFromBlock(blockIn), blockIn.getUnlocalizedName(), blockIn.getClass().getName(), blockIn.getRegistryName());
-                        }
-                        catch (Throwable var2)
-                        {
-                            return "ID #" + Block.getIdFromBlock(blockIn);
-                        }
+                        return String.format("ID #%d (%s // %s // %s)", Block.getIdFromBlock(blockIn), blockIn.getUnlocalizedName(), blockIn.getClass().getName(), blockIn.getRegistryName());
+                    }
+                    catch (Throwable var2)
+                    {
+                        return "ID #" + Block.getIdFromBlock(blockIn);
                     }
                 });
                 CrashReportCategory.addBlockInfo(crashreportcategory, pos, iblockstate);
@@ -762,18 +750,14 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                 {
                     CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while updating neighbours");
                     CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being updated");
-                    crashreportcategory.addDetail("Source block type", new ICrashReportDetail<String>()
-                    {
-                        public String call() throws Exception
+                    crashreportcategory.addDetail("Source block type", () -> {
+                        try
                         {
-                            try
-                            {
-                                return String.format("ID #%d (%s // %s)", Block.getIdFromBlock(p_190529_2_), p_190529_2_.getUnlocalizedName(), p_190529_2_.getClass().getCanonicalName());
-                            }
-                            catch (Throwable var2)
-                            {
-                                return "ID #" + Block.getIdFromBlock(p_190529_2_);
-                            }
+                            return String.format("ID #%d (%s // %s)", Block.getIdFromBlock(p_190529_2_), p_190529_2_.getUnlocalizedName(), p_190529_2_.getClass().getCanonicalName());
+                        }
+                        catch (Throwable var2)
+                        {
+                            return "ID #" + Block.getIdFromBlock(p_190529_2_);
                         }
                     });
                     CrashReportCategory.addBlockInfo(crashreportcategory, pos, iblockstate);
@@ -1047,9 +1031,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void notifyLightSet(BlockPos pos)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).notifyLightSet(pos);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).notifyLightSet(pos);
         }
     }
 
@@ -1308,9 +1291,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         volume = event.getVolume();
         pitch = event.getPitch();
 
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).playSoundToAllNearExcept(player, soundIn, category, x, y, z, volume, pitch);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).playSoundToAllNearExcept(player, soundIn, category, x, y, z, volume, pitch);
         }
     }
 
@@ -1320,9 +1302,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void playRecord(BlockPos blockPositionIn, @Nullable SoundEvent soundEventIn)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).playRecord(soundEventIn, blockPositionIn);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).playRecord(soundEventIn, blockPositionIn);
         }
     }
 
@@ -1333,9 +1314,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void spawnAlwaysVisibleParticle(int p_190523_1_, double p_190523_2_, double p_190523_4_, double p_190523_6_, double p_190523_8_, double p_190523_10_, double p_190523_12_, int... p_190523_14_)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).spawnParticle(p_190523_1_, false, true, p_190523_2_, p_190523_4_, p_190523_6_, p_190523_8_, p_190523_10_, p_190523_12_, p_190523_14_);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).spawnParticle(p_190523_1_, false, true, p_190523_2_, p_190523_4_, p_190523_6_, p_190523_8_, p_190523_10_, p_190523_12_, p_190523_14_);
         }
     }
 
@@ -1347,9 +1327,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     private void spawnParticle(int particleID, boolean ignoreRange, double xCood, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            ((IWorldEventListener)this.eventListeners.get(i)).spawnParticle(particleID, ignoreRange, xCood, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).spawnParticle(particleID, ignoreRange, xCood, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
         }
     }
 
@@ -1450,9 +1429,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void onEntityAdded(Entity entityIn)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            this.eventListeners.get(i).onEntityAdded(entityIn);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            eventListener.onEntityAdded(entityIn);
         }
         entityIn.onAddedToWorld();
         entityIn.valid = true;
@@ -1460,9 +1438,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void onEntityRemoved(Entity entityIn)
     {
-        for (int i = 0; i < this.eventListeners.size(); ++i)
-        {
-            this.eventListeners.get(i).onEntityRemoved(entityIn);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            eventListener.onEntityRemoved(entityIn);
         }
         entityIn.onRemovedFromWorld();
         entityIn.valid = false;
@@ -1561,8 +1538,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                                 {
                                     if (k1 < -30000000 || k1 >= 30000000 || l1 < -30000000 || l1 >= 30000000)
                                     {
-                                        boolean lvt_21_2_ = true;
-                                        return lvt_21_2_;
+                                        return true;
                                     }
                                 }
                                 else if (entityIn != null && flag == flag1)
@@ -1586,8 +1562,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
                                 if (p_191504_3_ && !net.minecraftforge.event.ForgeEventFactory.gatherCollisionBoxes(this, entityIn, aabb, outList))
                                 {
-                                    boolean flag5 = true;
-                                    return flag5;
+                                    return true;
                                 }
                             }
                         }
@@ -1612,23 +1587,17 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         {
             List<Entity> list1 = this.getEntitiesWithinAABBExcludingEntity(entityIn, aabb.grow(0.25D));
 
-            for (int i = 0; i < list1.size(); ++i)
-            {
-                Entity entity = list1.get(i);
-
-                if (!entityIn.isRidingSameEntity(entity))
-                {
+            for (Entity entity : list1) {
+                if (!entityIn.isRidingSameEntity(entity)) {
                     AxisAlignedBB axisalignedbb = entity.getCollisionBoundingBox();
 
-                    if (axisalignedbb != null && axisalignedbb.intersects(aabb))
-                    {
+                    if (axisalignedbb != null && axisalignedbb.intersects(aabb)) {
                         list.add(axisalignedbb);
                     }
 
                     axisalignedbb = entityIn.getCollisionBox(entity);
 
-                    if (axisalignedbb != null && axisalignedbb.intersects(aabb))
-                    {
+                    if (axisalignedbb != null && axisalignedbb.intersects(aabb)) {
                         list.add(axisalignedbb);
                     }
                 }
@@ -1969,21 +1938,17 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         this.loadedEntityList.removeAll(toRemove);
         // Paper end
 
-        for (int k = 0; k < this.unloadedEntityList.size(); ++k)
-        {
-            Entity entity1 = this.unloadedEntityList.get(k);
+        for (Entity entity1 : this.unloadedEntityList) {
             int j = entity1.chunkCoordX;
             int k1 = entity1.chunkCoordZ;
 
-            if (entity1.addedToChunk && this.isChunkLoaded(j, k1, true))
-            {
+            if (entity1.addedToChunk && this.isChunkLoaded(j, k1, true)) {
                 this.getChunkFromChunkCoords(j, k1).removeEntity(entity1);
             }
         }
 
-        for (int l = 0; l < this.unloadedEntityList.size(); ++l)
-        {
-            this.onEntityRemoved(this.unloadedEntityList.get(l));
+        for (Entity entity : this.unloadedEntityList) {
+            this.onEntityRemoved(entity);
         }
 
         this.unloadedEntityList.clear();
@@ -2104,9 +2069,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                     try
                     {
                         this.profiler.func_194340_a(() ->
-                        {
-                            return String.valueOf((Object)TileEntity.getKey(tileentity.getClass()));
-                        });
+                                String.valueOf((Object)TileEntity.getKey(tileentity.getClass())));
                         tileentity.tickTimer.startTiming(); // Spigot
                         net.minecraftforge.server.timings.TimeTracker.TILE_ENTITY_UPDATE.trackStart(tileentity);
                         ((ITickable)tileentity).update();
@@ -2160,12 +2123,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
         if (!this.addedTileEntityList.isEmpty())
         {
-            for (int j1 = 0; j1 < this.addedTileEntityList.size(); ++j1)
-            {
-                TileEntity tileentity1 = this.addedTileEntityList.get(j1);
-
-                if (!tileentity1.isInvalid())
-                {
+            for (TileEntity tileentity1 : this.addedTileEntityList) {
+                if (!tileentity1.isInvalid()) {
                     /* CraftBukkit start - Order matters, moved down
                     if (!this.loadedTileEntityList.contains(tileentity1))
                     {
@@ -2173,8 +2132,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                     }
                     // CraftBukkit end */
 
-                    if (this.isBlockLoaded(tileentity1.getPos()))
-                    {
+                    if (this.isBlockLoaded(tileentity1.getPos())) {
                         Chunk chunk = this.getChunkFromBlockCoords(tileentity1.getPos());
                         IBlockState iblockstate = chunk.getBlockState(tileentity1.getPos());
                         chunk.addTileEntity(tileentity1.getPos(), tileentity1);
@@ -2223,7 +2181,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             this.notifyBlockUpdate(blockpos1, iblockstate1, iblockstate1, 2);
         }
 
-        return flag;
+        return true;
     }
 
     public void addTileEntities(Collection<TileEntity> tileEntityCollection)
@@ -2374,10 +2332,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     {
         List<Entity> list = this.getEntitiesWithinAABBExcludingEntity((Entity)null, bb);
 
-        for (int j2 = 0; j2 < list.size(); ++j2)
-        {
-            Entity entity4 = list.get(j2);
-
+        for (Entity entity4 : list) {
             if (!entity4.isDead && entity4.preventEntitySpawning && entity4 != entityIn && (entityIn == null || !entity4.isRidingSameEntity(entityIn))) // Forge: fix MC-103516
             {
                 return false;
@@ -2537,7 +2492,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
                         if (iblockstate1.getMaterial() == materialIn)
                         {
-                            double d0 = (double)((float)(i4 + 1) - BlockLiquid.getLiquidHeightPercent(((Integer)iblockstate1.getValue(BlockLiquid.LEVEL)).intValue()));
+                            double d0 = (double)((float)(i4 + 1) - BlockLiquid.getLiquidHeightPercent((Integer) iblockstate1.getValue(BlockLiquid.LEVEL)));
 
                             if ((double)i3 >= d0)
                             {
@@ -2716,12 +2671,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     @Nullable
     private TileEntity getPendingTileEntityAt(BlockPos pos)
     {
-        for (int j2 = 0; j2 < this.addedTileEntityList.size(); ++j2)
-        {
-            TileEntity tileentity2 = this.addedTileEntityList.get(j2);
-
-            if (!tileentity2.isInvalid() && tileentity2.getPos().equals(pos))
-            {
+        for (TileEntity tileentity2 : this.addedTileEntityList) {
+            if (!tileentity2.isInvalid() && tileentity2.getPos().equals(pos)) {
                 return tileentity2;
             }
         }
@@ -2963,9 +2914,9 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                 }
 
                 this.rainingStrength = MathHelper.clamp(this.rainingStrength, 0.0F, 1.0F);
-                for (int idx = 0; idx < this.playerEntities.size(); ++idx) {
-                    if (((EntityPlayerMP) this.playerEntities.get(idx)).world == this) {
-                        ((EntityPlayerMP) this.playerEntities.get(idx)).tickWeather();
+                for (EntityPlayer playerEntity : this.playerEntities) {
+                    if (((EntityPlayerMP) playerEntity).world == this) {
+                        ((EntityPlayerMP) playerEntity).tickWeather();
                     }
                 }
             }
@@ -3020,7 +2971,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
                 IBlockState iblockstate1 = this.getBlockState(pos);
                 Block block = iblockstate1.getBlock();
 
-                if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER) && ((Integer)iblockstate1.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER) && (Integer) iblockstate1.getValue(BlockLiquid.LEVEL) == 0)
                 {
                     if (!noWaterAdj)
                     {
@@ -3029,10 +2980,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
                     boolean flag = this.isWater(pos.west()) && this.isWater(pos.east()) && this.isWater(pos.north()) && this.isWater(pos.south());
 
-                    if (!flag)
-                    {
-                        return true;
-                    }
+                    return !flag;
                 }
             }
 
@@ -3069,10 +3017,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             {
                 IBlockState iblockstate1 = this.getBlockState(pos);
 
-                if (iblockstate1.getBlock().isAir(iblockstate1, this, pos) && Blocks.SNOW_LAYER.canPlaceBlockAt(this, pos))
-                {
-                    return true;
-                }
+                return iblockstate1.getBlock().isAir(iblockstate1, this, pos) && Blocks.SNOW_LAYER.canPlaceBlockAt(this, pos);
             }
 
             return false;
@@ -3140,8 +3085,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
                         if (j2 >= 14)
                         {
-                            int i3 = j2;
-                            return i3;
+                            return j2;
                         }
                     }
 
@@ -3406,16 +3350,11 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         T t = null;
         double d0 = Double.MAX_VALUE;
 
-        for (int j2 = 0; j2 < list.size(); ++j2)
-        {
-            T t1 = list.get(j2);
-
-            if (t1 != closestTo && EntitySelectors.NOT_SPECTATING.apply(t1))
-            {
+        for (T t1 : list) {
+            if (t1 != closestTo && EntitySelectors.NOT_SPECTATING.apply(t1)) {
                 double d1 = closestTo.getDistanceSq(t1);
 
-                if (d1 <= d0)
-                {
+                if (d1 <= d0) {
                     t = t1;
                     d0 = d1;
                 }
@@ -3671,22 +3610,17 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         double d0 = -1.0D;
         EntityPlayer entityplayer = null;
 
-        for (int j2 = 0; j2 < this.playerEntities.size(); ++j2)
-        {
-            EntityPlayer entityplayer1 = this.playerEntities.get(j2);
-
+        for (EntityPlayer entityplayer1 : this.playerEntities) {
             // CraftBukkit start - Fixed an NPE
             if (entityplayer1 == null || entityplayer1.isDead) {
                 continue;
             }
             // CraftBukkit end
 
-            if (p_190525_9_.apply(entityplayer1))
-            {
+            if (p_190525_9_.apply(entityplayer1)) {
                 double d1 = entityplayer1.getDistanceSq(x, y, z);
 
-                if ((p_190525_7_ < 0.0D || d1 < p_190525_7_ * p_190525_7_) && (d0 == -1.0D || d1 < d0))
-                {
+                if ((p_190525_7_ < 0.0D || d1 < p_190525_7_ * p_190525_7_) && (d0 == -1.0D || d1 < d0)) {
                     d0 = d1;
                     entityplayer = entityplayer1;
                 }
@@ -3698,16 +3632,11 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public boolean isAnyPlayerWithinRangeAt(double x, double y, double z, double range)
     {
-        for (int j2 = 0; j2 < this.playerEntities.size(); ++j2)
-        {
-            EntityPlayer entityplayer = this.playerEntities.get(j2);
-
-            if (EntitySelectors.NOT_SPECTATING.apply(entityplayer))
-            {
+        for (EntityPlayer entityplayer : this.playerEntities) {
+            if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
                 double d0 = entityplayer.getDistanceSq(x, y, z);
 
-                if (range < 0.0D || d0 < range * range)
-                {
+                if (range < 0.0D || d0 < range * range) {
                     return true;
                 }
             }
@@ -3734,41 +3663,32 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         double d0 = -1.0D;
         EntityPlayer entityplayer = null;
 
-        for (int j2 = 0; j2 < this.playerEntities.size(); ++j2)
-        {
-            EntityPlayer entityplayer1 = this.playerEntities.get(j2);
-
-            if (!entityplayer1.capabilities.disableDamage && entityplayer1.isEntityAlive() && !entityplayer1.isSpectator() && (p_184150_12_ == null || p_184150_12_.apply(entityplayer1)))
-            {
+        for (EntityPlayer entityplayer1 : this.playerEntities) {
+            if (!entityplayer1.capabilities.disableDamage && entityplayer1.isEntityAlive() && !entityplayer1.isSpectator() && (p_184150_12_ == null || p_184150_12_.apply(entityplayer1))) {
                 double d1 = entityplayer1.getDistanceSq(posX, entityplayer1.posY, posZ);
                 double d2 = maxXZDistance;
 
-                if (entityplayer1.isSneaking())
-                {
+                if (entityplayer1.isSneaking()) {
                     d2 = maxXZDistance * 0.800000011920929D;
                 }
 
-                if (entityplayer1.isInvisible())
-                {
+                if (entityplayer1.isInvisible()) {
                     float f = entityplayer1.getArmorVisibility();
 
-                    if (f < 0.1F)
-                    {
+                    if (f < 0.1F) {
                         f = 0.1F;
                     }
 
-                    d2 *= (double)(0.7F * f);
+                    d2 *= (double) (0.7F * f);
                 }
 
-                if (playerToDouble != null)
-                {
-                    d2 *= ((Double)MoreObjects.firstNonNull(playerToDouble.apply(entityplayer1), Double.valueOf(1.0D))).doubleValue();
+                if (playerToDouble != null) {
+                    d2 *= (Double) MoreObjects.firstNonNull(playerToDouble.apply(entityplayer1), 1.0D);
                 }
 
-                d2 = net.minecraftforge.common.ForgeHooks.getPlayerVisibilityDistance(entityplayer1, d2, maxYDistance);
+                d2 = ForgeHooks.getPlayerVisibilityDistance(entityplayer1, d2, maxYDistance);
 
-                if ((maxYDistance < 0.0D || Math.abs(entityplayer1.posY - posY) < maxYDistance * maxYDistance) && (maxXZDistance < 0.0D || d1 < d2 * d2) && (d0 == -1.0D || d1 < d0))
-                {
+                if ((maxYDistance < 0.0D || Math.abs(entityplayer1.posY - posY) < maxYDistance * maxYDistance) && (maxXZDistance < 0.0D || d1 < d2 * d2) && (d0 == -1.0D || d1 < d0)) {
                     d0 = d1;
                     entityplayer = entityplayer1;
                 }
@@ -3781,12 +3701,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     @Nullable
     public EntityPlayer getPlayerEntityByName(String name)
     {
-        for (int j2 = 0; j2 < this.playerEntities.size(); ++j2)
-        {
-            EntityPlayer entityplayer = this.playerEntities.get(j2);
-
-            if (name.equals(entityplayer.getName()))
-            {
+        for (EntityPlayer entityplayer : this.playerEntities) {
+            if (name.equals(entityplayer.getName())) {
                 return entityplayer;
             }
         }
@@ -3797,12 +3713,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     @Nullable
     public EntityPlayer getPlayerEntityByUUID(UUID uuid)
     {
-        for (int j2 = 0; j2 < this.playerEntities.size(); ++j2)
-        {
-            EntityPlayer entityplayer = this.playerEntities.get(j2);
-
-            if (uuid.equals(entityplayer.getUniqueID()))
-            {
+        for (EntityPlayer entityplayer : this.playerEntities) {
+            if (uuid.equals(entityplayer.getUniqueID())) {
                 return entityplayer;
             }
         }
@@ -3996,7 +3908,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             }
             else
             {
-                return this.canSnowAt(position, false) ? false : biome.canRain();
+                return !this.canSnowAt(position, false) && biome.canRain();
             }
         }
     }
@@ -4030,9 +3942,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void playBroadcastSound(int id, BlockPos pos, int data)
     {
-        for (int j2 = 0; j2 < this.eventListeners.size(); ++j2)
-        {
-            ((IWorldEventListener)this.eventListeners.get(j2)).broadcastSound(id, pos, data);
+        for (IWorldEventListener eventListener : this.eventListeners) {
+            ((IWorldEventListener) eventListener).broadcastSound(id, pos, data);
         }
     }
 
@@ -4045,9 +3956,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     {
         try
         {
-            for (int j2 = 0; j2 < this.eventListeners.size(); ++j2)
-            {
-                ((IWorldEventListener)this.eventListeners.get(j2)).playEvent(player, type, pos, data);
+            for (IWorldEventListener eventListener : this.eventListeners) {
+                ((IWorldEventListener) eventListener).playEvent(player, type, pos, data);
             }
         }
         catch (Throwable throwable3)
@@ -4056,8 +3966,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
             CrashReportCategory crashreportcategory3 = crashreport3.makeCategory("Level event being played");
             crashreportcategory3.addCrashSection("Block coordinates", CrashReportCategory.getCoordinateInfo(pos));
             crashreportcategory3.addCrashSection("Event source", player);
-            crashreportcategory3.addCrashSection("Event type", Integer.valueOf(type));
-            crashreportcategory3.addCrashSection("Event data", Integer.valueOf(data));
+            crashreportcategory3.addCrashSection("Event type", type);
+            crashreportcategory3.addCrashSection("Event data", data);
             throw new ReportedException(crashreport3);
         }
     }
@@ -4083,20 +3993,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     {
         CrashReportCategory crashreportcategory3 = report.makeCategoryDepth("Affected level", 1);
         crashreportcategory3.addCrashSection("Level name", this.worldInfo == null ? "????" : this.worldInfo.getWorldName());
-        crashreportcategory3.addDetail("All players", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return World.this.playerEntities.size() + " total; " + World.this.playerEntities;
-            }
-        });
-        crashreportcategory3.addDetail("Chunk stats", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return World.this.chunkProvider.makeString();
-            }
-        });
+        crashreportcategory3.addDetail("All players", () -> World.this.playerEntities.size() + " total; " + World.this.playerEntities);
+        crashreportcategory3.addDetail("Chunk stats", () -> World.this.chunkProvider.makeString());
 
         try
         {
@@ -4118,9 +4016,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
 
     public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress)
     {
-        for (int j2 = 0; j2 < this.eventListeners.size(); ++j2)
-        {
-            IWorldEventListener iworldeventlistener = this.eventListeners.get(j2);
+        for (IWorldEventListener iworldeventlistener : this.eventListeners) {
             iworldeventlistener.sendBlockBreakProgress(breakerId, pos, progress);
         }
     }
@@ -4294,10 +4190,8 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     public int countEntities(net.minecraft.entity.EnumCreatureType type, boolean forSpawnCount)
     {
         int count = 0;
-        for (int x = 0; x < loadedEntityList.size(); x++)
-        {
-            if (((Entity)loadedEntityList.get(x)).isCreatureType(type, forSpawnCount))
-            {
+        for (Entity entity : loadedEntityList) {
+            if (((Entity) entity).isCreatureType(type, forSpawnCount)) {
                 count++;
             }
         }
@@ -4332,7 +4226,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     @Override
     public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capabilities == null ? false : capabilities.hasCapability(capability, facing);
+        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
     @Override
     @Nullable
@@ -4341,7 +4235,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
         return capabilities == null ? null : capabilities.getCapability(capability, facing);
     }
 
-    protected MapStorage perWorldStorage; //Moved to a getter to simulate final without being final so we can load in subclasses.
+    protected final MapStorage perWorldStorage; //Moved to a getter to simulate final without being final so we can load in subclasses.
     public MapStorage getPerWorldStorage()
     {
         return perWorldStorage;

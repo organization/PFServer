@@ -36,9 +36,9 @@ import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 public class CapabilityFluidHandler
 {
     @CapabilityInject(IFluidHandler.class)
-    public static Capability<IFluidHandler> FLUID_HANDLER_CAPABILITY = null;
+    public static final Capability<IFluidHandler> FLUID_HANDLER_CAPABILITY = null;
     @CapabilityInject(IFluidHandlerItem.class)
-    public static Capability<IFluidHandlerItem> FLUID_HANDLER_ITEM_CAPABILITY = null;
+    public static final Capability<IFluidHandlerItem> FLUID_HANDLER_ITEM_CAPABILITY = null;
 
     public static void register()
     {

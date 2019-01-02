@@ -20,33 +20,29 @@ public class GuiScreenAddServer extends GuiScreen
     private GuiTextField serverIPField;
     private GuiTextField serverNameField;
     private GuiButton serverResourcePacks;
-    private final Predicate<String> addressFilter = new Predicate<String>()
-    {
-        public boolean apply(@Nullable String p_apply_1_)
+    private final Predicate<String> addressFilter = p_apply_1_ -> {
+        if (StringUtils.isNullOrEmpty(p_apply_1_))
         {
-            if (StringUtils.isNullOrEmpty(p_apply_1_))
+            return true;
+        }
+        else
+        {
+            String[] astring = p_apply_1_.split(":");
+
+            if (astring.length == 0)
             {
                 return true;
             }
             else
             {
-                String[] astring = p_apply_1_.split(":");
-
-                if (astring.length == 0)
+                try
                 {
+                    String s = IDN.toASCII(astring[0]);
                     return true;
                 }
-                else
+                catch (IllegalArgumentException var4)
                 {
-                    try
-                    {
-                        String s = IDN.toASCII(astring[0]);
-                        return true;
-                    }
-                    catch (IllegalArgumentException var4)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }

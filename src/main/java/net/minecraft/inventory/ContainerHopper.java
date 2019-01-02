@@ -11,7 +11,7 @@ public class ContainerHopper extends Container
     private final IInventory hopperInventory;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerHopper(InventoryPlayer playerInventory, IInventory hopperInventoryIn, EntityPlayer player)
     {

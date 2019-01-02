@@ -34,7 +34,7 @@ public class EntityTracker
     private static final Logger LOGGER = LogManager.getLogger();
     private final WorldServer world;
     private final Set<EntityTrackerEntry> entries = Sets.<EntityTrackerEntry>newHashSet();
-    public final IntHashMap<EntityTrackerEntry> trackedEntityHashTable = new IntHashMap<EntityTrackerEntry>();
+    public final IntHashMap<EntityTrackerEntry> trackedEntityHashTable = new IntHashMap<>();
     private int maxTrackingDistanceThreshold;
 
     public EntityTracker(WorldServer theWorldIn)
@@ -216,19 +216,15 @@ public class EntityTracker
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Adding entity to track");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity To Track");
             crashreportcategory.addCrashSection("Tracking range", trackingRange + " blocks");
-            crashreportcategory.addDetail("Update interval", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
+            crashreportcategory.addDetail("Update interval", () -> {
+                String s = "Once per " + updateFrequency + " ticks";
+
+                if (updateFrequency == Integer.MAX_VALUE)
                 {
-                    String s = "Once per " + updateFrequency + " ticks";
-
-                    if (updateFrequency == Integer.MAX_VALUE)
-                    {
-                        s = "Maximum (" + s + ")";
-                    }
-
-                    return s;
+                    s = "Maximum (" + s + ")";
                 }
+
+                return s;
             });
             entityIn.addEntityCrashInfo(crashreportcategory);
             ((EntityTrackerEntry)this.trackedEntityHashTable.lookup(entityIn.getEntityId())).getTrackedEntity().addEntityCrashInfo(crashreport.makeCategory("Entity That Is Already Tracked"));
@@ -284,14 +280,9 @@ public class EntityTracker
             }
         }
 
-        for (int i = 0; i < list.size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = list.get(i);
-
-            for (EntityTrackerEntry entitytrackerentry1 : this.entries)
-            {
-                if (entitytrackerentry1.getTrackedEntity() != entityplayermp)
-                {
+        for (EntityPlayerMP entityplayermp : list) {
+            for (EntityTrackerEntry entitytrackerentry1 : this.entries) {
+                if (entitytrackerentry1.getTrackedEntity() != entityplayermp) {
                     entitytrackerentry1.updatePlayerEntity(entityplayermp);
                 }
             }

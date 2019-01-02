@@ -120,7 +120,7 @@ public class Loader
     /**
      * The class loader we load the mods into.
      */
-    private ModClassLoader modClassLoader;
+    private final ModClassLoader modClassLoader;
     /**
      * The sorted list of mods.
      */
@@ -804,7 +804,7 @@ public class Loader
 
     public boolean hasReachedState(LoaderState state)
     {
-        return modController != null ? modController.hasReachedState(state) : false;
+        return modController != null && modController.hasReachedState(state);
     }
 
     public String getMCPVersionString()
@@ -921,8 +921,8 @@ public class Loader
         progressBar = null;
     }
 
-    private ListMultimap<String,ArtifactVersion> injectedBefore = ArrayListMultimap.create();
-    private ListMultimap<String,ArtifactVersion> injectedAfter = ArrayListMultimap.create();
+    private final ListMultimap<String,ArtifactVersion> injectedBefore = ArrayListMultimap.create();
+    private final ListMultimap<String,ArtifactVersion> injectedAfter = ArrayListMultimap.create();
 
     private void readInjectedDependencies()
     {

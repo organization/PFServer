@@ -39,7 +39,7 @@ public class BlockFlowerPot extends BlockContainer
     public BlockFlowerPot()
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(CONTENTS, EnumFlowerType.EMPTY).withProperty(LEGACY_DATA, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(CONTENTS, EnumFlowerType.EMPTY).withProperty(LEGACY_DATA, 0));
     }
 
     public String getLocalizedName()
@@ -255,12 +255,12 @@ public class BlockFlowerPot extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {CONTENTS, LEGACY_DATA});
+        return new BlockStateContainer(this, CONTENTS, LEGACY_DATA);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(LEGACY_DATA)).intValue();
+        return (Integer) state.getValue(LEGACY_DATA);
     }
 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
@@ -404,7 +404,7 @@ public class BlockFlowerPot extends BlockContainer
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         if (willHarvest) return true; //If it will harvest, delay deletion of the block until after getDrops
-        return super.removedByPlayer(state, world, pos, player, willHarvest);
+        return super.removedByPlayer(state, world, pos, player, false);
     }
     @Override
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack tool)

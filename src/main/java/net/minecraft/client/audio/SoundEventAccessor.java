@@ -22,7 +22,7 @@ public class SoundEventAccessor implements ISoundEventAccessor<Sound>
     public SoundEventAccessor(ResourceLocation locationIn, @Nullable String subtitleIn)
     {
         this.location = locationIn;
-        this.subtitle = subtitleIn == null ? null : new TextComponentTranslation(subtitleIn, new Object[0]);
+        this.subtitle = subtitleIn == null ? null : new TextComponentTranslation(subtitleIn);
     }
 
     public int getWeight()

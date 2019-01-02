@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelSkeletonHead extends ModelBase
 {
-    public ModelRenderer skeletonHead;
+    public final ModelRenderer skeletonHead;
 
     public ModelSkeletonHead()
     {

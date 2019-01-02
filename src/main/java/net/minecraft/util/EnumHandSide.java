@@ -7,8 +7,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public enum EnumHandSide
 {
-    LEFT(new TextComponentTranslation("options.mainHand.left", new Object[0])),
-    RIGHT(new TextComponentTranslation("options.mainHand.right", new Object[0]));
+    LEFT(new TextComponentTranslation("options.mainHand.left")),
+    RIGHT(new TextComponentTranslation("options.mainHand.right"));
 
     private final ITextComponent handName;
 

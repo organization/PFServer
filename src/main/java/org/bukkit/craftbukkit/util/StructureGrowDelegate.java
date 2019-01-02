@@ -13,7 +13,7 @@ import java.util.List;
 
 public class StructureGrowDelegate implements BlockChangeDelegate {
     private final CraftWorld world;
-    private final List<BlockState> blocks = new ArrayList<BlockState>();
+    private final List<BlockState> blocks = new ArrayList<>();
 
     public StructureGrowDelegate(World world) {
         this.world = world.getWorld();

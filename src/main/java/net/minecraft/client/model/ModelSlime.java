@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelSlime extends ModelBase
 {
-    ModelRenderer slimeBodies;
+    final ModelRenderer slimeBodies;
     ModelRenderer slimeRightEye;
     ModelRenderer slimeLeftEye;
     ModelRenderer slimeMouth;

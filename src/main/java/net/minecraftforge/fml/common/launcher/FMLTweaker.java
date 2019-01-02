@@ -164,7 +164,7 @@ public class FMLTweaker implements ITweaker {
         }
         launchArgs.clear();
 
-        return args.toArray(new String[args.size()]);
+        return args.toArray(new String[0]);
     }
 
     public File getGameDir()

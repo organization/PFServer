@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 public final class CraftChatMessage {
 
-    private static final Pattern LINK_PATTERN = Pattern.compile("((?:(?:https?):\\/\\/)?(?:[-\\w_\\.]{2,}\\.[a-z]{2,4}.*?(?=[\\.\\?!,;:]?(?:[" + String.valueOf(ChatColor.COLOR_CHAR) + " \\n]|$))))");
+    private static final Pattern LINK_PATTERN = Pattern.compile("((?:(?:https?):\\/\\/)?(?:[-\\w_\\.]{2,}\\.[a-z]{2,4}.*?(?=[\\.\\?!,;:]?(?:[" + ChatColor.COLOR_CHAR + " \\n]|$))))");
     private static final Map<Character, TextFormatting> formatMap;
 
     static {
@@ -33,9 +33,9 @@ public final class CraftChatMessage {
     }
 
     private static class StringMessage {
-        private static final Pattern INCREMENTAL_PATTERN = Pattern.compile("(" + String.valueOf(ChatColor.COLOR_CHAR) + "[0-9a-fk-or])|(\\n)|((?:(?:https?):\\/\\/)?(?:[-\\w_\\.]{2,}\\.[a-z]{2,4}.*?(?=[\\.\\?!,;:]?(?:[" + String.valueOf(ChatColor.COLOR_CHAR) + " \\n]|$))))", Pattern.CASE_INSENSITIVE);
+        private static final Pattern INCREMENTAL_PATTERN = Pattern.compile("(" + ChatColor.COLOR_CHAR + "[0-9a-fk-or])|(\\n)|((?:(?:https?):\\/\\/)?(?:[-\\w_\\.]{2,}\\.[a-z]{2,4}.*?(?=[\\.\\?!,;:]?(?:[" + ChatColor.COLOR_CHAR + " \\n]|$))))", Pattern.CASE_INSENSITIVE);
 
-        private final List<ITextComponent> list = new ArrayList<ITextComponent>();
+        private final List<ITextComponent> list = new ArrayList<>();
         private ITextComponent currentChatComponent = new TextComponentString("");
         private Style modifier = new Style();
         private final ITextComponent[] output;
@@ -109,7 +109,7 @@ public final class CraftChatMessage {
                 appendNewComponent(message.length());
             }
 
-            output = list.toArray(new ITextComponent[list.size()]);
+            output = list.toArray(new ITextComponent[0]);
         }
 
         private void appendNewComponent(int index) {
@@ -184,8 +184,8 @@ public final class CraftChatMessage {
 
                 Style modifier = text.getStyle() != null ?
                         text.getStyle() : new Style();
-                List<ITextComponent> extras = new ArrayList<ITextComponent>();
-                List<ITextComponent> extrasOld = new ArrayList<ITextComponent>(text.getSiblings());
+                List<ITextComponent> extras = new ArrayList<>();
+                List<ITextComponent> extrasOld = new ArrayList<>(text.getSiblings());
                 component = text = new TextComponentString("");
 
                 int pos = 0;

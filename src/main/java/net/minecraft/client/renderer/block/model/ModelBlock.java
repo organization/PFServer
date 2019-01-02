@@ -39,7 +39,7 @@ public class ModelBlock
     @VisibleForTesting
     public ModelBlock parent;
     @VisibleForTesting
-    protected ResourceLocation parentLocation;
+    protected final ResourceLocation parentLocation;
 
     public static ModelBlock deserialize(Reader readerIn)
     {
@@ -215,9 +215,8 @@ public class ModelBlock
 
                 throw new LoopException();
             }
-            catch (NullPointerException var5)
+            catch (NullPointerException ignored)
             {
-                ;
             }
         }
     }

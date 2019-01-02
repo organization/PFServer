@@ -51,17 +51,16 @@ public class MapGenStronghold extends MapGenStructure
 
         for (Entry<String, String> entry : p_i2068_1_.entrySet())
         {
-            if (((String)entry.getKey()).equals("distance"))
-            {
-                this.distance = MathHelper.getDouble(entry.getValue(), this.distance, 1.0D);
-            }
-            else if (((String)entry.getKey()).equals("count"))
-            {
-                this.structureCoords = new ChunkPos[MathHelper.getInt(entry.getValue(), this.structureCoords.length, 1)];
-            }
-            else if (((String)entry.getKey()).equals("spread"))
-            {
-                this.spread = MathHelper.getInt(entry.getValue(), this.spread, 1);
+            switch (((String) entry.getKey())) {
+                case "distance":
+                    this.distance = MathHelper.getDouble(entry.getValue(), this.distance, 1.0D);
+                    break;
+                case "count":
+                    this.structureCoords = new ChunkPos[MathHelper.getInt(entry.getValue(), this.structureCoords.length, 1)];
+                    break;
+                case "spread":
+                    this.spread = MathHelper.getInt(entry.getValue(), this.spread, 1);
+                    break;
             }
         }
     }
@@ -126,14 +125,9 @@ public class MapGenStronghold extends MapGenStructure
     {
         this.initializeStructureData(this.world);
         int i = 0;
-        ObjectIterator lvt_2_1_ = this.structureMap.values().iterator();
 
-        while (lvt_2_1_.hasNext())
-        {
-            StructureStart structurestart = (StructureStart)lvt_2_1_.next();
-
-            if (i < this.structureCoords.length)
-            {
+        for (StructureStart structurestart : this.structureMap.values()) {
+            if (i < this.structureCoords.length) {
                 this.structureCoords[i++] = new ChunkPos(structurestart.getChunkPosX(), structurestart.getChunkPosZ());
             }
         }
@@ -186,7 +180,6 @@ public class MapGenStronghold extends MapGenStructure
 
         for (mapgenstronghold$start = new Start(this.world, this.rand, chunkX, chunkZ); mapgenstronghold$start.getComponents().isEmpty() || ((StructureStrongholdPieces.Stairs2)mapgenstronghold$start.getComponents().get(0)).strongholdPortalRoom == null; mapgenstronghold$start = new Start(this.world, this.rand, chunkX, chunkZ))
         {
-            ;
         }
 
         return mapgenstronghold$start;

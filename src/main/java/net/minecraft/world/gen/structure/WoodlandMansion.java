@@ -57,12 +57,8 @@ public class WoodlandMansion extends MapGenStructure
 
         if (chunkX == k && chunkZ == l)
         {
-            boolean flag = this.world.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 32, ALLOWED_BIOMES);
 
-            if (flag)
-            {
-                return true;
-            }
+            return this.world.getBiomeProvider().areBiomesViable(chunkX * 16 + 8, chunkZ * 16 + 8, 32, ALLOWED_BIOMES);
         }
 
         return false;

@@ -39,7 +39,7 @@ public class EntitySelector
     private static final Pattern TOKEN_PATTERN = Pattern.compile("^@([pares])(?:\\[([^ ]*)\\])?$");
     private static final Splitter COMMA_SPLITTER = Splitter.on(',').omitEmptyStrings();
     private static final Splitter EQUAL_SPLITTER = Splitter.on('=').limit(2);
-    private static final Set<String> VALID_ARGUMENTS = Sets.<String>newHashSet();
+    private static final Set<String> VALID_ARGUMENTS = Sets.newHashSet();
     private static final String ARGUMENT_RANGE_MAX = addArgument("r");
     private static final String ARGUMENT_RANGE_MIN = addArgument("rm");
     private static final String ARGUMENT_LEVEL_MAX = addArgument("l");
@@ -60,13 +60,7 @@ public class EntitySelector
     private static final String ARGUMENT_PLAYER_NAME = addArgument("name");
     private static final String ARGUMENT_ENTITY_TYPE = addArgument("type");
     private static final String ARGUMENT_ENTITY_TAG = addArgument("tag");
-    private static final Predicate<String> IS_VALID_ARGUMENT = new Predicate<String>()
-    {
-        public boolean apply(@Nullable String p_apply_1_)
-        {
-            return p_apply_1_ != null && (EntitySelector.VALID_ARGUMENTS.contains(p_apply_1_) || p_apply_1_.length() > "score_".length() && p_apply_1_.startsWith("score_"));
-        }
-    };
+    private static final Predicate<String> IS_VALID_ARGUMENT = p_apply_1_ -> p_apply_1_ != null && (EntitySelector.VALID_ARGUMENTS.contains(p_apply_1_) || p_apply_1_.length() > "score_".length() && p_apply_1_.startsWith("score_"));
     private static final Set<String> WORLD_BINDING_ARGS = Sets.newHashSet(ARGUMENT_COORDINATE_X, ARGUMENT_COORDINATE_Y, ARGUMENT_COORDINATE_Z, ARGUMENT_DELTA_X, ARGUMENT_DELTA_Y, ARGUMENT_DELTA_Z, ARGUMENT_RANGE_MIN, ARGUMENT_RANGE_MAX);
 
     public static String addArgument(String argument)
@@ -78,7 +72,7 @@ public class EntitySelector
     @Nullable
     public static EntityPlayerMP matchOnePlayer(ICommandSender sender, String token) throws CommandException
     {
-        return (EntityPlayerMP)matchOneEntity(sender, token, EntityPlayerMP.class);
+        return matchOneEntity(sender, token, EntityPlayerMP.class);
     }
 
     public static List<EntityPlayerMP> getPlayers(ICommandSender sender, String token) throws CommandException
@@ -90,7 +84,7 @@ public class EntitySelector
     public static <T extends Entity> T matchOneEntity(ICommandSender sender, String token, Class <? extends T > targetClass) throws CommandException
     {
         List<T> list = matchEntities(sender, token, targetClass);
-        return (T)(list.size() == 1 ? (Entity)list.get(0) : null);
+        return (list.size() == 1 ? list.get(0) : null);
     }
 
     @Nullable
@@ -104,7 +98,7 @@ public class EntitySelector
         }
         else
         {
-            List<ITextComponent> list1 = Lists.<ITextComponent>newArrayList();
+            List<ITextComponent> list1 = Lists.newArrayList();
 
             for (Entity entity : list)
             {
@@ -130,7 +124,7 @@ public class EntitySelector
 
             if (!isEntityTypeValid(sender, map))
             {
-                return Collections.<T>emptyList();
+                return Collections.emptyList();
             }
             else
             {
@@ -138,13 +132,13 @@ public class EntitySelector
                 BlockPos blockpos = getBlockPosFromArguments(map, sender.getPosition());
                 Vec3d vec3d = getPosFromArguments(map, sender.getPositionVector());
                 List<World> list = getWorlds(sender, map);
-                List<T> list1 = Lists.<T>newArrayList();
+                List<T> list1 = Lists.newArrayList();
 
                 for (World world : list)
                 {
                     if (world != null)
                     {
-                        List<Predicate<Entity>> list2 = Lists.<Predicate<Entity>>newArrayList();
+                        List<Predicate<Entity>> list2 = Lists.newArrayList();
                         list2.addAll(getTypePredicates(map, s));
                         list2.addAll(getXpLevelPredicates(map));
                         list2.addAll(getGamemodePredicates(map));
@@ -171,7 +165,7 @@ public class EntitySelector
 
                                     if (!axisalignedbb.intersects(entity.getEntityBoundingBox()))
                                     {
-                                        return Collections.<T>emptyList();
+                                        return Collections.emptyList();
                                     }
                                 }
 
@@ -179,14 +173,14 @@ public class EntitySelector
                                 {
                                     if (!predicate.apply(entity))
                                     {
-                                        return Collections.<T>emptyList();
+                                        return Collections.emptyList();
                                     }
                                 }
 
                                 return Lists.newArrayList((T)entity);
                             }
 
-                            return Collections.<T>emptyList();
+                            return Collections.emptyList();
                         }
 
                         list1.addAll(filterResults(map, targetClass, list2, s, world, blockpos));
@@ -198,13 +192,13 @@ public class EntitySelector
         }
         else
         {
-            return Collections.<T>emptyList();
+            return Collections.emptyList();
         }
     }
 
     private static List<World> getWorlds(ICommandSender sender, Map<String, String> argumentMap)
     {
-        List<World> list = Lists.<World>newArrayList();
+        List<World> list = Lists.newArrayList();
 
         if (hasArgument(argumentMap))
         {
@@ -236,7 +230,7 @@ public class EntitySelector
             }
             else
             {
-                TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.generic.entity.invalidType", new Object[] {resourcelocation});
+                TextComponentTranslation textcomponenttranslation = new TextComponentTranslation("commands.generic.entity.invalidType", resourcelocation);
                 textcomponenttranslation.getStyle().setColor(TextFormatting.RED);
                 commandSender.sendMessage(textcomponenttranslation);
                 return false;
@@ -250,49 +244,33 @@ public class EntitySelector
 
         if (s == null || !type.equals("e") && !type.equals("r") && !type.equals("s"))
         {
-            return !type.equals("e") && !type.equals("s") ? Collections.singletonList(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
-                {
-                    return p_apply_1_ instanceof EntityPlayer;
-                }
-            }) : Collections.emptyList();
+            return !type.equals("e") && !type.equals("s") ? Collections.singletonList((Predicate<Entity>) p_apply_1_ -> p_apply_1_ instanceof EntityPlayer) : Collections.emptyList();
         }
         else
         {
             final boolean flag = s.startsWith("!");
             final ResourceLocation resourcelocation = new ResourceLocation(flag ? s.substring(1) : s);
-            return Collections.singletonList(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
-                {
-                    return EntityList.isMatchingName(p_apply_1_, resourcelocation) != flag;
-                }
-            });
+            return Collections.singletonList(p_apply_1_ -> EntityList.isMatchingName(p_apply_1_, resourcelocation) != flag);
         }
     }
 
     private static List<Predicate<Entity>> getXpLevelPredicates(Map<String, String> params)
     {
-        List<Predicate<Entity>> list = Lists.<Predicate<Entity>>newArrayList();
+        List<Predicate<Entity>> list = Lists.newArrayList();
         final int i = getInt(params, ARGUMENT_LEVEL_MIN, -1);
         final int j = getInt(params, ARGUMENT_LEVEL_MAX, -1);
 
         if (i > -1 || j > -1)
         {
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            list.add(p_apply_1_ -> {
+                if (!(p_apply_1_ instanceof EntityPlayerMP))
                 {
-                    if (!(p_apply_1_ instanceof EntityPlayerMP))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        EntityPlayerMP entityplayermp = (EntityPlayerMP)p_apply_1_;
-                        return (i <= -1 || entityplayermp.experienceLevel >= i) && (j <= -1 || entityplayermp.experienceLevel <= j);
-                    }
+                    return false;
+                }
+                else
+                {
+                    EntityPlayerMP entityplayermp = (EntityPlayerMP)p_apply_1_;
+                    return (i <= -1 || entityplayermp.experienceLevel >= i) && (j <= -1 || entityplayermp.experienceLevel <= j);
                 }
             });
         }
@@ -302,7 +280,7 @@ public class EntitySelector
 
     private static List<Predicate<Entity>> getGamemodePredicates(Map<String, String> params)
     {
-        List<Predicate<Entity>> list = Lists.<Predicate<Entity>>newArrayList();
+        List<Predicate<Entity>> list = Lists.newArrayList();
         String s = getArgument(params, ARGUMENT_MODE);
 
         if (s == null)
@@ -331,20 +309,16 @@ public class EntitySelector
             }
 
             final GameType type = gametype;
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            list.add(p_apply_1_ -> {
+                if (!(p_apply_1_ instanceof EntityPlayerMP))
                 {
-                    if (!(p_apply_1_ instanceof EntityPlayerMP))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        EntityPlayerMP entityplayermp = (EntityPlayerMP)p_apply_1_;
-                        GameType gametype1 = entityplayermp.interactionManager.getGameType();
-                        return flag ? gametype1 != type : gametype1 == type;
-                    }
+                    return false;
+                }
+                else
+                {
+                    EntityPlayerMP entityplayermp = (EntityPlayerMP)p_apply_1_;
+                    GameType gametype1 = entityplayermp.interactionManager.getGameType();
+                    return flag == (gametype1 != type);
                 }
             });
             return list;
@@ -353,7 +327,7 @@ public class EntitySelector
 
     private static List<Predicate<Entity>> getTeamPredicates(Map<String, String> params)
     {
-        List<Predicate<Entity>> list = Lists.<Predicate<Entity>>newArrayList();
+        List<Predicate<Entity>> list = Lists.newArrayList();
         String s = getArgument(params, ARGUMENT_TEAM_NAME);
         final boolean flag = s != null && s.startsWith("!");
 
@@ -365,21 +339,17 @@ public class EntitySelector
         if (s != null)
         {
             final String s_f_ = s;
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            list.add(p_apply_1_ -> {
+                if (!(p_apply_1_ instanceof EntityLivingBase))
                 {
-                    if (!(p_apply_1_ instanceof EntityLivingBase))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        EntityLivingBase entitylivingbase = (EntityLivingBase)p_apply_1_;
-                        Team team = entitylivingbase.getTeam();
-                        String s1 = team == null ? "" : team.getName();
-                        return s1.equals(s_f_) != flag;
-                    }
+                    return false;
+                }
+                else
+                {
+                    EntityLivingBase entitylivingbase = (EntityLivingBase)p_apply_1_;
+                    Team team = entitylivingbase.getTeam();
+                    String s1 = team == null ? "" : team.getName();
+                    return s1.equals(s_f_) != flag;
                 }
             });
         }
@@ -390,66 +360,62 @@ public class EntitySelector
     private static List<Predicate<Entity>> getScorePredicates(final ICommandSender sender, Map<String, String> params)
     {
         final Map<String, Integer> map = getScoreMap(params);
-        return (List<Predicate<Entity>>)(map.isEmpty() ? Collections.emptyList() : Lists.newArrayList(new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity p_apply_1_)
+        return (map.isEmpty() ? Collections.emptyList() : Lists.newArrayList(p_apply_1_ -> {
+            if (p_apply_1_ == null)
             {
-                if (p_apply_1_ == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    Scoreboard scoreboard = sender.getServer().getWorld(0).getScoreboard();
+                return false;
+            }
+            else
+            {
+                Scoreboard scoreboard = sender.getServer().getWorld(0).getScoreboard();
 
-                    for (Entry<String, Integer> entry : map.entrySet())
+                for (Entry<String, Integer> entry : map.entrySet())
+                {
+                    String s = entry.getKey();
+                    boolean flag = false;
+
+                    if (s.endsWith("_min") && s.length() > 4)
                     {
-                        String s = entry.getKey();
-                        boolean flag = false;
-
-                        if (s.endsWith("_min") && s.length() > 4)
-                        {
-                            flag = true;
-                            s = s.substring(0, s.length() - 4);
-                        }
-
-                        ScoreObjective scoreobjective = scoreboard.getObjective(s);
-
-                        if (scoreobjective == null)
-                        {
-                            return false;
-                        }
-
-                        String s1 = p_apply_1_ instanceof EntityPlayerMP ? p_apply_1_.getName() : p_apply_1_.getCachedUniqueIdString();
-
-                        if (!scoreboard.entityHasObjective(s1, scoreobjective))
-                        {
-                            return false;
-                        }
-
-                        Score score = scoreboard.getOrCreateScore(s1, scoreobjective);
-                        int i = score.getScorePoints();
-
-                        if (i < ((Integer)entry.getValue()).intValue() && flag)
-                        {
-                            return false;
-                        }
-
-                        if (i > ((Integer)entry.getValue()).intValue() && !flag)
-                        {
-                            return false;
-                        }
+                        flag = true;
+                        s = s.substring(0, s.length() - 4);
                     }
 
-                    return true;
+                    ScoreObjective scoreobjective = scoreboard.getObjective(s);
+
+                    if (scoreobjective == null)
+                    {
+                        return false;
+                    }
+
+                    String s1 = p_apply_1_ instanceof EntityPlayerMP ? p_apply_1_.getName() : p_apply_1_.getCachedUniqueIdString();
+
+                    if (!scoreboard.entityHasObjective(s1, scoreobjective))
+                    {
+                        return false;
+                    }
+
+                    Score score = scoreboard.getOrCreateScore(s1, scoreobjective);
+                    int i = score.getScorePoints();
+
+                    if (i < entry.getValue() && flag)
+                    {
+                        return false;
+                    }
+
+                    if (i > entry.getValue() && !flag)
+                    {
+                        return false;
+                    }
                 }
+
+                return true;
             }
         }));
     }
 
     private static List<Predicate<Entity>> getNamePredicates(Map<String, String> params)
     {
-        List<Predicate<Entity>> list = Lists.<Predicate<Entity>>newArrayList();
+        List<Predicate<Entity>> list = Lists.newArrayList();
         String s = getArgument(params, ARGUMENT_PLAYER_NAME);
         final boolean flag = s != null && s.startsWith("!");
 
@@ -461,13 +427,7 @@ public class EntitySelector
         if (s != null)
         {
             final String s_f_ = s;
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
-                {
-                    return p_apply_1_ != null && p_apply_1_.getName().equals(s_f_) != flag;
-                }
-            });
+            list.add(p_apply_1_ -> p_apply_1_ != null && p_apply_1_.getName().equals(s_f_) != flag);
         }
 
         return list;
@@ -475,7 +435,7 @@ public class EntitySelector
 
     private static List<Predicate<Entity>> getTagPredicates(Map<String, String> params)
     {
-        List<Predicate<Entity>> list = Lists.<Predicate<Entity>>newArrayList();
+        List<Predicate<Entity>> list = Lists.newArrayList();
         String s = getArgument(params, ARGUMENT_ENTITY_TAG);
         final boolean flag = s != null && s.startsWith("!");
 
@@ -487,22 +447,18 @@ public class EntitySelector
         if (s != null)
         {
             final String s_f_ = s;
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            list.add(p_apply_1_ -> {
+                if (p_apply_1_ == null)
                 {
-                    if (p_apply_1_ == null)
-                    {
-                        return false;
-                    }
-                    else if ("".equals(s_f_))
-                    {
-                        return p_apply_1_.getTags().isEmpty() != flag;
-                    }
-                    else
-                    {
-                        return p_apply_1_.getTags().contains(s_f_) != flag;
-                    }
+                    return false;
+                }
+                else if ("".equals(s_f_))
+                {
+                    return p_apply_1_.getTags().isEmpty() != flag;
+                }
+                else
+                {
+                    return p_apply_1_.getTags().contains(s_f_) != flag;
                 }
             });
         }
@@ -519,7 +475,7 @@ public class EntitySelector
 
         if (flag && flag1)
         {
-            return Collections.<Predicate<Entity>>emptyList();
+            return Collections.emptyList();
         }
         else
         {
@@ -527,19 +483,15 @@ public class EntitySelector
             final double d3 = d2 * d2;
             double d4 = Math.max(d1, 1.0E-4D);
             final double d5 = d4 * d4;
-            return Lists.newArrayList(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            return Lists.newArrayList((Predicate<Entity>) p_apply_1_ -> {
+                if (p_apply_1_ == null)
                 {
-                    if (p_apply_1_ == null)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        double d6 = pos.squareDistanceTo(p_apply_1_.posX, p_apply_1_.posY, p_apply_1_.posZ);
-                        return (flag || d6 >= d3) && (flag1 || d6 <= d5);
-                    }
+                    return false;
+                }
+                else
+                {
+                    double d6 = pos.squareDistanceTo(p_apply_1_.posX, p_apply_1_.posY, p_apply_1_.posZ);
+                    return (flag || d6 >= d3) && (flag1 || d6 <= d5);
                 }
             });
         }
@@ -547,32 +499,28 @@ public class EntitySelector
 
     private static List<Predicate<Entity>> getRotationsPredicates(Map<String, String> params)
     {
-        List<Predicate<Entity>> list = Lists.<Predicate<Entity>>newArrayList();
+        List<Predicate<Entity>> list = Lists.newArrayList();
 
         if (params.containsKey(ARGUMENT_ROTY_MIN) || params.containsKey(ARGUMENT_ROTY_MAX))
         {
             final int i = MathHelper.wrapDegrees(getInt(params, ARGUMENT_ROTY_MIN, 0));
             final int j = MathHelper.wrapDegrees(getInt(params, ARGUMENT_ROTY_MAX, 359));
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            list.add(p_apply_1_ -> {
+                if (p_apply_1_ == null)
                 {
-                    if (p_apply_1_ == null)
+                    return false;
+                }
+                else
+                {
+                    int i1 = MathHelper.wrapDegrees(MathHelper.floor(p_apply_1_.rotationYaw));
+
+                    if (i > j)
                     {
-                        return false;
+                        return i1 >= i || i1 <= j;
                     }
                     else
                     {
-                        int i1 = MathHelper.wrapDegrees(MathHelper.floor(p_apply_1_.rotationYaw));
-
-                        if (i > j)
-                        {
-                            return i1 >= i || i1 <= j;
-                        }
-                        else
-                        {
-                            return i1 >= i && i1 <= j;
-                        }
+                        return i1 >= i && i1 <= j;
                     }
                 }
             });
@@ -582,26 +530,22 @@ public class EntitySelector
         {
             final int k = MathHelper.wrapDegrees(getInt(params, ARGUMENT_ROTX_MIN, 0));
             final int l = MathHelper.wrapDegrees(getInt(params, ARGUMENT_ROTX_MAX, 359));
-            list.add(new Predicate<Entity>()
-            {
-                public boolean apply(@Nullable Entity p_apply_1_)
+            list.add(p_apply_1_ -> {
+                if (p_apply_1_ == null)
                 {
-                    if (p_apply_1_ == null)
+                    return false;
+                }
+                else
+                {
+                    int i1 = MathHelper.wrapDegrees(MathHelper.floor(p_apply_1_.rotationPitch));
+
+                    if (k > l)
                     {
-                        return false;
+                        return i1 >= k || i1 <= l;
                     }
                     else
                     {
-                        int i1 = MathHelper.wrapDegrees(MathHelper.floor(p_apply_1_.rotationPitch));
-
-                        if (k > l)
-                        {
-                            return i1 >= k || i1 <= l;
-                        }
-                        else
-                        {
-                            return i1 >= k && i1 <= l;
-                        }
+                        return i1 >= k && i1 <= l;
                     }
                 }
             });
@@ -612,7 +556,7 @@ public class EntitySelector
 
     private static <T extends Entity> List<T> filterResults(Map<String, String> params, Class <? extends T > entityClass, List<Predicate<Entity>> inputList, String type, World worldIn, BlockPos position)
     {
-        List<T> list = Lists.<T>newArrayList();
+        List<T> list = Lists.newArrayList();
         String s = getArgument(params, ARGUMENT_ENTITY_TYPE);
         s = s != null && s.startsWith("!") ? s.substring(1) : s;
         boolean flag = !type.equals("e");
@@ -622,7 +566,7 @@ public class EntitySelector
         int k = getInt(params, ARGUMENT_DELTA_Z, 0);
         int l = getInt(params, ARGUMENT_RANGE_MAX, -1);
         Predicate<Entity> predicate = Predicates.and(inputList);
-        Predicate<Entity> predicate1 = Predicates.<Entity>and(EntitySelectors.IS_ALIVE, predicate);
+        Predicate<Entity> predicate1 = Predicates.and(EntitySelectors.IS_ALIVE, predicate);
 
         if (!params.containsKey(ARGUMENT_DELTA_X) && !params.containsKey(ARGUMENT_DELTA_Y) && !params.containsKey(ARGUMENT_DELTA_Z))
         {
@@ -658,13 +602,7 @@ public class EntitySelector
 
             if (flag && !flag1)
             {
-                Predicate<Entity> predicate2 = new Predicate<Entity>()
-                {
-                    public boolean apply(@Nullable Entity p_apply_1_)
-                    {
-                        return p_apply_1_ != null && axisalignedbb.intersects(p_apply_1_.getEntityBoundingBox());
-                    }
-                };
+                Predicate<Entity> predicate2 = p_apply_1_ -> p_apply_1_ != null && axisalignedbb.intersects(p_apply_1_.getEntityBoundingBox());
                 list.addAll(worldIn.getPlayers(entityClass, Predicates.and(predicate1, predicate2)));
             }
             else
@@ -689,13 +627,7 @@ public class EntitySelector
         }
         else
         {
-            Collections.sort(matchingEntities, new Comparator<Entity>()
-            {
-                public int compare(Entity p_compare_1_, Entity p_compare_2_)
-                {
-                    return ComparisonChain.start().compare(p_compare_1_.getDistanceSq(pos.x, pos.y, pos.z), p_compare_2_.getDistanceSq(pos.x, pos.y, pos.z)).result();
-                }
-            });
+            matchingEntities.sort((Comparator<Entity>) (p_compare_1_, p_compare_2_) -> ComparisonChain.start().compare(p_compare_1_.getDistanceSq(pos.x, pos.y, pos.z), p_compare_2_.getDistanceSq(pos.x, pos.y, pos.z)).result());
         }
 
         Entity entity = sender.getCommandSenderEntity();
@@ -773,13 +705,13 @@ public class EntitySelector
 
     public static Map<String, Integer> getScoreMap(Map<String, String> params)
     {
-        Map<String, Integer> map = Maps.<String, Integer>newHashMap();
+        Map<String, Integer> map = Maps.newHashMap();
 
         for (String s : params.keySet())
         {
             if (s.startsWith("score_") && s.length() > "score_".length())
             {
-                map.put(s.substring("score_".length()), Integer.valueOf(MathHelper.getInt(params.get(s), 1)));
+                map.put(s.substring("score_".length()), MathHelper.getInt(params.get(s), 1));
             }
         }
 
@@ -820,7 +752,7 @@ public class EntitySelector
 
     private static Map<String, String> getArgumentMap(@Nullable String argumentString) throws CommandException
     {
-        Map<String, String> map = Maps.<String, String>newHashMap();
+        Map<String, String> map = Maps.newHashMap();
 
         if (argumentString == null)
         {
@@ -835,10 +767,10 @@ public class EntitySelector
 
                 if (!IS_VALID_ARGUMENT.apply(s1))
                 {
-                    throw new CommandException("commands.generic.selector_argument", new Object[] {s});
+                    throw new CommandException("commands.generic.selector_argument", s);
                 }
 
-                map.put(s1, iterator.hasNext() ? (String)iterator.next() : "");
+                map.put(s1, iterator.hasNext() ? iterator.next() : "");
             }
 
             return map;

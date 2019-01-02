@@ -45,8 +45,7 @@ public abstract class FMLHandshakeMessage {
     public static FMLProxyPacket makeCustomChannelRegistration(Set<String> channels)
     {
         String salutation = Joiner.on('\0').join(Iterables.concat(Arrays.asList("FML|HS","FML", "FML|MP"),channels));
-        FMLProxyPacket proxy = new FMLProxyPacket(new PacketBuffer(Unpooled.wrappedBuffer(salutation.getBytes(StandardCharsets.UTF_8))), "REGISTER");
-        return proxy;
+        return new FMLProxyPacket(new PacketBuffer(Unpooled.wrappedBuffer(salutation.getBytes(StandardCharsets.UTF_8))), "REGISTER");
     }
     public static class ServerHello extends FMLHandshakeMessage {
         private byte serverProtocolVersion;
@@ -123,7 +122,7 @@ public abstract class FMLHandshakeMessage {
                 modTags.put(mod.getModId(), mod.getVersion());
             }
         }
-        private Map<String,String> modTags = Maps.newHashMap();
+        private final Map<String,String> modTags = Maps.newHashMap();
 
         @Override
         public void toBytes(ByteBuf buffer)
@@ -245,7 +244,7 @@ public abstract class FMLHandshakeMessage {
             for (Entry<ResourceLocation, String> entry: overrides.entrySet())
             {
                 ByteBufUtils.writeUTF8String(buffer, entry.getKey().toString());
-                ByteBufUtils.writeUTF8String(buffer, entry.getValue().toString());
+                ByteBufUtils.writeUTF8String(buffer, entry.getValue());
             }
         }
 

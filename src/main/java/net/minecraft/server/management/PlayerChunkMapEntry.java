@@ -29,13 +29,9 @@ public class PlayerChunkMapEntry
     private int changedSectionFilter;
     private long lastUpdateInhabitedTime;
     private boolean sentToPlayers;
-    private Runnable loadedRunnable = new Runnable()
-    {
-        public void run()
-        {
-            PlayerChunkMapEntry.this.chunk = PlayerChunkMapEntry.this.playerChunkMap.getWorldServer().getChunkProvider().loadChunk(PlayerChunkMapEntry.this.pos.x, PlayerChunkMapEntry.this.pos.z);
-            PlayerChunkMapEntry.this.loading = false;
-        }
+    private final Runnable loadedRunnable = () -> {
+        PlayerChunkMapEntry.this.chunk = PlayerChunkMapEntry.this.playerChunkMap.getWorldServer().getChunkProvider().loadChunk(PlayerChunkMapEntry.this.pos.x, PlayerChunkMapEntry.this.pos.z);
+        PlayerChunkMapEntry.this.loading = false;
     };
     private boolean loading = true;
 
@@ -55,7 +51,7 @@ public class PlayerChunkMapEntry
     {
         if (this.players.contains(player))
         {
-            LOGGER.debug("Failed to add player. {} already is in chunk {}, {}", player, Integer.valueOf(this.pos.x), Integer.valueOf(this.pos.z));
+            LOGGER.debug("Failed to add player. {} already is in chunk {}, {}", player, this.pos.x, this.pos.z);
         }
         else
         {
@@ -219,9 +215,8 @@ public class PlayerChunkMapEntry
     {
         if (this.sentToPlayers)
         {
-            for (int i = 0; i < this.players.size(); ++i)
-            {
-                (this.players.get(i)).connection.sendPacket(packetIn);
+            for (EntityPlayerMP player : this.players) {
+                player.connection.sendPacket(packetIn);
             }
         }
     }

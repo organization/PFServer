@@ -35,7 +35,7 @@ import java.util.jar.Manifest;
  */
 final class PluginClassLoader extends URLClassLoader {
     private final JavaPluginLoader loader;
-    private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
+    private final Map<String, Class<?>> classes = new HashMap<>();
     private final PluginDescriptionFile description;
     private final File dataFolder;
     private final File file;
@@ -99,8 +99,7 @@ final class PluginClassLoader extends URLClassLoader {
     Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
         if (name.startsWith("net.minecraft.server." + PFServer.getNativeVersion())) {
             String remappedClass = jarMapping.classes.get(name.replaceAll("\\.", "\\/"));
-            Class<?> clazz = ((net.minecraft.launchwrapper.LaunchClassLoader)MinecraftServer.getServerInst().getClass().getClassLoader()).findClass(remappedClass);
-            return clazz;
+            return ((net.minecraft.launchwrapper.LaunchClassLoader)MinecraftServer.getServerInst().getClass().getClassLoader()).findClass(remappedClass);
         }
 
         if (name.startsWith("org.bukkit.")) {

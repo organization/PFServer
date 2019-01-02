@@ -25,7 +25,7 @@ public class InventoryMerchant implements IInventory
     private MerchantRecipe currentRecipe;
     public int currentRecipeIndex;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
 
     public List<ItemStack> getContents() {

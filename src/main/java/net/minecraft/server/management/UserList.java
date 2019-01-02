@@ -102,7 +102,7 @@ public class UserList<K, V extends UserListEntry<K>>
 
     public String[] getKeys()
     {
-        return (String[])this.values.keySet().toArray(new String[this.values.size()]);
+        return (String[])this.values.keySet().toArray(new String[0]);
     }
 
     protected String getObjectKey(K obj)
@@ -135,7 +135,7 @@ public class UserList<K, V extends UserListEntry<K>>
 
     protected UserListEntry<K> createEntry(JsonObject entryData)
     {
-        return new UserListEntry<K>(null, entryData);
+        return new UserListEntry<>(null, entryData);
     }
 
     protected Map<String, V> getValues()

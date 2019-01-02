@@ -14,7 +14,7 @@ import java.io.File;
 public class CreativeSettings
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    protected Minecraft minecraft;
+    protected final Minecraft minecraft;
     private final File dataFile;
     private final HotbarSnapshot[] hotbarSnapshots = new HotbarSnapshot[9];
 

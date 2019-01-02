@@ -44,7 +44,7 @@ public class DragonFightManager
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Predicate<EntityPlayerMP> VALID_PLAYER = Predicates.<EntityPlayerMP>and(EntitySelectors.IS_ALIVE, EntitySelectors.withinRange(0.0D, 128.0D, 0.0D, 192.0D));
-    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentTranslation("entity.EnderDragon.name", new Object[0]), BossInfo.Color.PINK, BossInfo.Overlay.PROGRESS)).setPlayEndBossMusic(true).setCreateFog(true);
+    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(new TextComponentTranslation("entity.EnderDragon.name"), BossInfo.Color.PINK, BossInfo.Overlay.PROGRESS)).setPlayEndBossMusic(true).setCreateFog(true);
     private final WorldServer world;
     private final List<Integer> gateways = Lists.<Integer>newArrayList();
     private final BlockPattern portalPattern;
@@ -98,12 +98,12 @@ public class DragonFightManager
 
             for (int i = 0; i < nbttaglist.tagCount(); ++i)
             {
-                this.gateways.add(Integer.valueOf(nbttaglist.getIntAt(i)));
+                this.gateways.add(nbttaglist.getIntAt(i));
             }
         }
         else
         {
-            this.gateways.addAll(ContiguousSet.create(Range.closedOpen(Integer.valueOf(0), Integer.valueOf(20)), DiscreteDomain.integers()));
+            this.gateways.addAll(ContiguousSet.create(Range.closedOpen(0, 20), DiscreteDomain.integers()));
             Collections.shuffle(this.gateways, new Random(worldIn.getSeed()));
         }
 
@@ -129,11 +129,9 @@ public class DragonFightManager
         }
 
         NBTTagList nbttaglist = new NBTTagList();
-        Iterator iterator = this.gateways.iterator();
 
-        while (iterator.hasNext())
-        {
-            int i = ((Integer)iterator.next()).intValue();
+        for (Integer gateway : this.gateways) {
+            int i = gateway;
             nbttaglist.appendTag(new NBTTagInt(i));
         }
 
@@ -406,7 +404,7 @@ public class DragonFightManager
     {
         if (!this.gateways.isEmpty())
         {
-            int i = ((Integer)this.gateways.remove(this.gateways.size() - 1)).intValue();
+            int i = (Integer) this.gateways.remove(this.gateways.size() - 1);
             int j = (int)(96.0D * Math.cos(2.0D * (-Math.PI + 0.15707963267948966D * (double)i)));
             int k = (int)(96.0D * Math.sin(2.0D * (-Math.PI + 0.15707963267948966D * (double)i)));
             this.generateGateway(new BlockPos(j, 75, k));
@@ -427,7 +425,6 @@ public class DragonFightManager
         {
             for (this.exitPortalLocation = this.world.getTopSolidOrLiquidBlock(WorldGenEndPodium.END_PODIUM_LOCATION).down(); this.world.getBlockState(this.exitPortalLocation).getBlock() == Blocks.BEDROCK && this.exitPortalLocation.getY() > this.world.getSeaLevel(); this.exitPortalLocation = this.exitPortalLocation.down())
             {
-                ;
             }
         }
 

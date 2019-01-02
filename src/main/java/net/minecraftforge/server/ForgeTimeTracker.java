@@ -55,7 +55,7 @@ public class ForgeTimeTracker {
     @Deprecated
     public static long tileEntityTrackingTime;
 
-    private Map<TileEntity,int[]> tileEntityTimings;
+    private final Map<TileEntity,int[]> tileEntityTimings;
     private WeakReference<TileEntity> tile;
 
     private static final ForgeTimeTracker INSTANCE = new ForgeTimeTracker();
@@ -89,7 +89,7 @@ public class ForgeTimeTracker {
 
             return;
         }
-        tile = new WeakReference<TileEntity>(tileEntity);
+        tile = new WeakReference<>(tileEntity);
         timing = nanoTime;
     }
 

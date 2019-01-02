@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderMinecart<T extends EntityMinecart> extends Render<T>
 {
     private static final ResourceLocation MINECART_TEXTURES = new ResourceLocation("textures/entity/minecart.png");
-    protected ModelBase modelMinecart = new ModelMinecart();
+    protected final ModelBase modelMinecart = new ModelMinecart();
 
     public RenderMinecart(RenderManager renderManagerIn)
     {

@@ -26,7 +26,7 @@ public class BlockStainedGlassPane extends BlockPane
     public BlockStainedGlassPane()
     {
         super(Material.GLASS, false);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(COLOR, EnumDyeColor.WHITE));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE).withProperty(COLOR, EnumDyeColor.WHITE));
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
 
@@ -94,7 +94,7 @@ public class BlockStainedGlassPane extends BlockPane
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, WEST, SOUTH, COLOR});
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH, COLOR);
     }
 
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)

@@ -29,7 +29,7 @@ public class CommandFunction extends CommandBase
     {
         if (args.length != 1 && args.length != 3)
         {
-            throw new WrongUsageException("commands.function.usage", new Object[0]);
+            throw new WrongUsageException("commands.function.usage");
         }
         else
         {
@@ -38,7 +38,7 @@ public class CommandFunction extends CommandBase
 
             if (functionobject == null)
             {
-                throw new CommandException("commands.function.unknown", new Object[] {resourcelocation});
+                throw new CommandException("commands.function.unknown", resourcelocation);
             }
             else
             {
@@ -55,7 +55,7 @@ public class CommandFunction extends CommandBase
                     {
                         if (!"unless".equals(s))
                         {
-                            throw new WrongUsageException("commands.function.usage", new Object[0]);
+                            throw new WrongUsageException("commands.function.usage");
                         }
 
                         flag = false;
@@ -67,19 +67,18 @@ public class CommandFunction extends CommandBase
                     {
                         flag1 = !getEntityList(server, sender, args[2]).isEmpty();
                     }
-                    catch (EntityNotFoundException var10)
+                    catch (EntityNotFoundException ignored)
                     {
-                        ;
                     }
 
                     if (flag != flag1)
                     {
-                        throw new CommandException("commands.function.skipped", new Object[] {resourcelocation});
+                        throw new CommandException("commands.function.skipped", resourcelocation);
                     }
                 }
 
                 int i = server.getFunctionManager().execute(functionobject, CommandSenderWrapper.create(sender).computePositionVector().withPermissionLevel(2).withSendCommandFeedback(false));
-                notifyCommandListener(sender, this, "commands.function.success", new Object[] {resourcelocation, i});
+                notifyCommandListener(sender, this, "commands.function.success", resourcelocation, i);
             }
         }
     }
@@ -92,7 +91,7 @@ public class CommandFunction extends CommandBase
         }
         else if (args.length == 2)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"if", "unless"});
+            return getListOfStringsMatchingLastWord(args, "if", "unless");
         }
         else
         {

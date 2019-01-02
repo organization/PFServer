@@ -33,7 +33,7 @@ public abstract class AbstractChestHorse extends AbstractHorse
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_ID_CHEST, Boolean.valueOf(false));
+        this.dataManager.register(DATA_ID_CHEST, Boolean.FALSE);
     }
 
     protected void applyEntityAttributes()
@@ -46,12 +46,12 @@ public abstract class AbstractChestHorse extends AbstractHorse
 
     public boolean hasChest()
     {
-        return ((Boolean)this.dataManager.get(DATA_ID_CHEST)).booleanValue();
+        return (Boolean) this.dataManager.get(DATA_ID_CHEST);
     }
 
     public void setChested(boolean chested)
     {
-        this.dataManager.set(DATA_ID_CHEST, Boolean.valueOf(chested));
+        this.dataManager.set(DATA_ID_CHEST, chested);
     }
 
     protected int getInventorySize()
@@ -90,7 +90,7 @@ public abstract class AbstractChestHorse extends AbstractHorse
     public static void registerFixesAbstractChestHorse(DataFixer fixer, Class<?> entityClass)
     {
         AbstractHorse.registerFixesAbstractHorse(fixer, entityClass);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(entityClass, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(entityClass, "Items"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

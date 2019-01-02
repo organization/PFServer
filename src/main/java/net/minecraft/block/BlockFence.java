@@ -44,7 +44,7 @@ public class BlockFence extends Block
     public BlockFence(Material materialIn, MapColor mapColorIn)
     {
         super(materialIn, mapColorIn);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
 
@@ -57,22 +57,22 @@ public class BlockFence extends Block
 
         addCollisionBoxToList(pos, entityBox, collidingBoxes, PILLAR_AABB);
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if ((Boolean) state.getValue(NORTH))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if ((Boolean) state.getValue(EAST))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if ((Boolean) state.getValue(SOUTH))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if ((Boolean) state.getValue(WEST))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
         }
@@ -88,22 +88,22 @@ public class BlockFence extends Block
     {
         int i = 0;
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if ((Boolean) state.getValue(NORTH))
         {
             i |= 1 << EnumFacing.NORTH.getHorizontalIndex();
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if ((Boolean) state.getValue(EAST))
         {
             i |= 1 << EnumFacing.EAST.getHorizontalIndex();
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if ((Boolean) state.getValue(SOUTH))
         {
             i |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if ((Boolean) state.getValue(WEST))
         {
             i |= 1 << EnumFacing.WEST.getHorizontalIndex();
         }
@@ -202,7 +202,7 @@ public class BlockFence extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, WEST, SOUTH});
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 
     /* ======================================== FORGE START ======================================== */

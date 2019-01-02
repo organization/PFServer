@@ -78,6 +78,6 @@ public class SystemToast implements IToast
     public static enum Type
     {
         TUTORIAL_HINT,
-        NARRATOR_TOGGLE;
+        NARRATOR_TOGGLE
     }
 }

@@ -41,8 +41,8 @@ public class ModSortingException extends EnhancedRuntimeException implements IDi
             this.visitedNodes = visitedNodes;
         }
 
-        private T firstBadNode;
-        private Set<T> visitedNodes;
+        private final T firstBadNode;
+        private final Set<T> visitedNodes;
 
         public T getFirstBadNode()
         {
@@ -54,12 +54,12 @@ public class ModSortingException extends EnhancedRuntimeException implements IDi
         }
     }
 
-    private SortingExceptionData<?> sortingExceptionData;
+    private final SortingExceptionData<?> sortingExceptionData;
 
     public <T> ModSortingException(String string, T node, Set<T> visitedNodes)
     {
         super(string);
-        this.sortingExceptionData = new SortingExceptionData<T>(node, visitedNodes);
+        this.sortingExceptionData = new SortingExceptionData<>(node, visitedNodes);
     }
 
     @SuppressWarnings("unchecked")

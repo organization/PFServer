@@ -26,7 +26,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
 
         if (s.length() > 1)
         {
-            String s1 = s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
+            String s1 = s.substring(0, 1).toUpperCase() + s.substring(1);
             this.setUnlocalizedName("glazedTerracotta" + s1);
         }
 
@@ -35,7 +35,7 @@ public class BlockGlazedTerracotta extends BlockHorizontal
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     public IBlockState withRotation(IBlockState state, Rotation rot)

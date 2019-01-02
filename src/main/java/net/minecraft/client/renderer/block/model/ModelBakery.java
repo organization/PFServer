@@ -32,6 +32,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @SideOnly(Side.CLIENT)
 public class ModelBakery
@@ -51,7 +52,7 @@ public class ModelBakery
     protected final BlockModelShapes blockModelShapes;
     private final FaceBakery faceBakery = new FaceBakery();
     private final ItemModelGenerator itemModelGenerator = new ItemModelGenerator();
-    protected final RegistrySimple<ModelResourceLocation, IBakedModel> bakedRegistry = new RegistrySimple<ModelResourceLocation, IBakedModel>();
+    protected final RegistrySimple<ModelResourceLocation, IBakedModel> bakedRegistry = new RegistrySimple<>();
     private static final String EMPTY_MODEL_RAW = "{    'elements': [        {   'from': [0, 0, 0],            'to': [16, 16, 16],            'faces': {                'down': {'uv': [0, 0, 16, 16], 'texture': '' }            }        }    ]}".replaceAll("'", "\"");
     protected static final ModelBlock MODEL_GENERATED = ModelBlock.deserialize(EMPTY_MODEL_RAW);
     protected static final ModelBlock MODEL_ENTITY = ModelBlock.deserialize(EMPTY_MODEL_RAW);
@@ -117,13 +118,7 @@ public class ModelBakery
                             collection1 = Lists.<ModelResourceLocation>newArrayList();
                         }
 
-                        collection1.addAll(Lists.newArrayList(Iterables.filter(collection, new Predicate<ModelResourceLocation>()
-                        {
-                            public boolean apply(@Nullable ModelResourceLocation p_apply_1_)
-                            {
-                                return resourcelocation.equals(p_apply_1_);
-                            }
-                        })));
+                        collection1.addAll(Lists.newArrayList(collection.stream().filter(resourcelocation::equals).collect(Collectors.toList())));
                         registerMultipartVariant(modelblockdefinition, collection1);
                     }
 
@@ -322,8 +317,7 @@ public class ModelBakery
 
                 lvt_5_2_ = ModelBlock.deserialize(reader);
                 lvt_5_2_.name = location.toString();
-                ModelBlock modelblock1 = lvt_5_2_;
-                return modelblock1;
+                return lvt_5_2_;
             }
 
             lvt_5_2_ = MODEL_GENERATED;
@@ -600,13 +594,7 @@ public class ModelBakery
     {
         Set<ResourceLocation> set = Sets.<ResourceLocation>newHashSet();
         List<ModelResourceLocation> list = Lists.newArrayList(this.variants.keySet());
-        Collections.sort(list, new Comparator<ModelResourceLocation>()
-        {
-            public int compare(ModelResourceLocation p_compare_1_, ModelResourceLocation p_compare_2_)
-            {
-                return p_compare_1_.toString().compareTo(p_compare_2_.toString());
-            }
-        });
+        list.sort(Comparator.comparing(ModelResourceLocation::toString));
 
         for (ModelResourceLocation modelresourcelocation : list)
         {
@@ -808,15 +796,11 @@ public class ModelBakery
         final Set<ResourceLocation> set = this.getVariantsTextureLocations();
         set.addAll(this.getItemsTextureLocations());
         set.remove(TextureMap.LOCATION_MISSING_TEXTURE);
-        ITextureMapPopulator itexturemappopulator = new ITextureMapPopulator()
-        {
-            public void registerSprites(TextureMap textureMapIn)
+        ITextureMapPopulator itexturemappopulator = textureMapIn -> {
+            for (ResourceLocation resourcelocation : set)
             {
-                for (ResourceLocation resourcelocation : set)
-                {
-                    TextureAtlasSprite textureatlassprite = textureMapIn.registerSprite(resourcelocation);
-                    ModelBakery.this.sprites.put(resourcelocation, textureatlassprite);
-                }
+                TextureAtlasSprite textureatlassprite = textureMapIn.registerSprite(resourcelocation);
+                ModelBakery.this.sprites.put(resourcelocation, textureatlassprite);
             }
         };
         this.textureMap.loadSprites(this.resourceManager, itexturemappopulator);
@@ -933,7 +917,7 @@ public class ModelBakery
         this.multipartVariantMap.put(definition, locations);
     }
 
-    private static Map<net.minecraftforge.registries.IRegistryDelegate<Item>, Set<String>> customVariantNames = Maps.newHashMap();
+    private static final Map<net.minecraftforge.registries.IRegistryDelegate<Item>, Set<String>> customVariantNames = Maps.newHashMap();
 
     public static void registerItemVariants(Item item, ResourceLocation... names)
     {

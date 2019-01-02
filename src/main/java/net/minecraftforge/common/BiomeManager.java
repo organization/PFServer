@@ -37,10 +37,10 @@ public class BiomeManager
 {
     private static TrackedList<BiomeEntry>[] biomes = setupBiomes();
 
-    public static List<Biome> oceanBiomes = new ArrayList<Biome>();
+    public static final List<Biome> oceanBiomes = new ArrayList<>();
 
-    public static ArrayList<Biome> strongHoldBiomes = new ArrayList<Biome>();
-    public static ArrayList<Biome> strongHoldBiomesBlackList = new ArrayList<Biome>();
+    public static final ArrayList<Biome> strongHoldBiomes = new ArrayList<>();
+    public static final ArrayList<Biome> strongHoldBiomesBlackList = new ArrayList<>();
 
     static
     {
@@ -53,7 +53,7 @@ public class BiomeManager
     {
         @SuppressWarnings("unchecked")
         TrackedList<BiomeEntry>[] currentBiomes = new TrackedList[BiomeType.values().length];
-        List<BiomeEntry> list = new ArrayList<BiomeEntry>();
+        List<BiomeEntry> list = new ArrayList<>();
 
         list.add(new BiomeEntry(Biomes.FOREST, 10));
         list.add(new BiomeEntry(Biomes.ROOFED_FOREST, 10));
@@ -62,7 +62,7 @@ public class BiomeManager
         list.add(new BiomeEntry(Biomes.BIRCH_FOREST, 10));
         list.add(new BiomeEntry(Biomes.SWAMPLAND, 10));
 
-        currentBiomes[BiomeType.WARM.ordinal()] = new TrackedList<BiomeEntry>(list);
+        currentBiomes[BiomeType.WARM.ordinal()] = new TrackedList<>(list);
         list.clear();
 
         list.add(new BiomeEntry(Biomes.FOREST, 10));
@@ -70,16 +70,16 @@ public class BiomeManager
         list.add(new BiomeEntry(Biomes.TAIGA, 10));
         list.add(new BiomeEntry(Biomes.PLAINS, 10));
 
-        currentBiomes[BiomeType.COOL.ordinal()] = new TrackedList<BiomeEntry>(list);
+        currentBiomes[BiomeType.COOL.ordinal()] = new TrackedList<>(list);
         list.clear();
 
         list.add(new BiomeEntry(Biomes.ICE_PLAINS, 30));
         list.add(new BiomeEntry(Biomes.COLD_TAIGA, 10));
 
-        currentBiomes[BiomeType.ICY.ordinal()] = new TrackedList<BiomeEntry>(list);
+        currentBiomes[BiomeType.ICY.ordinal()] = new TrackedList<>(list);
         list.clear();
 
-        currentBiomes[BiomeType.DESERT.ordinal()] = new TrackedList<BiomeEntry>(list);
+        currentBiomes[BiomeType.DESERT.ordinal()] = new TrackedList<>(list);
 
         return currentBiomes;
     }
@@ -88,7 +88,7 @@ public class BiomeManager
     {
         if (!MapGenVillage.VILLAGE_SPAWN_BIOMES.contains(biome))
         {
-            ArrayList<Biome> biomes = new ArrayList<Biome>(MapGenVillage.VILLAGE_SPAWN_BIOMES);
+            ArrayList<Biome> biomes = new ArrayList<>(MapGenVillage.VILLAGE_SPAWN_BIOMES);
             biomes.add(biome);
             MapGenVillage.VILLAGE_SPAWN_BIOMES = biomes;
         }
@@ -98,7 +98,7 @@ public class BiomeManager
     {
         if (MapGenVillage.VILLAGE_SPAWN_BIOMES.contains(biome))
         {
-            ArrayList<Biome> biomes = new ArrayList<Biome>(MapGenVillage.VILLAGE_SPAWN_BIOMES);
+            ArrayList<Biome> biomes = new ArrayList<>(MapGenVillage.VILLAGE_SPAWN_BIOMES);
             biomes.remove(biome);
             MapGenVillage.VILLAGE_SPAWN_BIOMES = biomes;
         }
@@ -130,10 +130,7 @@ public class BiomeManager
 
     public static void removeSpawnBiome(Biome biome)
     {
-        if (BiomeProvider.allowedBiomes.contains(biome))
-        {
-            BiomeProvider.allowedBiomes.remove(biome);
-        }
+        BiomeProvider.allowedBiomes.remove(biome);
     }
 
     public static void addBiome(BiomeType type, BiomeEntry entry)
@@ -148,7 +145,7 @@ public class BiomeManager
         int idx = type.ordinal();
         List<BiomeEntry> list = idx > biomes.length ? null : biomes[idx];
 
-        if (list != null && list.contains(entry))
+        if (list != null)
         {
             list.remove(entry);
         }
@@ -186,7 +183,7 @@ public class BiomeManager
                 if (t.name().equals(name)) return t;
             }
 
-            BiomeType ret = EnumHelper.addEnum(BiomeType.class, name, new Class[0], new Object[0]);
+            BiomeType ret = EnumHelper.addEnum(BiomeType.class, name, new Class[0]);
 
             if (ret.ordinal() >= biomes.length)
             {

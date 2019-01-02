@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MonsterEggs extends TexturedMaterial {
 
-    private static final List<Material> textures = new ArrayList<Material>();
+    private static final List<Material> textures = new ArrayList<>();
     static {
         textures.add(Material.STONE);
         textures.add(Material.COBBLESTONE);

@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class HandshakeInjector extends ChannelOutboundHandlerAdapter {
 
-    private NetworkDispatcher dispatcher;
+    private final NetworkDispatcher dispatcher;
     public HandshakeInjector(NetworkDispatcher networkDispatcher)
     {
         this.dispatcher = networkDispatcher;

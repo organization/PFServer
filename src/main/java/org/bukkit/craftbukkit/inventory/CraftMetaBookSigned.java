@@ -102,8 +102,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
 
     @Override
     public CraftMetaBookSigned clone() {
-        CraftMetaBookSigned meta = (CraftMetaBookSigned) super.clone();
-        return meta;
+        return (CraftMetaBookSigned) super.clone();
     }
 
     @Override

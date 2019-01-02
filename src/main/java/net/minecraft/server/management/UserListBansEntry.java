@@ -47,7 +47,7 @@ public class UserListBansEntry extends UserListEntryBan<GameProfile>
             {
                 uuid = UUID.fromString(s);
             }
-            catch (Throwable var4)
+            catch (Throwable ignored)
             {
             }
         }

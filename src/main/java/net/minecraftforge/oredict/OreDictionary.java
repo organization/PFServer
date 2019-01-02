@@ -44,11 +44,11 @@ public class OreDictionary
 {
     private static final boolean DEBUG = false;
     private static boolean hasInit = false;
-    private static List<String>          idToName = new ArrayList<String>();
-    private static Map<String, Integer>  nameToId = new HashMap<String, Integer>(128);
-    private static List<NonNullList<ItemStack>> idToStack = Lists.newArrayList();
-    private static List<NonNullList<ItemStack>> idToStackUn = Lists.newArrayList();
-    private static Map<Integer, List<Integer>> stackToId = Maps.newHashMapWithExpectedSize((int)(128 * 0.75));
+    private static final List<String>          idToName = new ArrayList<>();
+    private static final Map<String, Integer>  nameToId = new HashMap<>(128);
+    private static final List<NonNullList<ItemStack>> idToStack = Lists.newArrayList();
+    private static final List<NonNullList<ItemStack>> idToStackUn = Lists.newArrayList();
+    private static final Map<Integer, List<Integer>> stackToId = Maps.newHashMapWithExpectedSize((int)(128 * 0.75));
     public static final NonNullList<ItemStack> EMPTY_LIST = NonNullList.create();
 
     /**
@@ -219,7 +219,7 @@ public class OreDictionary
         }
 
         // Build our list of items to replace with ore tags
-        Map<ItemStack, String> replacements = new HashMap<ItemStack, String>();
+        Map<ItemStack, String> replacements = new HashMap<>();
 
         // wood-related things
         replacements.put(new ItemStack(Items.STICK), "stickWood");
@@ -319,7 +319,7 @@ public class OreDictionary
         }
         hasInit = true;
 
-        ItemStack[] replaceStacks = replacements.keySet().toArray(new ItemStack[replacements.keySet().size()]);
+        ItemStack[] replaceStacks = replacements.keySet().toArray(new ItemStack[0]);
 
         // Ignore recipes for the following items
         ItemStack[] exclusions = new ItemStack[]
@@ -480,7 +480,7 @@ public class OreDictionary
     {
         if (stack.isEmpty()) throw new IllegalArgumentException("Stack can not be invalid!");
 
-        Set<Integer> set = new HashSet<Integer>();
+        Set<Integer> set = new HashSet<>();
 
         // HACK: use the registry name's ID. It is unique and it knows about substitutions. Fallback to a -1 value (what Item.getIDForItem would have returned) in the case where the registry is not aware of the item yet
         // IT should be noted that -1 will fail the gate further down, if an entry already exists with value -1 for this name. This is what is broken and being warned about.
@@ -501,7 +501,7 @@ public class OreDictionary
         ids = stackToId.get(id | ((stack.getItemDamage() + 1) << 16));
         if (ids != null) set.addAll(ids);
 
-        Integer[] tmp = set.toArray(new Integer[set.size()]);
+        Integer[] tmp = set.toArray(new Integer[0]);
         int[] ret = new int[tmp.length];
         for (int x = 0; x < tmp.length; x++)
             ret[x] = tmp[x];
@@ -568,7 +568,7 @@ public class OreDictionary
      */
     public static String[] getOreNames()
     {
-        return idToName.toArray(new String[idToName.size()]);
+        return idToName.toArray(new String[0]);
     }
 
     /**

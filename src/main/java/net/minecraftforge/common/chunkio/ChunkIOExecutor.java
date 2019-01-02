@@ -41,10 +41,10 @@ public class ChunkIOExecutor
 
     private static final Map<QueuedChunk, ChunkIOProvider> tasks = Maps.newConcurrentMap();
     private static final ThreadPoolExecutor pool = new ChunkIOThreadPoolExecutor(BASE_THREADS, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<Runnable>(),
+            new LinkedBlockingQueue<>(),
             new ThreadFactory()
             {
-             private AtomicInteger count = new AtomicInteger(1);
+             private final AtomicInteger count = new AtomicInteger(1);
              @Override
              public Thread newThread(Runnable r)
             {

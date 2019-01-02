@@ -15,6 +15,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public final class CraftScoreboard implements org.bukkit.scoreboard.Scoreboard {
     final Scoreboard board;
@@ -54,13 +55,7 @@ public final class CraftScoreboard implements org.bukkit.scoreboard.Scoreboard {
     }
 
     public ImmutableSet<Objective> getObjectives() {
-        return ImmutableSet.copyOf(Iterables.transform((Collection<ScoreObjective>) this.board.getScoreObjectives(), new Function<ScoreObjective, Objective>() {
-
-            @Override
-            public Objective apply(ScoreObjective input) {
-                return new CraftObjective(CraftScoreboard.this, input);
-            }
-        }));
+        return ImmutableSet.copyOf(this.board.getScoreObjectives().stream().map(input -> new CraftObjective(CraftScoreboard.this, input)).collect(Collectors.toList()));
     }
 
     public Objective getObjective(DisplaySlot slot) throws IllegalArgumentException {
@@ -124,13 +119,7 @@ public final class CraftScoreboard implements org.bukkit.scoreboard.Scoreboard {
     }
 
     public ImmutableSet<Team> getTeams() {
-        return ImmutableSet.copyOf(Iterables.transform((Collection<ScorePlayerTeam>) this.board.getTeams(), new Function<ScorePlayerTeam, Team>() {
-
-            @Override
-            public Team apply(ScorePlayerTeam input) {
-                return new CraftTeam(CraftScoreboard.this, input);
-            }
-        }));
+        return ImmutableSet.copyOf(this.board.getTeams().stream().map(input -> new CraftTeam(CraftScoreboard.this, input)).collect(Collectors.toList()));
     }
 
     public Team registerNewTeam(String name) throws IllegalArgumentException {

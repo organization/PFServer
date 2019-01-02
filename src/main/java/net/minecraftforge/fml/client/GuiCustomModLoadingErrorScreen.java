@@ -21,7 +21,7 @@ package net.minecraftforge.fml.client;
 
 public class GuiCustomModLoadingErrorScreen extends GuiErrorBase
 {
-    private CustomModLoadingErrorDisplayException customException;
+    private final CustomModLoadingErrorDisplayException customException;
     public GuiCustomModLoadingErrorScreen(CustomModLoadingErrorDisplayException customException)
     {
         this.customException = customException;

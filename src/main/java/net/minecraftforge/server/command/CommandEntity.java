@@ -123,8 +123,7 @@ class CommandEntity extends CommandTreeBase
                 if (info == null)
                     throw new WrongUsageException("commands.forge.entity.list.none");
                 sender.sendMessage(TextComponentHelper.createComponentTranslation(sender, "commands.forge.entity.list.single.header", name, info.getLeft()));
-                List<Map.Entry<ChunkPos, Integer>> toSort = new ArrayList<>();
-                toSort.addAll(info.getRight().entrySet());
+                List<Map.Entry<ChunkPos, Integer>> toSort = new ArrayList<>(info.getRight().entrySet());
                 toSort.sort((a, b) -> {
                     if (Objects.equals(a.getValue(), b.getValue()))
                     {

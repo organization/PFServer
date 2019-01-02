@@ -31,22 +31,22 @@ public class DebugRendererNeighborsUpdate implements DebugRenderer.IDebugRendere
 
     public void addUpdate(long worldTime, BlockPos pos)
     {
-        Map<BlockPos, Integer> map = (Map)this.lastUpdate.get(Long.valueOf(worldTime));
+        Map<BlockPos, Integer> map = (Map)this.lastUpdate.get(worldTime);
 
         if (map == null)
         {
             map = Maps.<BlockPos, Integer>newHashMap();
-            this.lastUpdate.put(Long.valueOf(worldTime), map);
+            this.lastUpdate.put(worldTime, map);
         }
 
         Integer integer = map.get(pos);
 
         if (integer == null)
         {
-            integer = Integer.valueOf(0);
+            integer = 0;
         }
 
-        map.put(pos, Integer.valueOf(integer.intValue() + 1));
+        map.put(pos, integer + 1);
     }
 
     public void render(float partialTicks, long finishTimeNano)
@@ -73,7 +73,7 @@ public class DebugRendererNeighborsUpdate implements DebugRenderer.IDebugRendere
             Entry<Long, Map<BlockPos, Integer>> entry = (Entry)iterator.next();
             Long olong = entry.getKey();
             Map<BlockPos, Integer> map1 = (Map)entry.getValue();
-            long k = i - olong.longValue();
+            long k = i - olong;
 
             if (k > 200L)
             {

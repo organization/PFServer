@@ -256,7 +256,7 @@ public class ParticleFirework
                     int j = aint[0];
                     float f = (float)((j & 16711680) >> 16) / 255.0F;
                     float f1 = (float)((j & 65280) >> 8) / 255.0F;
-                    float f2 = (float)((j & 255) >> 0) / 255.0F;
+                    float f2 = (float)((j & 255)) / 255.0F;
                     Overlay particlefirework$overlay = new Overlay(this.world, this.posX, this.posY, this.posZ);
                     particlefirework$overlay.setRBGColorF(f, f1, f2);
                     this.manager.addEffect(particlefirework$overlay);

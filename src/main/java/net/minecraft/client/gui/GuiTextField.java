@@ -20,7 +20,7 @@ public class GuiTextField extends Gui
     public int x;
     public int y;
     public int width;
-    public int height;
+    public final int height;
     private String text = "";
     private int maxStringLength = 32;
     private int cursorCounter;

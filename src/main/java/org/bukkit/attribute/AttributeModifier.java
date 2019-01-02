@@ -71,7 +71,7 @@ public class AttributeModifier implements ConfigurationSerializable {
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put("uuid", uuid.toString());
         data.put("name", name);
         data.put("operation", operation.ordinal());
@@ -99,6 +99,6 @@ public class AttributeModifier implements ConfigurationSerializable {
         /**
          * Multiply amount by this value, after adding 1 to it.
          */
-        MULTIPLY_SCALAR_1;
+        MULTIPLY_SCALAR_1
     }
 }

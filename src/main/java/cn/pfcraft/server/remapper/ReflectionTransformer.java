@@ -129,13 +129,13 @@ public class ReflectionTransformer {
 
         Type returnType = Type.getReturnType(method.desc);
 
-        ArrayList<Type> args = new ArrayList<Type>();
+        ArrayList<Type> args = new ArrayList<>();
         args.add(Type.getObjectType(method.owner));
         args.addAll(Arrays.asList(Type.getArgumentTypes(method.desc)));
 
         method.setOpcode(Opcodes.INVOKESTATIC);
         method.owner = DESC_ReflectionMethods;
-        method.desc = Type.getMethodDescriptor(returnType, args.toArray(new Type[args.size()]));
+        method.desc = Type.getMethodDescriptor(returnType, args.toArray(new Type[0]));
     }
 
     public static void remapURLClassLoader(MethodInsnNode method) {

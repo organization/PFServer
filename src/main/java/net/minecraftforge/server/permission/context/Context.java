@@ -73,7 +73,7 @@ public class Context implements IContext
 
         if(map == null)
         {
-            map = new HashMap<ContextKey<?>, Object>();
+            map = new HashMap<>();
         }
 
         map.put(key, obj);

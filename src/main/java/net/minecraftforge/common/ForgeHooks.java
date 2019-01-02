@@ -141,7 +141,7 @@ public class ForgeHooks
             return seed.copy();
         }
     }
-    static final List<SeedEntry> seedList = new ArrayList<SeedEntry>();
+    static final List<SeedEntry> seedList = new ArrayList<>();
 
     @Nonnull
     public static ItemStack getGrassSeed(Random rand, int fortune)
@@ -1034,7 +1034,7 @@ public class ForgeHooks
         return ret;
     }
 
-    private static ThreadLocal<EntityPlayer> craftingPlayer = new ThreadLocal<EntityPlayer>();
+    private static final ThreadLocal<EntityPlayer> craftingPlayer = new ThreadLocal<>();
     public static void setCraftingPlayer(EntityPlayer player)
     {
         craftingPlayer.set(player);
@@ -1173,7 +1173,7 @@ public class ForgeHooks
         MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.LeftClickEmpty(player));
     }
 
-    private static ThreadLocal<Deque<LootTableContext>> lootContext = new ThreadLocal<Deque<LootTableContext>>();
+    private static final ThreadLocal<Deque<LootTableContext>> lootContext = new ThreadLocal<>();
     private static LootTableContext getLootTableContext()
     {
         LootTableContext ctx = lootContext.get().peek();
@@ -1223,7 +1223,7 @@ public class ForgeHooks
         public final boolean custom;
         public int poolCount = 0;
         public int entryCount = 0;
-        private HashSet<String> entryNames = Sets.newHashSet();
+        private final HashSet<String> entryNames = Sets.newHashSet();
 
         private LootTableContext(ResourceLocation name, boolean custom)
         {
@@ -1425,9 +1425,9 @@ public class ForgeHooks
         {
             IForgeRegistry<IRecipe> vanilla = RegistryManager.VANILLA.getRegistry(IRecipe.class);
             if (recipes.size() > 0)
-                recipes = recipes.stream().filter(e -> vanilla.containsValue(e)).collect(Collectors.toList());
+                recipes = recipes.stream().filter(vanilla::containsValue).collect(Collectors.toList());
             if (display.size() > 0)
-                display = display.stream().filter(e -> vanilla.containsValue(e)).collect(Collectors.toList());
+                display = display.stream().filter(vanilla::containsValue).collect(Collectors.toList());
         }
 
         if (recipes.size() > 0 || display.size() > 0)

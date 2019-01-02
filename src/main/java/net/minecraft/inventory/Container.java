@@ -39,7 +39,7 @@ public abstract class Container
     private int dragMode = -1;
     private int dragEvent;
     private final Set<Slot> dragSlots = Sets.<Slot>newHashSet();
-    protected List<IContainerListener> listeners = Lists.<IContainerListener>newArrayList();
+    protected final List<IContainerListener> listeners = Lists.<IContainerListener>newArrayList();
     private final Set<EntityPlayer> playerList = Sets.<EntityPlayer>newHashSet();
     private int tickCount; // Spigot
 
@@ -146,9 +146,8 @@ public abstract class Container
     {
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>create();
 
-        for (int i = 0; i < this.inventorySlots.size(); ++i)
-        {
-            nonnulllist.add(((Slot)this.inventorySlots.get(i)).getStack());
+        for (Slot inventorySlot : this.inventorySlots) {
+            nonnulllist.add(((Slot) inventorySlot).getStack());
         }
 
         return nonnulllist;
@@ -174,10 +173,9 @@ public abstract class Container
                 this.inventoryItemStacks.set(i, itemstack1);
 
                 if (clientStackChanged)
-                for (int j = 0; j < this.listeners.size(); ++j)
-                {
-                    ((IContainerListener)this.listeners.get(j)).sendSlotContents(this, i, itemstack1);
-                }
+                    for (IContainerListener listener : this.listeners) {
+                        ((IContainerListener) listener).sendSlotContents(this, i, itemstack1);
+                    }
             }
         }
         tickCount++; // Spigot
@@ -191,12 +189,8 @@ public abstract class Container
     @Nullable
     public Slot getSlotFromInventory(IInventory inv, int slotIn)
     {
-        for (int i = 0; i < this.inventorySlots.size(); ++i)
-        {
-            Slot slot = this.inventorySlots.get(i);
-
-            if (slot.isHere(inv, slotIn))
-            {
+        for (Slot slot : this.inventorySlots) {
+            if (slot.isHere(inv, slotIn)) {
                 return slot;
             }
         }
@@ -292,7 +286,7 @@ public abstract class Container
                     InventoryView view = getBukkitView();
                     org.bukkit.inventory.ItemStack newcursor = CraftItemStack.asCraftMirror(itemstack9);
                     newcursor.setAmount(k1);
-                    Map<Integer, org.bukkit.inventory.ItemStack> eventmap = new HashMap<Integer, org.bukkit.inventory.ItemStack>();
+                    Map<Integer, org.bukkit.inventory.ItemStack> eventmap = new HashMap<>();
                     for (Map.Entry<Integer, ItemStack> ditem : draggedSlots.entrySet()) {
                         eventmap.put(ditem.getKey(), CraftItemStack.asBukkitCopy(ditem.getValue()));
                     }

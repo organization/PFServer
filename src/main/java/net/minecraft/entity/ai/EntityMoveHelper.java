@@ -189,6 +189,6 @@ public class EntityMoveHelper
         WAIT,
         MOVE_TO,
         STRAFE,
-        JUMPING;
+        JUMPING
     }
 }

@@ -25,9 +25,9 @@ import org.objectweb.asm.Opcodes;
 
 public class ModMethodVisitor extends MethodVisitor {
 
-    private String methodName;
-    private String methodDescriptor;
-    private ASMModParser discoverer;
+    private final String methodName;
+    private final String methodDescriptor;
+    private final ASMModParser discoverer;
 
     public ModMethodVisitor(String name, String desc, ASMModParser discoverer)
     {

@@ -161,10 +161,10 @@ public class StartupQuery {
         }
     }
 
-    private String text;
+    private final String text;
     @Nullable
-    private AtomicBoolean result;
-    private CountDownLatch signal = new CountDownLatch(1);
+    private final AtomicBoolean result;
+    private final CountDownLatch signal = new CountDownLatch(1);
     private volatile boolean synchronous;
 
 

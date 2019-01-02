@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class BiomePlains extends Biome
 {
-    protected boolean sunflowers;
+    protected final boolean sunflowers;
 
     public BiomePlains(boolean p_i46699_1_, BiomeProperties properties)
     {

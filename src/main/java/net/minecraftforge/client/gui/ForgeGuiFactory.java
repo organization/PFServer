@@ -107,7 +107,7 @@ public class ForgeGuiFactory implements IModGuiFactory
 
         private static List<IConfigElement> getConfigElements()
         {
-            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            List<IConfigElement> list = new ArrayList<>();
             list.add(new DummyCategoryElement("forgeCfg", "forge.configgui.ctgy.forgeGeneralConfig", GeneralEntry.class));
             list.add(new DummyCategoryElement("forgeClientCfg", "forge.configgui.ctgy.forgeClientConfig", ClientEntry.class));
             list.add(new DummyCategoryElement("forgeChunkLoadingCfg", "forge.configgui.ctgy.forgeChunkLoadingConfig", ChunkLoaderEntry.class));
@@ -177,7 +177,7 @@ public class ForgeGuiFactory implements IModGuiFactory
             @Override
             protected GuiScreen buildChildScreen()
             {
-                List<IConfigElement> list = new ArrayList<IConfigElement>();
+                List<IConfigElement> list = new ArrayList<>();
 
                 list.add(new DummyCategoryElement("forgeChunkLoadingModCfg", "forge.configgui.ctgy.forgeChunkLoadingModConfig",
                         ModOverridesEntry.class));
@@ -208,12 +208,12 @@ public class ForgeGuiFactory implements IModGuiFactory
             protected GuiScreen buildChildScreen()
             {
                 ConfigCategory cfg = ForgeModContainer.getConfig().getCategory(VERSION_CHECK_CAT);
-                Map<String, Property> values = new HashMap<String, Property>(cfg.getValues());
+                Map<String, Property> values = new HashMap<>(cfg.getValues());
                 values.remove("Global");
 
                 Property global = ForgeModContainer.getConfig().get(VERSION_CHECK_CAT, "Global", true);
 
-                List<Property> props = new ArrayList<Property>();
+                List<Property> props = new ArrayList<>();
 
                 for (ModContainer mod : ForgeVersion.gatherMods().keySet())
                 {
@@ -223,7 +223,7 @@ public class ForgeGuiFactory implements IModGuiFactory
                 props.addAll(values.values()); // Add any left overs from the config
                 props.sort(Comparator.comparing(Property::getName));
 
-                List<IConfigElement> list = new ArrayList<IConfigElement>();
+                List<IConfigElement> list = new ArrayList<>();
                 list.add(new ConfigElement(global));
                 for (Property prop : props)
                 {
@@ -257,7 +257,7 @@ public class ForgeGuiFactory implements IModGuiFactory
             @Override
             protected GuiScreen buildChildScreen()
             {
-                List<IConfigElement> list = new ArrayList<IConfigElement>();
+                List<IConfigElement> list = new ArrayList<>();
 
                 list.add(new DummyCategoryElement("addForgeChunkLoadingModCfg", "forge.configgui.ctgy.forgeChunkLoadingAddModConfig",
                         AddModOverrideEntry.class));
@@ -316,7 +316,7 @@ public class ForgeGuiFactory implements IModGuiFactory
                         if (!child.initEntries.contains(ice) && ForgeChunkManager.getConfig().hasCategory(ice.getName()))
                             ForgeChunkManager.getConfig().removeCategory(ForgeChunkManager.getConfig().getCategory(ice.getName()));
 
-                    child.entryList.listEntries = new ArrayList<IConfigEntry>(child.initEntries);
+                    child.entryList.listEntries = new ArrayList<>(child.initEntries);
                 }
             }
         }
@@ -334,7 +334,7 @@ public class ForgeGuiFactory implements IModGuiFactory
             @Override
             protected GuiScreen buildChildScreen()
             {
-                List<IConfigElement> list = new ArrayList<IConfigElement>();
+                List<IConfigElement> list = new ArrayList<>();
 
                 list.add(new DummyConfigElement("modID", "", ConfigGuiType.STRING, "forge.configgui.modID").setCustomListEntryClass(ModIDEntry.class));
                 list.add(new ConfigElement(new Property("maximumTicketCount", "200", Property.Type.INTEGER, "forge.configgui.maximumTicketCount")));
@@ -368,7 +368,7 @@ public class ForgeGuiFactory implements IModGuiFactory
 
             private static Map<Object, String> getSelectableValues()
             {
-                Map<Object, String> selectableValues = new TreeMap<Object, String>();
+                Map<Object, String> selectableValues = new TreeMap<>();
 
                 for (ModContainer mod : Loader.instance().getActiveModList())
                     // only add mods to the list that have a non-immutable ModContainer

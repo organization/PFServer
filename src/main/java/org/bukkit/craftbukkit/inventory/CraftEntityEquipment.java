@@ -68,13 +68,12 @@ public class CraftEntityEquipment implements EntityEquipment {
     }
 
     public ItemStack[] getArmorContents() {
-        ItemStack[] armor = new ItemStack[]{
+        return new ItemStack[]{
                 getEquipment(EntityEquipmentSlot.FEET),
                 getEquipment(EntityEquipmentSlot.LEGS),
                 getEquipment(EntityEquipmentSlot.CHEST),
                 getEquipment(EntityEquipmentSlot.HEAD),
         };
-        return armor;
     }
 
     public void setArmorContents(ItemStack[] items) {

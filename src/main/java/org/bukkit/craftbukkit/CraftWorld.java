@@ -76,7 +76,7 @@ public class CraftWorld implements World {
     private Environment environment;
     private final CraftServer server = (CraftServer) Bukkit.getServer();
     public ChunkGenerator generator;
-    private final List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
+    private final List<BlockPopulator> populators = new ArrayList<>();
     private final BlockMetadataStore blockMetadata = new BlockMetadataStore(this);
     private int monsterSpawn = -1;
     private int animalSpawn = -1;
@@ -124,7 +124,7 @@ public class CraftWorld implements World {
     public boolean setSpawnLocation(Location location) {
         Preconditions.checkArgument(location != null, "location");
 
-        return equals(location.getWorld()) ? setSpawnLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ()) : false;
+        return equals(location.getWorld()) && setSpawnLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     public boolean setSpawnLocation(int x, int y, int z) {
@@ -422,22 +422,22 @@ public class CraftWorld implements World {
             break;
         case JUNGLE:
             IBlockState iblockdata1 = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-            IBlockState iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+            IBlockState iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
             gen = new WorldGenMegaJungle(true, 10, 20, iblockdata1, iblockdata2); // Magic values as in BlockSapling
             break;
         case SMALL_JUNGLE:
             iblockdata1 = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-            iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+            iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
             gen = new WorldGenTrees(true, 4 + rand.nextInt(7), iblockdata1, iblockdata2, false);
             break;
         case COCOA_TREE:
             iblockdata1 = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-            iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+            iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
             gen = new WorldGenTrees(true, 4 + rand.nextInt(7), iblockdata1, iblockdata2, true);
             break;
         case JUNGLE_BUSH:
             iblockdata1 = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-            iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
+            iblockdata2 = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
             gen = new WorldGenShrub(iblockdata1, iblockdata2);
             break;
         case RED_MUSHROOM:
@@ -488,7 +488,7 @@ public class CraftWorld implements World {
                 net.minecraft.block.state.IBlockState oldBlock = world.getBlockState(position);
                 int typeId = net.minecraft.block.Block.getIdFromBlock(blocksnapshot.getReplacedBlock().getBlock());
                 int data = blocksnapshot.getMeta();
-                int flag = blocksnapshot.getFlag();;
+                int flag = blocksnapshot.getFlag();
                 delegate.setTypeIdAndData(x, y, z, typeId, data);
                 net.minecraft.block.state.IBlockState newBlock = world.getBlockState(position);
                 world.markAndNotifyBlock(position, null, oldBlock, newBlock, flag);
@@ -641,7 +641,7 @@ public class CraftWorld implements World {
     }
 
     public List<Entity> getEntities() {
-        List<Entity> list = new ArrayList<Entity>();
+        List<Entity> list = new ArrayList<>();
 
         for (Object o : world.loadedEntityList) {
             if (o instanceof net.minecraft.entity.Entity) {
@@ -659,7 +659,7 @@ public class CraftWorld implements World {
     }
 
     public List<LivingEntity> getLivingEntities() {
-        List<LivingEntity> list = new ArrayList<LivingEntity>();
+        List<LivingEntity> list = new ArrayList<>();
 
         for (Object o : world.loadedEntityList) {
             if (o instanceof net.minecraft.entity.Entity) {
@@ -684,7 +684,7 @@ public class CraftWorld implements World {
 
     @SuppressWarnings("unchecked")
     public <T extends Entity> Collection<T> getEntitiesByClass(Class<T> clazz) {
-        Collection<T> list = new ArrayList<T>();
+        Collection<T> list = new ArrayList<>();
 
         for (Object entity: world.loadedEntityList) {
             if (entity instanceof net.minecraft.entity.Entity) {
@@ -706,7 +706,7 @@ public class CraftWorld implements World {
     }
 
     public Collection<Entity> getEntitiesByClasses(Class<?>... classes) {
-        Collection<Entity> list = new ArrayList<Entity>();
+        Collection<Entity> list = new ArrayList<>();
 
         for (Object entity: world.loadedEntityList) {
             if (entity instanceof net.minecraft.entity.Entity) {
@@ -738,7 +738,7 @@ public class CraftWorld implements World {
 
         AxisAlignedBB bb = new AxisAlignedBB(location.getX() - x, location.getY() - y, location.getZ() - z, location.getX() + x, location.getY() + y, location.getZ() + z);
         List<net.minecraft.entity.Entity> entityList = getHandle().getEntitiesInAABBexcluding(null, bb, null);
-        List<Entity> bukkitEntityList = new ArrayList<Entity>(entityList.size());
+        List<Entity> bukkitEntityList = new ArrayList<>(entityList.size());
         for (Object entity : entityList) {
             bukkitEntityList.add(((net.minecraft.entity.Entity) entity).getBukkitEntity());
         }
@@ -746,7 +746,7 @@ public class CraftWorld implements World {
     }
 
     public List<Player> getPlayers() {
-        List<Player> list = new ArrayList<Player>(world.playerEntities.size());
+        List<Player> list = new ArrayList<>(world.playerEntities.size());
 
         for (EntityPlayer human : world.playerEntities) {
             HumanEntity bukkitEntity = human.getBukkitEntity();
@@ -1315,7 +1315,7 @@ public class CraftWorld implements World {
     }
 
     public Set<String> getListeningPluginChannels() {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
 
         for (Player player : getPlayers()) {
             result.addAll(player.getListeningPluginChannels());

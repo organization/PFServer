@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -184,7 +185,7 @@ public final class NBTUtil
 
                     for (int j = 0; j < nbttaglist1.tagCount(); ++j)
                     {
-                        if (areNBTEquals(nbtbase, nbttaglist1.get(j), compareTagList))
+                        if (areNBTEquals(nbtbase, nbttaglist1.get(j), true))
                         {
                             flag = true;
                             break;
@@ -286,13 +287,10 @@ public final class NBTUtil
         if (!state.getProperties().isEmpty())
         {
             NBTTagCompound nbttagcompound = new NBTTagCompound();
-            UnmodifiableIterator unmodifiableiterator = state.getProperties().entrySet().iterator();
 
-            while (unmodifiableiterator.hasNext())
-            {
-                Entry < IProperty<?>, Comparable<? >> entry = (Entry)unmodifiableiterator.next();
-                IProperty<?> iproperty = (IProperty)entry.getKey();
-                nbttagcompound.setString(iproperty.getName(), getName(iproperty, entry.getValue()));
+            for (Entry<IProperty<?>, Comparable<?>> iPropertyComparableEntry : state.getProperties().entrySet()) {
+                IProperty<?> iproperty = (IProperty) ((Entry) iPropertyComparableEntry).getKey();
+                nbttagcompound.setString(iproperty.getName(), getName(iproperty, (Comparable<?>) ((Entry) iPropertyComparableEntry).getValue()));
             }
 
             tag.setTag("Properties", nbttagcompound);

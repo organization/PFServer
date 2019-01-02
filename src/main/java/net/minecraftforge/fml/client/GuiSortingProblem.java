@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.toposort.ModSortingException;
 import net.minecraftforge.fml.common.toposort.ModSortingException.SortingExceptionData;
 
 public class GuiSortingProblem extends GuiScreen {
-    private SortingExceptionData<ModContainer> failedList;
+    private final SortingExceptionData<ModContainer> failedList;
 
     public GuiSortingProblem(ModSortingException modSorting)
     {

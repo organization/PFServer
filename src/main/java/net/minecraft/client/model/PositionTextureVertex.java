@@ -4,9 +4,9 @@ import net.minecraft.util.math.Vec3d;
 
 public class PositionTextureVertex
 {
-    public Vec3d vector3D;
-    public float texturePositionX;
-    public float texturePositionY;
+    public final Vec3d vector3D;
+    public final float texturePositionX;
+    public final float texturePositionY;
 
     public PositionTextureVertex(float p_i1158_1_, float p_i1158_2_, float p_i1158_3_, float p_i1158_4_, float p_i1158_5_)
     {

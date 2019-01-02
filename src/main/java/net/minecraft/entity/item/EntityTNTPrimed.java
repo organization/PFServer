@@ -49,7 +49,7 @@ public class EntityTNTPrimed extends Entity
 
     protected void entityInit()
     {
-        this.dataManager.register(FUSE, Integer.valueOf(80));
+        this.dataManager.register(FUSE, 80);
     }
 
     protected boolean canTriggerWalking()
@@ -142,7 +142,7 @@ public class EntityTNTPrimed extends Entity
 
     public void setFuse(int fuseIn)
     {
-        this.dataManager.set(FUSE, Integer.valueOf(fuseIn));
+        this.dataManager.set(FUSE, fuseIn);
         this.fuse = fuseIn;
     }
 
@@ -156,7 +156,7 @@ public class EntityTNTPrimed extends Entity
 
     public int getFuseDataManager()
     {
-        return ((Integer)this.dataManager.get(FUSE)).intValue();
+        return (Integer) this.dataManager.get(FUSE);
     }
 
     public int getFuse()

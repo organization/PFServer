@@ -46,7 +46,7 @@ public class CommandBanPlayer extends CommandBase
 
             if (gameprofile == null)
             {
-                throw new CommandException("commands.ban.failed", new Object[] {args[0]});
+                throw new CommandException("commands.ban.failed", args[0]);
             }
             else
             {
@@ -63,15 +63,15 @@ public class CommandBanPlayer extends CommandBase
 
                 if (entityplayermp != null)
                 {
-                    entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.banned", new Object[0]));
+                    entityplayermp.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.banned"));
                 }
 
-                notifyCommandListener(sender, this, "commands.ban.success", new Object[] {args[0]});
+                notifyCommandListener(sender, this, "commands.ban.success", args[0]);
             }
         }
         else
         {
-            throw new WrongUsageException("commands.ban.usage", new Object[0]);
+            throw new WrongUsageException("commands.ban.usage");
         }
     }
 

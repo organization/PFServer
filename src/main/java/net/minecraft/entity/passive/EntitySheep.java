@@ -123,7 +123,7 @@ public class EntitySheep extends EntityAnimal implements net.minecraftforge.comm
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DYE_COLOR, Byte.valueOf((byte)0));
+        this.dataManager.register(DYE_COLOR, (byte) 0);
     }
 
     @Nullable
@@ -289,31 +289,31 @@ public class EntitySheep extends EntityAnimal implements net.minecraftforge.comm
 
     public EnumDyeColor getFleeceColor()
     {
-        return EnumDyeColor.byMetadata(((Byte)this.dataManager.get(DYE_COLOR)).byteValue() & 15);
+        return EnumDyeColor.byMetadata((Byte) this.dataManager.get(DYE_COLOR) & 15);
     }
 
     public void setFleeceColor(EnumDyeColor color)
     {
-        byte b0 = ((Byte)this.dataManager.get(DYE_COLOR)).byteValue();
-        this.dataManager.set(DYE_COLOR, Byte.valueOf((byte)(b0 & 240 | color.getMetadata() & 15)));
+        byte b0 = (Byte) this.dataManager.get(DYE_COLOR);
+        this.dataManager.set(DYE_COLOR, (byte) (b0 & 240 | color.getMetadata() & 15));
     }
 
     public boolean getSheared()
     {
-        return (((Byte)this.dataManager.get(DYE_COLOR)).byteValue() & 16) != 0;
+        return ((Byte) this.dataManager.get(DYE_COLOR) & 16) != 0;
     }
 
     public void setSheared(boolean sheared)
     {
-        byte b0 = ((Byte)this.dataManager.get(DYE_COLOR)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(DYE_COLOR);
 
         if (sheared)
         {
-            this.dataManager.set(DYE_COLOR, Byte.valueOf((byte)(b0 | 16)));
+            this.dataManager.set(DYE_COLOR, (byte) (b0 | 16));
         }
         else
         {
-            this.dataManager.set(DYE_COLOR, Byte.valueOf((byte)(b0 & -17)));
+            this.dataManager.set(DYE_COLOR, (byte) (b0 & -17));
         }
     }
 
@@ -380,7 +380,7 @@ public class EntitySheep extends EntityAnimal implements net.minecraftforge.comm
         this.setSheared(true);
         int i = 1 + this.rand.nextInt(3);
 
-        java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+        java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         for (int j = 0; j < i; ++j)
             ret.add(new ItemStack(Item.getItemFromBlock(Blocks.WOOL), 1, this.getFleeceColor().getMetadata()));
 

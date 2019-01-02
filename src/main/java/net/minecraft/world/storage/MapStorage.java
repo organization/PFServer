@@ -15,7 +15,7 @@ import java.util.Map;
 public class MapStorage
 {
     private final ISaveHandler saveHandler;
-    protected Map<String, WorldSavedData> loadedDataMap = Maps.<String, WorldSavedData>newHashMap();
+    protected final Map<String, WorldSavedData> loadedDataMap = Maps.<String, WorldSavedData>newHashMap();
     private final List<WorldSavedData> loadedDataList = Lists.<WorldSavedData>newArrayList();
     private final Map<String, Short> idCounts = Maps.<String, Short>newHashMap();
 
@@ -88,12 +88,8 @@ public class MapStorage
 
     public void saveAllData()
     {
-        for (int i = 0; i < this.loadedDataList.size(); ++i)
-        {
-            WorldSavedData worldsaveddata = this.loadedDataList.get(i);
-
-            if (worldsaveddata.isDirty())
-            {
+        for (WorldSavedData worldsaveddata : this.loadedDataList) {
+            if (worldsaveddata.isDirty()) {
                 this.saveData(worldsaveddata);
                 worldsaveddata.setDirty(false);
             }
@@ -151,7 +147,7 @@ public class MapStorage
                     {
                         NBTTagShort nbttagshort = (NBTTagShort)nbtbase;
                         short short1 = nbttagshort.getShort();
-                        this.idCounts.put(s, Short.valueOf(short1));
+                        this.idCounts.put(s, short1);
                     }
                 }
             }
@@ -172,14 +168,14 @@ public class MapStorage
         }
         else
         {
-            oshort = (short)(oshort.shortValue() + 1);
+            oshort = (short)(oshort + 1);
         }
 
         this.idCounts.put(key, oshort);
 
         if (this.saveHandler == null)
         {
-            return oshort.shortValue();
+            return oshort;
         }
         else
         {
@@ -193,7 +189,7 @@ public class MapStorage
 
                     for (String s : this.idCounts.keySet())
                     {
-                        nbttagcompound.setShort(s, ((Short)this.idCounts.get(s)).shortValue());
+                        nbttagcompound.setShort(s, (Short) this.idCounts.get(s));
                     }
 
                     DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file1));
@@ -206,7 +202,7 @@ public class MapStorage
                 exception.printStackTrace();
             }
 
-            return oshort.shortValue();
+            return oshort;
         }
     }
 }

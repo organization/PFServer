@@ -32,7 +32,7 @@ public class SPacketMaps implements Packet<INetHandlerPlayClient>
         this.mapId = mapIdIn;
         this.mapScale = mapScaleIn;
         this.trackingPosition = trackingPositionIn;
-        this.icons = (MapDecoration[])iconsIn.toArray(new MapDecoration[iconsIn.size()]);
+        this.icons = (MapDecoration[])iconsIn.toArray(new MapDecoration[0]);
         this.minX = minXIn;
         this.minZ = minZIn;
         this.columns = columnsIn;

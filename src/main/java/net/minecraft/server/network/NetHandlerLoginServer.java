@@ -80,7 +80,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
 
         if (this.connectionTimer++ == 600)
         {
-            this.disconnect(new TextComponentTranslation("multiplayer.disconnect.slow_login", new Object[0]));
+            this.disconnect(new TextComponentTranslation("multiplayer.disconnect.slow_login"));
         }
     }
 
@@ -162,13 +162,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
 
             if (this.server.getNetworkCompressionThreshold() >= 0 && !this.networkManager.isLocalChannel())
             {
-                this.networkManager.sendPacket(new SPacketEnableCompression(this.server.getNetworkCompressionThreshold()), new ChannelFutureListener()
-                {
-                    public void operationComplete(ChannelFuture p_operationComplete_1_) throws Exception
-                    {
-                        NetHandlerLoginServer.this.networkManager.setCompressionThreshold(NetHandlerLoginServer.this.server.getNetworkCompressionThreshold());
-                    }
-                });
+                this.networkManager.sendPacket(new SPacketEnableCompression(this.server.getNetworkCompressionThreshold()), (ChannelFutureListener) p_operationComplete_1_ -> NetHandlerLoginServer.this.networkManager.setCompressionThreshold(NetHandlerLoginServer.this.server.getNetworkCompressionThreshold()));
             }
 
             this.networkManager.sendPacket(new SPacketLoginSuccess(this.loginGameProfile));
@@ -267,7 +261,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
                         }
                         else
                         {
-                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.unverified_username", new Object[0]));
+                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.unverified_username"));
                             NetHandlerLoginServer.LOGGER.error("Username '{}' tried to join with an invalid session", (Object)gameprofile.getName());
                         }
                     }
@@ -281,7 +275,7 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
                         }
                         else
                         {
-                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.authservers_down", new Object[0]));
+                            NetHandlerLoginServer.this.disconnect(new TextComponentTranslation("multiplayer.disconnect.authservers_down"));
                             NetHandlerLoginServer.LOGGER.error("Couldn't verify username because servers are unavailable");
 
                         }
@@ -337,6 +331,6 @@ public class NetHandlerLoginServer implements INetHandlerLoginServer, ITickable
         AUTHENTICATING,
         READY_TO_ACCEPT,
         DELAY_ACCEPT,
-        ACCEPTED;
+        ACCEPTED
     }
 }

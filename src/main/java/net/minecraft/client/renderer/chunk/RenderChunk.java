@@ -312,7 +312,7 @@ public class RenderChunk
             this.lockCompileTask.unlock();
         }
 
-        return chunkcompiletaskgenerator;
+        return null;
     }
 
     protected double getDistanceSq()

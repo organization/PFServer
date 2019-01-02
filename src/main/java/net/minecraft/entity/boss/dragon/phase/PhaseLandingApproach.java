@@ -93,15 +93,10 @@ public class PhaseLandingApproach extends PhaseBase
             double d1 = vec3d.z;
             double d2;
 
-            while (true)
-            {
-                d2 = vec3d.y + (double)(this.dragon.getRNG().nextFloat() * 20.0F);
+            do {
+                d2 = vec3d.y + (double) (this.dragon.getRNG().nextFloat() * 20.0F);
 
-                if (d2 >= vec3d.y)
-                {
-                    break;
-                }
-            }
+            } while (!(d2 >= vec3d.y));
 
             this.targetLocation = new Vec3d(d0, d2, d1);
         }

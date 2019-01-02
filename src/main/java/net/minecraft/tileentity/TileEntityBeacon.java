@@ -54,11 +54,11 @@ public class TileEntityBeacon extends TileEntityLockable implements ITickable, I
     private ItemStack payment = ItemStack.EMPTY;
     private String customName;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
-        return Arrays.asList(this.payment);
+        return Collections.singletonList(this.payment);
     }
         
     public void onOpen(CraftHumanEntity who) {

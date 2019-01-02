@@ -14,19 +14,19 @@ public class GuiLabel extends Gui
 {
     protected int width = 200;
     protected int height = 20;
-    public int x;
+    public final int x;
     public int y;
     private final List<String> labels;
-    public int id;
+    public final int id;
     private boolean centered;
     public boolean visible = true;
-    private boolean labelBgEnabled;
+    private final boolean labelBgEnabled;
     private final int textColor;
-    private int backColor;
-    private int ulColor;
-    private int brColor;
+    private final int backColor;
+    private final int ulColor;
+    private final int brColor;
     private final FontRenderer fontRenderer;
-    private int border;
+    private final int border;
 
     public GuiLabel(FontRenderer fontRendererObj, int p_i45540_2_, int p_i45540_3_, int p_i45540_4_, int p_i45540_5_, int p_i45540_6_, int p_i45540_7_)
     {

@@ -36,7 +36,7 @@ public class CommandStats extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.stats.usage", new Object[0]);
+            throw new WrongUsageException("commands.stats.usage");
         }
         else
         {
@@ -50,7 +50,7 @@ public class CommandStats extends CommandBase
             {
                 if (!"block".equals(args[0]))
                 {
-                    throw new WrongUsageException("commands.stats.usage", new Object[0]);
+                    throw new WrongUsageException("commands.stats.usage");
                 }
 
                 flag = true;
@@ -62,7 +62,7 @@ public class CommandStats extends CommandBase
             {
                 if (args.length < 5)
                 {
-                    throw new WrongUsageException("commands.stats.block.usage", new Object[0]);
+                    throw new WrongUsageException("commands.stats.block.usage");
                 }
 
                 i = 4;
@@ -71,7 +71,7 @@ public class CommandStats extends CommandBase
             {
                 if (args.length < 3)
                 {
-                    throw new WrongUsageException("commands.stats.entity.usage", new Object[0]);
+                    throw new WrongUsageException("commands.stats.entity.usage");
                 }
 
                 i = 2;
@@ -85,27 +85,27 @@ public class CommandStats extends CommandBase
                 {
                     if (i == 5)
                     {
-                        throw new WrongUsageException("commands.stats.block.set.usage", new Object[0]);
+                        throw new WrongUsageException("commands.stats.block.set.usage");
                     }
 
-                    throw new WrongUsageException("commands.stats.entity.set.usage", new Object[0]);
+                    throw new WrongUsageException("commands.stats.entity.set.usage");
                 }
             }
             else
             {
                 if (!"clear".equals(s))
                 {
-                    throw new WrongUsageException("commands.stats.usage", new Object[0]);
+                    throw new WrongUsageException("commands.stats.usage");
                 }
 
                 if (args.length < i + 1)
                 {
                     if (i == 5)
                     {
-                        throw new WrongUsageException("commands.stats.block.clear.usage", new Object[0]);
+                        throw new WrongUsageException("commands.stats.block.clear.usage");
                     }
 
-                    throw new WrongUsageException("commands.stats.entity.clear.usage", new Object[0]);
+                    throw new WrongUsageException("commands.stats.entity.clear.usage");
                 }
             }
 
@@ -113,7 +113,7 @@ public class CommandStats extends CommandBase
 
             if (commandresultstats$type == null)
             {
-                throw new CommandException("commands.stats.failed", new Object[0]);
+                throw new CommandException("commands.stats.failed");
             }
             else
             {
@@ -127,7 +127,7 @@ public class CommandStats extends CommandBase
 
                     if (tileentity == null)
                     {
-                        throw new CommandException("commands.stats.noCompatibleBlock", new Object[] {blockpos.getX(), blockpos.getY(), blockpos.getZ()});
+                        throw new CommandException("commands.stats.noCompatibleBlock", blockpos.getX(), blockpos.getY(), blockpos.getZ());
                     }
 
                     if (tileentity instanceof TileEntityCommandBlock)
@@ -138,7 +138,7 @@ public class CommandStats extends CommandBase
                     {
                         if (!(tileentity instanceof TileEntitySign))
                         {
-                            throw new CommandException("commands.stats.noCompatibleBlock", new Object[] {blockpos.getX(), blockpos.getY(), blockpos.getZ()});
+                            throw new CommandException("commands.stats.noCompatibleBlock", blockpos.getX(), blockpos.getY(), blockpos.getZ());
                         }
 
                         commandresultstats = ((TileEntitySign)tileentity).getStats();
@@ -157,16 +157,16 @@ public class CommandStats extends CommandBase
 
                     if (s1.isEmpty() || s2.isEmpty())
                     {
-                        throw new CommandException("commands.stats.failed", new Object[0]);
+                        throw new CommandException("commands.stats.failed");
                     }
 
                     CommandResultStats.setScoreBoardStat(commandresultstats, commandresultstats$type, s1, s2);
-                    notifyCommandListener(sender, this, "commands.stats.success", new Object[] {commandresultstats$type.getTypeName(), s2, s1});
+                    notifyCommandListener(sender, this, "commands.stats.success", commandresultstats$type.getTypeName(), s2, s1);
                 }
                 else if ("clear".equals(s))
                 {
                     CommandResultStats.setScoreBoardStat(commandresultstats, commandresultstats$type, (String)null, (String)null);
-                    notifyCommandListener(sender, this, "commands.stats.cleared", new Object[] {commandresultstats$type.getTypeName()});
+                    notifyCommandListener(sender, this, "commands.stats.cleared", commandresultstats$type.getTypeName());
                 }
 
                 if (flag)
@@ -183,7 +183,7 @@ public class CommandStats extends CommandBase
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"entity", "block"});
+            return getListOfStringsMatchingLastWord(args, "entity", "block");
         }
         else if (args.length == 2 && "entity".equals(args[0]))
         {
@@ -206,7 +206,7 @@ public class CommandStats extends CommandBase
         }
         else
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"set", "clear"});
+            return getListOfStringsMatchingLastWord(args, "set", "clear");
         }
     }
 

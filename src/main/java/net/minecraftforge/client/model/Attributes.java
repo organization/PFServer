@@ -82,7 +82,6 @@ public class Attributes
             }
         }
 
-        if(padding != 0 || j != second.getElementCount()) return false;
-        return true;
+        return padding == 0 && j == second.getElementCount();
     }
 }

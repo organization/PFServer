@@ -101,7 +101,7 @@ public class BlockRotatedPillar extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AXIS});
+        return new BlockStateContainer(this, AXIS);
     }
 
     protected ItemStack getSilkTouchDrop(IBlockState state)

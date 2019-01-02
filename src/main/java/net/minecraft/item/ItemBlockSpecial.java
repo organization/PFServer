@@ -30,7 +30,7 @@ public class ItemBlockSpecial extends Item
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
 
-        if (block == Blocks.SNOW_LAYER && ((Integer)iblockstate.getValue(BlockSnow.LAYERS)).intValue() < 1)
+        if (block == Blocks.SNOW_LAYER && (Integer) iblockstate.getValue(BlockSnow.LAYERS) < 1)
         {
             facing = EnumFacing.UP;
         }

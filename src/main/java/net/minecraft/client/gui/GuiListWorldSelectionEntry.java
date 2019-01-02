@@ -179,18 +179,14 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
     {
         if (this.worldSummary.askToOpenWorld())
         {
-            this.client.displayGuiScreen(new GuiYesNo(new GuiYesNoCallback()
-            {
-                public void confirmClicked(boolean result, int id)
+            this.client.displayGuiScreen(new GuiYesNo((result, id) -> {
+                if (result)
                 {
-                    if (result)
-                    {
-                        GuiListWorldSelectionEntry.this.loadWorld();
-                    }
-                    else
-                    {
-                        GuiListWorldSelectionEntry.this.client.displayGuiScreen(GuiListWorldSelectionEntry.this.worldSelScreen);
-                    }
+                    GuiListWorldSelectionEntry.this.loadWorld();
+                }
+                else
+                {
+                    GuiListWorldSelectionEntry.this.client.displayGuiScreen(GuiListWorldSelectionEntry.this.worldSelScreen);
                 }
             }, I18n.format("selectWorld.versionQuestion"), I18n.format("selectWorld.versionWarning", this.worldSummary.getVersionName()), I18n.format("selectWorld.versionJoinButton"), I18n.format("gui.cancel"), 0));
         }
@@ -202,21 +198,17 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
 
     public void deleteWorld()
     {
-        this.client.displayGuiScreen(new GuiYesNo(new GuiYesNoCallback()
-        {
-            public void confirmClicked(boolean result, int id)
+        this.client.displayGuiScreen(new GuiYesNo((result, id) -> {
+            if (result)
             {
-                if (result)
-                {
-                    GuiListWorldSelectionEntry.this.client.displayGuiScreen(new GuiScreenWorking());
-                    ISaveFormat isaveformat = GuiListWorldSelectionEntry.this.client.getSaveLoader();
-                    isaveformat.flushCache();
-                    isaveformat.deleteWorldDirectory(GuiListWorldSelectionEntry.this.worldSummary.getFileName());
-                    GuiListWorldSelectionEntry.this.containingListSel.refreshList();
-                }
-
-                GuiListWorldSelectionEntry.this.client.displayGuiScreen(GuiListWorldSelectionEntry.this.worldSelScreen);
+                GuiListWorldSelectionEntry.this.client.displayGuiScreen(new GuiScreenWorking());
+                ISaveFormat isaveformat = GuiListWorldSelectionEntry.this.client.getSaveLoader();
+                isaveformat.flushCache();
+                isaveformat.deleteWorldDirectory(GuiListWorldSelectionEntry.this.worldSummary.getFileName());
+                GuiListWorldSelectionEntry.this.containingListSel.refreshList();
             }
+
+            GuiListWorldSelectionEntry.this.client.displayGuiScreen(GuiListWorldSelectionEntry.this.worldSelScreen);
         }, I18n.format("selectWorld.deleteQuestion"), "'" + this.worldSummary.getDisplayName() + "' " + I18n.format("selectWorld.deleteWarning"), I18n.format("selectWorld.deleteButton"), I18n.format("gui.cancel"), 0));
     }
 
@@ -280,7 +272,7 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
             bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), this.icon.getTextureData(), 0, bufferedimage.getWidth());
             this.icon.updateDynamicTexture();
         }
-        else if (!flag)
+        else if (!false)
         {
             this.client.getTextureManager().deleteTexture(this.iconLocation);
             this.icon = null;

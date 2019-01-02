@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class ProgressManager
 {
-    private static final List<ProgressBar> bars = new CopyOnWriteArrayList<ProgressBar>();
+    private static final List<ProgressBar> bars = new CopyOnWriteArrayList<>();
     /**
      * Not a fully fleshed out API, may change in future MC versions.
      * However feel free to use and suggest additions.
@@ -105,7 +105,7 @@ public class ProgressManager
         private volatile int step = 0;
         private volatile String message = "";
         private boolean timeEachStep = false;
-        private long startTime = System.nanoTime();
+        private final long startTime = System.nanoTime();
         private long lastTime = startTime;
 
         private ProgressBar(String title, int steps)

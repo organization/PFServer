@@ -73,17 +73,10 @@ public class AttributeModifier
 
             if (this.id != null)
             {
-                if (!this.id.equals(attributemodifier.id))
-                {
-                    return false;
-                }
+                return this.id.equals(attributemodifier.id);
             }
-            else if (attributemodifier.id != null)
-            {
-                return false;
-            }
+            else return attributemodifier.id == null;
 
-            return true;
         }
         else
         {

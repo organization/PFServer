@@ -15,9 +15,9 @@ import java.util.List;
 public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListEntry
 {
     private static final ResourceLocation RESOURCE_PACKS_TEXTURE = new ResourceLocation("textures/gui/resource_packs.png");
-    private static final ITextComponent INCOMPATIBLE = new TextComponentTranslation("resourcePack.incompatible", new Object[0]);
-    private static final ITextComponent INCOMPATIBLE_OLD = new TextComponentTranslation("resourcePack.incompatible.old", new Object[0]);
-    private static final ITextComponent INCOMPATIBLE_NEW = new TextComponentTranslation("resourcePack.incompatible.new", new Object[0]);
+    private static final ITextComponent INCOMPATIBLE = new TextComponentTranslation("resourcePack.incompatible");
+    private static final ITextComponent INCOMPATIBLE_OLD = new TextComponentTranslation("resourcePack.incompatible.old");
+    private static final ITextComponent INCOMPATIBLE_NEW = new TextComponentTranslation("resourcePack.incompatible.new");
     protected final Minecraft mc;
     protected final GuiScreenResourcePacks resourcePacksGUI;
 
@@ -185,18 +185,14 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
                 {
                     String s = I18n.format("resourcePack.incompatible.confirm.title");
                     String s1 = I18n.format("resourcePack.incompatible.confirm." + (l > 3 ? "new" : "old"));
-                    this.mc.displayGuiScreen(new GuiYesNo(new GuiYesNoCallback()
-                    {
-                        public void confirmClicked(boolean result, int id)
-                        {
-                            List<ResourcePackListEntry> list2 = ResourcePackListEntry.this.resourcePacksGUI.getListContaining(ResourcePackListEntry.this);
-                            ResourcePackListEntry.this.mc.displayGuiScreen(ResourcePackListEntry.this.resourcePacksGUI);
+                    this.mc.displayGuiScreen(new GuiYesNo((result, id) -> {
+                        List<ResourcePackListEntry> list2 = ResourcePackListEntry.this.resourcePacksGUI.getListContaining(ResourcePackListEntry.this);
+                        ResourcePackListEntry.this.mc.displayGuiScreen(ResourcePackListEntry.this.resourcePacksGUI);
 
-                            if (result)
-                            {
-                                list2.remove(ResourcePackListEntry.this);
-                                ResourcePackListEntry.this.resourcePacksGUI.getSelectedResourcePacks().add(j, ResourcePackListEntry.this);
-                            }
+                        if (result)
+                        {
+                            list2.remove(ResourcePackListEntry.this);
+                            ResourcePackListEntry.this.resourcePacksGUI.getSelectedResourcePacks().add(j, ResourcePackListEntry.this);
                         }
                     }, s, s1, 0));
                 }

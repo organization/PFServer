@@ -34,17 +34,8 @@ public class BiomeSnow extends Biome
         this.spawnableCreatureList.clear();
         this.spawnableCreatureList.add(new SpawnListEntry(EntityRabbit.class, 10, 2, 3));
         this.spawnableCreatureList.add(new SpawnListEntry(EntityPolarBear.class, 1, 1, 2));
-        Iterator<SpawnListEntry> iterator = this.spawnableMonsterList.iterator();
 
-        while (iterator.hasNext())
-        {
-            SpawnListEntry biome$spawnlistentry = iterator.next();
-
-            if (biome$spawnlistentry.entityClass == EntitySkeleton.class)
-            {
-                iterator.remove();
-            }
-        }
+        this.spawnableMonsterList.removeIf(biome$spawnlistentry -> biome$spawnlistentry.entityClass == EntitySkeleton.class);
 
         this.spawnableMonsterList.add(new SpawnListEntry(EntitySkeleton.class, 20, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityStray.class, 80, 4, 4));

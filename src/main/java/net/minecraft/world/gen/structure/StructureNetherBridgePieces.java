@@ -279,7 +279,6 @@ public class StructureNetherBridgePieces
                 {
                     int j = Math.max(1, 7 - i);
                     int k = Math.min(Math.max(j + 5, 14 - i), 13);
-                    int l = i;
                     this.fillWithBlocks(worldIn, structureBoundingBoxIn, 0, 0, i, 4, j, i, Blocks.NETHER_BRICK.getDefaultState(), Blocks.NETHER_BRICK.getDefaultState(), false);
                     this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, j + 1, i, 3, k - 1, i, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 
@@ -302,7 +301,7 @@ public class StructureNetherBridgePieces
 
                     for (int i1 = 0; i1 <= 4; ++i1)
                     {
-                        this.replaceAirAndLiquidDownwards(worldIn, Blocks.NETHER_BRICK.getDefaultState(), i1, -1, l, structureBoundingBoxIn);
+                        this.replaceAirAndLiquidDownwards(worldIn, Blocks.NETHER_BRICK.getDefaultState(), i1, -1, i, structureBoundingBoxIn);
                     }
                 }
 
@@ -1130,11 +1129,11 @@ public class StructureNetherBridgePieces
 
     static class PieceWeight
         {
-            public Class <? extends Piece > weightClass;
+            public final Class <? extends Piece > weightClass;
             public final int weight;
             public int placeCount;
-            public int maxPlaceCount;
-            public boolean allowInRow;
+            public final int maxPlaceCount;
+            public final boolean allowInRow;
 
             public PieceWeight(Class <? extends Piece > p_i2055_1_, int p_i2055_2_, int p_i2055_3_, boolean p_i2055_4_)
             {
@@ -1223,7 +1222,7 @@ public class StructureNetherBridgePieces
             public PieceWeight lastPlaced;
             public List<PieceWeight> primaryWeights;
             public List<PieceWeight> secondaryWeights;
-            public List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
+            public final List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
 
             public Start()
             {

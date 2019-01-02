@@ -18,7 +18,7 @@ public class FoodStats
     public int foodTimer;
     public int prevFoodLevel = 20;
 
-    private EntityPlayer entityhuman;
+    private final EntityPlayer entityhuman;
 
     public FoodStats() {
         this.entityhuman = null;

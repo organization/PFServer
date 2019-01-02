@@ -63,7 +63,7 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob, net.
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(PUMPKIN_EQUIPPED, Byte.valueOf((byte)16));
+        this.dataManager.register(PUMPKIN_EQUIPPED, (byte) 16);
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
@@ -165,20 +165,20 @@ public class EntitySnowman extends EntityGolem implements IRangedAttackMob, net.
 
     public boolean isPumpkinEquipped()
     {
-        return (((Byte)this.dataManager.get(PUMPKIN_EQUIPPED)).byteValue() & 16) != 0;
+        return ((Byte) this.dataManager.get(PUMPKIN_EQUIPPED) & 16) != 0;
     }
 
     public void setPumpkinEquipped(boolean pumpkinEquipped)
     {
-        byte b0 = ((Byte)this.dataManager.get(PUMPKIN_EQUIPPED)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(PUMPKIN_EQUIPPED);
 
         if (pumpkinEquipped)
         {
-            this.dataManager.set(PUMPKIN_EQUIPPED, Byte.valueOf((byte)(b0 | 16)));
+            this.dataManager.set(PUMPKIN_EQUIPPED, (byte) (b0 | 16));
         }
         else
         {
-            this.dataManager.set(PUMPKIN_EQUIPPED, Byte.valueOf((byte)(b0 & -17)));
+            this.dataManager.set(PUMPKIN_EQUIPPED, (byte) (b0 & -17));
         }
     }
 

@@ -46,21 +46,9 @@ public enum DimensionType
             Constructor <? extends WorldProvider > constructor = this.clazz.getConstructor();
             return constructor.newInstance();
         }
-        catch (NoSuchMethodException nosuchmethodexception)
+        catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException nosuchmethodexception)
         {
             throw new Error("Could not create new dimension", nosuchmethodexception);
-        }
-        catch (InvocationTargetException invocationtargetexception)
-        {
-            throw new Error("Could not create new dimension", invocationtargetexception);
-        }
-        catch (InstantiationException instantiationexception)
-        {
-            throw new Error("Could not create new dimension", instantiationexception);
-        }
-        catch (IllegalAccessException illegalaccessexception)
-        {
-            throw new Error("Could not create new dimension", illegalaccessexception);
         }
     }
 
@@ -80,7 +68,7 @@ public enum DimensionType
     public boolean shouldLoadSpawn(){ return this.shouldLoadSpawn; }
     public DimensionType setLoadSpawn(boolean value) { this.shouldLoadSpawn = value; return this; }
 
-    private static Class<?>[] ENUM_ARGS = {int.class, String.class, String.class, Class.class};
+    private static final Class<?>[] ENUM_ARGS = {int.class, String.class, String.class, Class.class};
     static { net.minecraftforge.common.util.EnumHelper.testEnum(DimensionType.class, ENUM_ARGS); }
     public static DimensionType register(String name, String suffix, int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
     {

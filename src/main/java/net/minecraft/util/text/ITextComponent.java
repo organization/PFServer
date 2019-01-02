@@ -104,7 +104,7 @@ public interface ITextComponent extends Iterable<ITextComponent>
                         }
                         else
                         {
-                            itextcomponent = new TextComponentTranslation(s, new Object[0]);
+                            itextcomponent = new TextComponentTranslation(s);
                         }
                     }
                     else if (jsonobject.has("score"))

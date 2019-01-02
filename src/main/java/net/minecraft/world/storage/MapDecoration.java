@@ -7,9 +7,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class MapDecoration
 {
     private final Type type;
-    private byte x;
-    private byte y;
-    private byte rotation;
+    private final byte x;
+    private final byte y;
+    private final byte rotation;
 
     public MapDecoration(Type typeIn, byte xIn, byte yIn, byte rotationIn)
     {

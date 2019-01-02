@@ -33,7 +33,7 @@ public class CommandParticle extends CommandBase
     {
         if (args.length < 8)
         {
-            throw new WrongUsageException("commands.particle.usage", new Object[0]);
+            throw new WrongUsageException("commands.particle.usage");
         }
         else
         {
@@ -42,7 +42,7 @@ public class CommandParticle extends CommandBase
 
             if (enumparticletypes == null)
             {
-                throw new CommandException("commands.particle.notFound", new Object[] {args[0]});
+                throw new CommandException("commands.particle.notFound", args[0]);
             }
             else
             {
@@ -92,7 +92,7 @@ public class CommandParticle extends CommandBase
                         }
                         catch (NumberFormatException var28)
                         {
-                            throw new CommandException("commands.particle.invalidParam", new Object[] {args[11 + j]});
+                            throw new CommandException("commands.particle.invalidParam", args[11 + j]);
                         }
                     }
                 }
@@ -112,7 +112,7 @@ public class CommandParticle extends CommandBase
                         worldserver.spawnParticle(entityplayermp, enumparticletypes, flag1, d0, d1, d2, i, d3, d4, d5, d6, aint);
                     }
 
-                    notifyCommandListener(sender, this, "commands.particle.success", new Object[] {s, Math.max(i, 1)});
+                    notifyCommandListener(sender, this, "commands.particle.success", s, Math.max(i, 1));
                 }
             }
         }
@@ -130,7 +130,7 @@ public class CommandParticle extends CommandBase
         }
         else if (args.length == 10)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"normal", "force"});
+            return getListOfStringsMatchingLastWord(args, "normal", "force");
         }
         else
         {

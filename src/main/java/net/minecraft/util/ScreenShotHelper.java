@@ -60,14 +60,14 @@ public class ScreenShotHelper
             ImageIO.write(bufferedimage, "png", file2);
             ITextComponent itextcomponent = new TextComponentString(file2.getName());
             itextcomponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file2.getAbsolutePath()));
-            itextcomponent.getStyle().setUnderlined(Boolean.valueOf(true));
+            itextcomponent.getStyle().setUnderlined(Boolean.TRUE);
             if (event.getResultMessage() != null) return event.getResultMessage();
-            return new TextComponentTranslation("screenshot.success", new Object[] {itextcomponent});
+            return new TextComponentTranslation("screenshot.success", itextcomponent);
         }
         catch (Exception exception)
         {
             LOGGER.warn("Couldn't save screenshot", (Throwable)exception);
-            return new TextComponentTranslation("screenshot.failure", new Object[] {exception.getMessage()});
+            return new TextComponentTranslation("screenshot.failure", exception.getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ public class ScreenShotHelper
 
     private static File getTimestampedPNGFileForDirectory(File gameDirectory)
     {
-        String s = DATE_FORMAT.format(new Date()).toString();
+        String s = DATE_FORMAT.format(new Date());
         int i = 1;
 
         while (true)

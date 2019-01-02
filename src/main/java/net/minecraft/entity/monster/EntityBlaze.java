@@ -55,7 +55,7 @@ public class EntityBlaze extends EntityMob
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
@@ -70,7 +70,7 @@ public class EntityBlaze extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(ON_FIRE, Byte.valueOf((byte)0));
+        this.dataManager.register(ON_FIRE, (byte) 0);
     }
 
     protected SoundEvent getAmbientSound()
@@ -165,12 +165,12 @@ public class EntityBlaze extends EntityMob
 
     public boolean isCharged()
     {
-        return (((Byte)this.dataManager.get(ON_FIRE)).byteValue() & 1) != 0;
+        return ((Byte) this.dataManager.get(ON_FIRE) & 1) != 0;
     }
 
     public void setOnFire(boolean onFire)
     {
-        byte b0 = ((Byte)this.dataManager.get(ON_FIRE)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(ON_FIRE);
 
         if (onFire)
         {
@@ -181,7 +181,7 @@ public class EntityBlaze extends EntityMob
             b0 = (byte)(b0 & -2);
         }
 
-        this.dataManager.set(ON_FIRE, Byte.valueOf(b0));
+        this.dataManager.set(ON_FIRE, b0);
     }
 
     protected boolean isValidLightLevel()

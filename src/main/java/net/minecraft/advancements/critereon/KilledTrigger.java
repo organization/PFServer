@@ -93,7 +93,7 @@ public class KilledTrigger implements ICriterionTrigger<KilledTrigger.Instance>
 
             public boolean test(EntityPlayerMP player, Entity entity, DamageSource source)
             {
-                return !this.killingBlow.test(player, source) ? false : this.entity.test(player, entity);
+                return this.killingBlow.test(player, source) && this.entity.test(player, entity);
             }
         }
 

@@ -52,9 +52,8 @@ public class EntityDataManager
                     else LOGGER.warn("defineId called for: {} from {}", clazz, oclass);
                 }
             }
-            catch (ClassNotFoundException var5)
+            catch (ClassNotFoundException ignored)
             {
-                ;
             }
         }
 
@@ -62,7 +61,7 @@ public class EntityDataManager
 
         if (NEXT_ID_MAP.containsKey(clazz))
         {
-            j = ((Integer)NEXT_ID_MAP.get(clazz)).intValue() + 1;
+            j = (Integer) NEXT_ID_MAP.get(clazz) + 1;
         }
         else
         {
@@ -75,7 +74,7 @@ public class EntityDataManager
 
                 if (NEXT_ID_MAP.containsKey(oclass1))
                 {
-                    i = ((Integer)NEXT_ID_MAP.get(oclass1)).intValue() + 1;
+                    i = (Integer) NEXT_ID_MAP.get(oclass1) + 1;
                     break;
                 }
             }
@@ -89,7 +88,7 @@ public class EntityDataManager
         }
         else
         {
-            NEXT_ID_MAP.put(clazz, Integer.valueOf(j));
+            NEXT_ID_MAP.put(clazz, j);
             return serializer.createKey(j);
         }
     }
@@ -102,7 +101,7 @@ public class EntityDataManager
         {
             throw new IllegalArgumentException("Data value id is too big with " + i + "! (Max is " + 254 + ")");
         }
-        else if (this.entries.containsKey(Integer.valueOf(i)))
+        else if (this.entries.containsKey(i))
         {
             throw new IllegalArgumentException("Duplicate id value for " + i + "!");
         }
@@ -118,9 +117,9 @@ public class EntityDataManager
 
     private <T> void setEntry(DataParameter<T> key, T value)
     {
-        DataEntry<T> dataentry = new DataEntry<T>(key, value);
+        DataEntry<T> dataentry = new DataEntry<>(key, value);
         this.lock.writeLock().lock();
-        this.entries.put(Integer.valueOf(key.getId()), dataentry);
+        this.entries.put(key.getId(), dataentry);
         this.empty = false;
         this.lock.writeLock().unlock();
     }
@@ -132,7 +131,7 @@ public class EntityDataManager
 
         try
         {
-            dataentry = (DataEntry)this.entries.get(Integer.valueOf(key.getId()));
+            dataentry = (DataEntry)this.entries.get(key.getId());
         }
         catch (Throwable throwable)
         {
@@ -306,7 +305,7 @@ public class EntityDataManager
 
         for (DataEntry<?> dataentry : entriesIn)
         {
-            DataEntry<?> dataentry1 = (DataEntry)this.entries.get(Integer.valueOf(dataentry.getKey().getId()));
+            DataEntry<?> dataentry1 = (DataEntry)this.entries.get(dataentry.getKey().getId());
 
             if (dataentry1 != null)
             {
@@ -383,7 +382,7 @@ public class EntityDataManager
 
             public DataEntry<T> copy()
             {
-                return new DataEntry<T>(this.key, this.key.getSerializer().copyValue(this.value));
+                return new DataEntry<>(this.key, this.key.getSerializer().copyValue(this.value));
             }
         }
 }

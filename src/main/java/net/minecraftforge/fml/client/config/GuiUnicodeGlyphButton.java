@@ -30,8 +30,8 @@ import net.minecraft.client.renderer.GlStateManager;
  */
 public class GuiUnicodeGlyphButton extends GuiButtonExt
 {
-    public String glyph;
-    public float  glyphScale;
+    public final String glyph;
+    public final float  glyphScale;
 
     public GuiUnicodeGlyphButton(int id, int xPos, int yPos, int width, int height, String displayString, String glyph, float glyphScale)
     {

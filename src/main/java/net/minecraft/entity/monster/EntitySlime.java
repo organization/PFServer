@@ -60,12 +60,12 @@ public class EntitySlime extends EntityLiving implements IMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(SLIME_SIZE, Integer.valueOf(1));
+        this.dataManager.register(SLIME_SIZE, 1);
     }
 
     public void setSlimeSize(int size, boolean resetHealth)
     {
-        this.dataManager.set(SLIME_SIZE, Integer.valueOf(size));
+        this.dataManager.set(SLIME_SIZE, size);
         this.setSize(0.51000005F * (float)size, 0.51000005F * (float)size);
         this.setPosition(this.posX, this.posY, this.posZ);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)(size * size));
@@ -81,7 +81,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
     public int getSlimeSize()
     {
-        return ((Integer)this.dataManager.get(SLIME_SIZE)).intValue();
+        return (Integer) this.dataManager.get(SLIME_SIZE);
     }
 
     public static void registerFixesSlime(DataFixer fixer)

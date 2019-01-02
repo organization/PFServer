@@ -32,7 +32,7 @@ import java.util.ListIterator;
 
 public class SideTransformer implements IClassTransformer
 {
-    private static String SIDE = FMLLaunchHandler.side().name();
+    private static final String SIDE = FMLLaunchHandler.side().name();
     private static final boolean DEBUG = false;
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes)
@@ -149,7 +149,7 @@ public class SideTransformer implements IClassTransformer
         private static final Handle META_FACTORY = new Handle(Opcodes.H_INVOKESTATIC, "java/lang/invoke/LambdaMetafactory", "metafactory",
                 "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;",
                 false);
-        private final List<Handle> dynamicLambdaHandles = new ArrayList<Handle>();
+        private final List<Handle> dynamicLambdaHandles = new ArrayList<>();
 
         public LambdaGatherer() {
             super(Opcodes.ASM5);

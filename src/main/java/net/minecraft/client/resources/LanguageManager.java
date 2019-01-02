@@ -53,13 +53,9 @@ public class LanguageManager implements IResourceManagerReloadListener
                     }
                 }
             }
-            catch (RuntimeException runtimeexception)
+            catch (RuntimeException | IOException runtimeexception)
             {
                 LOGGER.warn("Unable to parse language metadata section of resourcepack: {}", iresourcepack.getPackName(), runtimeexception);
-            }
-            catch (IOException ioexception)
-            {
-                LOGGER.warn("Unable to parse language metadata section of resourcepack: {}", iresourcepack.getPackName(), ioexception);
             }
         }
     }

@@ -30,12 +30,12 @@ public class MapData extends WorldSavedData
     public boolean unlimitedTracking;
     public byte scale;
     public byte[] colors = new byte[16384];
-    public List<MapInfo> playersArrayList = Lists.<MapInfo>newArrayList();
+    public final List<MapInfo> playersArrayList = Lists.<MapInfo>newArrayList();
     private final Map<EntityPlayer, MapInfo> playersHashMap = Maps.<EntityPlayer, MapInfo>newHashMap();
-    public Map<String, MapDecoration> mapDecorations = Maps.<String, MapDecoration>newLinkedHashMap();
+    public final Map<String, MapDecoration> mapDecorations = Maps.<String, MapDecoration>newLinkedHashMap();
 
     public final CraftMapView mapView;
-    private CraftServer server;
+    private final CraftServer server;
     private UUID uniqueId = null;
 
     public MapData(String mapname)

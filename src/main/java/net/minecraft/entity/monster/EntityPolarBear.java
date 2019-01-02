@@ -109,7 +109,7 @@ public class EntityPolarBear extends EntityAnimal
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(IS_STANDING, Boolean.valueOf(false));
+        this.dataManager.register(IS_STANDING, Boolean.FALSE);
     }
 
     public void onUpdate()
@@ -150,12 +150,12 @@ public class EntityPolarBear extends EntityAnimal
 
     public boolean isStanding()
     {
-        return ((Boolean)this.dataManager.get(IS_STANDING)).booleanValue();
+        return (Boolean) this.dataManager.get(IS_STANDING);
     }
 
     public void setStanding(boolean standing)
     {
-        this.dataManager.set(IS_STANDING, Boolean.valueOf(standing));
+        this.dataManager.set(IS_STANDING, standing);
     }
 
     @SideOnly(Side.CLIENT)
@@ -311,7 +311,7 @@ public class EntityPolarBear extends EntityAnimal
 
         public boolean shouldExecute()
         {
-            return !EntityPolarBear.this.isChild() && !EntityPolarBear.this.isBurning() ? false : super.shouldExecute();
+            return (EntityPolarBear.this.isChild() || EntityPolarBear.this.isBurning()) && super.shouldExecute();
         }
     }
 

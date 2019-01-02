@@ -53,6 +53,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public final class AnimationStateMachine implements IAnimationStateMachine
 {
@@ -161,14 +163,7 @@ public final class AnimationStateMachine implements IAnimationStateMachine
         {
             return pair;
         }
-        return Pair.of(pair.getLeft(), Iterables.filter(pair.getRight(), new Predicate<Event>()
-        {
-            @Override
-            public boolean apply(Event event)
-            {
-                return !event.event().startsWith("!");
-            }
-        }));
+        return Pair.of(pair.getLeft(), StreamSupport.stream(pair.getRight().spliterator(), false).filter(event -> !event.event().startsWith("!")).collect(Collectors.toList()));
     }
 
     @Override

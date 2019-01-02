@@ -38,8 +38,8 @@ import java.util.HashMap;
 public enum DefaultPermissionHandler implements IPermissionHandler
 {
     INSTANCE;
-    private static final HashMap<String, DefaultPermissionLevel> PERMISSION_LEVEL_MAP = new HashMap<String, DefaultPermissionLevel>();
-    private static final HashMap<String, String> DESCRIPTION_MAP = new HashMap<String, String>();
+    private static final HashMap<String, DefaultPermissionLevel> PERMISSION_LEVEL_MAP = new HashMap<>();
+    private static final HashMap<String, String> DESCRIPTION_MAP = new HashMap<>();
 
     @Override
     public void registerNode(String node, DefaultPermissionLevel level, String desc)

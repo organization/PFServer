@@ -48,8 +48,8 @@ public class SelectorHandlerManager
     }
 
     //the ordering is reversed such that longer prefixes appear before their shorter substrings
-    public static final NavigableMap<String, SelectorHandler> selectorHandlers = new TreeMap<String, SelectorHandler>(Collections.<String> reverseOrder());
-    public static final NavigableMap<String, String> registeringMods = new TreeMap<String, String>(Collections.<String> reverseOrder());
+    public static final NavigableMap<String, SelectorHandler> selectorHandlers = new TreeMap<>(Collections.<String>reverseOrder());
+    public static final NavigableMap<String, String> registeringMods = new TreeMap<>(Collections.<String>reverseOrder());
 
     private static final SelectorHandler vanillaHandler = new SelectorHandler()
     {

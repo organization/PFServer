@@ -141,11 +141,11 @@ public class WorldEvent extends Event
             this.type = type;
             if (oldList != null)
             {
-                this.list = new ArrayList<SpawnListEntry>(oldList);
+                this.list = new ArrayList<>(oldList);
             }
             else
             {
-                this.list = new ArrayList<SpawnListEntry>();
+                this.list = new ArrayList<>();
             }
         }
 

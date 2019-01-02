@@ -782,7 +782,7 @@ public final class ModelLoader extends ModelBakery
 
         @Nullable
         private ModelLoader loader;
-        private LoadingCache<BakedModelCacheKey, IBakedModel> modelCache = CacheBuilder.newBuilder().maximumSize(50).expireAfterWrite(100, TimeUnit.MILLISECONDS).build(new CacheLoader<BakedModelCacheKey, IBakedModel>() {
+        private final LoadingCache<BakedModelCacheKey, IBakedModel> modelCache = CacheBuilder.newBuilder().maximumSize(50).expireAfterWrite(100, TimeUnit.MILLISECONDS).build(new CacheLoader<BakedModelCacheKey, IBakedModel>() {
             @Override
             public IBakedModel load(BakedModelCacheKey key) throws Exception
             {
@@ -1201,8 +1201,7 @@ public final class ModelLoader extends ModelBakery
                 builder.putModel(selector.getPredicate(multipart.getStateContainer()), partModels.get(selector).bake(partModels.get(selector).getDefaultState(), format, bakedTextureGetter));
             }
 
-            IBakedModel bakedModel = builder.makeMultipartModel();
-            return bakedModel;
+            return builder.makeMultipartModel();
         }
 
         @Override

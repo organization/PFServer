@@ -122,9 +122,8 @@ public class LanServerDetector
                 {
                     this.socket.leaveGroup(this.broadcastAddress);
                 }
-                catch (IOException var4)
+                catch (IOException ignored)
                 {
-                    ;
                 }
 
                 this.socket.close();

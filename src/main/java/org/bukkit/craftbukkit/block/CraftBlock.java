@@ -276,7 +276,7 @@ public class CraftBlock implements Block {
             TileEntity tileEntity = chunk.getCraftWorld().getTileEntityAt(x, y, z);
             if (tileEntity != null) {
                 // block with unhandled TileEntity:
-                return new CraftBlockEntityState<TileEntity>(this, (Class<TileEntity>) tileEntity.getClass());
+                return new CraftBlockEntityState<>(this, (Class<TileEntity>) tileEntity.getClass());
             } else {
                 // Block without TileEntity:
                 return new CraftBlockState(this);
@@ -359,7 +359,7 @@ public class CraftBlock implements Block {
             TileEntity tileEntity = chunk.getCraftWorld().getTileEntityAt(x, y, z);
             if (tileEntity != null) {
                 // block with unhandled TileEntity:
-                return new CraftBlockEntityState<TileEntity>(this, (Class<TileEntity>) tileEntity.getClass());
+                return new CraftBlockEntityState<>(this, (Class<TileEntity>) tileEntity.getClass());
             } else {
                 // Block without TileEntity:
                 return new CraftBlockState(this);
@@ -495,7 +495,7 @@ public class CraftBlock implements Block {
     }
 
     public Collection<ItemStack> getDrops() {
-        List<ItemStack> drops = new ArrayList<ItemStack>();
+        List<ItemStack> drops = new ArrayList<>();
 
         net.minecraft.block.Block block = this.getNMSBlock();
         if (block != Blocks.AIR) {

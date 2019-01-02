@@ -31,7 +31,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 public class CapabilityItemHandler
 {
     @CapabilityInject(IItemHandler.class)
-    public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+    public static final Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
 
     public static void register()
     {

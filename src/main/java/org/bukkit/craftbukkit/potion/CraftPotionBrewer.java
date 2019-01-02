@@ -18,7 +18,7 @@ public class CraftPotionBrewer implements PotionBrewer {
 
         List<net.minecraft.potion.PotionEffect> mcEffects = net.minecraft.potion.PotionType.getPotionTypeForName(CraftPotionUtil.fromBukkit(new PotionData(damage, extended, upgraded))).getEffects();
 
-        ImmutableList.Builder<PotionEffect> builder = new ImmutableList.Builder<PotionEffect>();
+        ImmutableList.Builder<PotionEffect> builder = new ImmutableList.Builder<>();
         for (net.minecraft.potion.PotionEffect effect : mcEffects) {
             builder.add(CraftPotionUtil.toBukkit(effect));
         }
@@ -30,7 +30,7 @@ public class CraftPotionBrewer implements PotionBrewer {
 
     @Override
     public Collection<PotionEffect> getEffectsFromDamage(int damage) {
-        return new ArrayList<PotionEffect>();
+        return new ArrayList<>();
     }
 
     @Override

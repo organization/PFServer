@@ -192,8 +192,8 @@ public class FMLDeobfuscatingRemapper extends Remapper {
     private final Map<String,Map<String,String>> fieldDescriptions = Maps.newHashMap();
 
     // Cache null values so we don't waste time trying to recompute classes with no field or method maps
-    private Set<String> negativeCacheMethods = Sets.newHashSet();
-    private Set<String> negativeCacheFields = Sets.newHashSet();
+    private final Set<String> negativeCacheMethods = Sets.newHashSet();
+    private final Set<String> negativeCacheFields = Sets.newHashSet();
 
     @Nullable
     private String getFieldType(String owner, String name)

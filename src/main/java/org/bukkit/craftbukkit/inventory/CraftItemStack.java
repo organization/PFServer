@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static org.bukkit.craftbukkit.inventory.CraftMetaItem.*;
 
@@ -448,7 +449,7 @@ public final class CraftItemStack extends ItemStack {
         if (!(that.getTypeId() == getTypeId() && getDurability() == that.getDurability())) {
             return false;
         }
-        return hasItemMeta() ? that.hasItemMeta() && handle.getTagCompound().equals(that.handle.getTagCompound()) : !that.hasItemMeta();
+        return hasItemMeta() ? that.hasItemMeta() && Objects.equals(handle.getTagCompound(), that.handle.getTagCompound()) : !that.hasItemMeta();
     }
 
     @Override

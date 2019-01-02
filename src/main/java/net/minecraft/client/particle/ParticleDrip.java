@@ -121,7 +121,7 @@ public class ParticleDrip extends Particle
 
             if (iblockstate.getBlock() instanceof BlockLiquid)
             {
-                d0 = (double)BlockLiquid.getLiquidHeightPercent(((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue());
+                d0 = (double)BlockLiquid.getLiquidHeightPercent((Integer) iblockstate.getValue(BlockLiquid.LEVEL));
             }
 
             double d1 = (double)(MathHelper.floor(this.posY) + 1) - d0;

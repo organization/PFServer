@@ -37,7 +37,7 @@ public interface Evoker extends Spellcaster {
         /**
          * The spell that makes the target blind.
          */
-        BLINDNESS;
+        BLINDNESS
     }
 
     /**

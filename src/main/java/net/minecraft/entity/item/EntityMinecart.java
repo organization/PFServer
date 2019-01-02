@@ -66,11 +66,11 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
     private double velocityZ;
 
     /* Forge: Minecart Compatibility Layer Integration. */
-    public static float defaultMaxSpeedAirLateral = 0.4f;
-    public static float defaultMaxSpeedAirVertical = -1f;
-    public static double defaultDragAir = 0.94999998807907104D;
+    public static final float defaultMaxSpeedAirLateral = 0.4f;
+    public static final float defaultMaxSpeedAirVertical = -1f;
+    public static final double defaultDragAir = 0.94999998807907104D;
     protected boolean canUseRail = true;
-    protected boolean canBePushed = true;
+    protected final boolean canBePushed = true;
     private static net.minecraftforge.common.IMinecartCollisionHandler collisionHandler = null;
 
     /* Instance versions of the above physics properties */
@@ -125,12 +125,12 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
     protected void entityInit()
     {
-        this.dataManager.register(ROLLING_AMPLITUDE, Integer.valueOf(0));
-        this.dataManager.register(ROLLING_DIRECTION, Integer.valueOf(1));
-        this.dataManager.register(DAMAGE, Float.valueOf(0.0F));
-        this.dataManager.register(DISPLAY_TILE, Integer.valueOf(0));
-        this.dataManager.register(DISPLAY_TILE_OFFSET, Integer.valueOf(6));
-        this.dataManager.register(SHOW_BLOCK, Boolean.valueOf(false));
+        this.dataManager.register(ROLLING_AMPLITUDE, 0);
+        this.dataManager.register(ROLLING_DIRECTION, 1);
+        this.dataManager.register(DAMAGE, 0.0F);
+        this.dataManager.register(DISPLAY_TILE, 0);
+        this.dataManager.register(DISPLAY_TILE_OFFSET, 6);
+        this.dataManager.register(SHOW_BLOCK, Boolean.FALSE);
     }
 
     @Nullable
@@ -386,7 +386,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
                 if (iblockstate.getBlock() == Blocks.ACTIVATOR_RAIL)
                 {
-                    this.onActivatorRailPass(k, l, i1, ((Boolean)iblockstate.getValue(BlockRailPowered.POWERED)).booleanValue());
+                    this.onActivatorRailPass(k, l, i1, (Boolean) iblockstate.getValue(BlockRailPowered.POWERED));
                 }
             }
             else
@@ -439,12 +439,8 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
                 if (!list.isEmpty())
                 {
-                    for (int j1 = 0; j1 < list.size(); ++j1)
-                    {
-                        Entity entity1 = list.get(j1);
-
-                        if (!(entity1 instanceof EntityPlayer) && !(entity1 instanceof EntityIronGolem) && !(entity1 instanceof EntityMinecart) && !this.isBeingRidden() && !entity1.isRiding())
-                        {
+                    for (Entity entity1 : list) {
+                        if (!(entity1 instanceof EntityPlayer) && !(entity1 instanceof EntityIronGolem) && !(entity1 instanceof EntityMinecart) && !this.isBeingRidden() && !entity1.isRiding()) {
                             VehicleEntityCollisionEvent collisionEvent = new VehicleEntityCollisionEvent(vehicle, entity1.getBukkitEntity());
                             this.world.getServer().getPluginManager().callEvent(collisionEvent);
 
@@ -452,9 +448,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
                                 continue;
                             }
                             entity1.startRiding(this);
-                        }
-                        else
-                        {
+                        } else {
                             VehicleEntityCollisionEvent collisionEvent = new VehicleEntityCollisionEvent(vehicle, entity1.getBukkitEntity());
                             this.world.getServer().getPluginManager().callEvent(collisionEvent);
 
@@ -554,7 +548,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
         if (blockrailbase == Blocks.GOLDEN_RAIL)
         {
-            flag = ((Boolean)state.getValue(BlockRailPowered.POWERED)).booleanValue();
+            flag = (Boolean) state.getValue(BlockRailPowered.POWERED);
             flag1 = !flag;
         }
 
@@ -1051,7 +1045,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
     public void setDamage(float damage)
     {
-        this.dataManager.set(DAMAGE, Float.valueOf(damage));
+        this.dataManager.set(DAMAGE, damage);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1067,34 +1061,34 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
     public float getDamage()
     {
-        return ((Float)this.dataManager.get(DAMAGE)).floatValue();
+        return (Float) this.dataManager.get(DAMAGE);
     }
 
     public void setRollingAmplitude(int rollingAmplitude)
     {
-        this.dataManager.set(ROLLING_AMPLITUDE, Integer.valueOf(rollingAmplitude));
+        this.dataManager.set(ROLLING_AMPLITUDE, rollingAmplitude);
     }
 
     public int getRollingAmplitude()
     {
-        return ((Integer)this.dataManager.get(ROLLING_AMPLITUDE)).intValue();
+        return (Integer) this.dataManager.get(ROLLING_AMPLITUDE);
     }
 
     public void setRollingDirection(int rollingDirection)
     {
-        this.dataManager.set(ROLLING_DIRECTION, Integer.valueOf(rollingDirection));
+        this.dataManager.set(ROLLING_DIRECTION, rollingDirection);
     }
 
     public int getRollingDirection()
     {
-        return ((Integer)this.dataManager.get(ROLLING_DIRECTION)).intValue();
+        return (Integer) this.dataManager.get(ROLLING_DIRECTION);
     }
 
     public abstract Type getType();
 
     public IBlockState getDisplayTile()
     {
-        return !this.hasDisplayTile() ? this.getDefaultDisplayTile() : Block.getStateById(((Integer)this.getDataManager().get(DISPLAY_TILE)).intValue());
+        return !this.hasDisplayTile() ? this.getDefaultDisplayTile() : Block.getStateById((Integer) this.getDataManager().get(DISPLAY_TILE));
     }
 
     public IBlockState getDefaultDisplayTile()
@@ -1104,7 +1098,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
     public int getDisplayTileOffset()
     {
-        return !this.hasDisplayTile() ? this.getDefaultDisplayTileOffset() : ((Integer)this.getDataManager().get(DISPLAY_TILE_OFFSET)).intValue();
+        return !this.hasDisplayTile() ? this.getDefaultDisplayTileOffset() : (Integer) this.getDataManager().get(DISPLAY_TILE_OFFSET);
     }
 
     public int getDefaultDisplayTileOffset()
@@ -1114,24 +1108,24 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
 
     public void setDisplayTile(IBlockState displayTile)
     {
-        this.getDataManager().set(DISPLAY_TILE, Integer.valueOf(Block.getStateId(displayTile)));
+        this.getDataManager().set(DISPLAY_TILE, Block.getStateId(displayTile));
         this.setHasDisplayTile(true);
     }
 
     public void setDisplayTileOffset(int displayTileOffset)
     {
-        this.getDataManager().set(DISPLAY_TILE_OFFSET, Integer.valueOf(displayTileOffset));
+        this.getDataManager().set(DISPLAY_TILE_OFFSET, displayTileOffset);
         this.setHasDisplayTile(true);
     }
 
     public boolean hasDisplayTile()
     {
-        return ((Boolean)this.getDataManager().get(SHOW_BLOCK)).booleanValue();
+        return (Boolean) this.getDataManager().get(SHOW_BLOCK);
     }
 
     public void setHasDisplayTile(boolean showBlock)
     {
-        this.getDataManager().set(SHOW_BLOCK, Boolean.valueOf(showBlock));
+        this.getDataManager().set(SHOW_BLOCK, showBlock);
     }
     
     @Override
@@ -1400,7 +1394,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
         @SideOnly(Side.CLIENT)
         public static EntityMinecart.Type getById(int idIn)
         {
-            Type entityminecart$type = BY_ID.get(Integer.valueOf(idIn));
+            Type entityminecart$type = BY_ID.get(idIn);
             return entityminecart$type == null ? RIDEABLE : entityminecart$type;
         }
 
@@ -1408,7 +1402,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable
         {
             for (Type entityminecart$type : values())
             {
-                BY_ID.put(Integer.valueOf(entityminecart$type.getId()), entityminecart$type);
+                BY_ID.put(entityminecart$type.getId(), entityminecart$type);
             }
         }
     }

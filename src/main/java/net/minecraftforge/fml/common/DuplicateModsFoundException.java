@@ -32,7 +32,7 @@ import java.util.Map.Entry;
 public class DuplicateModsFoundException extends LoaderException implements IDisplayableError
 {
     private static final long serialVersionUID = 1L;
-    public SetMultimap<ModContainer,File> dupes;
+    public final SetMultimap<ModContainer,File> dupes;
 
     public DuplicateModsFoundException(SetMultimap<ModContainer, File> dupes) {
         this.dupes = dupes;

@@ -28,13 +28,13 @@ public class FunctionManager implements ITickable
     private final Map<ResourceLocation, FunctionObject> functions = Maps.<ResourceLocation, FunctionObject>newHashMap();
     private String currentGameLoopFunctionId = "-";
     private FunctionObject gameLoopFunction;
-    private final ArrayDeque<QueuedCommand> commandQueue = new ArrayDeque<QueuedCommand>();
+    private final ArrayDeque<QueuedCommand> commandQueue = new ArrayDeque<>();
     private boolean isExecuting = false;
     private final ICommandSender gameLoopFunctionSender = new CustomFunctionListener();
 
     public class CustomFunctionListener implements ICommandSender {
 
-        public org.bukkit.command.CommandSender sender = new org.bukkit.craftbukkit.command.CraftFunctionCommandSender(this);
+        public final org.bukkit.command.CommandSender sender = new org.bukkit.craftbukkit.command.CraftFunctionCommandSender(this);
         public String getName()
         {
             return FunctionManager.this.currentGameLoopFunctionId;
@@ -51,7 +51,7 @@ public class FunctionManager implements ITickable
         {
             return FunctionManager.this.server;
         }
-    };
+    }
 
     public FunctionManager(@Nullable File functionDirIn, MinecraftServer serverIn)
     {
@@ -125,10 +125,8 @@ public class FunctionManager implements ITickable
                     this.commandQueue.push(new QueuedCommand(this, sender, afunctionobject$entry[k]));
                 }
 
-                while (true)
-                {
-                    if (this.commandQueue.isEmpty())
-                    {
+                do {
+                    if (this.commandQueue.isEmpty()) {
                         l = j;
                         return l;
                     }
@@ -136,11 +134,7 @@ public class FunctionManager implements ITickable
                     (this.commandQueue.removeFirst()).execute(this.commandQueue, i);
                     ++j;
 
-                    if (j >= i)
-                    {
-                        break;
-                    }
-                }
+                } while (j < i);
 
                 l = j;
             }

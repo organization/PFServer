@@ -44,7 +44,7 @@ public class ASMEventHandler implements IEventListener
 
     private final IEventListener handler;
     private final SubscribeEvent subInfo;
-    private ModContainer owner;
+    private final ModContainer owner;
     private String readable;
     private java.lang.reflect.Type filter = null;
 

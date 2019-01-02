@@ -69,8 +69,8 @@ public class RConThreadQuery extends RConThreadBase
         {
             this.queryPort = this.serverPort;
             this.logInfo("Setting default query port to " + this.queryPort);
-            p_i1536_1_.setProperty("query.port", Integer.valueOf(this.queryPort));
-            p_i1536_1_.setProperty("debug", Boolean.valueOf(false));
+            p_i1536_1_.setProperty("query.port", this.queryPort);
+            p_i1536_1_.setProperty("debug", Boolean.FALSE);
             p_i1536_1_.saveProperties();
         }
 
@@ -100,7 +100,7 @@ public class RConThreadQuery extends RConThreadBase
             {
                 case 0:
 
-                    if (!this.verifyClientAuth(requestPacket).booleanValue())
+                    if (!this.verifyClientAuth(requestPacket))
                     {
                         this.logDebug("Invalid challenge [" + socketaddress + "]");
                         return false;
@@ -216,7 +216,7 @@ public class RConThreadQuery extends RConThreadBase
         else
         {
             byte[] abyte = requestPacket.getData();
-            return ((Auth)this.queryClients.get(socketaddress)).getRandomChallenge() != RConUtils.getBytesAsBEint(abyte, 7, requestPacket.getLength()) ? false : true;
+            return ((Auth) this.queryClients.get(socketaddress)).getRandomChallenge() == RConUtils.getBytesAsBEint(abyte, 7, requestPacket.getLength());
         }
     }
 
@@ -242,7 +242,7 @@ public class RConThreadQuery extends RConThreadBase
                 {
                     Entry<SocketAddress, Auth> entry = (Entry)iterator.next();
 
-                    if (((Auth)entry.getValue()).hasExpired(i).booleanValue())
+                    if (((Auth) entry.getValue()).hasExpired(i))
                     {
                         iterator.remove();
                     }
@@ -271,9 +271,8 @@ public class RConThreadQuery extends RConThreadBase
                 {
                     this.cleanQueryClientsMap();
                 }
-                catch (PortUnreachableException var8)
+                catch (PortUnreachableException ignored)
                 {
-                    ;
                 }
                 catch (IOException ioexception)
                 {

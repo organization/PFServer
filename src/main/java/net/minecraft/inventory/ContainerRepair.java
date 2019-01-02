@@ -35,7 +35,7 @@ public class ContainerRepair extends Container
 
     private int lastLevelCost;
     private CraftInventoryView bukkitEntity;
-    private InventoryPlayer playerInventory;
+    private final InventoryPlayer playerInventory;
 
     @SideOnly(Side.CLIENT)
     public ContainerRepair(InventoryPlayer playerInventory, World worldIn, EntityPlayer player)
@@ -105,7 +105,7 @@ public class ContainerRepair extends Container
 
                 if (!thePlayer.capabilities.isCreativeMode && !worldIn.isRemote && iblockstate.getBlock() == Blocks.ANVIL && thePlayer.getRNG().nextFloat() < breakChance)
                 {
-                    int l = ((Integer)iblockstate.getValue(BlockAnvil.DAMAGE)).intValue();
+                    int l = (Integer) iblockstate.getValue(BlockAnvil.DAMAGE);
                     ++l;
 
                     if (l > 2)
@@ -115,7 +115,7 @@ public class ContainerRepair extends Container
                     }
                     else
                     {
-                        worldIn.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, Integer.valueOf(l)), 2);
+                        worldIn.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, l), 2);
                         worldIn.playEvent(1030, blockPosIn, 0);
                     }
                 }
@@ -240,8 +240,8 @@ public class ContainerRepair extends Container
                     {
                         if (enchantment1 != null)
                         {
-                            int i2 = map.containsKey(enchantment1) ? ((Integer)map.get(enchantment1)).intValue() : 0;
-                            int j2 = ((Integer)map1.get(enchantment1)).intValue();
+                            int i2 = map.containsKey(enchantment1) ? (Integer) map.get(enchantment1) : 0;
+                            int j2 = (Integer) map1.get(enchantment1);
                             j2 = i2 == j2 ? j2 + 1 : Math.max(j2, i2);
                             boolean flag1 = enchantment1.canApply(itemstack);
 
@@ -272,7 +272,7 @@ public class ContainerRepair extends Container
                                     j2 = enchantment1.getMaxLevel();
                                 }
 
-                                map.put(enchantment1, Integer.valueOf(j2));
+                                map.put(enchantment1, j2);
                                 int k3 = 0;
 
                                 switch (enchantment1.getRarity())
@@ -486,9 +486,7 @@ public class ContainerRepair extends Container
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icrafting = this.listeners.get(i);
-
+        for (IContainerListener icrafting : this.listeners) {
             if (this.lastLevelCost != this.maximumCost) {
                 icrafting.sendWindowProperty(this, 0, this.maximumCost);
             }

@@ -21,23 +21,11 @@ import java.util.*;
 
 public class PlayerChunkMap
 {
-    private static final Predicate<EntityPlayerMP> NOT_SPECTATOR = new Predicate<EntityPlayerMP>()
-    {
-        public boolean apply(@Nullable EntityPlayerMP p_apply_1_)
-        {
-            return p_apply_1_ != null && !p_apply_1_.isSpectator();
-        }
-    };
-    private static final Predicate<EntityPlayerMP> CAN_GENERATE_CHUNKS = new Predicate<EntityPlayerMP>()
-    {
-        public boolean apply(@Nullable EntityPlayerMP p_apply_1_)
-        {
-            return p_apply_1_ != null && (!p_apply_1_.isSpectator() || p_apply_1_.getServerWorld().getGameRules().getBoolean("spectatorsGenerateChunks"));
-        }
-    };
+    private static final Predicate<EntityPlayerMP> NOT_SPECTATOR = p_apply_1_ -> p_apply_1_ != null && !p_apply_1_.isSpectator();
+    private static final Predicate<EntityPlayerMP> CAN_GENERATE_CHUNKS = p_apply_1_ -> p_apply_1_ != null && (!p_apply_1_.isSpectator() || p_apply_1_.getServerWorld().getGameRules().getBoolean("spectatorsGenerateChunks"));
     private final WorldServer world;
     private final List<EntityPlayerMP> players = Lists.<EntityPlayerMP>newArrayList();
-    private final Long2ObjectMap<PlayerChunkMapEntry> entryMap = new Long2ObjectOpenHashMap<PlayerChunkMapEntry>(4096);
+    private final Long2ObjectMap<PlayerChunkMapEntry> entryMap = new Long2ObjectOpenHashMap<>(4096);
     private final Set<PlayerChunkMapEntry> dirtyEntries = Sets.<PlayerChunkMapEntry>newHashSet();
     private final List<PlayerChunkMapEntry> pendingSendToPlayers = Lists.<PlayerChunkMapEntry>newLinkedList();
     private final List<PlayerChunkMapEntry> entriesWithoutChunks = Lists.<PlayerChunkMapEntry>newLinkedList();
@@ -109,9 +97,7 @@ public class PlayerChunkMap
         {
             this.previousTotalWorldTime = i;
 
-            for (int j = 0; j < this.entries.size(); ++j)
-            {
-                PlayerChunkMapEntry playerchunkmapentry = this.entries.get(j);
+            for (PlayerChunkMapEntry playerchunkmapentry : this.entries) {
                 playerchunkmapentry.update();
                 playerchunkmapentry.updateChunkInhabitedTime();
             }
@@ -130,25 +116,13 @@ public class PlayerChunkMap
         if (this.sortMissingChunks && i % 4L == 0L)
         {
             this.sortMissingChunks = false;
-            Collections.sort(this.entriesWithoutChunks, new Comparator<PlayerChunkMapEntry>()
-            {
-                public int compare(PlayerChunkMapEntry p_compare_1_, PlayerChunkMapEntry p_compare_2_)
-                {
-                    return ComparisonChain.start().compare(p_compare_1_.getClosestPlayerDistance(), p_compare_2_.getClosestPlayerDistance()).result();
-                }
-            });
+            this.entriesWithoutChunks.sort((p_compare_1_, p_compare_2_) -> ComparisonChain.start().compare(p_compare_1_.getClosestPlayerDistance(), p_compare_2_.getClosestPlayerDistance()).result());
         }
 
         if (this.sortSendToPlayers && i % 4L == 2L)
         {
             this.sortSendToPlayers = false;
-            Collections.sort(this.pendingSendToPlayers, new Comparator<PlayerChunkMapEntry>()
-            {
-                public int compare(PlayerChunkMapEntry p_compare_1_, PlayerChunkMapEntry p_compare_2_)
-                {
-                    return ComparisonChain.start().compare(p_compare_1_.getClosestPlayerDistance(), p_compare_2_.getClosestPlayerDistance()).result();
-                }
-            });
+            this.pendingSendToPlayers.sort((p_compare_1_, p_compare_2_) -> ComparisonChain.start().compare(p_compare_1_.getClosestPlayerDistance(), p_compare_2_.getClosestPlayerDistance()).result());
         }
 
         if (!this.entriesWithoutChunks.isEmpty())
@@ -296,7 +270,7 @@ public class PlayerChunkMap
             }
         }
 
-        Collections.sort(chunkList, new ChunkCoordComparator(player));
+        chunkList.sort(new ChunkCoordComparator(player));
         for (ChunkPos pair : chunkList) {
             this.getOrCreateEntry(pair.x, pair.z).addPlayer(player);
         }
@@ -388,7 +362,7 @@ public class PlayerChunkMap
                 player.managedPosZ = player.posZ;
                 this.markSortPending();
                 // CraftBukkit start - send nearest chunks first
-                Collections.sort(chunksToLoad, new ChunkCoordComparator(player));
+                chunksToLoad.sort(new ChunkCoordComparator(player));
                 for (ChunkPos pair : chunksToLoad) {
                     this.getOrCreateEntry(pair.x, pair.z).addPlayer(player);
                 }
@@ -492,8 +466,8 @@ public class PlayerChunkMap
 
     // CraftBukkit start - Sorter to load nearby chunks first
     private static class ChunkCoordComparator implements java.util.Comparator<ChunkPos> {
-        private int x;
-        private int z;
+        private final int x;
+        private final int z;
 
         public ChunkCoordComparator (EntityPlayer entityplayer) {
             x = (int) entityplayer.posX >> 4;

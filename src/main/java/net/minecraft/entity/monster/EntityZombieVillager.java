@@ -50,13 +50,13 @@ public class EntityZombieVillager extends EntityZombie
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(CONVERTING, Boolean.valueOf(false));
-        this.dataManager.register(PROFESSION, Integer.valueOf(0));
+        this.dataManager.register(CONVERTING, Boolean.FALSE);
+        this.dataManager.register(PROFESSION, 0);
     }
 
     public void setProfession(int profession)
     {
-        this.dataManager.set(PROFESSION, Integer.valueOf(profession));
+        this.dataManager.set(PROFESSION, profession);
         net.minecraftforge.fml.common.registry.VillagerRegistry.onSetProfession(this, profession);
     }
 
@@ -64,7 +64,7 @@ public class EntityZombieVillager extends EntityZombie
     @Deprecated
     public int getProfession()
     {
-        return Math.max(((Integer)this.dataManager.get(PROFESSION)).intValue(), 0);
+        return Math.max((Integer) this.dataManager.get(PROFESSION), 0);
     }
 
     public static void registerFixesZombieVillager(DataFixer fixer)
@@ -161,14 +161,14 @@ public class EntityZombieVillager extends EntityZombie
 
     public boolean isConverting()
     {
-        return ((Boolean)this.getDataManager().get(CONVERTING)).booleanValue();
+        return (Boolean) this.getDataManager().get(CONVERTING);
     }
 
     protected void startConverting(@Nullable UUID conversionStarterIn, int conversionTimeIn)
     {
         this.converstionStarter = conversionStarterIn;
         this.conversionTime = conversionTimeIn;
-        this.getDataManager().set(CONVERTING, Boolean.valueOf(true));
+        this.getDataManager().set(CONVERTING, Boolean.TRUE);
         this.removePotionEffect(MobEffects.WEAKNESS);
         this.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, conversionTimeIn, Math.min(this.world.getDifficulty().getDifficultyId() - 1, 0)));
         this.world.setEntityState(this, (byte)16);

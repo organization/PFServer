@@ -36,7 +36,7 @@ public class BlockDaylightDetector extends BlockContainer
     {
         super(Material.WOOD);
         this.inverted = inverted;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(POWER, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(POWER, 0));
         this.setCreativeTab(CreativeTabs.REDSTONE);
         this.setHardness(0.2F);
         this.setSoundType(SoundType.WOOD);
@@ -50,7 +50,7 @@ public class BlockDaylightDetector extends BlockContainer
 
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return ((Integer)blockState.getValue(POWER)).intValue();
+        return (Integer) blockState.getValue(POWER);
     }
 
     public void updatePower(World worldIn, BlockPos pos)
@@ -75,10 +75,10 @@ public class BlockDaylightDetector extends BlockContainer
 
             i = MathHelper.clamp(i, 0, 15);
 
-            if (((Integer)iblockstate.getValue(POWER)).intValue() != i)
+            if ((Integer) iblockstate.getValue(POWER) != i)
             {
                 i = org.bukkit.craftbukkit.event.CraftEventFactory.callRedstoneChange(worldIn, pos.getX(), pos.getY(), pos.getZ(), iblockstate.getValue(POWER), i).getNewCurrent();
-                worldIn.setBlockState(pos, iblockstate.withProperty(POWER, Integer.valueOf(i)), 3);
+                worldIn.setBlockState(pos, iblockstate.withProperty(POWER, i), 3);
             }
         }
     }
@@ -150,17 +150,17 @@ public class BlockDaylightDetector extends BlockContainer
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(POWER, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(POWER, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return (Integer) state.getValue(POWER);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
+        return new BlockStateContainer(this, POWER);
     }
 
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)

@@ -11,7 +11,7 @@ public class BiomeCache
 {
     private final BiomeProvider provider;
     private long lastCleanupTime;
-    private final Long2ObjectMap<Block> cacheMap = new Long2ObjectOpenHashMap<Block>(4096);
+    private final Long2ObjectMap<Block> cacheMap = new Long2ObjectOpenHashMap<>(4096);
     private final List<Block> cache = Lists.<Block>newArrayList();
 
     public BiomeCache(BiomeProvider provider)
@@ -74,9 +74,9 @@ public class BiomeCache
 
     public class Block
     {
-        public Biome[] biomes = new Biome[256];
-        public int x;
-        public int z;
+        public final Biome[] biomes = new Biome[256];
+        public final int x;
+        public final int z;
         public long lastAccessTime;
 
         public Block(int x, int z)

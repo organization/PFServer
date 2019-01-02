@@ -45,12 +45,8 @@ public class DataFixer implements IDataFixer
 
         if (list != null)
         {
-            for (int i = 0; i < list.size(); ++i)
-            {
-                IFixableData ifixabledata = list.get(i);
-
-                if (ifixabledata.getFixVersion() > versionIn)
-                {
+            for (IFixableData ifixabledata : list) {
+                if (ifixabledata.getFixVersion() > versionIn) {
                     compound = ifixabledata.fixTagCompound(compound);
                 }
             }
@@ -65,9 +61,8 @@ public class DataFixer implements IDataFixer
 
         if (list != null)
         {
-            for (int i = 0; i < list.size(); ++i)
-            {
-                compound = ((IDataWalker)list.get(i)).process(this, compound, versionIn);
+            for (IDataWalker iDataWalker : list) {
+                compound = ((IDataWalker) iDataWalker).process(this, compound, versionIn);
             }
         }
 
@@ -91,7 +86,7 @@ public class DataFixer implements IDataFixer
 
         if (i > this.version)
         {
-            LOGGER.warn("Ignored fix registered for version: {} as the DataVersion of the game is: {}", Integer.valueOf(i), Integer.valueOf(this.version));
+            LOGGER.warn("Ignored fix registered for version: {} as the DataVersion of the game is: {}", i, this.version);
         }
         else
         {

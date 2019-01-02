@@ -25,8 +25,8 @@ import net.minecraft.util.math.ChunkPos;
 // Sorter to load nearby chunks first
 public class ChunkCoordComparator implements java.util.Comparator<ChunkPos>
 {
-    private int x;
-    private int z;
+    private final int x;
+    private final int z;
 
     public ChunkCoordComparator(EntityPlayerMP entityplayer)
     {

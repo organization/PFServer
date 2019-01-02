@@ -38,7 +38,7 @@ public class BlockPane extends Block
     protected BlockPane(Material materialIn, boolean canDrop)
     {
         super(materialIn);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE));
         this.canDrop = canDrop;
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
@@ -52,22 +52,22 @@ public class BlockPane extends Block
 
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[0]);
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if ((Boolean) state.getValue(NORTH))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.NORTH)]);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if ((Boolean) state.getValue(SOUTH))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.SOUTH)]);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if ((Boolean) state.getValue(EAST))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.EAST)]);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if ((Boolean) state.getValue(WEST))
         {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_BY_INDEX[getBoundingBoxIndex(EnumFacing.WEST)]);
         }
@@ -88,22 +88,22 @@ public class BlockPane extends Block
     {
         int i = 0;
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if ((Boolean) state.getValue(NORTH))
         {
             i |= getBoundingBoxIndex(EnumFacing.NORTH);
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if ((Boolean) state.getValue(EAST))
         {
             i |= getBoundingBoxIndex(EnumFacing.EAST);
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if ((Boolean) state.getValue(SOUTH))
         {
             i |= getBoundingBoxIndex(EnumFacing.SOUTH);
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if ((Boolean) state.getValue(WEST))
         {
             i |= getBoundingBoxIndex(EnumFacing.WEST);
         }
@@ -137,7 +137,7 @@ public class BlockPane extends Block
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return blockAccess.getBlockState(pos.offset(side)).getBlock() == this ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     public final boolean attachesTo(IBlockAccess p_193393_1_, IBlockState state, BlockPos pos, EnumFacing facing)
@@ -198,7 +198,7 @@ public class BlockPane extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, WEST, SOUTH});
+        return new BlockStateContainer(this, NORTH, EAST, WEST, SOUTH);
     }
 
     /* ======================================== FORGE START ======================================== */

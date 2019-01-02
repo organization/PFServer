@@ -34,7 +34,7 @@ public class BlockLever extends Block
     protected BlockLever()
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH).withProperty(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumOrientation.NORTH).withProperty(POWERED, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.REDSTONE);
     }
 
@@ -79,7 +79,7 @@ public class BlockLever extends Block
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+        IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.FALSE);
 
         if (canAttachTo(worldIn, pos, facing))
         {
@@ -172,7 +172,7 @@ public class BlockLever extends Block
             }
             state = state.cycleProperty(POWERED);
             worldIn.setBlockState(pos, state, 3);
-            float f = ((Boolean)state.getValue(POWERED)).booleanValue() ? 0.6F : 0.5F;
+            float f = (Boolean) state.getValue(POWERED) ? 0.6F : 0.5F;
             worldIn.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, f);
             worldIn.notifyNeighborsOfStateChange(pos, this, false);
             EnumFacing enumfacing = ((EnumOrientation)state.getValue(FACING)).getFacing();
@@ -183,7 +183,7 @@ public class BlockLever extends Block
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             worldIn.notifyNeighborsOfStateChange(pos, this, false);
             EnumFacing enumfacing = ((EnumOrientation)state.getValue(FACING)).getFacing();
@@ -195,12 +195,12 @@ public class BlockLever extends Block
 
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return ((Boolean)blockState.getValue(POWERED)).booleanValue() ? 15 : 0;
+        return (Boolean) blockState.getValue(POWERED) ? 15 : 0;
     }
 
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        if (!((Boolean)blockState.getValue(POWERED)).booleanValue())
+        if (!(Boolean) blockState.getValue(POWERED))
         {
             return 0;
         }
@@ -217,7 +217,7 @@ public class BlockLever extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumOrientation.byMetadata(meta & 7)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(FACING, EnumOrientation.byMetadata(meta & 7)).withProperty(POWERED, (meta & 8) > 0);
     }
 
     public int getMetaFromState(IBlockState state)
@@ -225,7 +225,7 @@ public class BlockLever extends Block
         int i = 0;
         i = i | ((EnumOrientation)state.getValue(FACING)).getMetadata();
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             i |= 8;
         }
@@ -309,7 +309,7 @@ public class BlockLever extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+        return new BlockStateContainer(this, FACING, POWERED);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

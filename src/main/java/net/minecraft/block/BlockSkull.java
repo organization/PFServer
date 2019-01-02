@@ -48,13 +48,7 @@ public class BlockSkull extends BlockContainer
 {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
     public static final PropertyBool NODROP = PropertyBool.create("nodrop");
-    private static final Predicate<BlockWorldState> IS_WITHER_SKELETON = new Predicate<BlockWorldState>()
-    {
-        public boolean apply(@Nullable BlockWorldState p_apply_1_)
-        {
-            return p_apply_1_.getBlockState() != null && p_apply_1_.getBlockState().getBlock() == Blocks.SKULL && p_apply_1_.getTileEntity() instanceof TileEntitySkull && ((TileEntitySkull)p_apply_1_.getTileEntity()).getSkullType() == 1;
-        }
-    };
+    private static final Predicate<BlockWorldState> IS_WITHER_SKELETON = p_apply_1_ -> p_apply_1_.getBlockState() != null && p_apply_1_.getBlockState().getBlock() == Blocks.SKULL && p_apply_1_.getTileEntity() instanceof TileEntitySkull && ((TileEntitySkull)p_apply_1_.getTileEntity()).getSkullType() == 1;
     protected static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.5D, 0.75D);
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.25D, 0.25D, 0.5D, 0.75D, 0.75D, 1.0D);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.25D, 0.25D, 0.0D, 0.75D, 0.75D, 0.5D);
@@ -66,7 +60,7 @@ public class BlockSkull extends BlockContainer
     protected BlockSkull()
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(NODROP, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(NODROP, Boolean.FALSE));
     }
 
     public String getLocalizedName()
@@ -110,7 +104,7 @@ public class BlockSkull extends BlockContainer
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(NODROP, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(NODROP, Boolean.FALSE);
     }
 
     public TileEntity createNewTileEntity(World worldIn, int meta)
@@ -159,7 +153,7 @@ public class BlockSkull extends BlockContainer
     {
         if (player.capabilities.isCreativeMode)
         {
-            state = state.withProperty(NODROP, Boolean.valueOf(true));
+            state = state.withProperty(NODROP, Boolean.TRUE);
             worldIn.setBlockState(pos, state, 4);
         }
 
@@ -279,7 +273,7 @@ public class BlockSkull extends BlockContainer
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(NODROP, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(NODROP, (meta & 8) > 0);
     }
 
     public int getMetaFromState(IBlockState state)
@@ -287,7 +281,7 @@ public class BlockSkull extends BlockContainer
         int i = 0;
         i = i | ((EnumFacing)state.getValue(FACING)).getIndex();
 
-        if (((Boolean)state.getValue(NODROP)).booleanValue())
+        if ((Boolean) state.getValue(NODROP))
         {
             i |= 8;
         }
@@ -307,7 +301,7 @@ public class BlockSkull extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, NODROP});
+        return new BlockStateContainer(this, FACING, NODROP);
     }
 
     protected BlockPattern getWitherBasePattern()

@@ -60,15 +60,8 @@ public final class ConsoleCommandCompleter implements Completer
         }
 
         final String input = buffer;
-        Future<List<String>> tabComplete = this.server.callFromMainThread(new Callable<List<String>>() {
-
-            @Override
-            public List<String> call() throws Exception
-            {
-                return ConsoleCommandCompleter.this.server.getTabCompletions(ConsoleCommandCompleter.this.server, input,
-                        ConsoleCommandCompleter.this.server.getPosition(), false/*  we're not a command block */);
-            }
-        });
+        Future<List<String>> tabComplete = this.server.callFromMainThread(() -> ConsoleCommandCompleter.this.server.getTabCompletions(ConsoleCommandCompleter.this.server, input,
+                ConsoleCommandCompleter.this.server.getPosition(), false/*  we're not a command block */));
         try
         {
             List<String> completions = tabComplete.get();

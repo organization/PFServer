@@ -15,7 +15,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class RecipeList
 {
-    private List<IRecipe> recipes = Lists.<IRecipe>newArrayList();
+    private final List<IRecipe> recipes = Lists.<IRecipe>newArrayList();
     private final BitSet craftable = new BitSet();
     private final BitSet canFit = new BitSet();
     private final BitSet inBook = new BitSet();

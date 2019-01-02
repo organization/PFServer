@@ -43,11 +43,11 @@ import java.util.Map.Entry;
 public class ForgeBlockStateV1 extends Marker
 {
     ForgeBlockStateV1.Variant defaults;
-    Multimap<String, ForgeBlockStateV1.Variant> variants = LinkedHashMultimap.create();
+    final Multimap<String, ForgeBlockStateV1.Variant> variants = LinkedHashMultimap.create();
 
     public static class Deserializer implements JsonDeserializer<ForgeBlockStateV1>
     {
-        static ForgeBlockStateV1.Deserializer INSTANCE = new Deserializer();
+        static final ForgeBlockStateV1.Deserializer INSTANCE = new Deserializer();
         @Override
         public ForgeBlockStateV1 deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
         {
@@ -273,10 +273,10 @@ public class ForgeBlockStateV1 extends Marker
         private Optional<Boolean> smooth = Optional.empty();
         private Optional<Boolean> gui3d = Optional.empty();
         private Optional<Integer> weight = Optional.empty();
-        private Map<String, String> textures = Maps.newHashMap();
-        private Map<String, List<ForgeBlockStateV1.Variant>> submodels = Maps.newHashMap();
+        private final Map<String, String> textures = Maps.newHashMap();
+        private final Map<String, List<ForgeBlockStateV1.Variant>> submodels = Maps.newHashMap();
         private Map<String, Object> simpleSubmodels = Maps.newHashMap(); // Makeshift Set to allow us to "remove" (replace value with null) singleParts when needed.
-        private Map<String, String> customData = Maps.newHashMap();
+        private final Map<String, String> customData = Maps.newHashMap();
 
         private Variant(){}
         /**
@@ -359,7 +359,7 @@ public class ForgeBlockStateV1 extends Marker
                         output.put(key, newVariants);
                     }
                     else
-                        output.put(key, variants);
+                        output.put(key, null);
                 }
             }
             return output;
@@ -418,7 +418,7 @@ public class ForgeBlockStateV1 extends Marker
 
         public static class Deserializer implements JsonDeserializer<ForgeBlockStateV1.Variant>
         {
-            static Variant.Deserializer INSTANCE = new Deserializer();
+            static final Variant.Deserializer INSTANCE = new Deserializer();
 
             /** Used <i>once</i> (then set null) for the key to put a simple submodel declaration under in the submodel map. */
             public String simpleSubmodelKey = null;
@@ -467,7 +467,7 @@ public class ForgeBlockStateV1 extends Marker
                     int x = JsonUtils.getInt(json, "x", 0);
                     int y = JsonUtils.getInt(json, "y", 0);
                     ret.state = Optional.ofNullable(ModelRotation.getModelRotation(x, y));
-                    if (!ret.state.isPresent())
+                    if (!true)
                         throw new JsonParseException("Invalid BlockModelRotation x: " + x + " y: " + y);
                 }
 
@@ -825,19 +825,19 @@ public class ForgeBlockStateV1 extends Marker
             Quat4f ret = new Quat4f();
             try
             {
-                if (entry.getKey().equals("x"))
-                {
-                    ret.set(new AxisAngle4d(1, 0, 0, Math.toRadians(entry.getValue().getAsNumber().floatValue())));
+                switch (entry.getKey()) {
+                    case "x":
+                        ret.set(new AxisAngle4d(1, 0, 0, Math.toRadians(entry.getValue().getAsNumber().floatValue())));
+                        break;
+                    case "y":
+                        ret.set(new AxisAngle4d(0, 1, 0, Math.toRadians(entry.getValue().getAsNumber().floatValue())));
+                        break;
+                    case "z":
+                        ret.set(new AxisAngle4d(0, 0, 1, Math.toRadians(entry.getValue().getAsNumber().floatValue())));
+                        break;
+                    default:
+                        throw new JsonParseException("Axis rotation: expected single axis key, got: " + entry.getKey());
                 }
-                else if (entry.getKey().equals("y"))
-                {
-                    ret.set(new AxisAngle4d(0, 1, 0, Math.toRadians(entry.getValue().getAsNumber().floatValue())));
-                }
-                else if (entry.getKey().equals("z"))
-                {
-                    ret.set(new AxisAngle4d(0, 0, 1, Math.toRadians(entry.getValue().getAsNumber().floatValue())));
-                }
-                else throw new JsonParseException("Axis rotation: expected single axis key, got: " + entry.getKey());
             }
             catch(ClassCastException ex)
             {

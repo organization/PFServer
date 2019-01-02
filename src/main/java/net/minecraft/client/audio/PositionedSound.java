@@ -14,8 +14,8 @@ public abstract class PositionedSound implements ISound
     protected Sound sound;
     @Nullable
     private SoundEventAccessor soundEvent;
-    protected SoundCategory category;
-    protected ResourceLocation positionedSoundLocation;
+    protected final SoundCategory category;
+    protected final ResourceLocation positionedSoundLocation;
     protected float volume;
     protected float pitch;
     protected float xPosF;

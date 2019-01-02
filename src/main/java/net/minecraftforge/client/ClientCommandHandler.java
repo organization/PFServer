@@ -150,7 +150,7 @@ public class ClientCommandHandler extends CommandHandler
                         }
                     }
 
-                    latestAutoComplete = commands.toArray(new String[commands.size()]);
+                    latestAutoComplete = commands.toArray(new String[0]);
                 }
             }
         }

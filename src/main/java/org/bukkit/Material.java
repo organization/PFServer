@@ -486,7 +486,7 @@ public enum Material {
     private final int id;
     private final Constructor<? extends MaterialData> ctor;
     private static Material[] byId = new Material[32000];
-    private static Material[] blockById = new Material[4096];
+    private static final Material[] blockById = new Material[4096];
     private final static Map<String, Material> BY_NAME = Maps.newHashMap();
     private final int maxStack;
     private final short durability;
@@ -518,9 +518,7 @@ public enum Material {
         // try to cache the constructor for this material
         try {
             this.ctor = data.getConstructor(int.class, byte.class);
-        } catch (NoSuchMethodException ex) {
-            throw new AssertionError(ex);
-        } catch (SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException ex) {
             throw new AssertionError(ex);
         }
     }
@@ -692,7 +690,7 @@ public enum Material {
 
         try {
             result = getMaterial(Integer.parseInt(name));
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ignored) {}
 
         if (result == null) {
             String filtered = name.toUpperCase(java.util.Locale.ENGLISH);
@@ -1408,7 +1406,7 @@ public enum Material {
         if (byId[material.id] == null) {
             byId[material.id] = material;
             BY_NAME.put(material.name().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", ""), material);
-            BY_NAME.put("X" + String.valueOf(material.id), material);
+            BY_NAME.put("X" + material.id, material);
             return material;
         }
         return null;

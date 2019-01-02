@@ -64,7 +64,7 @@ public class ServerPinger
             {
                 if (this.receivedStatus)
                 {
-                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.unrequested", new Object[0]));
+                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.unrequested"));
                 }
                 else
                 {
@@ -190,11 +190,10 @@ public class ServerPinger
             {
                 try
                 {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.TRUE);
                 }
-                catch (ChannelException var3)
+                catch (ChannelException ignored)
                 {
-                    ;
                 }
 
                 p_initChannel_1_.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>()
@@ -305,7 +304,7 @@ public class ServerPinger
                 if (networkmanager.isChannelOpen())
                 {
                     iterator.remove();
-                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.cancelled", new Object[0]));
+                    networkmanager.closeChannel(new TextComponentTranslation("multiplayer.status.cancelled"));
                 }
             }
         }

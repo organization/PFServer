@@ -109,15 +109,10 @@ public class GuiAdvancement extends Gui
     @Nullable
     private GuiAdvancement getFirstVisibleParent(Advancement advancementIn)
     {
-        while (true)
-        {
+        do {
             advancementIn = advancementIn.getParent();
 
-            if (advancementIn == null || advancementIn.getDisplay() != null)
-            {
-                break;
-            }
-        }
+        } while (advancementIn != null && advancementIn.getDisplay() == null);
 
         if (advancementIn != null && advancementIn.getDisplay() != null)
         {

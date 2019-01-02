@@ -51,21 +51,17 @@ public class EntityMinecartMobSpawner extends EntityMinecart
     public static void registerFixesMinecartMobSpawner(DataFixer fixer)
     {
         registerFixesMinecart(fixer, EntityMinecartMobSpawner.class);
-        fixer.registerWalker(FixTypes.ENTITY, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.ENTITY, (fixer1, compound, versionIn) -> {
+            String s = compound.getString("id");
+
+            if (EntityList.getKey(EntityMinecartMobSpawner.class).equals(new ResourceLocation(s)))
             {
-                String s = compound.getString("id");
-
-                if (EntityList.getKey(EntityMinecartMobSpawner.class).equals(new ResourceLocation(s)))
-                {
-                    compound.setString("id", TileEntity.getKey(TileEntityMobSpawner.class).toString());
-                    fixer.process(FixTypes.BLOCK_ENTITY, compound, versionIn);
-                    compound.setString("id", s);
-                }
-
-                return compound;
+                compound.setString("id", TileEntity.getKey(TileEntityMobSpawner.class).toString());
+                fixer1.process(FixTypes.BLOCK_ENTITY, compound, versionIn);
+                compound.setString("id", s);
             }
+
+            return compound;
         });
     }
 

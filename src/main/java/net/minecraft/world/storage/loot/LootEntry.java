@@ -58,21 +58,15 @@ public abstract class LootEntry
                 LootEntry ret = net.minecraftforge.common.ForgeHooks.deserializeJsonLootEntry(s, jsonobject, i, j, alootcondition);
                 if (ret != null) return ret;
 
-                if ("item".equals(s))
-                {
-                    return LootEntryItem.deserialize(jsonobject, p_deserialize_3_, i, j, alootcondition);
-                }
-                else if ("loot_table".equals(s))
-                {
-                    return LootEntryTable.deserialize(jsonobject, p_deserialize_3_, i, j, alootcondition);
-                }
-                else if ("empty".equals(s))
-                {
-                    return LootEntryEmpty.deserialize(jsonobject, p_deserialize_3_, i, j, alootcondition);
-                }
-                else
-                {
-                    throw new JsonSyntaxException("Unknown loot entry type '" + s + "'");
+                switch (s) {
+                    case "item":
+                        return LootEntryItem.deserialize(jsonobject, p_deserialize_3_, i, j, alootcondition);
+                    case "loot_table":
+                        return LootEntryTable.deserialize(jsonobject, p_deserialize_3_, i, j, alootcondition);
+                    case "empty":
+                        return LootEntryEmpty.deserialize(jsonobject, p_deserialize_3_, i, j, alootcondition);
+                    default:
+                        throw new JsonSyntaxException("Unknown loot entry type '" + s + "'");
                 }
             }
 
@@ -81,8 +75,8 @@ public abstract class LootEntry
                 JsonObject jsonobject = new JsonObject();
                 if (p_serialize_1_.entryName != null && !p_serialize_1_.entryName.startsWith("custom#"))
                     jsonobject.addProperty("entryName", p_serialize_1_.entryName);
-                jsonobject.addProperty("weight", Integer.valueOf(p_serialize_1_.weight));
-                jsonobject.addProperty("quality", Integer.valueOf(p_serialize_1_.quality));
+                jsonobject.addProperty("weight", p_serialize_1_.weight);
+                jsonobject.addProperty("quality", p_serialize_1_.quality);
 
                 if (p_serialize_1_.conditions.length > 0)
                 {

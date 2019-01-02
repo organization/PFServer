@@ -16,6 +16,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Random;
 
 public class BlockDeadBush extends BlockBush implements net.minecraftforge.common.IShearable
@@ -74,6 +75,6 @@ public class BlockDeadBush extends BlockBush implements net.minecraftforge.commo
     @Override
     public java.util.List<ItemStack> onSheared(ItemStack item, net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune)
     {
-        return java.util.Arrays.asList(new ItemStack(Blocks.DEADBUSH));
+        return Collections.singletonList(new ItemStack(Blocks.DEADBUSH));
     }
 }

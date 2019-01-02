@@ -96,8 +96,7 @@ public class MapGenEndCity extends MapGenStructure
         int l = chunkprimer.findGroundBlockIdx(7, 7 + j);
         int i1 = chunkprimer.findGroundBlockIdx(7 + i, 7);
         int j1 = chunkprimer.findGroundBlockIdx(7 + i, 7 + j);
-        int k1 = Math.min(Math.min(k, l), Math.min(i1, j1));
-        return k1;
+        return Math.min(Math.min(k, l), Math.min(i1, j1));
     }
 
     public static class Start extends StructureStart

@@ -9,11 +9,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelPlayer extends ModelBiped
 {
-    public ModelRenderer bipedLeftArmwear;
-    public ModelRenderer bipedRightArmwear;
-    public ModelRenderer bipedLeftLegwear;
-    public ModelRenderer bipedRightLegwear;
-    public ModelRenderer bipedBodyWear;
+    public final ModelRenderer bipedLeftArmwear;
+    public final ModelRenderer bipedRightArmwear;
+    public final ModelRenderer bipedLeftLegwear;
+    public final ModelRenderer bipedRightLegwear;
+    public final ModelRenderer bipedBodyWear;
     private final ModelRenderer bipedCape;
     private final ModelRenderer bipedDeadmau5Head;
     private final boolean smallArms;

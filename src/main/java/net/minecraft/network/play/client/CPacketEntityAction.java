@@ -72,6 +72,6 @@ public class CPacketEntityAction implements Packet<INetHandlerPlayServer>
         START_RIDING_JUMP,
         STOP_RIDING_JUMP,
         OPEN_INVENTORY,
-        START_FALL_FLYING;
+        START_FALL_FLYING
     }
 }

@@ -115,14 +115,14 @@ public abstract class EntityAgeable extends EntityCreature
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(BABY, Boolean.valueOf(false));
+        this.dataManager.register(BABY, Boolean.FALSE);
     }
 
     public int getGrowingAge()
     {
         if (this.world.isRemote)
         {
-            return ((Boolean)this.dataManager.get(BABY)).booleanValue() ? -1 : 1;
+            return (Boolean) this.dataManager.get(BABY) ? -1 : 1;
         }
         else
         {
@@ -172,7 +172,7 @@ public abstract class EntityAgeable extends EntityCreature
 
     public void setGrowingAge(int age)
     {
-        this.dataManager.set(BABY, Boolean.valueOf(age < 0));
+        this.dataManager.set(BABY, age < 0);
         this.growingAge = age;
         this.setScaleForAge(this.isChild());
     }

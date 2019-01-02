@@ -61,10 +61,10 @@ import java.util.zip.ZipFile;
 public class FMLModContainer implements ModContainer
 {
     private Object modInstance;
-    private File source;
+    private final File source;
     private ModMetadata modMetadata;
-    private String className;
-    private Map<String, Object> descriptor;
+    private final String className;
+    private final Map<String, Object> descriptor;
     private boolean enabled = true;
     private String internalVersion;
     private boolean overridesMetadata;
@@ -77,12 +77,12 @@ public class FMLModContainer implements ModContainer
     private boolean fingerprintNotPresent;
     private Set<String> sourceFingerprints;
     private Certificate certificate;
-    private String modLanguage;
+    private final String modLanguage;
     private ILanguageAdapter languageAdapter;
     private Disableable disableability;
-    private ListMultimap<Class<? extends FMLEvent>, Method> eventMethods;
+    private final ListMultimap<Class<? extends FMLEvent>, Method> eventMethods;
     private Map<String, String> customModProperties;
-    private ModCandidate candidate;
+    private final ModCandidate candidate;
     private URL updateJSONUrl;
     private int classVersion;
 

@@ -15,7 +15,7 @@ import java.io.IOException;
 public class GuiWorldSelection extends GuiScreen
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    protected GuiScreen prevScreen;
+    protected final GuiScreen prevScreen;
     protected String title = "Select world";
     private String worldVersTooltip;
     private GuiButton deleteButton;

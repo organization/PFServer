@@ -41,13 +41,7 @@ public class EntityPotion extends EntityThrowable
 {
     private static final DataParameter<ItemStack> ITEM = EntityDataManager.<ItemStack>createKey(EntityPotion.class, DataSerializers.ITEM_STACK);
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final Predicate<EntityLivingBase> WATER_SENSITIVE = new Predicate<EntityLivingBase>()
-    {
-        public boolean apply(@Nullable EntityLivingBase p_apply_1_)
-        {
-            return EntityPotion.isWaterSensitiveEntity(p_apply_1_);
-        }
-    };
+    public static final Predicate<EntityLivingBase> WATER_SENSITIVE = EntityPotion::isWaterSensitiveEntity;
 
     public EntityPotion(World worldIn)
     {
@@ -169,7 +163,7 @@ public class EntityPotion extends EntityThrowable
     private void applySplash(RayTraceResult p_190543_1_, List<PotionEffect> p_190543_2_) {
         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D);
         List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-        Map<LivingEntity, Double> affected = new HashMap<LivingEntity, Double>();
+        Map<LivingEntity, Double> affected = new HashMap<>();
         if (!list.isEmpty()) {
             for (EntityLivingBase entitylivingbase : list) {
                 if (entitylivingbase.canBeHitWithPotion()) {
@@ -269,7 +263,7 @@ public class EntityPotion extends EntityThrowable
     public static void registerFixesPotion(DataFixer fixer)
     {
         EntityThrowable.registerFixesThrowable(fixer, "ThrownPotion");
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityPotion.class, new String[] {"Potion"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityPotion.class, "Potion"));
     }
 
     public void readEntityFromNBT(NBTTagCompound compound)

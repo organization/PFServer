@@ -83,15 +83,10 @@ public class PhaseTakeoff extends PhaseBase
         this.currentPath.incrementPathIndex();
         double d0;
 
-        while (true)
-        {
-            d0 = vec3d.y + (double)(this.dragon.getRNG().nextFloat() * 20.0F);
+        do {
+            d0 = vec3d.y + (double) (this.dragon.getRNG().nextFloat() * 20.0F);
 
-            if (d0 >= vec3d.y)
-            {
-                break;
-            }
-        }
+        } while (!(d0 >= vec3d.y));
 
         this.targetLocation = new Vec3d(vec3d.x, d0, vec3d.z);
     }

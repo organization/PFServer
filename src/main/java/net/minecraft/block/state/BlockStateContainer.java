@@ -18,12 +18,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class BlockStateContainer
 {
@@ -114,12 +112,9 @@ public class BlockStateContainer
     {
         List < Iterable < Comparable<? >>> list = Lists. < Iterable < Comparable<? >>> newArrayList();
         ImmutableCollection < IProperty<? >> immutablecollection = this.properties.values();
-        UnmodifiableIterator unmodifiableiterator = immutablecollection.iterator();
 
-        while (unmodifiableiterator.hasNext())
-        {
-            IProperty<?> iproperty = (IProperty)unmodifiableiterator.next();
-            list.add(((IProperty)iproperty).getAllowedValues());
+        for (IProperty<?> iProperty : immutablecollection) {
+            list.add(((IProperty) iProperty).getAllowedValues());
         }
 
         return list;
@@ -142,7 +137,7 @@ public class BlockStateContainer
 
     public String toString()
     {
-        return MoreObjects.toStringHelper(this).add("block", Block.REGISTRY.getNameForObject(this.block)).add("properties", Iterables.transform(this.properties.values(), GET_NAME_FUNC)).toString();
+        return MoreObjects.toStringHelper(this).add("block", Block.REGISTRY.getNameForObject(this.block)).add("properties", this.properties.values().stream().map(GET_NAME_FUNC::apply).collect(Collectors.toList())).toString();
     }
 
     @Nullable
@@ -245,17 +240,12 @@ public class BlockStateContainer
                 else
                 {
                     Table < IProperty<?>, Comparable<?>, IBlockState > table = HashBasedTable. < IProperty<?>, Comparable<?>, IBlockState > create();
-                    UnmodifiableIterator unmodifiableiterator = this.properties.entrySet().iterator();
 
-                    while (unmodifiableiterator.hasNext())
-                    {
-                        Entry < IProperty<?>, Comparable<? >> entry = (Entry)unmodifiableiterator.next();
-                        IProperty<?> iproperty = (IProperty)entry.getKey();
+                    for (Entry<IProperty<?>, Comparable<?>> iPropertyComparableEntry : this.properties.entrySet()) {
+                        IProperty<?> iproperty = (IProperty) ((Entry) iPropertyComparableEntry).getKey();
 
-                        for (Comparable<?> comparable : iproperty.getAllowedValues())
-                        {
-                            if (comparable != entry.getValue())
-                            {
+                        for (Comparable<?> comparable : iproperty.getAllowedValues()) {
+                            if (comparable != ((Entry) iPropertyComparableEntry).getValue()) {
                                 table.put(iproperty, comparable, map.get(this.getPropertiesWithValue(iproperty, comparable)));
                             }
                         }
@@ -538,15 +528,13 @@ public class BlockStateContainer
 
         public Builder add(IProperty<?>... props)
         {
-            for (IProperty<?> prop : props)
-                this.listed.add(prop);
+            this.listed.addAll(Arrays.asList(props));
             return this;
         }
 
         public Builder add(net.minecraftforge.common.property.IUnlistedProperty<?>... props)
         {
-            for (net.minecraftforge.common.property.IUnlistedProperty<?> prop : props)
-                this.unlisted.add(prop);
+            this.unlisted.addAll(Arrays.asList(props));
             return this;
         }
 

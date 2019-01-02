@@ -33,10 +33,10 @@ import java.util.Map.Entry;
  */
 public class GuiSelectStringEntries extends GuiListExtended
 {
-    public GuiSelectString owningScreen;
-    public Minecraft mc;
-    public IConfigElement configElement;
-    public List<IGuiSelectStringListEntry> listEntries;
+    public final GuiSelectString owningScreen;
+    public final Minecraft mc;
+    public final IConfigElement configElement;
+    public final List<IGuiSelectStringListEntry> listEntries;
     public final Map<Object, String> selectableValues;
     public int selectedIndex = -1;
     public int maxEntryWidth = 0;
@@ -51,11 +51,11 @@ public class GuiSelectStringEntries extends GuiListExtended
         this.selectableValues = selectableValues;
         this.setShowSelectionBox(true);
 
-        listEntries = new ArrayList<IGuiSelectStringListEntry>();
+        listEntries = new ArrayList<>();
 
         int index = 0;
-        List<Entry<Object, String>> sortedList = new ArrayList<Entry<Object, String>>(selectableValues.entrySet());
-        Collections.sort(sortedList, new EntryComparator());
+        List<Entry<Object, String>> sortedList = new ArrayList<>(selectableValues.entrySet());
+        sortedList.sort(new EntryComparator());
 
         for (Entry<Object, String> entry : sortedList)
         {
@@ -134,7 +134,7 @@ public class GuiSelectStringEntries extends GuiListExtended
 
     public boolean isChanged()
     {
-        return owningScreen.beforeValue != null ? !owningScreen.beforeValue.equals(owningScreen.currentValue) : owningScreen.currentValue != null;
+        return !Objects.equals(owningScreen.beforeValue, owningScreen.currentValue);
     }
 
     public boolean isDefault()

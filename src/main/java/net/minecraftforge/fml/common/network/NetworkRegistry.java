@@ -55,10 +55,10 @@ import java.util.stream.Collectors;
 public enum NetworkRegistry
 {
     INSTANCE;
-    private EnumMap<Side,Map<String,FMLEmbeddedChannel>> channels = Maps.newEnumMap(Side.class);
-    private Map<ModContainer, NetworkModHolder> registry = Maps.newHashMap();
-    private Map<ModContainer, IGuiHandler> serverGuiHandlers = Maps.newHashMap();
-    private Map<ModContainer, IGuiHandler> clientGuiHandlers = Maps.newHashMap();
+    private final EnumMap<Side,Map<String,FMLEmbeddedChannel>> channels = Maps.newEnumMap(Side.class);
+    private final Map<ModContainer, NetworkModHolder> registry = Maps.newHashMap();
+    private final Map<ModContainer, IGuiHandler> serverGuiHandlers = Maps.newHashMap();
+    private final Map<ModContainer, IGuiHandler> clientGuiHandlers = Maps.newHashMap();
 
     /**
      * Set in the {@link ChannelHandlerContext}

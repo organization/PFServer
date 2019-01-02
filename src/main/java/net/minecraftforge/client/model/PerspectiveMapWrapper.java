@@ -40,10 +40,7 @@ public class PerspectiveMapWrapper implements IBakedModel
         for(ItemCameraTransforms.TransformType type : ItemCameraTransforms.TransformType.values())
         {
             Optional<TRSRTransformation> tr = state.apply(Optional.of(type));
-            if(tr.isPresent())
-            {
-                map.put(type, tr.get());
-            }
+            tr.ifPresent(trsrTransformation -> map.put(type, trsrTransformation));
         }
         return ImmutableMap.copyOf(map);
     }

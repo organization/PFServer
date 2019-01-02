@@ -139,7 +139,7 @@ public class CrashReportCategory
 
             if (stacktraceelement.isNativeMethod() == s1.isNativeMethod() && stacktraceelement.getClassName().equals(s1.getClassName()) && stacktraceelement.getFileName().equals(s1.getFileName()) && stacktraceelement.getMethodName().equals(s1.getMethodName()))
             {
-                if (s2 != null != this.stackTrace.length > 1)
+                if (s2 == null == this.stackTrace.length > 1)
                 {
                     return false;
                 }
@@ -204,60 +204,34 @@ public class CrashReportCategory
     public static void addBlockInfo(CrashReportCategory category, final BlockPos pos, final Block blockIn, final int blockData)
     {
         final int i = Block.getIdFromBlock(blockIn);
-        category.addDetail("Block type", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
+        category.addDetail("Block type", () -> {
+            try
             {
-                try
-                {
-                    return String.format("ID #%d (%s // %s // %s)", i, blockIn.getUnlocalizedName(), blockIn.getClass().getName(), blockIn.getRegistryName());
-                }
-                catch (Throwable var2)
-                {
-                    return "ID #" + i;
-                }
+                return String.format("ID #%d (%s // %s // %s)", i, blockIn.getUnlocalizedName(), blockIn.getClass().getName(), blockIn.getRegistryName());
+            }
+            catch (Throwable var2)
+            {
+                return "ID #" + i;
             }
         });
-        category.addDetail("Block data value", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
+        category.addDetail("Block data value", () -> {
+            if (blockData < 0)
             {
-                if (blockData < 0)
-                {
-                    return "Unknown? (Got " + blockData + ")";
-                }
-                else
-                {
-                    String s = String.format("%4s", Integer.toBinaryString(blockData)).replace(" ", "0");
-                    return String.format("%1$d / 0x%1$X / 0b%2$s", blockData, s);
-                }
+                return "Unknown? (Got " + blockData + ")";
+            }
+            else
+            {
+                String s = String.format("%4s", Integer.toBinaryString(blockData)).replace(" ", "0");
+                return String.format("%1$d / 0x%1$X / 0b%2$s", blockData, s);
             }
         });
-        category.addDetail("Block location", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return CrashReportCategory.getCoordinateInfo(pos);
-            }
-        });
+        category.addDetail("Block location", () -> CrashReportCategory.getCoordinateInfo(pos));
     }
 
     public static void addBlockInfo(CrashReportCategory category, final BlockPos pos, final IBlockState state)
     {
-        category.addDetail("Block", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return state.toString();
-            }
-        });
-        category.addDetail("Block location", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return CrashReportCategory.getCoordinateInfo(pos);
-            }
-        });
+        category.addDetail("Block", state::toString);
+        category.addDetail("Block location", () -> CrashReportCategory.getCoordinateInfo(pos));
     }
 
     static class Entry

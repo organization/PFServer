@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemHoe extends Item
 {
     private final float speed;
-    protected ToolMaterial toolMaterial;
+    protected final ToolMaterial toolMaterial;
 
     public ItemHoe(ToolMaterial material)
     {

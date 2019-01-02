@@ -182,108 +182,101 @@ public class ModelBlockAnimation
         public Iterable<Event> pastEvents(final float lastPollTime, final float time)
         {
             initialize();
-            return new Iterable<Event>()
+            return () -> new UnmodifiableIterator<Event>()
             {
-                @Override
-                public Iterator<Event> iterator()
+                private Float curKey;
+                private Event firstEvent;
+                private float stopTime;
                 {
-                    return new UnmodifiableIterator<Event>()
+                    if(lastPollTime >= time)
                     {
-                        private Float curKey;
-                        private Event firstEvent;
-                        private float stopTime;
+                        curKey = null;
+                    }
+                    else
+                    {
+                        float fractTime = time - (float)Math.floor(time);
+                        float fractLastTime = lastPollTime - (float)Math.floor(lastPollTime);
+                        // swap if not in order
+                        if(fractLastTime > fractTime)
                         {
-                            if(lastPollTime >= time)
+                            float tmp = fractTime;
+                            fractTime = fractLastTime;
+                            fractLastTime = tmp;
+                        }
+                        // need to wrap around, swap again
+                        if(fractTime - fractLastTime > .5f)
+                        {
+                            float tmp = fractTime;
+                            fractTime = fractLastTime;
+                            fractLastTime = tmp;
+                        }
+
+                        stopTime = fractLastTime;
+
+                        curKey = events.floorKey(fractTime);
+                        if(curKey == null && loop && !events.isEmpty())
+                        {
+                            curKey = events.lastKey();
+                        }
+                        if(curKey != null)
+                        {
+                            float checkCurTime = curKey;
+                            float checkStopTime = stopTime;
+                            if(checkCurTime >= fractTime) checkCurTime--;
+                            if(checkStopTime >= fractTime) checkStopTime--;
+                            float offset = fractTime - checkCurTime;
+                            Event event = events.get(curKey);
+                            if(checkCurTime < checkStopTime)
                             {
                                 curKey = null;
                             }
-                            else
+                            else if(offset != event.offset())
                             {
-                                float fractTime = time - (float)Math.floor(time);
-                                float fractLastTime = lastPollTime - (float)Math.floor(lastPollTime);
-                                // swap if not in order
-                                if(fractLastTime > fractTime)
-                                {
-                                    float tmp = fractTime;
-                                    fractTime = fractLastTime;
-                                    fractLastTime = tmp;
-                                }
-                                // need to wrap around, swap again
-                                if(fractTime - fractLastTime > .5f)
-                                {
-                                    float tmp = fractTime;
-                                    fractTime = fractLastTime;
-                                    fractLastTime = tmp;
-                                }
-
-                                stopTime = fractLastTime;
-
-                                curKey = events.floorKey(fractTime);
-                                if(curKey == null && loop && !events.isEmpty())
-                                {
-                                    curKey = events.lastKey();
-                                }
-                                if(curKey != null)
-                                {
-                                    float checkCurTime = curKey;
-                                    float checkStopTime = stopTime;
-                                    if(checkCurTime >= fractTime) checkCurTime--;
-                                    if(checkStopTime >= fractTime) checkStopTime--;
-                                    float offset = fractTime - checkCurTime;
-                                    Event event = events.get(curKey);
-                                    if(checkCurTime < checkStopTime)
-                                    {
-                                        curKey = null;
-                                    }
-                                    else if(offset != event.offset())
-                                    {
-                                        firstEvent = new Event(event.event(), offset);
-                                    }
-                                }
+                                firstEvent = new Event(event.event(), offset);
                             }
                         }
+                    }
+                }
 
-                        @Override
-                        public boolean hasNext()
+                @Override
+                public boolean hasNext()
+                {
+                    return curKey != null;
+                }
+
+                @Override
+                public Event next()
+                {
+                    if(curKey == null)
+                    {
+                        throw new NoSuchElementException();
+                    }
+                    Event event;
+                    if(firstEvent == null)
+                    {
+                        event = events.get(curKey);
+                    }
+                    else
+                    {
+                        event = firstEvent;
+                        firstEvent = null;
+                    }
+                    curKey = events.lowerKey(curKey);
+                    if(curKey == null && loop)
+                    {
+                        curKey = events.lastKey();
+                    }
+                    if(curKey != null)
+                    {
+                        float checkStopTime = stopTime;
+                        while(curKey + events.get(curKey).offset() < checkStopTime) checkStopTime--;
+                        while(curKey + events.get(curKey).offset() >= checkStopTime + 1) checkStopTime++;
+                        if(curKey <= checkStopTime)
                         {
-                            return curKey != null;
+                            curKey = null;
                         }
-
-                        @Override
-                        public Event next()
-                        {
-                            if(curKey == null)
-                            {
-                                throw new NoSuchElementException();
-                            }
-                            Event event;
-                            if(firstEvent == null)
-                            {
-                                event = events.get(curKey);
-                            }
-                            else
-                            {
-                                event = firstEvent;
-                                firstEvent = null;
-                            }
-                            curKey = events.lowerKey(curKey);
-                            if(curKey == null && loop)
-                            {
-                                curKey = events.lastKey();
-                            }
-                            if(curKey != null)
-                            {
-                                float checkStopTime = stopTime;
-                                while(curKey + events.get(curKey).offset() < checkStopTime) checkStopTime--;
-                                while(curKey + events.get(curKey).offset() >= checkStopTime + 1) checkStopTime++;
-                                if(curKey <= checkStopTime)
-                                {
-                                    curKey = null;
-                                }
-                            }
-                            return event;
-                        }
-                    };
+                    }
+                    return event;
                 }
             };
         }
@@ -481,13 +474,13 @@ public class ModelBlockAnimation
             @SerializedName("origin_y")
             YORIGIN,
             @SerializedName("origin_z")
-            ZORIGIN;
+            ZORIGIN
         }
 
         public static enum Type
         {
             @SerializedName("uniform")
-            UNIFORM;
+            UNIFORM
         }
 
         public static enum Interpolation
@@ -495,7 +488,7 @@ public class ModelBlockAnimation
             @SerializedName("linear")
             LINEAR,
             @SerializedName("nearest")
-            NEAREST;
+            NEAREST
         }
     }
 
@@ -541,9 +534,8 @@ public class ModelBlockAnimation
         {
             try (IResource resource = manager.getResource(armatureLocation))
             {
-                ModelBlockAnimation mba = mbaGson.fromJson(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8), ModelBlockAnimation.class);
                 //String json = mbaGson.toJson(mba);
-                return mba;
+                return mbaGson.fromJson(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8), ModelBlockAnimation.class);
             }
             catch(FileNotFoundException e)
             {

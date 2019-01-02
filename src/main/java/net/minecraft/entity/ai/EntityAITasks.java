@@ -16,7 +16,7 @@ public class EntityAITasks
     private final Set<EntityAITaskEntry> executingTaskEntries = Sets.<EntityAITaskEntry>newLinkedHashSet();
     private final Profiler profiler;
     private int tickCount;
-    private int tickRate = 3;
+    private final int tickRate = 3;
     private int disabledControlFlags;
 
     public EntityAITasks(Profiler profilerIn)
@@ -201,7 +201,7 @@ public class EntityAITasks
             }
             else
             {
-                return p_equals_1_ != null && this.getClass() == p_equals_1_.getClass() ? this.action.equals(((EntityAITaskEntry)p_equals_1_).action) : false;
+                return (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass()) && this.action.equals(((EntityAITaskEntry) p_equals_1_).action);
             }
         }
 

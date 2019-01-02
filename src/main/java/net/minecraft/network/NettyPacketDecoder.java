@@ -48,7 +48,7 @@ public class NettyPacketDecoder extends ByteToMessageDecoder
 
                     if (LOGGER.isDebugEnabled())
                     {
-                        LOGGER.debug(RECEIVED_PACKET_MARKER, " IN: [{}:{}] {}", p_decode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get(), Integer.valueOf(i), packet.getClass().getName());
+                        LOGGER.debug(RECEIVED_PACKET_MARKER, " IN: [{}:{}] {}", p_decode_1_.channel().attr(NetworkManager.PROTOCOL_ATTRIBUTE_KEY).get(), i, packet.getClass().getName());
                     }
                 }
             }

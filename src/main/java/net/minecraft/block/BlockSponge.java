@@ -30,7 +30,7 @@ public class BlockSponge extends Block
     protected BlockSponge()
     {
         super(Material.SPONGE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(WET, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(WET, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     }
 
@@ -41,7 +41,7 @@ public class BlockSponge extends Block
 
     public int damageDropped(IBlockState state)
     {
-        return ((Boolean)state.getValue(WET)).booleanValue() ? 1 : 0;
+        return (Boolean) state.getValue(WET) ? 1 : 0;
     }
 
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
@@ -57,9 +57,9 @@ public class BlockSponge extends Block
 
     protected void tryAbsorb(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (!((Boolean)state.getValue(WET)).booleanValue() && this.absorb(worldIn, pos))
+        if (!(Boolean) state.getValue(WET) && this.absorb(worldIn, pos))
         {
-            worldIn.setBlockState(pos, state.withProperty(WET, Boolean.valueOf(true)), 2);
+            worldIn.setBlockState(pos, state.withProperty(WET, Boolean.TRUE), 2);
             worldIn.playEvent(2001, pos, Block.getIdFromBlock(Blocks.WATER));
         }
     }
@@ -68,14 +68,14 @@ public class BlockSponge extends Block
     {
         Queue<Tuple<BlockPos, Integer>> queue = Lists.<Tuple<BlockPos, Integer>>newLinkedList();
         List<BlockPos> list = Lists.<BlockPos>newArrayList();
-        queue.add(new Tuple(pos, Integer.valueOf(0)));
+        queue.add(new Tuple(pos, 0));
         int i = 0;
 
         while (!queue.isEmpty())
         {
             Tuple<BlockPos, Integer> tuple = (Tuple)queue.poll();
             BlockPos blockpos = tuple.getFirst();
-            int j = ((Integer)tuple.getSecond()).intValue();
+            int j = (Integer) tuple.getSecond();
 
             for (EnumFacing enumfacing : EnumFacing.values())
             {
@@ -116,23 +116,23 @@ public class BlockSponge extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(WET, Boolean.valueOf((meta & 1) == 1));
+        return this.getDefaultState().withProperty(WET, (meta & 1) == 1);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean)state.getValue(WET)).booleanValue() ? 1 : 0;
+        return (Boolean) state.getValue(WET) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {WET});
+        return new BlockStateContainer(this, WET);
     }
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        if (((Boolean)stateIn.getValue(WET)).booleanValue())
+        if ((Boolean) stateIn.getValue(WET))
         {
             EnumFacing enumfacing = EnumFacing.random(rand);
 

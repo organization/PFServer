@@ -10,7 +10,7 @@ import org.bukkit.event.HandlerList;
  */
 public class EntityInteractEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    protected Block block;
+    protected final Block block;
     private boolean cancelled;
 
     public EntityInteractEvent(final Entity entity, final Block block) {

@@ -123,7 +123,7 @@ public class BlockEndRod extends BlockDirectional
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, FACING);
     }
 
     public EnumPushReaction getMobilityFlag(IBlockState state)

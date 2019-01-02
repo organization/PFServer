@@ -43,7 +43,7 @@ public class BlockRedstoneWire extends Block
     public BlockRedstoneWire()
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, EnumAttachPosition.NONE).withProperty(EAST, EnumAttachPosition.NONE).withProperty(SOUTH, EnumAttachPosition.NONE).withProperty(WEST, EnumAttachPosition.NONE).withProperty(POWER, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, EnumAttachPosition.NONE).withProperty(EAST, EnumAttachPosition.NONE).withProperty(SOUTH, EnumAttachPosition.NONE).withProperty(WEST, EnumAttachPosition.NONE).withProperty(POWER, 0));
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -59,22 +59,22 @@ public class BlockRedstoneWire extends Block
         boolean flag2 = state.getValue(SOUTH) != EnumAttachPosition.NONE;
         boolean flag3 = state.getValue(WEST) != EnumAttachPosition.NONE;
 
-        if (flag || flag2 && !flag && !flag1 && !flag3)
+        if (flag || flag2 && !false && !flag1 && !flag3)
         {
             i |= 1 << EnumFacing.NORTH.getHorizontalIndex();
         }
 
-        if (flag1 || flag3 && !flag && !flag1 && !flag2)
+        if (flag1 || flag3 && !flag && !false && !flag2)
         {
             i |= 1 << EnumFacing.EAST.getHorizontalIndex();
         }
 
-        if (flag2 || flag && !flag1 && !flag2 && !flag3)
+        if (flag2 || flag && !flag1 && !false && !flag3)
         {
             i |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
         }
 
-        if (flag3 || flag1 && !flag && !flag2 && !flag3)
+        if (flag3 || flag1 && !flag && !flag2 && !false)
         {
             i |= 1 << EnumFacing.WEST.getHorizontalIndex();
         }
@@ -162,7 +162,7 @@ public class BlockRedstoneWire extends Block
     private IBlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, IBlockState state)
     {
         IBlockState iblockstate = state;
-        int i = ((Integer)state.getValue(POWER)).intValue();
+        int i = (Integer) state.getValue(POWER);
         int j = 0;
         j = this.getMaxCurrentStrength(worldIn, pos2, j);
         this.canProvidePower = false;
@@ -225,7 +225,7 @@ public class BlockRedstoneWire extends Block
 
         if (i != j)
         {
-            state = state.withProperty(POWER, Integer.valueOf(j));
+            state = state.withProperty(POWER, j);
 
             if (worldIn.getBlockState(pos1) == iblockstate)
             {
@@ -330,7 +330,7 @@ public class BlockRedstoneWire extends Block
         }
         else
         {
-            int i = ((Integer)worldIn.getBlockState(pos).getValue(POWER)).intValue();
+            int i = (Integer) worldIn.getBlockState(pos).getValue(POWER);
             return i > strength ? i : strength;
         }
     }
@@ -369,7 +369,7 @@ public class BlockRedstoneWire extends Block
         }
         else
         {
-            int i = ((Integer)blockState.getValue(POWER)).intValue();
+            int i = (Integer) blockState.getValue(POWER);
 
             if (i == 0)
             {
@@ -498,7 +498,7 @@ public class BlockRedstoneWire extends Block
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        int i = ((Integer)stateIn.getValue(POWER)).intValue();
+        int i = (Integer) stateIn.getValue(POWER);
 
         if (i != 0)
         {
@@ -520,7 +520,7 @@ public class BlockRedstoneWire extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(POWER, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(POWER, meta);
     }
 
     @SideOnly(Side.CLIENT)
@@ -531,7 +531,7 @@ public class BlockRedstoneWire extends Block
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return (Integer) state.getValue(POWER);
     }
 
     public IBlockState withRotation(IBlockState state, Rotation rot)
@@ -564,7 +564,7 @@ public class BlockRedstoneWire extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {NORTH, EAST, SOUTH, WEST, POWER});
+        return new BlockStateContainer(this, NORTH, EAST, SOUTH, WEST, POWER);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

@@ -110,7 +110,7 @@ public abstract class BossInfo
         GREEN,
         YELLOW,
         PURPLE,
-        WHITE;
+        WHITE
     }
 
     public static enum Overlay
@@ -119,6 +119,6 @@ public abstract class BossInfo
         NOTCHED_6,
         NOTCHED_10,
         NOTCHED_12,
-        NOTCHED_20;
+        NOTCHED_20
     }
 }

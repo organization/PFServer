@@ -138,17 +138,17 @@ public class EntityWitherSkull extends EntityFireball
 
     protected void entityInit()
     {
-        this.dataManager.register(INVULNERABLE, Boolean.valueOf(false));
+        this.dataManager.register(INVULNERABLE, Boolean.FALSE);
     }
 
     public boolean isInvulnerable()
     {
-        return ((Boolean)this.dataManager.get(INVULNERABLE)).booleanValue();
+        return (Boolean) this.dataManager.get(INVULNERABLE);
     }
 
     public void setInvulnerable(boolean invulnerable)
     {
-        this.dataManager.set(INVULNERABLE, Boolean.valueOf(invulnerable));
+        this.dataManager.set(INVULNERABLE, invulnerable);
     }
 
     protected boolean isFireballFiery()

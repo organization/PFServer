@@ -25,10 +25,7 @@ package net.minecraftforge.fml.common.versioning;
 import com.google.common.base.Joiner;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Construct a version range from a specification.
@@ -64,7 +61,7 @@ public class VersionRange
 
         if ( restrictions != null )
         {
-            copiedRestrictions = new ArrayList<Restriction>();
+            copiedRestrictions = new ArrayList<>();
 
             if ( !restrictions.isEmpty() )
             {
@@ -110,7 +107,7 @@ public class VersionRange
             return null;
         }
 
-        List<Restriction> restrictions = new ArrayList<Restriction>();
+        List<Restriction> restrictions = new ArrayList<>();
         String process = spec;
         ArtifactVersion version = null;
         ArtifactVersion upperBound = null;
@@ -196,7 +193,7 @@ public class VersionRange
 
             ArtifactVersion version = new DefaultArtifactVersion( process );
 
-            restriction = new Restriction( version, lowerBoundInclusive, version, upperBoundInclusive );
+            restriction = new Restriction( version, true, version, true);
         }
         else
         {
@@ -324,7 +321,7 @@ public class VersionRange
 
     private List<Restriction> intersection( List<Restriction> r1, List<Restriction> r2 )
     {
-        List<Restriction> restrictions = new ArrayList<Restriction>( r1.size() + r2.size() );
+        List<Restriction> restrictions = new ArrayList<>(r1.size() + r2.size());
         Iterator<Restriction> i1 = r1.iterator();
         Iterator<Restriction> i2 = r2.iterator();
         Restriction res1 = i1.next();
@@ -412,7 +409,7 @@ public class VersionRange
                     }
                     else if ( lowerInclusive && upperInclusive )
                     {
-                        restrictions.add( new Restriction( lower, lowerInclusive, upper, upperInclusive ) );
+                        restrictions.add( new Restriction( lower, true, upper, true) );
                     }
 
                     //noinspection ObjectEquality
@@ -492,7 +489,7 @@ public class VersionRange
         }
         else
         {
-            List<String> friendlyRestrictions = new ArrayList<String>(restrictions.size());
+            List<String> friendlyRestrictions = new ArrayList<>(restrictions.size());
             for (Restriction restriction : restrictions)
             {
                 friendlyRestrictions.add(restriction.toStringFriendly());
@@ -551,11 +548,9 @@ public class VersionRange
         VersionRange other = (VersionRange) obj;
 
         boolean equals =
-            recommendedVersion == other.recommendedVersion
-                || ( ( recommendedVersion != null ) && recommendedVersion.equals( other.recommendedVersion ) );
+                Objects.equals(recommendedVersion, other.recommendedVersion);
         equals &=
-            restrictions == other.restrictions
-                || ( ( restrictions != null ) && restrictions.equals( other.restrictions ) );
+                Objects.equals(restrictions, other.restrictions);
         return equals;
     }
 

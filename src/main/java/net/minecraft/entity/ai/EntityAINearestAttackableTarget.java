@@ -46,22 +46,18 @@ public class EntityAINearestAttackableTarget<T extends EntityLivingBase> extends
         this.targetChance = chance;
         this.sorter = new Sorter(creature);
         this.setMutexBits(1);
-        this.targetEntitySelector = new Predicate<T>()
-        {
-            public boolean apply(@Nullable T p_apply_1_)
+        this.targetEntitySelector = (Predicate<T>) p_apply_1_ -> {
+            if (p_apply_1_ == null)
             {
-                if (p_apply_1_ == null)
-                {
-                    return false;
-                }
-                else if (targetSelector != null && !targetSelector.apply(p_apply_1_))
-                {
-                    return false;
-                }
-                else
-                {
-                    return !EntitySelectors.NOT_SPECTATING.apply(p_apply_1_) ? false : EntityAINearestAttackableTarget.this.isSuitableTarget(p_apply_1_, false);
-                }
+                return false;
+            }
+            else if (targetSelector != null && !targetSelector.apply(p_apply_1_))
+            {
+                return false;
+            }
+            else
+            {
+                return EntitySelectors.NOT_SPECTATING.apply(p_apply_1_) && EntityAINearestAttackableTarget.this.isSuitableTarget(p_apply_1_, false);
             }
         };
     }
@@ -82,7 +78,7 @@ public class EntityAINearestAttackableTarget<T extends EntityLivingBase> extends
             }
             else
             {
-                Collections.sort(list, this.sorter);
+                list.sort(this.sorter);
                 this.targetEntity = list.get(0);
                 return true;
             }

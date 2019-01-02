@@ -39,13 +39,7 @@ import java.util.List;
 
 public abstract class EntityArrow extends Entity implements IProjectile
 {
-    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_.canBeCollidedWith();
-        }
-    });
+    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, Entity::canBeCollidedWith);
     private static final DataParameter<Byte> CRITICAL = EntityDataManager.<Byte>createKey(EntityArrow.class, DataSerializers.BYTE);
     public int xTile;
     public int yTile;
@@ -119,7 +113,7 @@ public abstract class EntityArrow extends Entity implements IProjectile
 
     protected void entityInit()
     {
-        this.dataManager.register(CRITICAL, Byte.valueOf((byte)0));
+        this.dataManager.register(CRITICAL, (byte) 0);
     }
 
     public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy)
@@ -296,7 +290,6 @@ public abstract class EntityArrow extends Entity implements IProjectile
 
             for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
             {
-                ;
             }
 
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -497,21 +490,15 @@ public abstract class EntityArrow extends Entity implements IProjectile
         List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS);
         double d0 = 0.0D;
 
-        for (int i = 0; i < list.size(); ++i)
-        {
-            Entity entity1 = list.get(i);
-
-            if (entity1 != this.shootingEntity || this.ticksInAir >= 5)
-            {
+        for (Entity entity1 : list) {
+            if (entity1 != this.shootingEntity || this.ticksInAir >= 5) {
                 AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
                 RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
 
-                if (raytraceresult != null)
-                {
+                if (raytraceresult != null) {
                     double d1 = start.squareDistanceTo(raytraceresult.hitVec);
 
-                    if (d1 < d0 || d0 == 0.0D)
-                    {
+                    if (d1 < d0 || d0 == 0.0D) {
                         entity = entity1;
                         d0 = d1;
                     }
@@ -618,21 +605,21 @@ public abstract class EntityArrow extends Entity implements IProjectile
 
     public void setIsCritical(boolean critical)
     {
-        byte b0 = ((Byte)this.dataManager.get(CRITICAL)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(CRITICAL);
 
         if (critical)
         {
-            this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 | 1)));
+            this.dataManager.set(CRITICAL, (byte) (b0 | 1));
         }
         else
         {
-            this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 & -2)));
+            this.dataManager.set(CRITICAL, (byte) (b0 & -2));
         }
     }
 
     public boolean getIsCritical()
     {
-        byte b0 = ((Byte)this.dataManager.get(CRITICAL)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(CRITICAL);
         return (b0 & 1) != 0;
     }
 

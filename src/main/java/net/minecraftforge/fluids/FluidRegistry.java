@@ -58,12 +58,12 @@ public abstract class FluidRegistry
     static BiMap<Block, Fluid> fluidBlocks;
 
     // the globally unique fluid map - only used to associate non-defaults during world/server loading
-    static BiMap<String,Fluid> masterFluidReference = HashBiMap.create();
-    static BiMap<String,String> defaultFluidName = HashBiMap.create();
-    static Map<Fluid,FluidDelegate> delegates = Maps.newHashMap();
+    static final BiMap<String,Fluid> masterFluidReference = HashBiMap.create();
+    static final BiMap<String,String> defaultFluidName = HashBiMap.create();
+    static final Map<Fluid,FluidDelegate> delegates = Maps.newHashMap();
 
     static boolean universalBucketEnabled = false;
-    static Set<String> bucketFluids = Sets.newHashSet();
+    static final Set<String> bucketFluids = Sets.newHashSet();
     static Set<Fluid> currentBucketFluids;
 
     public static final Fluid WATER = new Fluid("water", new ResourceLocation("blocks/water_still"), new ResourceLocation("blocks/water_flow"), new ResourceLocation("blocks/water_overlay")) {
@@ -451,7 +451,7 @@ public abstract class FluidRegistry
 
     private static class FluidDelegate implements IRegistryDelegate<Fluid>
     {
-        private String name;
+        private final String name;
         private Fluid fluid;
 
         FluidDelegate(Fluid fluid, String name)

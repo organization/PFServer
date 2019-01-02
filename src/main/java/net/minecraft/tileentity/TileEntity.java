@@ -30,13 +30,13 @@ import javax.annotation.Nullable;
 public abstract class TileEntity implements net.minecraftforge.common.capabilities.ICapabilitySerializable<NBTTagCompound>
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> REGISTRY = new RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> ();
+    private static final RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> REGISTRY = new RegistryNamespaced<>();
     public World world;
     protected BlockPos pos = BlockPos.ORIGIN;
     protected boolean tileEntityInvalid;
     private int blockMetadata = -1;
     protected Block blockType;
-    public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getTileEntityTimings(this); // Spigot
+    public final CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getTileEntityTimings(this); // Spigot
 
     public static void register(String id, Class <? extends TileEntity > clazz)
     {
@@ -240,49 +240,35 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
 
     public void addInfoToCrashReport(CrashReportCategory reportCategory)
     {
-        reportCategory.addDetail("Name", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return TileEntity.REGISTRY.getNameForObject(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
-            }
-        });
+        reportCategory.addDetail("Name", () -> TileEntity.REGISTRY.getNameForObject(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName());
 
         if (this.world != null)
         {
             CrashReportCategory.addBlockInfo(reportCategory, this.pos, this.getBlockType(), this.getBlockMetadata());
-            reportCategory.addDetail("Actual block type", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    int i = Block.getIdFromBlock(TileEntity.this.world.getBlockState(TileEntity.this.pos).getBlock());
+            reportCategory.addDetail("Actual block type", () -> {
+                int i = Block.getIdFromBlock(TileEntity.this.world.getBlockState(TileEntity.this.pos).getBlock());
 
-                    try
-                    {
-                        return String.format("ID #%d (%s // %s // %s)", i, Block.getBlockById(i).getUnlocalizedName(), Block.getBlockById(i).getClass().getName(), Block.getBlockById(i).getRegistryName());
-                    }
-                    catch (Throwable var3)
-                    {
-                        return "ID #" + i;
-                    }
+                try
+                {
+                    return String.format("ID #%d (%s // %s // %s)", i, Block.getBlockById(i).getUnlocalizedName(), Block.getBlockById(i).getClass().getName(), Block.getBlockById(i).getRegistryName());
+                }
+                catch (Throwable var3)
+                {
+                    return "ID #" + i;
                 }
             });
-            reportCategory.addDetail("Actual block data value", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    IBlockState iblockstate = TileEntity.this.world.getBlockState(TileEntity.this.pos);
-                    int i = iblockstate.getBlock().getMetaFromState(iblockstate);
+            reportCategory.addDetail("Actual block data value", () -> {
+                IBlockState iblockstate = TileEntity.this.world.getBlockState(TileEntity.this.pos);
+                int i = iblockstate.getBlock().getMetaFromState(iblockstate);
 
-                    if (i < 0)
-                    {
-                        return "Unknown? (Got " + i + ")";
-                    }
-                    else
-                    {
-                        String s = String.format("%4s", Integer.toBinaryString(i)).replace(" ", "0");
-                        return String.format("%1$d / 0x%1$X / 0b%2$s", i, s);
-                    }
+                if (i < 0)
+                {
+                    return "Unknown? (Got " + i + ")";
+                }
+                else
+                {
+                    String s = String.format("%4s", Integer.toBinaryString(i)).replace(" ", "0");
+                    return String.format("%1$d / 0x%1$X / 0b%2$s", i, s);
                 }
             });
         }
@@ -345,7 +331,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
     {
     }
 
-    private boolean isVanilla = getClass().getName().startsWith("net.minecraft.");
+    private final boolean isVanilla = getClass().getName().startsWith("net.minecraft.");
 
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
@@ -470,7 +456,7 @@ public abstract class TileEntity implements net.minecraftforge.common.capabiliti
     @Override
     public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing)
     {
-        return capabilities == null ? false : capabilities.hasCapability(capability, facing);
+        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
 
     @Override

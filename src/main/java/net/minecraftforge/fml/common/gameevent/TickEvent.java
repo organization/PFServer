@@ -27,11 +27,11 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TickEvent extends Event {
     public enum Type {
-        WORLD, PLAYER, CLIENT, SERVER, RENDER;
+        WORLD, PLAYER, CLIENT, SERVER, RENDER
     }
 
     public enum Phase {
-        START, END;
+        START, END
     }
     public final Type type;
     public final Side side;

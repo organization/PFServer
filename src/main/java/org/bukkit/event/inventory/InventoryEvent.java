@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class InventoryEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-    protected InventoryView transaction;
+    protected final InventoryView transaction;
 
     public InventoryEvent(InventoryView transaction) {
         this.transaction = transaction;

@@ -19,7 +19,7 @@ public class ContainerFurnace extends Container
     private int currentItemBurnTime;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerFurnace(InventoryPlayer playerInventory, IInventory furnaceInventory)
     {
@@ -53,27 +53,20 @@ public class ContainerFurnace extends Container
     {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.listeners.size(); ++i)
-        {
-            IContainerListener icontainerlistener = this.listeners.get(i);
-
-            if (this.cookTime != this.tileFurnace.getField(2))
-            {
+        for (IContainerListener icontainerlistener : this.listeners) {
+            if (this.cookTime != this.tileFurnace.getField(2)) {
                 icontainerlistener.sendWindowProperty(this, 2, this.tileFurnace.getField(2));
             }
 
-            if (this.furnaceBurnTime != this.tileFurnace.getField(0))
-            {
+            if (this.furnaceBurnTime != this.tileFurnace.getField(0)) {
                 icontainerlistener.sendWindowProperty(this, 0, this.tileFurnace.getField(0));
             }
 
-            if (this.currentItemBurnTime != this.tileFurnace.getField(1))
-            {
+            if (this.currentItemBurnTime != this.tileFurnace.getField(1)) {
                 icontainerlistener.sendWindowProperty(this, 1, this.tileFurnace.getField(1));
             }
 
-            if (this.totalCookTime != this.tileFurnace.getField(3))
-            {
+            if (this.totalCookTime != this.tileFurnace.getField(3)) {
                 icontainerlistener.sendWindowProperty(this, 3, this.tileFurnace.getField(3));
             }
         }

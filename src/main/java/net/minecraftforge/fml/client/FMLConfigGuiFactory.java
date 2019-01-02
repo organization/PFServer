@@ -45,10 +45,10 @@ public class FMLConfigGuiFactory implements IModGuiFactory
 
         private static List<IConfigElement> getConfigElements()
         {
-            List<IConfigElement> list = new ArrayList<IConfigElement>();
-            List<IConfigElement> listsList = new ArrayList<IConfigElement>();
-            List<IConfigElement> stringsList = new ArrayList<IConfigElement>();
-            List<IConfigElement> numbersList = new ArrayList<IConfigElement>();
+            List<IConfigElement> list = new ArrayList<>();
+            List<IConfigElement> listsList = new ArrayList<>();
+            List<IConfigElement> stringsList = new ArrayList<>();
+            List<IConfigElement> numbersList = new ArrayList<>();
             Pattern commaDelimitedPattern = Pattern.compile("([A-Za-z]+((,){1}( )*|$))+?");
 
             // Top Level Settings

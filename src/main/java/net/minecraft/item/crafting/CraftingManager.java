@@ -79,8 +79,7 @@ public class CraftingManager
                     if (!"jar".equals(uri.getScheme()))
                     {
                         LOGGER.error("Unsupported scheme " + uri + " trying to list all recipes");
-                        boolean flag2 = false;
-                        return flag2;
+                        return false;
                     }
 
                     filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
@@ -113,13 +112,13 @@ public class CraftingManager
                             {
                                 LOGGER.error("Parsing error loading recipe " + resourcelocation, (Throwable)jsonparseexception);
                                 flag = false;
-                                return flag;
+                                return false;
                             }
                             catch (IOException ioexception)
                             {
                                 LOGGER.error("Couldn't read recipe " + resourcelocation + " from " + path1, (Throwable)ioexception);
                                 flag = false;
-                                return flag;
+                                return false;
                             }
                         }
                         finally
@@ -139,14 +138,14 @@ public class CraftingManager
         {
             LOGGER.error("Couldn't get a list of all recipe files", (Throwable)urisyntaxexception);
             flag1 = false;
-            return flag1;
+            return false;
         }
         finally
         {
             IOUtils.closeQuietly((Closeable)filesystem);
         }
 
-        return flag1;
+        return false;
     }
 
     private static IRecipe parseRecipeJson(JsonObject p_193376_0_)

@@ -45,7 +45,7 @@ public class LibraryManager
     private static final String LIBRARY_DIRECTORY_OVERRIDE = System.getProperty("forge.lib_folder", null);
     private static final List<String> skipContainedDeps = Arrays.asList(System.getProperty("fml.skipContainedDeps","").split(",")); //TODO: Is this used by anyone in the real world? TODO: Remove in 1.13.
     private static final FilenameFilter MOD_FILENAME_FILTER  = (dir, name) -> name.endsWith(".jar") || name.endsWith(".zip"); //TODO: Disable support for zip in 1.13
-    private static final Comparator<File> FILE_NAME_SORTER_INSENSITVE = (o1, o2) -> o1.getName().toLowerCase(Locale.ENGLISH).compareTo(o2.getName().toLowerCase(Locale.ENGLISH));
+    private static final Comparator<File> FILE_NAME_SORTER_INSENSITVE = Comparator.comparing(o -> o.getName().toLowerCase(Locale.ENGLISH));
 
     public static final Attributes.Name MODSIDE = new Attributes.Name("ModSide");
     private static final Attributes.Name MODCONTAINSDEPS = new Attributes.Name("ContainedDeps");
@@ -53,7 +53,7 @@ public class LibraryManager
     private static final Attributes.Name TIMESTAMP = new Attributes.Name("Timestamp");
     private static final Attributes.Name MD5 = new Attributes.Name("MD5");
     private static Repository libraries_dir = null;
-    private static Set<File> processed = new HashSet<File>();
+    private static final Set<File> processed = new HashSet<>();
 
     public static void setup(File minecraftHome)
     {
@@ -84,12 +84,9 @@ public class LibraryManager
             Repository repo = list.getRepository() == null ? libraries_dir : list.getRepository();
             List<Artifact> artifacts = list.getArtifacts();
             // extractPacked adds artifacts to the list. As such, we can't use an Iterator to traverse it.
-            for (int i = 0; i < artifacts.size(); i++)
-            {
-                Artifact artifact = artifacts.get(i);
+            for (Artifact artifact : artifacts) {
                 Artifact resolved = repo.resolve(artifact);
-                if (resolved != null)
-                {
+                if (resolved != null) {
                     File target = repo.getFile(resolved.getPath());
                     if (target.exists())
                         extractPacked(target, list, mods_ver, mods);
@@ -177,24 +174,12 @@ public class LibraryManager
             PFServer.LOGGER.debug("File already proccessed {}, Skipping", file.getAbsolutePath());
             return null;
         }
-        JarFile jar = null;
-        try
-        {
-            jar = new JarFile(file);
+        try (JarFile jar = new JarFile(file)) {
             PFServer.LOGGER.debug("Examining file: {}", file.getName());
             processed.add(file);
             return extractPacked(jar, modlist, modDirs);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             PFServer.LOGGER.error("Unable to read the jar file {} - ignoring", file.getName(), ioe);
-        }
-        finally
-        {
-            try {
-                if (jar != null)
-                    jar.close();
-            } catch (IOException e) {}
         }
         return null;
     }

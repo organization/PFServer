@@ -11,7 +11,7 @@ public class ContainerShulkerBox extends Container
     private final IInventory inventory;
 
     private CraftInventoryView bukkitEntity;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerShulkerBox(InventoryPlayer p_i47266_1_, IInventory p_i47266_2_, EntityPlayer p_i47266_3_)
     {

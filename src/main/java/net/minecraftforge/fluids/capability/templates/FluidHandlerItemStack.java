@@ -48,7 +48,7 @@ public class FluidHandlerItemStack implements IFluidHandlerItem, ICapabilityProv
 
     @Nonnull
     protected ItemStack container;
-    protected int capacity;
+    protected final int capacity;
 
     /**
      * @param container  The container itemStack, data is stored on it directly as NBT.

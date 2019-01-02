@@ -223,29 +223,19 @@ public class JsonBlendingMode
     {
         String s = funcName.trim().toLowerCase(Locale.ROOT);
 
-        if ("add".equals(s))
-        {
-            return 32774;
-        }
-        else if ("subtract".equals(s))
-        {
-            return 32778;
-        }
-        else if ("reversesubtract".equals(s))
-        {
-            return 32779;
-        }
-        else if ("reverse_subtract".equals(s))
-        {
-            return 32779;
-        }
-        else if ("min".equals(s))
-        {
-            return 32775;
-        }
-        else
-        {
-            return "max".equals(s) ? 32776 : 32774;
+        switch (s) {
+            case "add":
+                return 32774;
+            case "subtract":
+                return 32778;
+            case "reversesubtract":
+                return 32779;
+            case "reverse_subtract":
+                return 32779;
+            case "min":
+                return 32775;
+            default:
+                return "max".equals(s) ? 32776 : 32774;
         }
     }
 
@@ -257,45 +247,27 @@ public class JsonBlendingMode
         s = s.replaceAll("zero", "0");
         s = s.replaceAll("minus", "-");
 
-        if ("0".equals(s))
-        {
-            return 0;
-        }
-        else if ("1".equals(s))
-        {
-            return 1;
-        }
-        else if ("srccolor".equals(s))
-        {
-            return 768;
-        }
-        else if ("1-srccolor".equals(s))
-        {
-            return 769;
-        }
-        else if ("dstcolor".equals(s))
-        {
-            return 774;
-        }
-        else if ("1-dstcolor".equals(s))
-        {
-            return 775;
-        }
-        else if ("srcalpha".equals(s))
-        {
-            return 770;
-        }
-        else if ("1-srcalpha".equals(s))
-        {
-            return 771;
-        }
-        else if ("dstalpha".equals(s))
-        {
-            return 772;
-        }
-        else
-        {
-            return "1-dstalpha".equals(s) ? 773 : -1;
+        switch (s) {
+            case "0":
+                return 0;
+            case "1":
+                return 1;
+            case "srccolor":
+                return 768;
+            case "1-srccolor":
+                return 769;
+            case "dstcolor":
+                return 774;
+            case "1-dstcolor":
+                return 775;
+            case "srcalpha":
+                return 770;
+            case "1-srcalpha":
+                return 771;
+            case "dstalpha":
+                return 772;
+            default:
+                return "1-dstalpha".equals(s) ? 773 : -1;
         }
     }
 }

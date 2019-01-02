@@ -75,7 +75,7 @@ public class ExtendedBlockState extends BlockStateContainer
     protected static class ExtendedStateImplementation extends StateImplementation implements IExtendedBlockState
     {
         private final ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties;
-        private IBlockState cleanState;
+        private final IBlockState cleanState;
 
         protected ExtendedStateImplementation(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties, @Nullable ImmutableTable<IProperty<?>, Comparable<?>, IBlockState> table, IBlockState clean)
         {
@@ -105,7 +105,7 @@ public class ExtendedBlockState extends BlockStateContainer
         public <V> IExtendedBlockState withProperty(IUnlistedProperty<V> property, @Nullable V value)
         {
             Optional<?> oldValue = unlistedProperties.get(property);
-            if (oldValue == null)
+            if (!oldValue.isPresent())
             {
                 throw new IllegalArgumentException("Cannot set unlisted property " + property + " as it does not exist in " + getBlock().getBlockState());
             }
@@ -144,7 +144,7 @@ public class ExtendedBlockState extends BlockStateContainer
         public <V> V getValue(IUnlistedProperty<V> property)
         {
             Optional<?> value = unlistedProperties.get(property);
-            if (value == null)
+            if (!value.isPresent())
             {
                 throw new IllegalArgumentException("Cannot get unlisted property " + property + " as it does not exist in " + getBlock().getBlockState());
             }

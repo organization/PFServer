@@ -17,7 +17,7 @@ public class ContainerHorseInventory extends Container
     private final AbstractHorse horse;
 
     org.bukkit.craftbukkit.inventory.CraftInventoryView bukkitEntity;
-    InventoryPlayer player;
+    final InventoryPlayer player;
 
     public ContainerHorseInventory(IInventory playerInventory, IInventory horseInventoryIn, final AbstractHorse horse, EntityPlayer player)
     {

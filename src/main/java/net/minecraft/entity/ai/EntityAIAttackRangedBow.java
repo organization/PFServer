@@ -34,7 +34,7 @@ public class EntityAIAttackRangedBow<T extends EntityMob & IRangedAttackMob> ext
 
     public boolean shouldExecute()
     {
-        return this.entity.getAttackTarget() == null ? false : this.isBowInMainhand();
+        return this.entity.getAttackTarget() != null && this.isBowInMainhand();
     }
 
     protected boolean isBowInMainhand()

@@ -67,9 +67,9 @@ import java.util.regex.Pattern;
 public class OBJModel implements IModel
 {
     //private Gson GSON = new GsonBuilder().create();
-    private MaterialLibrary matLib;
+    private final MaterialLibrary matLib;
     private final ResourceLocation modelLocation;
-    private CustomData customData;
+    private final CustomData customData;
 
     public OBJModel(MaterialLibrary matLib, ResourceLocation modelLocation)
     {
@@ -128,15 +128,13 @@ public class OBJModel implements IModel
     @Override
     public IModel process(ImmutableMap<String, String> customData)
     {
-        OBJModel ret = new OBJModel(this.matLib, this.modelLocation, new CustomData(this.customData, customData));
-        return ret;
+        return new OBJModel(this.matLib, this.modelLocation, new CustomData(this.customData, customData));
     }
 
     @Override
     public IModel retexture(ImmutableMap<String, String> textures)
     {
-        OBJModel ret = new OBJModel(this.matLib.makeLibWithReplacements(textures), this.modelLocation, this.customData);
-        return ret;
+        return new OBJModel(this.matLib.makeLibWithReplacements(textures), this.modelLocation, this.customData);
     }
 
     static class CustomData
@@ -161,14 +159,19 @@ public class OBJModel implements IModel
         {
             for (Map.Entry<String, String> e : customData.entrySet())
             {
-                if (e.getKey().equals("ambient"))
-                    this.ambientOcclusion = Boolean.valueOf(e.getValue());
-                else if (e.getKey().equals("gui3d"))
-                    this.gui3d = Boolean.valueOf(e.getValue());
+                switch (e.getKey()) {
+                    case "ambient":
+                        this.ambientOcclusion = Boolean.valueOf(e.getValue());
+                        break;
+                    case "gui3d":
+                        this.gui3d = Boolean.valueOf(e.getValue());
+                        break;
                 /*else if (e.getKey().equals("modifyUVs"))
                     this.modifyUVs = Boolean.valueOf(e.getValue());*/
-                else if (e.getKey().equals("flip-v"))
-                    this.flipV = Boolean.valueOf(e.getValue());
+                    case "flip-v":
+                        this.flipV = Boolean.valueOf(e.getValue());
+                        break;
+                }
             }
         }
     }
@@ -176,17 +179,17 @@ public class OBJModel implements IModel
     public static class Parser
     {
         private static final Pattern WHITE_SPACE = Pattern.compile("\\s+");
-        private static Set<String> unknownObjectCommands = new HashSet<String>();
-        public MaterialLibrary materialLibrary = new MaterialLibrary();
-        private IResourceManager manager;
-        private InputStreamReader objStream;
-        private BufferedReader objReader;
-        private ResourceLocation objFrom;
+        private static final Set<String> unknownObjectCommands = new HashSet<>();
+        public final MaterialLibrary materialLibrary = new MaterialLibrary();
+        private final IResourceManager manager;
+        private final InputStreamReader objStream;
+        private final BufferedReader objReader;
+        private final ResourceLocation objFrom;
 
-        private List<String> groupList = Lists.newArrayList();
-        private List<Vertex> vertices = Lists.newArrayList();
-        private List<Normal> normals = Lists.newArrayList();
-        private List<TextureCoordinate> texCoords = Lists.newArrayList();
+        private final List<String> groupList = Lists.newArrayList();
+        private final List<Vertex> vertices = Lists.newArrayList();
+        private final List<Normal> normals = Lists.newArrayList();
+        private final List<TextureCoordinate> texCoords = Lists.newArrayList();
 
         public Parser(IResource from, IResourceManager manager) throws IOException
         {
@@ -276,9 +279,8 @@ public class OBJModel implements IModel
 
                         List<Vertex> v = Lists.newArrayListWithCapacity(splitData.length);
 
-                        for (int i = 0; i < splitData.length; i++)
-                        {
-                            String[] pts = splitData[i].split("/");
+                        for (String splitDatum : splitData) {
+                            String[] pts = splitDatum.split("/");
 
                             int vert = Integer.parseInt(pts[0]);
                             Integer texture = pts.length < 2 || Strings.isNullOrEmpty(pts[1]) ? null : Integer.parseInt(pts[1]);
@@ -295,7 +297,7 @@ public class OBJModel implements IModel
                             v.add(newV);
                         }
 
-                        Vertex[] va = v.toArray(new Vertex[v.size()]);
+                        Vertex[] va = v.toArray(new Vertex[0]);
 
                         Face face = new Face(va, material.name);
                         if (usemtlCounter < this.vertices.size())
@@ -342,8 +344,7 @@ public class OBJModel implements IModel
                         if (key.equalsIgnoreCase("g"))
                         {
                             String[] splitSpace = data.split(" ");
-                            for (String s : splitSpace)
-                                groupList.add(s);
+                            groupList.addAll(Arrays.asList(splitSpace));
                         }
                         else
                         {
@@ -372,9 +373,9 @@ public class OBJModel implements IModel
     public static class MaterialLibrary
     {
         private static final Pattern WHITE_SPACE = Pattern.compile("\\s+");
-        private Set<String> unknownMaterialCommands = new HashSet<String>();
-        private Map<String, Material> materials = new HashMap<String, Material>();
-        private Map<String, Group> groups = new HashMap<String, Group>();
+        private Set<String> unknownMaterialCommands = new HashSet<>();
+        private Map<String, Material> materials = new HashMap<>();
+        private Map<String, Group> groups = new HashMap<>();
         private InputStreamReader mtlStream;
         private BufferedReader mtlReader;
 
@@ -391,7 +392,7 @@ public class OBJModel implements IModel
 
         public MaterialLibrary makeLibWithReplacements(ImmutableMap<String, String> replacements)
         {
-            Map<String, Material> mats = new HashMap<String, Material>();
+            Map<String, Material> mats = new HashMap<>();
             for (Map.Entry<String, Material> e : this.materials.entrySet())
             {
                 // key for the material name, with # added if missing
@@ -647,17 +648,15 @@ public class OBJModel implements IModel
         @Override
         public String toString()
         {
-            StringBuilder builder = new StringBuilder(String.format("%nMaterial:%n"));
-            builder.append(String.format("    Name: %s%n", this.name));
-            builder.append(String.format("    Color: %s%n", this.color.toString()));
-            builder.append(String.format("    Is White: %b%n", this.isWhite()));
-            return builder.toString();
+            return String.format("%nMaterial:%n") + String.format("    Name: %s%n", this.name) +
+                    String.format("    Color: %s%n", this.color.toString()) +
+                    String.format("    Is White: %b%n", this.isWhite());
         }
     }
 
     public static class Texture
     {
-        public static Texture WHITE = new Texture("builtin/white", new Vector2f(0, 0), new Vector2f(1, 1), 0);
+        public static final Texture WHITE = new Texture("builtin/white", new Vector2f(0, 0), new Vector2f(1, 1), 0);
         private String path;
         private Vector2f position;
         private Vector2f scale;
@@ -678,8 +677,7 @@ public class OBJModel implements IModel
 
         public ResourceLocation getTextureLocation()
         {
-            ResourceLocation loc = new ResourceLocation(this.path);
-            return loc;
+            return new ResourceLocation(this.path);
         }
 
         public void setPath(String path)
@@ -961,17 +959,17 @@ public class OBJModel implements IModel
         @Override
         public String toString()
         {
-            StringBuilder builder = new StringBuilder();
-            builder.append(String.format("v:%n"));
-            builder.append(String.format("    position: %s %s %s%n", position.x, position.y, position.z));
-            builder.append(String.format("    material: %s %s %s %s %s%n", material.getName(), material.getColor().x, material.getColor().y, material.getColor().z, material.getColor().w));
-            return builder.toString();
+            return String.format("v:%n") +
+                    String.format("    position: %s %s %s%n", position.x, position.y, position.z) +
+                    String.format("    material: %s %s %s %s %s%n", material.getName(), material.getColor().x, material.getColor().y, material.getColor().z, material.getColor().w);
         }
     }
 
     public static class Normal
     {
-        public float x, y, z;
+        public final float x;
+        public final float y;
+        public final float z;
 
         public Normal()
         {
@@ -1002,7 +1000,9 @@ public class OBJModel implements IModel
 
     public static class TextureCoordinate
     {
-        public float u, v, w;
+        public final float u;
+        public final float v;
+        public final float w;
 
         public TextureCoordinate()
         {
@@ -1049,7 +1049,7 @@ public class OBJModel implements IModel
         public static final String ALL = "OBJModel.Group.All.Key";
         public static final String ALL_EXCEPT = "OBJModel.Group.All.Except.Key";
         private String name = DEFAULT_NAME;
-        private LinkedHashSet<Face> faces = new LinkedHashSet<Face>();
+        private LinkedHashSet<Face> faces = new LinkedHashSet<>();
         public float[] minUVBounds = new float[] {0.0f, 0.0f};
         public float[] maxUVBounds = new float[] {1.0f, 1.0f};
 
@@ -1059,12 +1059,12 @@ public class OBJModel implements IModel
         public Group(String name, @Nullable LinkedHashSet<Face> faces)
         {
             this.name = name != null ? name : DEFAULT_NAME;
-            this.faces = faces == null ? new LinkedHashSet<Face>() : faces;
+            this.faces = faces == null ? new LinkedHashSet<>() : faces;
         }
 
         public LinkedHashSet<Face> applyTransform(Optional<TRSRTransformation> transform)
         {
-            LinkedHashSet<Face> faceSet = new LinkedHashSet<Face>();
+            LinkedHashSet<Face> faceSet = new LinkedHashSet<>();
             for (Face f : this.faces)
             {
 //                if (minUVBounds != null && maxUVBounds != null) f.normalizeUVs(minUVBounds, maxUVBounds);
@@ -1102,8 +1102,8 @@ public class OBJModel implements IModel
     @Deprecated
     public static class OBJState implements IModelState
     {
-        protected Map<String, Boolean> visibilityMap = Maps.newHashMap();
-        public IModelState parent;
+        protected final Map<String, Boolean> visibilityMap = Maps.newHashMap();
+        public final IModelState parent;
         protected Operation operation = Operation.SET_TRUE;
 
         public OBJState(List<String> visibleGroups, boolean visibility)
@@ -1272,10 +1272,10 @@ public class OBJModel implements IModel
     public class OBJBakedModel implements IBakedModel
     {
         private final OBJModel model;
-        private IModelState state;
+        private final IModelState state;
         private final VertexFormat format;
         private ImmutableList<BakedQuad> quads;
-        private ImmutableMap<String, TextureAtlasSprite> textures;
+        private final ImmutableMap<String, TextureAtlasSprite> textures;
         private TextureAtlasSprite sprite = ModelLoader.White.INSTANCE;
 
         public OBJBakedModel(OBJModel model, IModelState state, VertexFormat format, ImmutableMap<String, TextureAtlasSprite> textures)
@@ -1321,7 +1321,7 @@ public class OBJModel implements IModel
         {
             List<BakedQuad> quads = Lists.newArrayList();
             Collections.synchronizedSet(new LinkedHashSet<BakedQuad>());
-            Set<Face> faces = Collections.synchronizedSet(new LinkedHashSet<Face>());
+            Set<Face> faces = Collections.synchronizedSet(new LinkedHashSet<>());
             Optional<TRSRTransformation> transform = Optional.empty();
             for (Group g : this.model.getMatLib().getGroups().values())
             {
@@ -1453,13 +1453,13 @@ public class OBJModel implements IModel
         @Override
         public boolean isAmbientOcclusion()
         {
-            return model != null ? model.customData.ambientOcclusion : true;
+            return model == null || model.customData.ambientOcclusion;
         }
 
         @Override
         public boolean isGui3d()
         {
-            return model != null ? model.customData.gui3d : true;
+            return model == null || model.customData.gui3d;
         }
 
         @Override
@@ -1580,7 +1580,7 @@ public class OBJModel implements IModel
     @SuppressWarnings("serial")
     public static class UVsOutOfBoundsException extends RuntimeException
     {
-        public ResourceLocation modelLocation;
+        public final ResourceLocation modelLocation;
 
         public UVsOutOfBoundsException(ResourceLocation modelLocation)
         {

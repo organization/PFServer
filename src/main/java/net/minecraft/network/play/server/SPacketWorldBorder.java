@@ -165,6 +165,6 @@ public class SPacketWorldBorder implements Packet<INetHandlerPlayClient>
         SET_CENTER,
         INITIALIZE,
         SET_WARNING_TIME,
-        SET_WARNING_BLOCKS;
+        SET_WARNING_BLOCKS
     }
 }

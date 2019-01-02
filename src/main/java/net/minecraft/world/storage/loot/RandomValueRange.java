@@ -75,8 +75,8 @@ public class RandomValueRange
                 else
                 {
                     JsonObject jsonobject = new JsonObject();
-                    jsonobject.addProperty("min", Float.valueOf(p_serialize_1_.min));
-                    jsonobject.addProperty("max", Float.valueOf(p_serialize_1_.max));
+                    jsonobject.addProperty("min", p_serialize_1_.min);
+                    jsonobject.addProperty("max", p_serialize_1_.max);
                     return jsonobject;
                 }
             }

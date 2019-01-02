@@ -47,7 +47,7 @@ public class Properties
 
     public static <V extends Comparable<V>> IUnlistedProperty<V> toUnlisted(IProperty<V> property)
     {
-        return new PropertyAdapter<V>(property);
+        return new PropertyAdapter<>(property);
     }
 
     public static class PropertyAdapter<V extends Comparable<V>> implements IUnlistedProperty<V>

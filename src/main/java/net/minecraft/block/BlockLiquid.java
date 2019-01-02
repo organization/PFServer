@@ -32,7 +32,7 @@ public abstract class BlockLiquid extends Block
     protected BlockLiquid(Material materialIn)
     {
         super(materialIn);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 0));
         this.setTickRandomly(true);
     }
 
@@ -64,7 +64,7 @@ public abstract class BlockLiquid extends Block
 
     protected int getDepth(IBlockState state)
     {
-        return state.getMaterial() == this.blockMaterial ? ((Integer)state.getValue(LEVEL)).intValue() : -1;
+        return state.getMaterial() == this.blockMaterial ? (Integer) state.getValue(LEVEL) : -1;
     }
 
     protected int getRenderedDepth(IBlockState state)
@@ -85,7 +85,7 @@ public abstract class BlockLiquid extends Block
 
     public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid)
     {
-        return hitIfLiquid && ((Integer)state.getValue(LEVEL)).intValue() == 0;
+        return hitIfLiquid && (Integer) state.getValue(LEVEL) == 0;
     }
 
     private boolean causesDownwardCurrent(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
@@ -122,7 +122,7 @@ public abstract class BlockLiquid extends Block
         }
         else
         {
-            return side == EnumFacing.UP ? true : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+            return side == EnumFacing.UP || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
         }
     }
 
@@ -180,7 +180,7 @@ public abstract class BlockLiquid extends Block
 
         Vec3d vec3d = new Vec3d(d0, d1, d2);
 
-        if (((Integer)state.getValue(LEVEL)).intValue() >= 8)
+        if ((Integer) state.getValue(LEVEL) >= 8)
         {
             for (EnumFacing enumfacing1 : EnumFacing.Plane.HORIZONTAL)
             {
@@ -279,7 +279,7 @@ public abstract class BlockLiquid extends Block
             {
                 Integer integer = (Integer)state.getValue(LEVEL);
 
-                if (integer.intValue() == 0)
+                if (integer == 0)
                 {
                     if (org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockFormEvent(worldIn, pos, net.minecraftforge.event.ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.OBSIDIAN.getDefaultState()), null)) {
                         this.triggerMixEffects(worldIn, pos);
@@ -287,7 +287,7 @@ public abstract class BlockLiquid extends Block
                     return true;
                 }
 
-                if (integer.intValue() <= 4)
+                if (integer <= 4)
                 {
                     if (org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockFormEvent(worldIn, pos, net.minecraftforge.event.ForgeEventFactory.fireFluidPlaceBlockEvent(worldIn, pos, pos, Blocks.COBBLESTONE.getDefaultState()), null)) {
                         this.triggerMixEffects(worldIn, pos);
@@ -315,7 +315,7 @@ public abstract class BlockLiquid extends Block
 
         if (this.blockMaterial == Material.WATER)
         {
-            int i = ((Integer)stateIn.getValue(LEVEL)).intValue();
+            int i = (Integer) stateIn.getValue(LEVEL);
 
             if (i > 0 && i < 8)
             {
@@ -391,17 +391,17 @@ public abstract class BlockLiquid extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(LEVEL, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(LEVEL, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(LEVEL)).intValue();
+        return (Integer) state.getValue(LEVEL);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {LEVEL});
+        return new BlockStateContainer(this, LEVEL);
     }
 
     public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
@@ -438,7 +438,7 @@ public abstract class BlockLiquid extends Block
 
     public static float getBlockLiquidHeight(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        int i = ((Integer)state.getValue(LEVEL)).intValue();
+        int i = (Integer) state.getValue(LEVEL);
         return (i & 7) == 0 && worldIn.getBlockState(pos.up()).getMaterial() == Material.WATER ? 1.0F : 1.0F - getLiquidHeightPercent(i);
     }
 

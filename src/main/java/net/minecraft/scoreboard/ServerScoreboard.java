@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateScore;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -88,7 +89,7 @@ public class ServerScoreboard extends Scoreboard
         if (super.addPlayerToTeam(player, newTeam))
         {
             ScorePlayerTeam scoreplayerteam = this.getTeam(newTeam);
-            this.sendAll(new SPacketTeams(scoreplayerteam, Arrays.asList(player), 3));
+            this.sendAll(new SPacketTeams(scoreplayerteam, Collections.singletonList(player), 3));
             this.markSaveDataDirty();
             return true;
         }
@@ -101,7 +102,7 @@ public class ServerScoreboard extends Scoreboard
     public void removePlayerFromTeam(String username, ScorePlayerTeam playerTeam)
     {
         super.removePlayerFromTeam(username, playerTeam);
-        this.sendAll(new SPacketTeams(playerTeam, Arrays.asList(username), 4));
+        this.sendAll(new SPacketTeams(playerTeam, Collections.singletonList(username), 4));
         this.markSaveDataDirty();
     }
 

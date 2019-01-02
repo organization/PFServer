@@ -45,7 +45,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
     private EnumDyeColor color;
     private boolean destroyedByCreativePlayer;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -158,27 +158,19 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
             if (!list.isEmpty())
             {
-                for (int i = 0; i < list.size(); ++i)
-                {
-                    Entity entity = list.get(i);
-
-                    if (entity.getPushReaction() != EnumPushReaction.IGNORE)
-                    {
+                for (Entity entity : list) {
+                    if (entity.getPushReaction() != EnumPushReaction.IGNORE) {
                         double d0 = 0.0D;
                         double d1 = 0.0D;
                         double d2 = 0.0D;
                         AxisAlignedBB axisalignedbb1 = entity.getEntityBoundingBox();
 
-                        switch (enumfacing.getAxis())
-                        {
+                        switch (enumfacing.getAxis()) {
                             case X:
 
-                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
-                                {
+                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE) {
                                     d0 = axisalignedbb.maxX - axisalignedbb1.minX;
-                                }
-                                else
-                                {
+                                } else {
                                     d0 = axisalignedbb1.maxX - axisalignedbb.minX;
                                 }
 
@@ -186,12 +178,9 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
                                 break;
                             case Y:
 
-                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
-                                {
+                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE) {
                                     d1 = axisalignedbb.maxY - axisalignedbb1.minY;
-                                }
-                                else
-                                {
+                                } else {
                                     d1 = axisalignedbb1.maxY - axisalignedbb.minY;
                                 }
 
@@ -199,19 +188,16 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
                                 break;
                             case Z:
 
-                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE)
-                                {
+                                if (enumfacing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE) {
                                     d2 = axisalignedbb.maxZ - axisalignedbb1.minZ;
-                                }
-                                else
-                                {
+                                } else {
                                     d2 = axisalignedbb1.maxZ - axisalignedbb.minZ;
                                 }
 
                                 d2 = d2 + 0.01D;
                         }
 
-                        entity.move(MoverType.SHULKER_BOX, d0 * (double)enumfacing.getFrontOffsetX(), d1 * (double)enumfacing.getFrontOffsetY(), d2 * (double)enumfacing.getFrontOffsetZ());
+                        entity.move(MoverType.SHULKER_BOX, d0 * (double) enumfacing.getFrontOffsetX(), d1 * (double) enumfacing.getFrontOffsetY(), d2 * (double) enumfacing.getFrontOffsetZ());
                     }
                 }
             }
@@ -302,7 +288,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
 
     public static void registerFixesShulkerBox(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityShulkerBox.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityShulkerBox.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -437,7 +423,6 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
     {
         for (int i = 0; i < SLOTS.length; SLOTS[i] = i++)
         {
-            ;
         }
     }
 
@@ -446,7 +431,7 @@ public class TileEntityShulkerBox extends TileEntityLockableLoot implements ITic
         CLOSED,
         OPENING,
         OPENED,
-        CLOSING;
+        CLOSING
     }
 
     protected net.minecraftforge.items.IItemHandler createUnSidedHandler()

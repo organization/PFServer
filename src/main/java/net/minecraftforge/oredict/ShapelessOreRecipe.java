@@ -49,7 +49,7 @@ public class ShapelessOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
     @Nonnull
     protected ItemStack output = ItemStack.EMPTY;
     protected NonNullList<Ingredient> input = NonNullList.create();
-    protected ResourceLocation group;
+    protected final ResourceLocation group;
     protected boolean isSimple = true;
     private Recipe bukkitRecip;
 
@@ -77,13 +77,13 @@ public class ShapelessOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
             }
             else
             {
-                String ret = "Invalid shapeless ore recipe: ";
+                StringBuilder ret = new StringBuilder("Invalid shapeless ore recipe: ");
                 for (Object tmp :  recipe)
                 {
-                    ret += tmp + ", ";
+                    ret.append(tmp).append(", ");
                 }
-                ret += output;
-                throw new RuntimeException(ret);
+                ret.append(output);
+                throw new RuntimeException(ret.toString());
             }
         }
     }

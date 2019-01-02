@@ -62,15 +62,15 @@ public abstract class EntityLiving extends EntityLivingBase
     protected EntityMoveHelper moveHelper;
     protected EntityJumpHelper jumpHelper;
     private final EntityBodyHelper bodyHelper;
-    protected PathNavigate navigator;
+    protected final PathNavigate navigator;
     public EntityAITasks tasks;
     public EntityAITasks targetTasks;
     private EntityLivingBase attackTarget;
     private final EntitySenses senses;
     private final NonNullList<ItemStack> inventoryHands = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
-    public float[] inventoryHandsDropChances = new float[2];
+    public final float[] inventoryHandsDropChances = new float[2];
     private final NonNullList<ItemStack> inventoryArmor = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
-    public float[] inventoryArmorDropChances = new float[4];
+    public final float[] inventoryArmorDropChances = new float[4];
     // private boolean canPickUpLoot; // CraftBukkit - moved up to EntityLivingBase
     public boolean persistenceRequired;
     private final Map<PathNodeType, Float> mapPathPriority = Maps.newEnumMap(PathNodeType.class);
@@ -118,12 +118,12 @@ public abstract class EntityLiving extends EntityLivingBase
     public float getPathPriority(PathNodeType nodeType)
     {
         Float f = this.mapPathPriority.get(nodeType);
-        return f == null ? nodeType.getPriority() : f.floatValue();
+        return f == null ? nodeType.getPriority() : f;
     }
 
     public void setPathPriority(PathNodeType nodeType, float priority)
     {
-        this.mapPathPriority.put(nodeType, Float.valueOf(priority));
+        this.mapPathPriority.put(nodeType, priority);
     }
 
     protected EntityBodyHelper createBodyHelper()
@@ -212,7 +212,7 @@ public abstract class EntityLiving extends EntityLivingBase
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(AI_FLAGS, Byte.valueOf((byte)0));
+        this.dataManager.register(AI_FLAGS, (byte) 0);
     }
 
     public int getTalkInterval()
@@ -376,7 +376,7 @@ public abstract class EntityLiving extends EntityLivingBase
 
     public static void registerFixesMob(DataFixer fixer, Class<?> name)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(name, new String[] {"ArmorItems", "HandItems"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(name, "ArmorItems", "HandItems"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
@@ -1282,7 +1282,7 @@ public abstract class EntityLiving extends EntityLivingBase
             }
             else
             {
-                return this.processInteract(player, hand) ? true : super.processInitialInteract(player, hand);
+                return this.processInteract(player, hand) || super.processInitialInteract(player, hand);
             }
         }
     }
@@ -1481,24 +1481,24 @@ public abstract class EntityLiving extends EntityLivingBase
 
     public void setNoAI(boolean disable)
     {
-        byte b0 = ((Byte)this.dataManager.get(AI_FLAGS)).byteValue();
-        this.dataManager.set(AI_FLAGS, Byte.valueOf(disable ? (byte)(b0 | 1) : (byte)(b0 & -2)));
+        byte b0 = (Byte) this.dataManager.get(AI_FLAGS);
+        this.dataManager.set(AI_FLAGS, disable ? (byte) (b0 | 1) : (byte) (b0 & -2));
     }
 
     public void setLeftHanded(boolean leftHanded)
     {
-        byte b0 = ((Byte)this.dataManager.get(AI_FLAGS)).byteValue();
-        this.dataManager.set(AI_FLAGS, Byte.valueOf(leftHanded ? (byte)(b0 | 2) : (byte)(b0 & -3)));
+        byte b0 = (Byte) this.dataManager.get(AI_FLAGS);
+        this.dataManager.set(AI_FLAGS, leftHanded ? (byte) (b0 | 2) : (byte) (b0 & -3));
     }
 
     public boolean isAIDisabled()
     {
-        return (((Byte)this.dataManager.get(AI_FLAGS)).byteValue() & 1) != 0;
+        return ((Byte) this.dataManager.get(AI_FLAGS) & 1) != 0;
     }
 
     public boolean isLeftHanded()
     {
-        return (((Byte)this.dataManager.get(AI_FLAGS)).byteValue() & 2) != 0;
+        return ((Byte) this.dataManager.get(AI_FLAGS) & 2) != 0;
     }
 
     public EnumHandSide getPrimaryHand()

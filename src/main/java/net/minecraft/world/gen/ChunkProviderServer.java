@@ -77,18 +77,15 @@ public class ChunkProviderServer implements IChunkProvider
     {
         if (this.world.provider.canDropChunk(chunkIn.x, chunkIn.z))
         {
-            this.droppedChunksSet.add(Long.valueOf(ChunkPos.asLong(chunkIn.x, chunkIn.z)));
+            this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.x, chunkIn.z));
             chunkIn.unloadQueued = true;
         }
     }
 
     public void queueUnloadAll()
     {
-        ObjectIterator objectiterator = this.id2ChunkMap.values().iterator();
 
-        while (objectiterator.hasNext())
-        {
-            Chunk chunk = (Chunk)objectiterator.next();
+        for (Chunk chunk : this.id2ChunkMap.values()) {
             this.queueUnload(chunk);
         }
     }
@@ -177,7 +174,7 @@ public class ChunkProviderServer implements IChunkProvider
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
                 crashreportcategory.addCrashSection("Location", String.format("%d,%d", x, z));
-                crashreportcategory.addCrashSection("Position hash", Long.valueOf(i));
+                crashreportcategory.addCrashSection("Position hash", i);
                 crashreportcategory.addCrashSection("Generator", this.chunkGenerator);
                 throw new ReportedException(crashreport);
             }
@@ -247,23 +244,17 @@ public class ChunkProviderServer implements IChunkProvider
         int i = 0;
         List<Chunk> list = Lists.newArrayList(this.id2ChunkMap.values());
 
-        for (int j = 0; j < list.size(); ++j)
-        {
-            Chunk chunk = list.get(j);
-
-            if (all)
-            {
+        for (Chunk chunk : list) {
+            if (all) {
                 this.saveChunkExtraData(chunk);
             }
 
-            if (chunk.needsSaving(all))
-            {
+            if (chunk.needsSaving(all)) {
                 this.saveChunkData(chunk);
                 chunk.setModified(false);
                 ++i;
 
-                if (i == 24 && !all)
-                {
+                if (i == 24 && !all) {
                     return false;
                 }
             }

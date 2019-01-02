@@ -24,8 +24,8 @@ import java.util.Map;
 public class PFServerURLClassLoader extends URLClassLoader
 {
 
-    private JarMapping jarMapping;
-    private JarRemapper remapper;
+    private final JarMapping jarMapping;
+    private final JarRemapper remapper;
     private final Map<String, Class<?>> classes;
 
     {
@@ -59,8 +59,7 @@ public class PFServerURLClassLoader extends URLClassLoader
     private Class<?> findClass(final String name, final boolean checkGlobal) throws ClassNotFoundException {
         if (name.startsWith("net.minecraft.server." + PFServer.getNativeVersion())) {
             final String remappedClass = this.jarMapping.classes.get(name.replaceAll("\\.", "\\/"));
-            final Class<?> clazz = ((LaunchClassLoader) MinecraftServer.getServerInst().getClass().getClassLoader()).findClass(remappedClass);
-            return clazz;
+            return ((LaunchClassLoader) MinecraftServer.getServerInst().getClass().getClassLoader()).findClass(remappedClass);
         }
         Class<?> result = this.classes.get(name);
         synchronized (name.intern()) {

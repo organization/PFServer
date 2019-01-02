@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class Tezzelator
 {
-    public static Tessellator t = Tessellator.getInstance();
+    public static final Tessellator t = Tessellator.getInstance();
     public static final Tezzelator instance = new Tezzelator();
 
     public void end()

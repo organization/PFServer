@@ -46,7 +46,7 @@ public abstract class BlockButton extends BlockDirectional
     protected BlockButton(boolean wooden)
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, Boolean.FALSE));
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.REDSTONE);
         this.wooden = wooden;
@@ -110,7 +110,7 @@ public abstract class BlockButton extends BlockDirectional
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return canPlaceBlock(worldIn, pos, facing) ? this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.valueOf(false)) : this.getDefaultState().withProperty(FACING, EnumFacing.DOWN).withProperty(POWERED, Boolean.valueOf(false));
+        return canPlaceBlock(worldIn, pos, facing) ? this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.FALSE) : this.getDefaultState().withProperty(FACING, EnumFacing.DOWN).withProperty(POWERED, Boolean.FALSE);
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
@@ -139,7 +139,7 @@ public abstract class BlockButton extends BlockDirectional
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-        boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
+        boolean flag = (Boolean) state.getValue(POWERED);
 
         switch (enumfacing)
         {
@@ -161,7 +161,7 @@ public abstract class BlockButton extends BlockDirectional
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             return true;
         }
@@ -175,10 +175,10 @@ public abstract class BlockButton extends BlockDirectional
             BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, old, current);
             worldIn.getServer().getPluginManager().callEvent(eventRedstone);
 
-            if ((eventRedstone.getNewCurrent() > 0) != (!powered)) {
+            if ((eventRedstone.getNewCurrent() > 0) == (powered)) {
                 return true;
             }
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 3);
+            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.TRUE), 3);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
             this.playClickSound(playerIn, worldIn, pos);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
@@ -193,7 +193,7 @@ public abstract class BlockButton extends BlockDirectional
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
         }
@@ -203,12 +203,12 @@ public abstract class BlockButton extends BlockDirectional
 
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return ((Boolean)blockState.getValue(POWERED)).booleanValue() ? 15 : 0;
+        return (Boolean) blockState.getValue(POWERED) ? 15 : 0;
     }
 
     public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        if (!((Boolean)blockState.getValue(POWERED)).booleanValue())
+        if (!(Boolean) blockState.getValue(POWERED))
         {
             return 0;
         }
@@ -231,7 +231,7 @@ public abstract class BlockButton extends BlockDirectional
     {
         if (!worldIn.isRemote)
         {
-            if (((Boolean)state.getValue(POWERED)).booleanValue())
+            if ((Boolean) state.getValue(POWERED))
             {
                 if (this.wooden)
                 {
@@ -247,7 +247,7 @@ public abstract class BlockButton extends BlockDirectional
                     if (eventRedstone.getNewCurrent() > 0) {
                         return;
                     }
-                    worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
+                    worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.FALSE));
                     this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
                     this.playReleaseSound(worldIn, pos);
                     worldIn.markBlockRangeForRenderUpdate(pos, pos);
@@ -262,7 +262,7 @@ public abstract class BlockButton extends BlockDirectional
         {
             if (this.wooden)
             {
-                if (!((Boolean)state.getValue(POWERED)).booleanValue())
+                if (!(Boolean) state.getValue(POWERED))
                 {
                     this.checkPressed(state, worldIn, pos);
                 }
@@ -274,7 +274,7 @@ public abstract class BlockButton extends BlockDirectional
     {
         List <? extends Entity > list = worldIn.<Entity>getEntitiesWithinAABB(EntityArrow.class, state.getBoundingBox(worldIn, pos).offset(pos));
         boolean flag = !list.isEmpty();
-        boolean flag1 = ((Boolean)state.getValue(POWERED)).booleanValue();
+        boolean flag1 = (Boolean) state.getValue(POWERED);
 
         // CraftBukkit start - Call interact event when arrows turn on wooden buttons
         if (flag1 != flag && flag) {
@@ -309,7 +309,7 @@ public abstract class BlockButton extends BlockDirectional
             if (eventRedstone.getNewCurrent() <= 0) {
                 return;
             }
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
+            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.TRUE));
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
             this.playClickSound((EntityPlayer)null, worldIn, pos);
@@ -325,7 +325,7 @@ public abstract class BlockButton extends BlockDirectional
             if (eventRedstone.getNewCurrent() > 0) {
                 return;
             }
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
+            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.FALSE));
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
             this.playReleaseSound(worldIn, pos);
@@ -369,7 +369,7 @@ public abstract class BlockButton extends BlockDirectional
                 enumfacing = EnumFacing.UP;
         }
 
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, (meta & 8) > 0);
     }
 
     public int getMetaFromState(IBlockState state)
@@ -398,7 +398,7 @@ public abstract class BlockButton extends BlockDirectional
                 i = 0;
         }
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             i |= 8;
         }
@@ -418,7 +418,7 @@ public abstract class BlockButton extends BlockDirectional
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+        return new BlockStateContainer(this, FACING, POWERED);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

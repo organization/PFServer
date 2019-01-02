@@ -51,7 +51,7 @@ public class TileEntityEndGateway extends TileEntityEndPortal implements ITickab
 
         if (this.exactTeleport)
         {
-            compound.setBoolean("ExactTeleport", this.exactTeleport);
+            compound.setBoolean("ExactTeleport", true);
         }
 
         return compound;

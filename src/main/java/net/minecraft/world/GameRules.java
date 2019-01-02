@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public class GameRules
 {
-    private final TreeMap<String, Value> rules = new TreeMap<String, Value>();
+    private final TreeMap<String, Value> rules = new TreeMap<>();
 
     public GameRules()
     {
@@ -64,7 +64,7 @@ public class GameRules
     public boolean getBoolean(String name)
     {
         Value gamerules$value = this.rules.get(name);
-        return gamerules$value != null ? gamerules$value.getBoolean() : false;
+        return gamerules$value != null && gamerules$value.getBoolean();
     }
 
     public int getInt(String name)
@@ -97,7 +97,7 @@ public class GameRules
     public String[] getRules()
     {
         Set<String> set = this.rules.keySet();
-        return (String[])set.toArray(new String[set.size()]);
+        return (String[])set.toArray(new String[0]);
     }
 
     public boolean hasRule(String name)
@@ -135,18 +135,16 @@ public class GameRules
                 {
                     this.valueInteger = Integer.parseInt(value);
                 }
-                catch (NumberFormatException var4)
+                catch (NumberFormatException ignored)
                 {
-                    ;
                 }
 
                 try
                 {
                     this.valueDouble = Double.parseDouble(value);
                 }
-                catch (NumberFormatException var3)
+                catch (NumberFormatException ignored)
                 {
-                    ;
                 }
             }
 
@@ -176,6 +174,6 @@ public class GameRules
         ANY_VALUE,
         BOOLEAN_VALUE,
         NUMERICAL_VALUE,
-        FUNCTION;
+        FUNCTION
     }
 }

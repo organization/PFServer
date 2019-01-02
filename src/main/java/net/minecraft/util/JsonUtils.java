@@ -17,34 +17,34 @@ public class JsonUtils
 {
     public static boolean isString(JsonObject json, String memberName)
     {
-        return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isString();
+        return isJsonPrimitive(json, memberName) && json.getAsJsonPrimitive(memberName).isString();
     }
 
     @SideOnly(Side.CLIENT)
     public static boolean isString(JsonElement json)
     {
-        return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isString();
+        return json.isJsonPrimitive() && json.getAsJsonPrimitive().isString();
     }
 
     public static boolean isNumber(JsonElement json)
     {
-        return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isNumber();
+        return json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber();
     }
 
     @SideOnly(Side.CLIENT)
     public static boolean isBoolean(JsonObject json, String memberName)
     {
-        return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isBoolean();
+        return isJsonPrimitive(json, memberName) && json.getAsJsonPrimitive(memberName).isBoolean();
     }
 
     public static boolean isJsonArray(JsonObject json, String memberName)
     {
-        return !hasField(json, memberName) ? false : json.get(memberName).isJsonArray();
+        return hasField(json, memberName) && json.get(memberName).isJsonArray();
     }
 
     public static boolean isJsonPrimitive(JsonObject json, String memberName)
     {
-        return !hasField(json, memberName) ? false : json.get(memberName).isJsonPrimitive();
+        return hasField(json, memberName) && json.get(memberName).isJsonPrimitive();
     }
 
     public static boolean hasField(JsonObject json, String memberName)

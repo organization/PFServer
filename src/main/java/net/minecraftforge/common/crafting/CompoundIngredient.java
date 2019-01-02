@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CompoundIngredient extends Ingredient
 {
-    private Collection<Ingredient> children;
+    private final Collection<Ingredient> children;
     private ItemStack[] stacks;
     private IntList itemIds;
     private final boolean isSimple;
@@ -40,7 +40,7 @@ public class CompoundIngredient extends Ingredient
             List<ItemStack> tmp = Lists.newArrayList();
             for (Ingredient child : children)
                 Collections.addAll(tmp, child.getMatchingStacks());
-            stacks = tmp.toArray(new ItemStack[tmp.size()]);
+            stacks = tmp.toArray(new ItemStack[0]);
 
         }
         return stacks;

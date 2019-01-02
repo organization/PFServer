@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Random;
 
 public class BlockVine extends Block implements net.minecraftforge.common.IShearable
@@ -47,7 +48,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
     public BlockVine()
     {
         super(Material.VINE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(UP, Boolean.FALSE).withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE));
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
@@ -64,31 +65,31 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
         int i = 0;
         AxisAlignedBB axisalignedbb = FULL_BLOCK_AABB;
 
-        if (((Boolean)state.getValue(UP)).booleanValue())
+        if ((Boolean) state.getValue(UP))
         {
             axisalignedbb = UP_AABB;
             ++i;
         }
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if ((Boolean) state.getValue(NORTH))
         {
             axisalignedbb = NORTH_AABB;
             ++i;
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if ((Boolean) state.getValue(EAST))
         {
             axisalignedbb = EAST_AABB;
             ++i;
         }
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if ((Boolean) state.getValue(SOUTH))
         {
             axisalignedbb = SOUTH_AABB;
             ++i;
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if ((Boolean) state.getValue(WEST))
         {
             axisalignedbb = WEST_AABB;
             ++i;
@@ -100,7 +101,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         BlockPos blockpos = pos.up();
-        return state.withProperty(UP, Boolean.valueOf(worldIn.getBlockState(blockpos).getBlockFaceShape(worldIn, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID));
+        return state.withProperty(UP, worldIn.getBlockState(blockpos).getBlockFaceShape(worldIn, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID);
     }
 
     public boolean isOpaqueCube(IBlockState state)
@@ -148,13 +149,13 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
         {
             PropertyBool propertybool = getPropertyFor(enumfacing);
 
-            if (((Boolean)state.getValue(propertybool)).booleanValue() && !this.canAttachTo(worldIn, pos, enumfacing.getOpposite()))
+            if ((Boolean) state.getValue(propertybool) && !this.canAttachTo(worldIn, pos, enumfacing.getOpposite()))
             {
                 IBlockState iblockstate1 = worldIn.getBlockState(pos.up());
 
-                if (iblockstate1.getBlock() != this || !((Boolean)iblockstate1.getValue(propertybool)).booleanValue())
+                if (iblockstate1.getBlock() != this || !(Boolean) iblockstate1.getValue(propertybool))
                 {
-                    state = state.withProperty(propertybool, Boolean.valueOf(false));
+                    state = state.withProperty(propertybool, Boolean.FALSE);
                 }
             }
         }
@@ -225,24 +226,23 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
                     {
                         if (rand.nextBoolean() && this.canAttachTo(worldIn, blockpos2, enumfacing2.getOpposite()))
                         {
-                            iblockstate2 = iblockstate2.withProperty(getPropertyFor(enumfacing2), Boolean.valueOf(true));
+                            iblockstate2 = iblockstate2.withProperty(getPropertyFor(enumfacing2), Boolean.TRUE);
                         }
                         else
                         {
-                            iblockstate2 = iblockstate2.withProperty(getPropertyFor(enumfacing2), Boolean.valueOf(false));
+                            iblockstate2 = iblockstate2.withProperty(getPropertyFor(enumfacing2), Boolean.FALSE);
                         }
                     }
 
-                    if (((Boolean)iblockstate2.getValue(NORTH)).booleanValue() || ((Boolean)iblockstate2.getValue(EAST)).booleanValue() || ((Boolean)iblockstate2.getValue(SOUTH)).booleanValue() || ((Boolean)iblockstate2.getValue(WEST)).booleanValue())
+                    if ((Boolean) iblockstate2.getValue(NORTH) || (Boolean) iblockstate2.getValue(EAST) || (Boolean) iblockstate2.getValue(SOUTH) || (Boolean) iblockstate2.getValue(WEST))
                     {
 //                        worldIn.setBlockState(blockpos2, iblockstate2, 2);
-                        BlockPos target = blockpos2;
                         org.bukkit.block.Block source = worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
-                        org.bukkit.block.Block block = worldIn.getWorld().getBlockAt(target.getX(), target.getY(), target.getZ());
+                        org.bukkit.block.Block block = worldIn.getWorld().getBlockAt(blockpos2.getX(), blockpos2.getY(), blockpos2.getZ());
                         CraftEventFactory.handleBlockSpreadEvent(block, source, this, getMetaFromState(iblockstate2));
                     }
                 }
-                else if (enumfacing1.getAxis().isHorizontal() && !((Boolean)state.getValue(getPropertyFor(enumfacing1))).booleanValue())
+                else if (enumfacing1.getAxis().isHorizontal() && !(Boolean) state.getValue(getPropertyFor(enumfacing1)))
                 {
                     if (!flag)
                     {
@@ -254,8 +254,8 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
                         {
                             EnumFacing enumfacing3 = enumfacing1.rotateY();
                             EnumFacing enumfacing4 = enumfacing1.rotateYCCW();
-                            boolean flag1 = ((Boolean)state.getValue(getPropertyFor(enumfacing3))).booleanValue();
-                            boolean flag2 = ((Boolean)state.getValue(getPropertyFor(enumfacing4))).booleanValue();
+                            boolean flag1 = (Boolean) state.getValue(getPropertyFor(enumfacing3));
+                            boolean flag2 = (Boolean) state.getValue(getPropertyFor(enumfacing4));
                             BlockPos blockpos = blockpos4.offset(enumfacing3);
                             BlockPos blockpos1 = blockpos4.offset(enumfacing4);
 
@@ -287,7 +287,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
                         }
                         else if (iblockstate3.getBlockFaceShape(worldIn, blockpos4, enumfacing1) == BlockFaceShape.SOLID)
                         {
-                            worldIn.setBlockState(pos, state.withProperty(getPropertyFor(enumfacing1), Boolean.valueOf(true)), 2);
+                            worldIn.setBlockState(pos, state.withProperty(getPropertyFor(enumfacing1), Boolean.TRUE), 2);
                         }
                     }
                 }
@@ -307,11 +307,11 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
                             {
                                 if (rand.nextBoolean())
                                 {
-                                    iblockstate1 = iblockstate1.withProperty(getPropertyFor(enumfacing), Boolean.valueOf(false));
+                                    iblockstate1 = iblockstate1.withProperty(getPropertyFor(enumfacing), Boolean.FALSE);
                                 }
                             }
 
-                            if (((Boolean)iblockstate1.getValue(NORTH)).booleanValue() || ((Boolean)iblockstate1.getValue(EAST)).booleanValue() || ((Boolean)iblockstate1.getValue(SOUTH)).booleanValue() || ((Boolean)iblockstate1.getValue(WEST)).booleanValue())
+                            if ((Boolean) iblockstate1.getValue(NORTH) || (Boolean) iblockstate1.getValue(EAST) || (Boolean) iblockstate1.getValue(SOUTH) || (Boolean) iblockstate1.getValue(WEST))
                             {
 //                                worldIn.setBlockState(blockpos3, iblockstate1, 2);
                                 org.bukkit.block.Block source = worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
@@ -327,13 +327,13 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
                             {
                                 PropertyBool propertybool = getPropertyFor(enumfacing5);
 
-                                if (rand.nextBoolean() && ((Boolean)state.getValue(propertybool)).booleanValue())
+                                if (rand.nextBoolean() && (Boolean) state.getValue(propertybool))
                                 {
-                                    iblockstate4 = iblockstate4.withProperty(propertybool, Boolean.valueOf(true));
+                                    iblockstate4 = iblockstate4.withProperty(propertybool, Boolean.TRUE);
                                 }
                             }
 
-                            if (((Boolean)iblockstate4.getValue(NORTH)).booleanValue() || ((Boolean)iblockstate4.getValue(EAST)).booleanValue() || ((Boolean)iblockstate4.getValue(SOUTH)).booleanValue() || ((Boolean)iblockstate4.getValue(WEST)).booleanValue())
+                            if ((Boolean) iblockstate4.getValue(NORTH) || (Boolean) iblockstate4.getValue(EAST) || (Boolean) iblockstate4.getValue(SOUTH) || (Boolean) iblockstate4.getValue(WEST))
                             {
                                 worldIn.setBlockState(blockpos3, iblockstate4, 2);
                             }
@@ -346,8 +346,8 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        IBlockState iblockstate = this.getDefaultState().withProperty(UP, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false));
-        return facing.getAxis().isHorizontal() ? iblockstate.withProperty(getPropertyFor(facing.getOpposite()), Boolean.valueOf(true)) : iblockstate;
+        IBlockState iblockstate = this.getDefaultState().withProperty(UP, Boolean.FALSE).withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE);
+        return facing.getAxis().isHorizontal() ? iblockstate.withProperty(getPropertyFor(facing.getOpposite()), Boolean.TRUE) : iblockstate;
     }
 
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
@@ -375,7 +375,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(SOUTH, Boolean.valueOf((meta & 1) > 0)).withProperty(WEST, Boolean.valueOf((meta & 2) > 0)).withProperty(NORTH, Boolean.valueOf((meta & 4) > 0)).withProperty(EAST, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(SOUTH, (meta & 1) > 0).withProperty(WEST, (meta & 2) > 0).withProperty(NORTH, (meta & 4) > 0).withProperty(EAST, (meta & 8) > 0);
     }
 
     @SideOnly(Side.CLIENT)
@@ -388,22 +388,22 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
     {
         int i = 0;
 
-        if (((Boolean)state.getValue(SOUTH)).booleanValue())
+        if ((Boolean) state.getValue(SOUTH))
         {
             i |= 1;
         }
 
-        if (((Boolean)state.getValue(WEST)).booleanValue())
+        if ((Boolean) state.getValue(WEST))
         {
             i |= 2;
         }
 
-        if (((Boolean)state.getValue(NORTH)).booleanValue())
+        if ((Boolean) state.getValue(NORTH))
         {
             i |= 4;
         }
 
-        if (((Boolean)state.getValue(EAST)).booleanValue())
+        if ((Boolean) state.getValue(EAST))
         {
             i |= 8;
         }
@@ -413,7 +413,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {UP, NORTH, EAST, SOUTH, WEST});
+        return new BlockStateContainer(this, UP, NORTH, EAST, SOUTH, WEST);
     }
 
     public IBlockState withRotation(IBlockState state, Rotation rot)
@@ -469,7 +469,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
 
         for (PropertyBool propertybool : ALL_FACES)
         {
-            if (((Boolean)state.getValue(propertybool)).booleanValue())
+            if ((Boolean) state.getValue(propertybool))
             {
                 ++i;
             }
@@ -483,7 +483,7 @@ public class BlockVine extends Block implements net.minecraftforge.common.IShear
     @Override
     public java.util.List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)
     {
-        return java.util.Arrays.asList(new ItemStack(this, 1));
+        return Collections.singletonList(new ItemStack(this, 1));
     }
     /*************************FORGE END***********************************/
 

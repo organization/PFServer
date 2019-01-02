@@ -23,7 +23,7 @@ import java.util.List;
 
 public class WorldWorkerManager
 {
-    private static List<IWorker> workers = new ArrayList<IWorker>();
+    private static final List<IWorker> workers = new ArrayList<>();
     private static long startTime = -1;
     private static int index = 0;
 
@@ -87,7 +87,7 @@ public class WorldWorkerManager
     {
         boolean hasWork();
 
-        default void work() {}; //TODO: Remove in 1.13.
+        default void work() {} //TODO: Remove in 1.13.
 
         /**
          * Perform a task, returning true from this will have the manager call this function again this tick if there is time left.

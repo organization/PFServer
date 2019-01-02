@@ -111,14 +111,14 @@ public class EntityFishHook extends Entity
 
     protected void entityInit()
     {
-        this.getDataManager().register(DATA_HOOKED_ENTITY, Integer.valueOf(0));
+        this.getDataManager().register(DATA_HOOKED_ENTITY, 0);
     }
 
     public void notifyDataManagerChange(DataParameter<?> key)
     {
         if (DATA_HOOKED_ENTITY.equals(key))
         {
-            int i = ((Integer)this.getDataManager().get(DATA_HOOKED_ENTITY)).intValue();
+            int i = (Integer) this.getDataManager().get(DATA_HOOKED_ENTITY);
             this.caughtEntity = i > 0 ? this.world.getEntityByID(i - 1) : null;
         }
 
@@ -288,7 +288,6 @@ public class EntityFishHook extends Entity
 
         for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -369,7 +368,7 @@ public class EntityFishHook extends Entity
 
     private void setHookedEntity()
     {
-        this.getDataManager().set(DATA_HOOKED_ENTITY, Integer.valueOf(this.caughtEntity.getEntityId() + 1));
+        this.getDataManager().set(DATA_HOOKED_ENTITY, this.caughtEntity.getEntityId() + 1);
     }
 
     private void catchingFish(BlockPos p_190621_1_)
@@ -649,6 +648,6 @@ public class EntityFishHook extends Entity
     {
         FLYING,
         HOOKED_IN_ENTITY,
-        BOBBING;
+        BOBBING
     }
 }

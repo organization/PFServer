@@ -96,7 +96,6 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitWorker;
 import org.bukkit.util.StringUtil;
 import org.bukkit.util.permissions.DefaultPermissions;
@@ -110,6 +109,7 @@ import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public final class CraftServer implements Server {
     private final String serverVersion;
@@ -123,7 +123,7 @@ public final class CraftServer implements Server {
     private final SimplePluginManager pluginManager = new SimplePluginManager(this, commandMap);
     protected final MinecraftServer console;
     protected final DedicatedPlayerList playerList;
-    private final Map<String, World> worlds = new LinkedHashMap<String, World>();
+    private final Map<String, World> worlds = new LinkedHashMap<>();
     private YamlConfiguration configuration;
     private YamlConfiguration commandsConfiguration;
     private final Yaml yaml = new Yaml(new SafeConstructor());
@@ -165,12 +165,7 @@ public final class CraftServer implements Server {
     public CraftServer(MinecraftServer console, PlayerList playerList) {
         this.console = console;
         this.playerList = (DedicatedPlayerList) playerList;
-        this.playerView = Collections.unmodifiableList(Lists.transform(playerList.getPlayers(), new Function<EntityPlayerMP, CraftPlayer>() {
-            @Override
-            public CraftPlayer apply(EntityPlayerMP player) {
-                return player.getBukkitEntity();
-            }
-        }));
+        this.playerView = Collections.unmodifiableList(playerList.getPlayers().stream().map(EntityPlayerMP::getBukkitEntity).collect(Collectors.toList()));
         this.serverVersion = CraftServer.class.getPackage().getImplementationVersion();
         online.value = console.getPropertyManager().getBooleanProperty("online-mode", true);
 
@@ -210,7 +205,7 @@ public final class CraftServer implements Server {
         if (legacyAlias != null) {
             ConfigurationSection aliases = commandsConfiguration.createSection("aliases");
             for (String key : legacyAlias.getKeys(false)) {
-                ArrayList<String> commands = new ArrayList<String>();
+                ArrayList<String> commands = new ArrayList<>();
 
                 if (legacyAlias.isList(key)) {
                     for (String command : legacyAlias.getStringList(key)) {
@@ -443,7 +438,7 @@ public final class CraftServer implements Server {
     public List<Player> matchPlayer(String partialName) {
         Validate.notNull(partialName, "PartialName cannot be null");
 
-        List<Player> matchedPlayers = new ArrayList<Player>();
+        List<Player> matchedPlayers = new ArrayList<>();
 
         for (Player iterPlayer : this.getOnlinePlayers()) {
             String iterPlayerName = iterPlayer.getName();
@@ -592,7 +587,7 @@ public final class CraftServer implements Server {
 
     @Override
     public List<World> getWorlds() {
-        return new ArrayList<World>(worlds.values());
+        return new ArrayList<>(worlds.values());
     }
 
     public DedicatedPlayerList getHandle() {
@@ -722,7 +717,7 @@ public final class CraftServer implements Server {
         while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
 
             }
             pollCount++;
@@ -792,7 +787,7 @@ public final class CraftServer implements Server {
         } finally {
             try {
                 stream.close();
-            } catch (IOException ex) {
+            } catch (IOException ignored) {
 
             }
         }
@@ -854,7 +849,7 @@ public final class CraftServer implements Server {
         }
 
         boolean hardcore = false;
-        WorldSettings worldSettings = new WorldSettings(creator.seed(), WorldSettings.getGameTypeById(getDefaultGameMode().getValue()), generateStructures, hardcore, type);
+        WorldSettings worldSettings = new WorldSettings(creator.seed(), WorldSettings.getGameTypeById(getDefaultGameMode().getValue()), generateStructures, false, type);
         WorldServer worldserver = DimensionManager.initDimension(creator, worldSettings);
         
         pluginManager.callEvent(new WorldInitEvent(worldserver.getWorld()));
@@ -950,7 +945,7 @@ public final class CraftServer implements Server {
                 dimension = Integer.valueOf(name.substring(3));
                 WorldServer worldserver = console.getWorld(dimension);
                 if (worldserver != null) world = worldserver.getWorld();
-            } catch (NumberFormatException e) {}
+            } catch (NumberFormatException ignored) {}
         }
         return world;
     }
@@ -1024,7 +1019,7 @@ public final class CraftServer implements Server {
     public List<Recipe> getRecipesFor(ItemStack result) {
         Validate.notNull(result, "Result cannot be null");
 
-        List<Recipe> results = new ArrayList<Recipe>();
+        List<Recipe> results = new ArrayList<>();
         Iterator<Recipe> iter = recipeIterator();
         while (iter.hasNext()) {
             Recipe recipe = iter.next();
@@ -1064,7 +1059,7 @@ public final class CraftServer implements Server {
     @Override
     public Map<String, String[]> getCommandAliases() {
         ConfigurationSection section = commandsConfiguration.getConfigurationSection("aliases");
-        Map<String, String[]> result = new LinkedHashMap<String, String[]>();
+        Map<String, String[]> result = new LinkedHashMap<>();
 
         if (section != null) {
             for (String key : section.getKeys(false)) {
@@ -1076,7 +1071,7 @@ public final class CraftServer implements Server {
                     commands = ImmutableList.of(section.getString(key));
                 }
 
-                result.put(key, commands.toArray(new String[commands.size()]));
+                result.put(key, commands.toArray(new String[0]));
             }
         }
 
@@ -1259,7 +1254,7 @@ public final class CraftServer implements Server {
     @Override
     @SuppressWarnings("unchecked")
     public Set<String> getIPBans() {
-        return new HashSet<String>(Arrays.asList(playerList.getBannedIPs().getKeys()));
+        return new HashSet<>(Arrays.asList(playerList.getBannedIPs().getKeys()));
     }
 
     @Override
@@ -1278,7 +1273,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<OfflinePlayer> getBannedPlayers() {
-        Set<OfflinePlayer> result = new HashSet<OfflinePlayer>();
+        Set<OfflinePlayer> result = new HashSet<>();
 
         for (UserListEntry entry : playerList.getBannedPlayers().getValuesCB()) {
             result.add(getOfflinePlayer((GameProfile) entry.getValue()));
@@ -1308,7 +1303,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<OfflinePlayer> getWhitelistedPlayers() {
-        Set<OfflinePlayer> result = new LinkedHashSet<OfflinePlayer>();
+        Set<OfflinePlayer> result = new LinkedHashSet<>();
 
         for (UserListEntry entry : playerList.getWhitelistedPlayers().getValuesCB()) {
             result.add(getOfflinePlayer((GameProfile) entry.getValue()));
@@ -1319,7 +1314,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<OfflinePlayer> getOperators() {
-        Set<OfflinePlayer> result = new HashSet<OfflinePlayer>();
+        Set<OfflinePlayer> result = new HashSet<>();
 
         for (UserListEntry entry : playerList.getOppedPlayers().getValuesCB()) {
             result.add(getOfflinePlayer((GameProfile) entry.getValue()));
@@ -1384,7 +1379,7 @@ public final class CraftServer implements Server {
     public OfflinePlayer[] getOfflinePlayers() {
         SaveHandler storage = (SaveHandler) console.worlds[0].getSaveHandler();
         String[] files = storage.getPlayerDir().list(new DatFileFilter());
-        Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
+        Set<OfflinePlayer> players = new HashSet<>();
 
         for (String file : files) {
             try {
@@ -1396,7 +1391,7 @@ public final class CraftServer implements Server {
 
         players.addAll(getOnlinePlayers());
 
-        return players.toArray(new OfflinePlayer[players.size()]);
+        return players.toArray(new OfflinePlayer[0]);
     }
 
     @Override
@@ -1415,7 +1410,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<String> getListeningPluginChannels() {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
 
         for (Player player : getOnlinePlayers()) {
             result.addAll(player.getListeningPluginChannels());
@@ -1541,7 +1536,7 @@ public final class CraftServer implements Server {
     }
 
     public List<String> tabCompleteChat(Player player, String message) {
-        List<String> completions = new ArrayList<String>();
+        List<String> completions = new ArrayList<>();
         PlayerChatTabCompleteEvent event = new PlayerChatTabCompleteEvent(player, message, completions);
         String token = event.getLastToken();
         for (Player p : getOnlinePlayers()) {
@@ -1551,15 +1546,9 @@ public final class CraftServer implements Server {
         }
         pluginManager.callEvent(event);
 
-        Iterator<?> it = completions.iterator();
-        while (it.hasNext()) {
-            Object current = it.next();
-            if (!(current instanceof String)) {
-                // Sanity
-                it.remove();
-            }
-        }
-        Collections.sort(completions, String.CASE_INSENSITIVE_ORDER);
+        // Sanity
+        completions.removeIf(current -> !(current instanceof String));
+        completions.sort(String.CASE_INSENSITIVE_ORDER);
         return completions;
     }
 
@@ -1654,12 +1643,8 @@ public final class CraftServer implements Server {
 
     @Override
     public Iterator<org.bukkit.advancement.Advancement> advancementIterator() {
-        return Iterators.unmodifiableIterator(Iterators.transform(console.getAdvancementManager().getAdvancements().iterator(), new Function<Advancement, org.bukkit.advancement.Advancement>() { // PAIL: rename
-            @Override
-            public org.bukkit.advancement.Advancement apply(Advancement advancement) {
-                return advancement.bukkit;
-            }
-        }));
+        // PAIL: rename
+        return Iterators.unmodifiableIterator(Iterators.transform(console.getAdvancementManager().getAdvancements().iterator(), advancement -> advancement.bukkit));
     }
 
     private final Spigot spigot = new Spigot() {

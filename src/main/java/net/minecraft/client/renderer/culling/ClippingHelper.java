@@ -6,10 +6,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClippingHelper
 {
-    public float[][] frustum = new float[6][4];
-    public float[] projectionMatrix = new float[16];
-    public float[] modelviewMatrix = new float[16];
-    public float[] clippingMatrix = new float[16];
+    public final float[][] frustum = new float[6][4];
+    public final float[] projectionMatrix = new float[16];
+    public final float[] modelviewMatrix = new float[16];
+    public final float[] clippingMatrix = new float[16];
 
     private double dot(float[] p_178624_1_, double p_178624_2_, double p_178624_4_, double p_178624_6_)
     {

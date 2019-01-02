@@ -37,7 +37,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
     private ResourceLocation lootTable;
     private long lootTableSeed;
     // CraftBukkit start
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -203,7 +203,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
     public static void addDataFixers(DataFixer p_190574_0_, Class<?> p_190574_1_)
     {
         EntityMinecart.registerFixesMinecart(p_190574_0_, p_190574_1_);
-        p_190574_0_.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(p_190574_1_, new String[] {"Items"}));
+        p_190574_0_.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(p_190574_1_, "Items"));
     }
 
     protected void writeEntityToNBT(NBTTagCompound compound)
@@ -323,7 +323,7 @@ public abstract class EntityMinecartContainer extends EntityMinecart implements 
         }
     }
 
-    public net.minecraftforge.items.IItemHandler itemHandler = new net.minecraftforge.items.wrapper.InvWrapper(this);
+    public final net.minecraftforge.items.IItemHandler itemHandler = new net.minecraftforge.items.wrapper.InvWrapper(this);
 
     @SuppressWarnings("unchecked")
     @Override

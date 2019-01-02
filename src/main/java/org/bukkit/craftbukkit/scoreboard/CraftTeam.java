@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Objects;
 import java.util.Set;
 
 final class CraftTeam extends CraftScoreboardComponent implements Team {
@@ -252,7 +253,7 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
             return false;
         }
         final CraftTeam other = (CraftTeam) obj;
-        return !(this.team != other.team && (this.team == null || !this.team.equals(other.team)));
+        return Objects.equals(this.team, other.team);
     }
 
 }

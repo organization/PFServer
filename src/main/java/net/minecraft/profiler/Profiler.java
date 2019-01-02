@@ -43,7 +43,7 @@ public class Profiler
 
             this.profilingSection = this.profilingSection + name;
             this.sectionList.add(this.profilingSection);
-            this.timestampList.add(Long.valueOf(System.nanoTime()));
+            this.timestampList.add(System.nanoTime());
         }
     }
 
@@ -62,22 +62,22 @@ public class Profiler
         if (this.profilingEnabled)
         {
             long i = System.nanoTime();
-            long j = ((Long)this.timestampList.remove(this.timestampList.size() - 1)).longValue();
+            long j = (Long) this.timestampList.remove(this.timestampList.size() - 1);
             this.sectionList.remove(this.sectionList.size() - 1);
             long k = i - j;
 
             if (this.profilingMap.containsKey(this.profilingSection))
             {
-                this.profilingMap.put(this.profilingSection, Long.valueOf(((Long)this.profilingMap.get(this.profilingSection)).longValue() + k));
+                this.profilingMap.put(this.profilingSection, (Long) this.profilingMap.get(this.profilingSection) + k);
             }
             else
             {
-                this.profilingMap.put(this.profilingSection, Long.valueOf(k));
+                this.profilingMap.put(this.profilingSection, k);
             }
 
             if (k > 100000000L)
             {
-                LOGGER.warn("Something's taking too long! '{}' took aprox {} ms", this.profilingSection, Double.valueOf((double)k / 1000000.0D));
+                LOGGER.warn("Something's taking too long! '{}' took aprox {} ms", this.profilingSection, (double) k / 1000000.0D);
             }
 
             this.profilingSection = this.sectionList.isEmpty() ? "" : (String)this.sectionList.get(this.sectionList.size() - 1);
@@ -92,8 +92,8 @@ public class Profiler
         }
         else
         {
-            long i = this.profilingMap.containsKey("root") ? ((Long)this.profilingMap.get("root")).longValue() : 0L;
-            long j = this.profilingMap.containsKey(profilerName) ? ((Long)this.profilingMap.get(profilerName)).longValue() : -1L;
+            long i = this.profilingMap.containsKey("root") ? (Long) this.profilingMap.get("root") : 0L;
+            long j = this.profilingMap.containsKey(profilerName) ? (Long) this.profilingMap.get(profilerName) : -1L;
             List<Result> list = Lists.<Result>newArrayList();
 
             if (!profilerName.isEmpty())
@@ -107,7 +107,7 @@ public class Profiler
             {
                 if (s.length() > profilerName.length() && s.startsWith(profilerName) && s.indexOf(".", profilerName.length() + 1) < 0)
                 {
-                    k += ((Long)this.profilingMap.get(s)).longValue();
+                    k += (Long) this.profilingMap.get(s);
                 }
             }
 
@@ -127,7 +127,7 @@ public class Profiler
             {
                 if (s1.length() > profilerName.length() && s1.startsWith(profilerName) && s1.indexOf(".", profilerName.length() + 1) < 0)
                 {
-                    long l = ((Long)this.profilingMap.get(s1)).longValue();
+                    long l = (Long) this.profilingMap.get(s1);
                     double d0 = (double)l * 100.0D / (double)k;
                     double d1 = (double)l * 100.0D / (double)i;
                     String s2 = s1.substring(profilerName.length());
@@ -137,7 +137,7 @@ public class Profiler
 
             for (String s3 : this.profilingMap.keySet())
             {
-                this.profilingMap.put(s3, Long.valueOf(((Long)this.profilingMap.get(s3)).longValue() * 999L / 1000L));
+                this.profilingMap.put(s3, (Long) this.profilingMap.get(s3) * 999L / 1000L);
             }
 
             if ((float)k > f)
@@ -173,9 +173,9 @@ public class Profiler
 
     public static final class Result implements Comparable<Result>
         {
-            public double usePercentage;
-            public double totalUsePercentage;
-            public String profilerName;
+            public final double usePercentage;
+            public final double totalUsePercentage;
+            public final String profilerName;
 
             public Result(String profilerName, double usePercentage, double totalUsePercentage)
             {

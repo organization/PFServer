@@ -316,7 +316,7 @@ public final class ItemTextureQuadConverter
                 case COLOR:
                     float r = ((color >> 16) & 0xFF) / 255f; // red
                     float g = ((color >> 8) & 0xFF) / 255f; // green
-                    float b = ((color >> 0) & 0xFF) / 255f; // blue
+                    float b = ((color) & 0xFF) / 255f; // blue
                     float a = ((color >> 24) & 0xFF) / 255f; // alpha
                     builder.put(e, r, g, b, a);
                     break;

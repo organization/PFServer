@@ -150,7 +150,7 @@ public class AsyncPlayerPreLoginEvent extends Event {
         /**
          * The player is not allowed to log in, for reasons undefined
          */
-        KICK_OTHER;
+        KICK_OTHER
 
     }
 }

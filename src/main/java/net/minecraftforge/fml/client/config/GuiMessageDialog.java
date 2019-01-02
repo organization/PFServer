@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 public class GuiMessageDialog extends GuiDisconnected
 {
-    protected String buttonText;
+    protected final String buttonText;
 
     public GuiMessageDialog(@Nullable GuiScreen nextScreen, String title, ITextComponent message, String buttonText)
     {

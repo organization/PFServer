@@ -30,12 +30,12 @@ import java.util.List;
 
 public class KeyBindingMap
 {
-    private static final EnumMap<KeyModifier, IntHashMap<Collection<KeyBinding>>> map = new java.util.EnumMap<KeyModifier, IntHashMap<Collection<KeyBinding>>>(KeyModifier.class);
+    private static final EnumMap<KeyModifier, IntHashMap<Collection<KeyBinding>>> map = new java.util.EnumMap<>(KeyModifier.class);
     static
     {
         for (KeyModifier modifier : KeyModifier.values())
         {
-            map.put(modifier, new IntHashMap<Collection<KeyBinding>>());
+            map.put(modifier, new IntHashMap<>());
         }
     }
 
@@ -73,7 +73,7 @@ public class KeyBindingMap
 
     public List<KeyBinding> lookupAll(int keyCode)
     {
-        List<KeyBinding> matchingBindings = new ArrayList<KeyBinding>();
+        List<KeyBinding> matchingBindings = new ArrayList<>();
         for (IntHashMap<Collection<KeyBinding>> bindingsMap : map.values())
         {
             Collection<KeyBinding> bindings = bindingsMap.lookup(keyCode);
@@ -92,7 +92,7 @@ public class KeyBindingMap
         Collection<KeyBinding> bindingsForKey = bindingsMap.lookup(keyCode);
         if (bindingsForKey == null)
         {
-            bindingsForKey = new ArrayList<KeyBinding>();
+            bindingsForKey = new ArrayList<>();
             bindingsMap.addKey(keyCode, bindingsForKey);
         }
         bindingsForKey.add(keyBinding);

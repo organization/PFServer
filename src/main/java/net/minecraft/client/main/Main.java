@@ -32,7 +32,7 @@ public class Main
         optionparser.accepts("fullscreen");
         optionparser.accepts("checkGlErrors");
         OptionSpec<String> optionspec = optionparser.accepts("server").withRequiredArg();
-        OptionSpec<Integer> optionspec1 = optionparser.accepts("port").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(25565));
+        OptionSpec<Integer> optionspec1 = optionparser.accepts("port").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(25565);
         OptionSpec<File> optionspec2 = optionparser.accepts("gameDir").withRequiredArg().<File>ofType(File.class).defaultsTo(new File("."));
         OptionSpec<File> optionspec3 = optionparser.accepts("assetsDir").withRequiredArg().<File>ofType(File.class);
         OptionSpec<File> optionspec4 = optionparser.accepts("resourcePackDir").withRequiredArg().<File>ofType(File.class);
@@ -44,8 +44,8 @@ public class Main
         OptionSpec<String> optionspec10 = optionparser.accepts("uuid").withRequiredArg();
         OptionSpec<String> optionspec11 = optionparser.accepts("accessToken").withRequiredArg().required();
         OptionSpec<String> optionspec12 = optionparser.accepts("version").withRequiredArg().required();
-        OptionSpec<Integer> optionspec13 = optionparser.accepts("width").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(854));
-        OptionSpec<Integer> optionspec14 = optionparser.accepts("height").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(480));
+        OptionSpec<Integer> optionspec13 = optionparser.accepts("width").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(854);
+        OptionSpec<Integer> optionspec14 = optionparser.accepts("height").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(480);
         OptionSpec<String> optionspec15 = optionparser.accepts("userProperties").withRequiredArg().defaultsTo("{}");
         OptionSpec<String> optionspec16 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}");
         OptionSpec<String> optionspec17 = optionparser.accepts("assetIndex").withRequiredArg();
@@ -67,11 +67,10 @@ public class Main
         {
             try
             {
-                proxy = new Proxy(Type.SOCKS, new InetSocketAddress(s, ((Integer)optionset.valueOf(optionspec6)).intValue()));
+                proxy = new Proxy(Type.SOCKS, new InetSocketAddress(s, (Integer) optionset.valueOf(optionspec6)));
             }
-            catch (Exception var48)
+            catch (Exception ignored)
             {
-                ;
             }
         }
 
@@ -89,8 +88,8 @@ public class Main
             });
         }
 
-        int i = ((Integer)optionset.valueOf(optionspec13)).intValue();
-        int j = ((Integer)optionset.valueOf(optionspec14)).intValue();
+        int i = (Integer) optionset.valueOf(optionspec13);
+        int j = (Integer) optionset.valueOf(optionspec14);
         boolean flag = optionset.has("fullscreen");
         boolean flag1 = optionset.has("checkGlErrors");
         boolean flag2 = optionset.has("demo");
@@ -107,7 +106,7 @@ public class Main
         String s7 = (String)optionset.valueOf(optionspec);
         Integer integer = (Integer)optionset.valueOf(optionspec1);
         Session session = new Session(optionspec9.value(optionset), s5, optionspec11.value(optionset), optionspec18.value(optionset));
-        GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s6), new GameConfiguration.GameInformation(flag2, s3, s4), new GameConfiguration.ServerInformation(s7, integer.intValue()));
+        GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s6), new GameConfiguration.GameInformation(flag2, s3, s4), new GameConfiguration.ServerInformation(s7, integer));
         Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread")
         {
             public void run()

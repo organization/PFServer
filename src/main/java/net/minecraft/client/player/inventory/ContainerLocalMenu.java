@@ -27,12 +27,12 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     public int getField(int id)
     {
-        return this.dataValues.containsKey(Integer.valueOf(id)) ? ((Integer)this.dataValues.get(Integer.valueOf(id))).intValue() : 0;
+        return this.dataValues.containsKey(id) ? (Integer) this.dataValues.get(id) : 0;
     }
 
     public void setField(int id, int value)
     {
-        this.dataValues.put(Integer.valueOf(id), Integer.valueOf(value));
+        this.dataValues.put(id, value);
     }
 
     public int getFieldCount()

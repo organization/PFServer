@@ -33,24 +33,24 @@ public class BlockSnow extends Block
     protected BlockSnow()
     {
         super(Material.SNOW);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, Integer.valueOf(1)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, 1));
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return SNOW_AABB[((Integer)state.getValue(LAYERS)).intValue()];
+        return SNOW_AABB[(Integer) state.getValue(LAYERS)];
     }
 
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        return ((Integer)worldIn.getBlockState(pos).getValue(LAYERS)).intValue() < 5;
+        return (Integer) worldIn.getBlockState(pos).getValue(LAYERS) < 5;
     }
 
     public boolean isTopSolid(IBlockState state)
     {
-        return ((Integer)state.getValue(LAYERS)).intValue() == 8;
+        return (Integer) state.getValue(LAYERS) == 8;
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
@@ -61,7 +61,7 @@ public class BlockSnow extends Block
     @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        int i = ((Integer)blockState.getValue(LAYERS)).intValue() - 1;
+        int i = (Integer) blockState.getValue(LAYERS) - 1;
         float f = 0.125F;
         AxisAlignedBB axisalignedbb = blockState.getBoundingBox(worldIn, pos);
         return new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.maxX, (double)((float)i * 0.125F), axisalignedbb.maxZ);
@@ -85,7 +85,7 @@ public class BlockSnow extends Block
         if (block != Blocks.ICE && block != Blocks.PACKED_ICE && block != Blocks.BARRIER)
         {
             BlockFaceShape blockfaceshape = iblockstate.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP);
-            return blockfaceshape == BlockFaceShape.SOLID || iblockstate.getBlock().isLeaves(iblockstate, worldIn, pos.down()) || block == this && ((Integer)iblockstate.getValue(LAYERS)).intValue() == 8;
+            return blockfaceshape == BlockFaceShape.SOLID || iblockstate.getBlock().isLeaves(iblockstate, worldIn, pos.down()) || block == this && (Integer) iblockstate.getValue(LAYERS) == 8;
         }
         else
         {
@@ -148,29 +148,29 @@ public class BlockSnow extends Block
         else
         {
             IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-            return iblockstate.getBlock() == this && ((Integer)iblockstate.getValue(LAYERS)).intValue() >= ((Integer)blockState.getValue(LAYERS)).intValue() ? false : super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+            return (iblockstate.getBlock() != this || (Integer) iblockstate.getValue(LAYERS) < (Integer) blockState.getValue(LAYERS)) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
         }
     }
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(LAYERS, Integer.valueOf((meta & 7) + 1));
+        return this.getDefaultState().withProperty(LAYERS, (meta & 7) + 1);
     }
 
     public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
     {
-        return ((Integer)worldIn.getBlockState(pos).getValue(LAYERS)).intValue() == 1;
+        return (Integer) worldIn.getBlockState(pos).getValue(LAYERS) == 1;
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(LAYERS)).intValue() - 1;
+        return (Integer) state.getValue(LAYERS) - 1;
     }
 
     @Override public int quantityDropped(IBlockState state, int fortune, Random random){ return ((Integer)state.getValue(LAYERS)) + 1; }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {LAYERS});
+        return new BlockStateContainer(this, LAYERS);
     }
 }

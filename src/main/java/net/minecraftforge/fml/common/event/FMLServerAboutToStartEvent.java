@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.LoaderState.ModState;
  */
 public class FMLServerAboutToStartEvent extends FMLStateEvent {
 
-    private MinecraftServer server;
+    private final MinecraftServer server;
 
     public FMLServerAboutToStartEvent(Object... data)
     {

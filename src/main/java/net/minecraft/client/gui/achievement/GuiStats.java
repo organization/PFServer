@@ -35,7 +35,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiStats extends GuiScreen implements IProgressMeter
 {
-    protected GuiScreen parentScreen;
+    protected final GuiScreen parentScreen;
     protected String screenTitle = "Select world";
     private StatsGeneral generalStats;
     private StatsItem itemStats;
@@ -479,7 +479,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
                 this.sortOrder = 0;
             }
 
-            Collections.sort(this.statsHolder, this.statSorter);
+            this.statsHolder.sort(this.statSorter);
         }
     }
 
@@ -523,64 +523,60 @@ public class GuiStats extends GuiScreen implements IProgressMeter
                 }
             }
 
-            this.statSorter = new Comparator<StatCrafting>()
-            {
-                public int compare(StatCrafting p_compare_1_, StatCrafting p_compare_2_)
+            this.statSorter = (p_compare_1_, p_compare_2_) -> {
+                Item item1 = p_compare_1_.getItem();
+                Item item2 = p_compare_2_.getItem();
+                StatBase statbase = null;
+                StatBase statbase1 = null;
+
+                if (StatsBlock.this.sortColumn == 2)
                 {
-                    Item item1 = p_compare_1_.getItem();
-                    Item item2 = p_compare_2_.getItem();
-                    StatBase statbase = null;
-                    StatBase statbase1 = null;
-
-                    if (StatsBlock.this.sortColumn == 2)
-                    {
-                        statbase = StatList.getBlockStats(Block.getBlockFromItem(item1));
-                        statbase1 = StatList.getBlockStats(Block.getBlockFromItem(item2));
-                    }
-                    else if (StatsBlock.this.sortColumn == 0)
-                    {
-                        statbase = StatList.getCraftStats(item1);
-                        statbase1 = StatList.getCraftStats(item2);
-                    }
-                    else if (StatsBlock.this.sortColumn == 1)
-                    {
-                        statbase = StatList.getObjectUseStats(item1);
-                        statbase1 = StatList.getObjectUseStats(item2);
-                    }
-                    else if (StatsBlock.this.sortColumn == 3)
-                    {
-                        statbase = StatList.getObjectsPickedUpStats(item1);
-                        statbase1 = StatList.getObjectsPickedUpStats(item2);
-                    }
-                    else if (StatsBlock.this.sortColumn == 4)
-                    {
-                        statbase = StatList.getDroppedObjectStats(item1);
-                        statbase1 = StatList.getDroppedObjectStats(item2);
-                    }
-
-                    if (statbase != null || statbase1 != null)
-                    {
-                        if (statbase == null)
-                        {
-                            return 1;
-                        }
-
-                        if (statbase1 == null)
-                        {
-                            return -1;
-                        }
-
-                        int i = GuiStats.this.stats.readStat(statbase);
-                        int j = GuiStats.this.stats.readStat(statbase1);
-
-                        if (i != j)
-                        {
-                            return (i - j) * StatsBlock.this.sortOrder;
-                        }
-                    }
-
-                    return Item.getIdFromItem(item1) - Item.getIdFromItem(item2);
+                    statbase = StatList.getBlockStats(Block.getBlockFromItem(item1));
+                    statbase1 = StatList.getBlockStats(Block.getBlockFromItem(item2));
                 }
+                else if (StatsBlock.this.sortColumn == 0)
+                {
+                    statbase = StatList.getCraftStats(item1);
+                    statbase1 = StatList.getCraftStats(item2);
+                }
+                else if (StatsBlock.this.sortColumn == 1)
+                {
+                    statbase = StatList.getObjectUseStats(item1);
+                    statbase1 = StatList.getObjectUseStats(item2);
+                }
+                else if (StatsBlock.this.sortColumn == 3)
+                {
+                    statbase = StatList.getObjectsPickedUpStats(item1);
+                    statbase1 = StatList.getObjectsPickedUpStats(item2);
+                }
+                else if (StatsBlock.this.sortColumn == 4)
+                {
+                    statbase = StatList.getDroppedObjectStats(item1);
+                    statbase1 = StatList.getDroppedObjectStats(item2);
+                }
+
+                if (statbase != null || statbase1 != null)
+                {
+                    if (statbase == null)
+                    {
+                        return 1;
+                    }
+
+                    if (statbase1 == null)
+                    {
+                        return -1;
+                    }
+
+                    int i = GuiStats.this.stats.readStat(statbase);
+                    int j = GuiStats.this.stats.readStat(statbase1);
+
+                    if (i != j)
+                    {
+                        return (i - j) * StatsBlock.this.sortOrder;
+                    }
+                }
+
+                return Item.getIdFromItem(item1) - Item.getIdFromItem(item2);
             };
         }
 
@@ -749,66 +745,62 @@ public class GuiStats extends GuiScreen implements IProgressMeter
                 }
             }
 
-            this.statSorter = new Comparator<StatCrafting>()
-            {
-                public int compare(StatCrafting p_compare_1_, StatCrafting p_compare_2_)
+            this.statSorter = (p_compare_1_, p_compare_2_) -> {
+                Item item1 = p_compare_1_.getItem();
+                Item item2 = p_compare_2_.getItem();
+                int i = Item.getIdFromItem(item1);
+                int j = Item.getIdFromItem(item2);
+                StatBase statbase = null;
+                StatBase statbase1 = null;
+
+                if (StatsItem.this.sortColumn == 0)
                 {
-                    Item item1 = p_compare_1_.getItem();
-                    Item item2 = p_compare_2_.getItem();
-                    int i = Item.getIdFromItem(item1);
-                    int j = Item.getIdFromItem(item2);
-                    StatBase statbase = null;
-                    StatBase statbase1 = null;
-
-                    if (StatsItem.this.sortColumn == 0)
-                    {
-                        statbase = StatList.getObjectBreakStats(item1);
-                        statbase1 = StatList.getObjectBreakStats(item2);
-                    }
-                    else if (StatsItem.this.sortColumn == 1)
-                    {
-                        statbase = StatList.getCraftStats(item1);
-                        statbase1 = StatList.getCraftStats(item2);
-                    }
-                    else if (StatsItem.this.sortColumn == 2)
-                    {
-                        statbase = StatList.getObjectUseStats(item1);
-                        statbase1 = StatList.getObjectUseStats(item2);
-                    }
-                    else if (StatsItem.this.sortColumn == 3)
-                    {
-                        statbase = StatList.getObjectsPickedUpStats(item1);
-                        statbase1 = StatList.getObjectsPickedUpStats(item2);
-                    }
-                    else if (StatsItem.this.sortColumn == 4)
-                    {
-                        statbase = StatList.getDroppedObjectStats(item1);
-                        statbase1 = StatList.getDroppedObjectStats(item2);
-                    }
-
-                    if (statbase != null || statbase1 != null)
-                    {
-                        if (statbase == null)
-                        {
-                            return 1;
-                        }
-
-                        if (statbase1 == null)
-                        {
-                            return -1;
-                        }
-
-                        int k = GuiStats.this.stats.readStat(statbase);
-                        int l = GuiStats.this.stats.readStat(statbase1);
-
-                        if (k != l)
-                        {
-                            return (k - l) * StatsItem.this.sortOrder;
-                        }
-                    }
-
-                    return i - j;
+                    statbase = StatList.getObjectBreakStats(item1);
+                    statbase1 = StatList.getObjectBreakStats(item2);
                 }
+                else if (StatsItem.this.sortColumn == 1)
+                {
+                    statbase = StatList.getCraftStats(item1);
+                    statbase1 = StatList.getCraftStats(item2);
+                }
+                else if (StatsItem.this.sortColumn == 2)
+                {
+                    statbase = StatList.getObjectUseStats(item1);
+                    statbase1 = StatList.getObjectUseStats(item2);
+                }
+                else if (StatsItem.this.sortColumn == 3)
+                {
+                    statbase = StatList.getObjectsPickedUpStats(item1);
+                    statbase1 = StatList.getObjectsPickedUpStats(item2);
+                }
+                else if (StatsItem.this.sortColumn == 4)
+                {
+                    statbase = StatList.getDroppedObjectStats(item1);
+                    statbase1 = StatList.getDroppedObjectStats(item2);
+                }
+
+                if (statbase != null || statbase1 != null)
+                {
+                    if (statbase == null)
+                    {
+                        return 1;
+                    }
+
+                    if (statbase1 == null)
+                    {
+                        return -1;
+                    }
+
+                    int k = GuiStats.this.stats.readStat(statbase);
+                    int l = GuiStats.this.stats.readStat(statbase1);
+
+                    if (k != l)
+                    {
+                        return (k - l) * StatsItem.this.sortOrder;
+                    }
+                }
+
+                return i - j;
             };
         }
 

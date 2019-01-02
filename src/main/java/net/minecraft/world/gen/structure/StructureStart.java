@@ -12,7 +12,7 @@ import java.util.Random;
 
 public abstract class StructureStart
 {
-    protected List<StructureComponent> components = Lists.<StructureComponent>newLinkedList();
+    protected final List<StructureComponent> components = Lists.<StructureComponent>newLinkedList();
     protected StructureBoundingBox boundingBox;
     private int chunkPosX;
     private int chunkPosZ;
@@ -39,17 +39,8 @@ public abstract class StructureStart
 
     public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb)
     {
-        Iterator<StructureComponent> iterator = this.components.iterator();
 
-        while (iterator.hasNext())
-        {
-            StructureComponent structurecomponent = iterator.next();
-
-            if (structurecomponent.getBoundingBox().intersectsWith(structurebb) && !structurecomponent.addComponentParts(worldIn, rand, structurebb))
-            {
-                iterator.remove();
-            }
-        }
+        this.components.removeIf(structurecomponent -> structurecomponent.getBoundingBox().intersectsWith(structurebb) && !structurecomponent.addComponentParts(worldIn, rand, structurebb));
     }
 
     protected void updateBoundingBox()

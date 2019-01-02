@@ -85,8 +85,7 @@ public class RemapUtils {
         for (String value : colls) {
             if (value.startsWith(match)) {
                 String[] matched = value.split("\\/");
-                String rtr =  matched[matched.length - 1];
-                return rtr;
+                return matched[matched.length - 1];
             }
         }
 
@@ -102,8 +101,7 @@ public class RemapUtils {
         for (String value : colls) {
             if (value.startsWith(match)) {
                 String[] matched = value.split("\\s+")[0].split("\\/");
-                String rtr =  matched[matched.length - 1];
-                return rtr;
+                return matched[matched.length - 1];
             }
         }
 

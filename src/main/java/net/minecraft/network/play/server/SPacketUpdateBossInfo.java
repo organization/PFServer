@@ -197,6 +197,6 @@ public class SPacketUpdateBossInfo implements Packet<INetHandlerPlayClient>
         UPDATE_PCT,
         UPDATE_NAME,
         UPDATE_STYLE,
-        UPDATE_PROPERTIES;
+        UPDATE_PROPERTIES
     }
 }

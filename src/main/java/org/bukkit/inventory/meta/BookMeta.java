@@ -30,7 +30,7 @@ public interface BookMeta extends ItemMeta {
         /**
          * Unused; unobtainable by players. Can't be copied.
          */
-        TATTERED;
+        TATTERED
     }
 
     /**

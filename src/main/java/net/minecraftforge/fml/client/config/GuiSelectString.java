@@ -42,20 +42,20 @@ import static net.minecraftforge.fml.client.config.GuiUtils.UNDO_CHAR;
  */
 public class GuiSelectString extends GuiScreen
 {
-    protected GuiScreen parentScreen;
-    protected IConfigElement configElement;
+    protected final GuiScreen parentScreen;
+    protected final IConfigElement configElement;
     protected GuiSelectStringEntries entryList;
     protected GuiButtonExt btnUndoChanges, btnDefault, btnDone;
-    protected String title;
+    protected final String title;
     protected String titleLine2;
     protected String titleLine3;
-    protected int slotIndex;
+    protected final int slotIndex;
     protected final Map<Object, String> selectableValues;
     public final Object beforeValue;
     public Object currentValue;
-    protected HoverChecker tooltipHoverChecker;
-    protected List<String> toolTip;
-    protected boolean enabled;
+    protected final HoverChecker tooltipHoverChecker;
+    protected final List<String> toolTip;
+    protected final boolean enabled;
 
     public GuiSelectString(GuiScreen parentScreen, IConfigElement configElement, int slotIndex, Map<Object, String> selectableValues, Object currentValue, boolean enabled)
     {
@@ -66,7 +66,7 @@ public class GuiSelectString extends GuiScreen
         this.selectableValues = selectableValues;
         this.beforeValue = currentValue;
         this.currentValue = currentValue;
-        this.toolTip = new ArrayList<String>();
+        this.toolTip = new ArrayList<>();
         this.enabled = enabled;
         String propName = I18n.format(configElement.getLanguageKey());
         String comment;

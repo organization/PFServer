@@ -32,7 +32,7 @@ public class RConThreadMain extends RConThreadBase
         {
             this.rconPort = this.serverPort + 10;
             this.logInfo("Setting default rcon port to " + this.rconPort);
-            p_i1538_1_.setProperty("rcon.port", Integer.valueOf(this.rconPort));
+            p_i1538_1_.setProperty("rcon.port", this.rconPort);
 
             if (this.rconPassword.isEmpty())
             {

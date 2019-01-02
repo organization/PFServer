@@ -8,12 +8,12 @@ import net.minecraft.util.EntitySelectors;
 
 public class EntityAIWatchClosest extends EntityAIBase
 {
-    protected EntityLiving entity;
+    protected final EntityLiving entity;
     protected Entity closestEntity;
-    protected float maxDistanceForPlayer;
+    protected final float maxDistanceForPlayer;
     private int lookTime;
     private final float chance;
-    protected Class <? extends Entity > watchedClass;
+    protected final Class <? extends Entity > watchedClass;
 
     public EntityAIWatchClosest(EntityLiving entityIn, Class <? extends Entity > watchTargetClass, float maxDistance)
     {

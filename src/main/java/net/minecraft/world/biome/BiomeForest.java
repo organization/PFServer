@@ -191,6 +191,6 @@ public class BiomeForest extends Biome
         NORMAL,
         FLOWER,
         BIRCH,
-        ROOFED;
+        ROOFED
     }
 }

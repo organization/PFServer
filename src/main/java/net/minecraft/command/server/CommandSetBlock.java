@@ -38,7 +38,7 @@ public class CommandSetBlock extends CommandBase
     {
         if (args.length < 4)
         {
-            throw new WrongUsageException("commands.setblock.usage", new Object[0]);
+            throw new WrongUsageException("commands.setblock.usage");
         }
         else
         {
@@ -60,7 +60,7 @@ public class CommandSetBlock extends CommandBase
 
             if (!world.isBlockLoaded(blockpos))
             {
-                throw new CommandException("commands.setblock.outOfWorld", new Object[0]);
+                throw new CommandException("commands.setblock.outOfWorld");
             }
             else
             {
@@ -78,7 +78,7 @@ public class CommandSetBlock extends CommandBase
                     }
                     catch (NBTException nbtexception)
                     {
-                        throw new CommandException("commands.setblock.tagError", new Object[] {nbtexception.getMessage()});
+                        throw new CommandException("commands.setblock.tagError", nbtexception.getMessage());
                     }
                 }
 
@@ -90,13 +90,13 @@ public class CommandSetBlock extends CommandBase
 
                         if (block == Blocks.AIR)
                         {
-                            notifyCommandListener(sender, this, "commands.setblock.success", new Object[0]);
+                            notifyCommandListener(sender, this, "commands.setblock.success");
                             return;
                         }
                     }
                     else if ("keep".equals(args[5]) && !world.isAirBlock(blockpos))
                     {
-                        throw new CommandException("commands.setblock.noChange", new Object[0]);
+                        throw new CommandException("commands.setblock.noChange");
                     }
                 }
 
@@ -109,7 +109,7 @@ public class CommandSetBlock extends CommandBase
 
                 if (!world.setBlockState(blockpos, iblockstate, 2))
                 {
-                    throw new CommandException("commands.setblock.noChange", new Object[0]);
+                    throw new CommandException("commands.setblock.noChange");
                 }
                 else
                 {
@@ -128,7 +128,7 @@ public class CommandSetBlock extends CommandBase
 
                     world.notifyNeighborsRespectDebug(blockpos, iblockstate.getBlock(), false);
                     sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 1);
-                    notifyCommandListener(sender, this, "commands.setblock.success", new Object[0]);
+                    notifyCommandListener(sender, this, "commands.setblock.success");
                 }
             }
         }
@@ -146,7 +146,7 @@ public class CommandSetBlock extends CommandBase
         }
         else
         {
-            return args.length == 6 ? getListOfStringsMatchingLastWord(args, new String[] {"replace", "destroy", "keep"}) : Collections.emptyList();
+            return args.length == 6 ? getListOfStringsMatchingLastWord(args, "replace", "destroy", "keep") : Collections.emptyList();
         }
     }
 }

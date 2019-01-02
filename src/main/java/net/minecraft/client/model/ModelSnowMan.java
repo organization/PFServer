@@ -8,11 +8,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelSnowMan extends ModelBase
 {
-    public ModelRenderer body;
-    public ModelRenderer bottomBody;
-    public ModelRenderer head;
-    public ModelRenderer rightHand;
-    public ModelRenderer leftHand;
+    public final ModelRenderer body;
+    public final ModelRenderer bottomBody;
+    public final ModelRenderer head;
+    public final ModelRenderer rightHand;
+    public final ModelRenderer leftHand;
 
     public ModelSnowMan()
     {

@@ -53,7 +53,7 @@ public class PotionEffect implements Comparable<PotionEffect>
         this.amplifier = other.amplifier;
         this.isAmbient = other.isAmbient;
         this.showParticles = other.showParticles;
-        this.curativeItems = other.curativeItems == null ? null : new java.util.ArrayList<net.minecraft.item.ItemStack>(other.curativeItems);
+        this.curativeItems = other.curativeItems == null ? null : new java.util.ArrayList<>(other.curativeItems);
     }
 
     public void combine(PotionEffect other)
@@ -74,7 +74,7 @@ public class PotionEffect implements Comparable<PotionEffect>
         }
         else if (!other.isAmbient && this.isAmbient)
         {
-            this.isAmbient = other.isAmbient;
+            this.isAmbient = false;
         }
 
         this.showParticles = other.showParticles;
@@ -236,7 +236,7 @@ public class PotionEffect implements Comparable<PotionEffect>
     public int compareTo(PotionEffect p_compareTo_1_)
     {
         int i = 32147;
-        return (this.getDuration() <= 32147 || p_compareTo_1_.getDuration() <= 32147) && (!this.getIsAmbient() || !p_compareTo_1_.getIsAmbient()) ? ComparisonChain.start().compare(Boolean.valueOf(this.getIsAmbient()), Boolean.valueOf(p_compareTo_1_.getIsAmbient())).compare(this.getDuration(), p_compareTo_1_.getDuration()).compare(this.getPotion().getGuiSortColor(this), p_compareTo_1_.getPotion().getGuiSortColor(p_compareTo_1_)).result() : ComparisonChain.start().compare(Boolean.valueOf(this.getIsAmbient()), Boolean.valueOf(p_compareTo_1_.getIsAmbient())).compare(this.getPotion().getGuiSortColor(this), p_compareTo_1_.getPotion().getGuiSortColor(p_compareTo_1_)).result();
+        return (this.getDuration() <= 32147 || p_compareTo_1_.getDuration() <= 32147) && (!this.getIsAmbient() || !p_compareTo_1_.getIsAmbient()) ? ComparisonChain.start().compare(this.getIsAmbient(), p_compareTo_1_.getIsAmbient()).compare(this.getDuration(), p_compareTo_1_.getDuration()).compare(this.getPotion().getGuiSortColor(this), p_compareTo_1_.getPotion().getGuiSortColor(p_compareTo_1_)).result() : ComparisonChain.start().compare(this.getIsAmbient(), p_compareTo_1_.getIsAmbient()).compare(this.getPotion().getGuiSortColor(this), p_compareTo_1_.getPotion().getGuiSortColor(p_compareTo_1_)).result();
     }
 
     @SideOnly(Side.CLIENT)
@@ -314,7 +314,7 @@ public class PotionEffect implements Comparable<PotionEffect>
     {
         if (nbt.hasKey("CurativeItems", net.minecraftforge.common.util.Constants.NBT.TAG_LIST))
         {
-            java.util.List<net.minecraft.item.ItemStack> items = new java.util.ArrayList<net.minecraft.item.ItemStack>();
+            java.util.List<net.minecraft.item.ItemStack> items = new java.util.ArrayList<>();
             net.minecraft.nbt.NBTTagList list = nbt.getTagList("CurativeItems", net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < list.tagCount(); i++)
             {

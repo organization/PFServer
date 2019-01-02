@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class DungeonHooks
 {
-    private static ArrayList<DungeonMob> dungeonMobs = new ArrayList<DungeonMob>();
+    private static final ArrayList<DungeonMob> dungeonMobs = new ArrayList<>();
 
     /**
      * Adds a mob to the possible list of creatures the spawner will create.
@@ -95,7 +95,7 @@ public class DungeonHooks
 
     public static class DungeonMob extends WeightedRandom.Item
     {
-        public ResourceLocation type;
+        public final ResourceLocation type;
         public DungeonMob(int weight, ResourceLocation type)
         {
             super(weight);

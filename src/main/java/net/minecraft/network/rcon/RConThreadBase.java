@@ -15,12 +15,12 @@ public abstract class RConThreadBase implements Runnable
 {
     private static final AtomicInteger THREAD_ID = new AtomicInteger(0);
     protected boolean running;
-    protected IServer server;
+    protected final IServer server;
     protected final String threadName;
     protected Thread rconThread;
     protected int maxStopWait = 5;
-    protected List<DatagramSocket> socketList = Lists.<DatagramSocket>newArrayList();
-    protected List<ServerSocket> serverSocketList = Lists.<ServerSocket>newArrayList();
+    protected final List<DatagramSocket> socketList = Lists.<DatagramSocket>newArrayList();
+    protected final List<ServerSocket> serverSocketList = Lists.<ServerSocket>newArrayList();
 
     protected RConThreadBase(IServer serverIn, String threadName)
     {

@@ -26,13 +26,7 @@ import javax.annotation.Nullable;
 
 public abstract class EntityHanging extends Entity
 {
-    private static final Predicate<Entity> IS_HANGING_ENTITY = new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_ instanceof EntityHanging;
-        }
-    };
+    private static final Predicate<Entity> IS_HANGING_ENTITY = p_apply_1_ -> p_apply_1_ instanceof EntityHanging;
     private int tickCounter1;
     public BlockPos hangingPosition;
     @Nullable
@@ -196,7 +190,7 @@ public abstract class EntityHanging extends Entity
 
     public boolean hitByEntity(Entity entityIn)
     {
-        return entityIn instanceof EntityPlayer ? this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)entityIn), 0.0F) : false;
+        return entityIn instanceof EntityPlayer && this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) entityIn), 0.0F);
     }
 
     public EnumFacing getHorizontalFacing()

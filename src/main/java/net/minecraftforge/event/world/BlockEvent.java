@@ -300,7 +300,7 @@ public class BlockEvent extends Event
     {
         private final BlockPos liquidPos;
         private IBlockState newState;
-        private IBlockState origState;
+        private final IBlockState origState;
 
         public FluidPlaceBlockEvent(World world, BlockPos pos, BlockPos liquidPos, IBlockState state)
         {

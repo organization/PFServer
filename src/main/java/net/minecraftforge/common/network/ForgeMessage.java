@@ -66,8 +66,8 @@ public abstract class ForgeMessage {
     }
 
     public static class FluidIdMapMessage extends ForgeMessage {
-        BiMap<Fluid, Integer> fluidIds = HashBiMap.create();
-        Set<String> defaultFluids = Sets.newHashSet();
+        final BiMap<Fluid, Integer> fluidIds = HashBiMap.create();
+        final Set<String> defaultFluids = Sets.newHashSet();
         @SuppressWarnings("deprecation")
         @Override
         void toBytes(ByteBuf bytes)

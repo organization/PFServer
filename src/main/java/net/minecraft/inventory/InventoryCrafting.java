@@ -23,7 +23,7 @@ public class InventoryCrafting implements IInventory
     public final Container eventHandler;
 
     // CraftBukkit start - add fields
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     public IRecipe currentRecipe;
     public IInventory resultInventory;
     private EntityPlayer owner;

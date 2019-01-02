@@ -53,7 +53,7 @@ public class BlockSand extends BlockFalling
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
     @SideOnly(Side.CLIENT)

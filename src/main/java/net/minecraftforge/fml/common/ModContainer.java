@@ -48,7 +48,7 @@ import java.util.Set;
 public interface ModContainer
 {
     public static enum Disableable {
-        YES, RESTART, NEVER, DEPENDENCIES;
+        YES, RESTART, NEVER, DEPENDENCIES
     }
     /**
      * The globally unique modid for this mod

@@ -38,7 +38,7 @@ public class MetadataCollection
 {
     private String modListVersion;
     private ModMetadata[] modList;
-    private Map<String, ModMetadata> metadatas = Maps.newHashMap();
+    private final Map<String, ModMetadata> metadatas = Maps.newHashMap();
 
     public static MetadataCollection from(@Nullable InputStream inputStream, String sourceName)
     {

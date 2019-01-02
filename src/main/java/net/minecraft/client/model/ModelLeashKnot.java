@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelLeashKnot extends ModelBase
 {
-    public ModelRenderer knotRenderer;
+    public final ModelRenderer knotRenderer;
 
     public ModelLeashKnot()
     {

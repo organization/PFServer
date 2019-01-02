@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 public class EntityDamageSource extends DamageSource
 {
     @Nullable
-    protected Entity damageSourceEntity;
+    protected final Entity damageSourceEntity;
     private boolean isThornsDamage;
 
     public EntityDamageSource(String damageTypeIn, @Nullable Entity damageSourceEntityIn)
@@ -45,7 +45,7 @@ public class EntityDamageSource extends DamageSource
         ItemStack itemstack = this.damageSourceEntity instanceof EntityLivingBase ? ((EntityLivingBase)this.damageSourceEntity).getHeldItemMainhand() : ItemStack.EMPTY;
         String s = "death.attack." + this.damageType;
         String s1 = s + ".item";
-        return !itemstack.isEmpty() && itemstack.hasDisplayName() && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, new Object[] {entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName(), itemstack.getTextComponent()}) : new TextComponentTranslation(s, new Object[] {entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName()});
+        return !itemstack.isEmpty() && itemstack.hasDisplayName() && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName(), itemstack.getTextComponent()) : new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName(), this.damageSourceEntity.getDisplayName());
     }
 
     public boolean isDifficultyScaled()

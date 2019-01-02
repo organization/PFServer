@@ -89,18 +89,18 @@ public class EntityGuardian extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(MOVING, Boolean.valueOf(false));
-        this.dataManager.register(TARGET_ENTITY, Integer.valueOf(0));
+        this.dataManager.register(MOVING, Boolean.FALSE);
+        this.dataManager.register(TARGET_ENTITY, 0);
     }
 
     public boolean isMoving()
     {
-        return ((Boolean)this.dataManager.get(MOVING)).booleanValue();
+        return (Boolean) this.dataManager.get(MOVING);
     }
 
     private void setMoving(boolean moving)
     {
-        this.dataManager.set(MOVING, Boolean.valueOf(moving));
+        this.dataManager.set(MOVING, moving);
     }
 
     public int getAttackDuration()
@@ -110,12 +110,12 @@ public class EntityGuardian extends EntityMob
 
     private void setTargetedEntity(int entityId)
     {
-        this.dataManager.set(TARGET_ENTITY, Integer.valueOf(entityId));
+        this.dataManager.set(TARGET_ENTITY, entityId);
     }
 
     public boolean hasTargetedEntity()
     {
-        return ((Integer)this.dataManager.get(TARGET_ENTITY)).intValue() != 0;
+        return (Integer) this.dataManager.get(TARGET_ENTITY) != 0;
     }
 
     @Nullable
@@ -133,7 +133,7 @@ public class EntityGuardian extends EntityMob
             }
             else
             {
-                Entity entity = this.world.getEntityByID(((Integer)this.dataManager.get(TARGET_ENTITY)).intValue());
+                Entity entity = this.world.getEntityByID((Integer) this.dataManager.get(TARGET_ENTITY));
 
                 if (entity instanceof EntityLivingBase)
                 {

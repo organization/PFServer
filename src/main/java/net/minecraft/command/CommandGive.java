@@ -36,7 +36,7 @@ public class CommandGive extends CommandBase
     {
         if (args.length < 2)
         {
-            throw new WrongUsageException("commands.give.usage", new Object[0]);
+            throw new WrongUsageException("commands.give.usage");
         }
         else
         {
@@ -56,7 +56,7 @@ public class CommandGive extends CommandBase
                 }
                 catch (NBTException nbtexception)
                 {
-                    throw new CommandException("commands.give.tagError", new Object[] {nbtexception.getMessage()});
+                    throw new CommandException("commands.give.tagError", nbtexception.getMessage());
                 }
             }
 
@@ -91,7 +91,7 @@ public class CommandGive extends CommandBase
                 }
             }
 
-            notifyCommandListener(sender, this, "commands.give.success", new Object[] {itemstack.getTextComponent(), i, entityplayer.getName()});
+            notifyCommandListener(sender, this, "commands.give.success", itemstack.getTextComponent(), i, entityplayer.getName());
         }
     }
 

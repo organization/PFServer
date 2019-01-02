@@ -65,7 +65,6 @@ public class BlockDragonEgg extends Block
 
                 for (blockpos = pos; worldIn.isAirBlock(blockpos) && BlockFalling.canFallThrough(worldIn.getBlockState(blockpos)) && blockpos.getY() > 0; blockpos = blockpos.down())
                 {
-                    ;
                 }
 
                 if (blockpos.getY() > 0)

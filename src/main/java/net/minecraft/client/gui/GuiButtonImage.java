@@ -36,7 +36,6 @@ public class GuiButtonImage extends GuiButton
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             mc.getTextureManager().bindTexture(this.resourceLocation);
             GlStateManager.disableDepth();
-            int i = this.xTexStart;
             int j = this.yTexStart;
 
             if (this.hovered)
@@ -44,7 +43,7 @@ public class GuiButtonImage extends GuiButton
                 j += this.yDiffText;
             }
 
-            this.drawTexturedModalRect(this.x, this.y, i, j, this.width, this.height);
+            this.drawTexturedModalRect(this.x, this.y, this.xTexStart, j, this.width, this.height);
             GlStateManager.enableDepth();
         }
     }

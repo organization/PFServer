@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class MetadataSerializer
 {
-    private final IRegistry < String, Registration <? extends IMetadataSection >> metadataSectionSerializerRegistry = new RegistrySimple < String, Registration <? extends IMetadataSection >> ();
+    private final IRegistry < String, Registration <? extends IMetadataSection >> metadataSectionSerializerRegistry = new RegistrySimple<>();
     private final GsonBuilder gsonBuilder = new GsonBuilder();
     private Gson gson;
 

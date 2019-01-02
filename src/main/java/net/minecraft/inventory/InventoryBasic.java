@@ -24,9 +24,9 @@ public class InventoryBasic implements IInventory
     private boolean hasCustomName;
 
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
-    protected org.bukkit.inventory.InventoryHolder bukkitOwner;
+    protected final org.bukkit.inventory.InventoryHolder bukkitOwner;
         
     public List<ItemStack> getContents() {
         return this.inventoryContents;
@@ -226,9 +226,8 @@ public class InventoryBasic implements IInventory
     {
         if (this.changeListeners != null)
         {
-            for (int i = 0; i < this.changeListeners.size(); ++i)
-            {
-                ((IInventoryChangedListener)this.changeListeners.get(i)).onInventoryChanged(this);
+            for (IInventoryChangedListener changeListener : this.changeListeners) {
+                ((IInventoryChangedListener) changeListener).onInventoryChanged(this);
             }
         }
     }

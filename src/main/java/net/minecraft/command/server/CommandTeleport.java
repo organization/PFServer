@@ -40,7 +40,7 @@ public class CommandTeleport extends CommandBase
     {
         if (args.length < 4)
         {
-            throw new WrongUsageException("commands.teleport.usage", new Object[0]);
+            throw new WrongUsageException("commands.teleport.usage");
         }
         else
         {
@@ -59,7 +59,7 @@ public class CommandTeleport extends CommandBase
                 ++j;
                 CommandBase.CoordinateArg commandbase$coordinatearg4 = parseCoordinate(args.length > j ? (double)entity1.rotationPitch : (double)entity.rotationPitch, args.length > j ? args[j] : "~", false);
                 doTeleport(entity, commandbase$coordinatearg, commandbase$coordinatearg1, commandbase$coordinatearg2, commandbase$coordinatearg3, commandbase$coordinatearg4);
-                notifyCommandListener(sender, this, "commands.teleport.success.coordinates", new Object[] {entity.getName(), commandbase$coordinatearg.getResult(), commandbase$coordinatearg1.getResult(), commandbase$coordinatearg2.getResult()});
+                notifyCommandListener(sender, this, "commands.teleport.success.coordinates", entity.getName(), commandbase$coordinatearg.getResult(), commandbase$coordinatearg1.getResult(), commandbase$coordinatearg2.getResult());
             }
         }
     }

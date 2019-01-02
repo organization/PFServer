@@ -756,10 +756,10 @@ public class StructureStrongholdPieces
 
     static class PieceWeight
         {
-            public Class <? extends Stronghold > pieceClass;
+            public final Class <? extends Stronghold > pieceClass;
             public final int pieceWeight;
             public int instancesSpawned;
-            public int instancesLimit;
+            public final int instancesLimit;
 
             public PieceWeight(Class <? extends Stronghold > p_i2076_1_, int p_i2076_2_, int p_i2076_3_)
             {
@@ -872,18 +872,18 @@ public class StructureStrongholdPieces
                     flag &= aboolean[l];
                 }
 
-                this.setBlockState(worldIn, iblockstate4.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[0])), 4, 3, 8, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate4.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[1])), 5, 3, 8, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate4.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[2])), 6, 3, 8, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[3])), 4, 3, 12, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[4])), 5, 3, 12, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[5])), 6, 3, 12, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate1.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[6])), 3, 3, 9, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate1.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[7])), 3, 3, 10, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate1.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[8])), 3, 3, 11, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate2.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[9])), 7, 3, 9, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate2.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[10])), 7, 3, 10, structureBoundingBoxIn);
-                this.setBlockState(worldIn, iblockstate2.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(aboolean[11])), 7, 3, 11, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate4.withProperty(BlockEndPortalFrame.EYE, aboolean[0]), 4, 3, 8, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate4.withProperty(BlockEndPortalFrame.EYE, aboolean[1]), 5, 3, 8, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate4.withProperty(BlockEndPortalFrame.EYE, aboolean[2]), 6, 3, 8, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate.withProperty(BlockEndPortalFrame.EYE, aboolean[3]), 4, 3, 12, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate.withProperty(BlockEndPortalFrame.EYE, aboolean[4]), 5, 3, 12, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate.withProperty(BlockEndPortalFrame.EYE, aboolean[5]), 6, 3, 12, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate1.withProperty(BlockEndPortalFrame.EYE, aboolean[6]), 3, 3, 9, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate1.withProperty(BlockEndPortalFrame.EYE, aboolean[7]), 3, 3, 10, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate1.withProperty(BlockEndPortalFrame.EYE, aboolean[8]), 3, 3, 11, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate2.withProperty(BlockEndPortalFrame.EYE, aboolean[9]), 7, 3, 9, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate2.withProperty(BlockEndPortalFrame.EYE, aboolean[10]), 7, 3, 10, structureBoundingBoxIn);
+                this.setBlockState(worldIn, iblockstate2.withProperty(BlockEndPortalFrame.EYE, aboolean[11]), 7, 3, 11, structureBoundingBoxIn);
 
                 if (flag)
                 {
@@ -1268,7 +1268,7 @@ public class StructureStrongholdPieces
         {
             public PieceWeight lastPlaced;
             public PortalRoom strongholdPortalRoom;
-            public List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
+            public final List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
 
             public Stairs2()
             {
@@ -1625,7 +1625,7 @@ public class StructureStrongholdPieces
                 OPENING,
                 WOOD_DOOR,
                 GRATES,
-                IRON_DOOR;
+                IRON_DOOR
             }
         }
 }

@@ -111,10 +111,7 @@ public class RConThreadClient extends RConThreadBase
                     }
                 }
             }
-        }
-        catch (SocketTimeoutException var17) {}
-        catch (IOException var18) {}
-        catch (Exception exception1)
+        } catch (IOException ignored) {} catch (Exception exception1)
         {
             LOGGER.error("Exception whilst parsing RCON input", (Throwable)exception1);
         }
@@ -147,18 +144,13 @@ public class RConThreadClient extends RConThreadBase
     {
         int i = p_72655_2_.length();
 
-        while (true)
-        {
+        do {
             int j = 4096 <= i ? 4096 : i;
             this.sendResponse(p_72655_1_, 0, p_72655_2_.substring(0, j));
             p_72655_2_ = p_72655_2_.substring(j);
             i = p_72655_2_.length();
 
-            if (0 == i)
-            {
-                break;
-            }
-        }
+        } while (0 != i);
     }
 
     private void closeSocket()

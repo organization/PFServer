@@ -11,11 +11,12 @@ import net.minecraft.util.math.MathHelper;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public abstract class EntityAITarget extends EntityAIBase
 {
     protected final EntityCreature taskOwner;
-    protected boolean shouldCheckSight;
+    protected final boolean shouldCheckSight;
     private final boolean nearbyOnly;
     private int targetSearchStatus;
     private int targetSearchDelay;
@@ -143,7 +144,7 @@ public abstract class EntityAITarget extends EntityAIBase
         {
             if (attacker instanceof IEntityOwnable && ((IEntityOwnable)attacker).getOwnerId() != null)
             {
-                if (target instanceof IEntityOwnable && ((IEntityOwnable)attacker).getOwnerId().equals(((IEntityOwnable)target).getOwnerId()))
+                if (target instanceof IEntityOwnable && Objects.equals(((IEntityOwnable) attacker).getOwnerId(), ((IEntityOwnable) target).getOwnerId()))
                 {
                     return false;
                 }
@@ -186,10 +187,7 @@ public abstract class EntityAITarget extends EntityAIBase
                     this.targetSearchStatus = this.canEasilyReach(target) ? 1 : 2;
                 }
 
-                if (this.targetSearchStatus == 2)
-                {
-                    return false;
-                }
+                return this.targetSearchStatus != 2;
             }
 
             return true;

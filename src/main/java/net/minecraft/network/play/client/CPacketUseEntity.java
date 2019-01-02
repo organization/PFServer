@@ -111,6 +111,6 @@ public class CPacketUseEntity implements Packet<INetHandlerPlayServer>
     {
         INTERACT,
         ATTACK,
-        INTERACT_AT;
+        INTERACT_AT
     }
 }

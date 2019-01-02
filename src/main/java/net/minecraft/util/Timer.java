@@ -11,7 +11,7 @@ public class Timer
     public float renderPartialTicks;
     public float elapsedPartialTicks;
     private long lastSyncSysClock;
-    private float tickLength;
+    private final float tickLength;
 
     public Timer(float tps)
     {

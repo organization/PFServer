@@ -76,7 +76,7 @@ public class EntityZombie extends EntityMob
     protected void applyEntityAI()
     {
         this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityPigZombie.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityPigZombie.class));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         if (world.spigotConfig.zombieAggressiveTowardsVillager) this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, false)); // Spigot
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
@@ -95,20 +95,20 @@ public class EntityZombie extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.getDataManager().register(IS_CHILD, Boolean.valueOf(false));
-        this.getDataManager().register(VILLAGER_TYPE, Integer.valueOf(0));
-        this.getDataManager().register(ARMS_RAISED, Boolean.valueOf(false));
+        this.getDataManager().register(IS_CHILD, Boolean.FALSE);
+        this.getDataManager().register(VILLAGER_TYPE, 0);
+        this.getDataManager().register(ARMS_RAISED, Boolean.FALSE);
     }
 
     public void setArmsRaised(boolean armsRaised)
     {
-        this.getDataManager().set(ARMS_RAISED, Boolean.valueOf(armsRaised));
+        this.getDataManager().set(ARMS_RAISED, armsRaised);
     }
 
     @SideOnly(Side.CLIENT)
     public boolean isArmsRaised()
     {
-        return ((Boolean)this.getDataManager().get(ARMS_RAISED)).booleanValue();
+        return (Boolean) this.getDataManager().get(ARMS_RAISED);
     }
 
     public boolean isBreakDoorsTaskSet()
@@ -136,7 +136,7 @@ public class EntityZombie extends EntityMob
 
     public boolean isChild()
     {
-        return ((Boolean)this.getDataManager().get(IS_CHILD)).booleanValue();
+        return (Boolean) this.getDataManager().get(IS_CHILD);
     }
 
     protected int getExperiencePoints(EntityPlayer player)
@@ -151,7 +151,7 @@ public class EntityZombie extends EntityMob
 
     public void setChild(boolean childZombie)
     {
-        this.getDataManager().set(IS_CHILD, Boolean.valueOf(childZombie));
+        this.getDataManager().set(IS_CHILD, childZombie);
 
         if (this.world != null && !this.world.isRemote)
         {
@@ -438,7 +438,7 @@ public class EntityZombie extends EntityMob
 
     protected boolean canEquipItem(ItemStack stack)
     {
-        return stack.getItem() == Items.EGG && this.isChild() && this.isRiding() ? false : super.canEquipItem(stack);
+        return (stack.getItem() != Items.EGG || !this.isChild() || !this.isRiding()) && super.canEquipItem(stack);
     }
 
     @Nullable
@@ -492,7 +492,7 @@ public class EntityZombie extends EntityMob
         {
             Calendar calendar = this.world.getCurrentDate();
 
-            if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.rand.nextFloat() < 0.25F)
+            if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31 && this.rand.nextFloat() < 0.25F)
             {
                 this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(this.rand.nextFloat() < 0.1F ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
                 this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 0.0F;
@@ -573,7 +573,7 @@ public class EntityZombie extends EntityMob
 
     class GroupData implements IEntityLivingData
     {
-        public boolean isChild;
+        public final boolean isChild;
 
         private GroupData(boolean p_i47328_2_)
         {

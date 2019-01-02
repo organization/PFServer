@@ -122,7 +122,7 @@ public class PlacementSettings
         }
         else if (this.setSeed != null)
         {
-            return this.setSeed.longValue() == 0L ? new Random(System.currentTimeMillis()) : new Random(this.setSeed.longValue());
+            return this.setSeed == 0L ? new Random(System.currentTimeMillis()) : new Random(this.setSeed);
         }
         else if (seed == null)
         {

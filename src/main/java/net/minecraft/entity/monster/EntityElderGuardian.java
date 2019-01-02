@@ -95,13 +95,7 @@ public class EntityElderGuardian extends EntityGuardian
         if ((this.ticksExisted + this.getEntityId()) % 1200 == 0)
         {
             Potion potion = MobEffects.MINING_FATIGUE;
-            List<EntityPlayerMP> list = this.world.<EntityPlayerMP>getPlayers(EntityPlayerMP.class, new Predicate<EntityPlayerMP>()
-            {
-                public boolean apply(@Nullable EntityPlayerMP p_apply_1_)
-                {
-                    return EntityElderGuardian.this.getDistanceSq(p_apply_1_) < 2500.0D && p_apply_1_.interactionManager.survivalOrAdventure();
-                }
-            });
+            List<EntityPlayerMP> list = this.world.<EntityPlayerMP>getPlayers(EntityPlayerMP.class, p_apply_1_ -> EntityElderGuardian.this.getDistanceSq(p_apply_1_) < 2500.0D && p_apply_1_.interactionManager.survivalOrAdventure());
             int j = 2;
             int k = 6000;
             int l = 1200;

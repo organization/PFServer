@@ -38,7 +38,7 @@ class ChunkIOProvider implements Runnable
 
     private Chunk chunk;
     private NBTTagCompound nbt;
-    private final ConcurrentLinkedQueue<Runnable> callbacks = new ConcurrentLinkedQueue<Runnable>();
+    private final ConcurrentLinkedQueue<Runnable> callbacks = new ConcurrentLinkedQueue<>();
     private boolean ran = false;
 
     ChunkIOProvider(QueuedChunk chunk, AnvilChunkLoader loader, ChunkProviderServer provider)

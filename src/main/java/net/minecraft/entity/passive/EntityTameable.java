@@ -38,7 +38,7 @@ public abstract class EntityTameable extends EntityAnimal implements IEntityOwna
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(TAMED, Byte.valueOf((byte)0));
+        this.dataManager.register(TAMED, (byte) 0);
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 
@@ -136,20 +136,20 @@ public abstract class EntityTameable extends EntityAnimal implements IEntityOwna
 
     public boolean isTamed()
     {
-        return (((Byte)this.dataManager.get(TAMED)).byteValue() & 4) != 0;
+        return ((Byte) this.dataManager.get(TAMED) & 4) != 0;
     }
 
     public void setTamed(boolean tamed)
     {
-        byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(TAMED);
 
         if (tamed)
         {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 | 4)));
+            this.dataManager.set(TAMED, (byte) (b0 | 4));
         }
         else
         {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -5)));
+            this.dataManager.set(TAMED, (byte) (b0 & -5));
         }
 
         this.setupTamedAI();
@@ -161,20 +161,20 @@ public abstract class EntityTameable extends EntityAnimal implements IEntityOwna
 
     public boolean isSitting()
     {
-        return (((Byte)this.dataManager.get(TAMED)).byteValue() & 1) != 0;
+        return ((Byte) this.dataManager.get(TAMED) & 1) != 0;
     }
 
     public void setSitting(boolean sitting)
     {
-        byte b0 = ((Byte)this.dataManager.get(TAMED)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(TAMED);
 
         if (sitting)
         {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 | 1)));
+            this.dataManager.set(TAMED, (byte) (b0 | 1));
         }
         else
         {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(b0 & -2)));
+            this.dataManager.set(TAMED, (byte) (b0 & -2));
         }
     }
 

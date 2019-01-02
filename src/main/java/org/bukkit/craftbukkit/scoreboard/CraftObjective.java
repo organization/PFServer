@@ -8,6 +8,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
+import java.util.Objects;
+
 final class CraftObjective extends CraftScoreboardComponent implements Objective {
     private final ScoreObjective objective;
     private final CraftCriteria criteria;
@@ -129,7 +131,7 @@ final class CraftObjective extends CraftScoreboardComponent implements Objective
             return false;
         }
         final CraftObjective other = (CraftObjective) obj;
-        return !(this.objective != other.objective && (this.objective == null || !this.objective.equals(other.objective)));
+        return Objects.equals(this.objective, other.objective);
     }
 
 

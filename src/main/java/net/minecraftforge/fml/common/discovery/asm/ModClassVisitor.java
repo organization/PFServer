@@ -23,7 +23,7 @@ import org.objectweb.asm.*;
 
 public class ModClassVisitor extends ClassVisitor
 {
-    private ASMModParser discoverer;
+    private final ASMModParser discoverer;
 
     public ModClassVisitor(ASMModParser discoverer)
     {

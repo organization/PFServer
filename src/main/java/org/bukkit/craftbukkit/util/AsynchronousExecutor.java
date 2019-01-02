@@ -66,7 +66,7 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
         volatile int state = PENDING;
         final P parameter;
         T object;
-        final List<C> callbacks = new LinkedList<C>();
+        final List<C> callbacks = new LinkedList<>();
         E t = null;
 
         Task(final P parameter) {
@@ -207,8 +207,8 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
     }
 
     final CallBackProvider<P, T, C, E> provider;
-    final Queue<Task> finished = new ConcurrentLinkedQueue<Task>();
-    final Map<P, Task> tasks = new HashMap<P, Task>();
+    final Queue<Task> finished = new ConcurrentLinkedQueue<>();
+    final Map<P, Task> tasks = new HashMap<>();
     final ThreadPoolExecutor pool;
 
     /**
@@ -220,7 +220,7 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
         this.provider = provider;
 
         // We have an unbound queue size so do not need a max thread size
-        pool = new ThreadPoolExecutor(coreSize, Integer.MAX_VALUE, 60l, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), provider);
+        pool = new ThreadPoolExecutor(coreSize, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), provider);
     }
 
     /**
@@ -299,7 +299,8 @@ public final class AsynchronousExecutor<P, T, C, E extends Throwable> {
     /**
      * Processes a parameter as if it was in the queue, without ever passing to another thread.
      */
-    public T getSkipQueue(P parameter, C...callbacks) throws E {
+    @SafeVarargs
+    public final T getSkipQueue(P parameter, C... callbacks) throws E {
         final CallBackProvider<P, T, C, E> provider = this.provider;
         final T object = skipQueue(parameter);
         for (C callback : callbacks) {

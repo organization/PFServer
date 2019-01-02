@@ -182,7 +182,7 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
     {
         super.readEntityFromNBT(compound);
         this.transferTicker = compound.getInteger("TransferCooldown");
-        this.isBlocked = compound.hasKey("Enabled") ? compound.getBoolean("Enabled") : true;
+        this.isBlocked = !compound.hasKey("Enabled") || compound.getBoolean("Enabled");
     }
 
     public void setTransferTicker(int p_98042_1_)

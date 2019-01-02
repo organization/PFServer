@@ -183,7 +183,7 @@ class CommandTrack extends CommandTreeBase
     private static abstract class TrackResultsBaseCommand<T> extends CommandBase
     {
 
-        private TimeTracker<T> tracker;
+        private final TimeTracker<T> tracker;
 
         protected TrackResultsBaseCommand(TimeTracker<T> tracker)
         {
@@ -197,9 +197,8 @@ class CommandTrack extends CommandTreeBase
          */
         protected List<ForgeTimings<T>> getSortedTimings()
         {
-            ArrayList<ForgeTimings<T>> list = new ArrayList<>();
 
-            list.addAll(tracker.getTimingData());
+            ArrayList<ForgeTimings<T>> list = new ArrayList<>(tracker.getTimingData());
             list.sort(Comparator.comparingDouble(ForgeTimings::getAverageTimings));
             Collections.reverse(list);
 

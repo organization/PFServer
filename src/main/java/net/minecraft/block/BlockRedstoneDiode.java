@@ -42,7 +42,7 @@ public abstract class BlockRedstoneDiode extends BlockHorizontal
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         IBlockState downState = worldIn.getBlockState(pos.down());
-        return (downState.isTopSolid() || downState.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID) ? super.canPlaceBlockAt(worldIn, pos) : false;
+        return (downState.isTopSolid() || downState.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID) && super.canPlaceBlockAt(worldIn, pos);
     }
 
     public boolean canBlockStay(World worldIn, BlockPos pos)
@@ -176,7 +176,7 @@ public abstract class BlockRedstoneDiode extends BlockHorizontal
         else
         {
             IBlockState iblockstate = worldIn.getBlockState(blockpos);
-            return Math.max(i, iblockstate.getBlock() == Blocks.REDSTONE_WIRE ? ((Integer)iblockstate.getValue(BlockRedstoneWire.POWER)).intValue() : 0);
+            return Math.max(i, iblockstate.getBlock() == Blocks.REDSTONE_WIRE ? (Integer) iblockstate.getValue(BlockRedstoneWire.POWER) : 0);
         }
     }
 
@@ -201,7 +201,7 @@ public abstract class BlockRedstoneDiode extends BlockHorizontal
             }
             else
             {
-                return block == Blocks.REDSTONE_WIRE ? ((Integer)iblockstate.getValue(BlockRedstoneWire.POWER)).intValue() : worldIn.getStrongPower(pos, side);
+                return block == Blocks.REDSTONE_WIRE ? (Integer) iblockstate.getValue(BlockRedstoneWire.POWER) : worldIn.getStrongPower(pos, side);
             }
         }
         else

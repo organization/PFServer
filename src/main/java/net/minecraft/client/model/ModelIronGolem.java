@@ -9,12 +9,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelIronGolem extends ModelBase
 {
-    public ModelRenderer ironGolemHead;
-    public ModelRenderer ironGolemBody;
-    public ModelRenderer ironGolemRightArm;
-    public ModelRenderer ironGolemLeftArm;
-    public ModelRenderer ironGolemLeftLeg;
-    public ModelRenderer ironGolemRightLeg;
+    public final ModelRenderer ironGolemHead;
+    public final ModelRenderer ironGolemBody;
+    public final ModelRenderer ironGolemRightArm;
+    public final ModelRenderer ironGolemLeftArm;
+    public final ModelRenderer ironGolemLeftLeg;
+    public final ModelRenderer ironGolemRightLeg;
 
     public ModelIronGolem()
     {

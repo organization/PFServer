@@ -19,7 +19,7 @@ public class BlockStatePaletteHashMap implements IBlockStatePalette
     {
         this.bits = bitsIn;
         this.paletteResizer = paletteResizerIn;
-        this.statePaletteMap = new IntIdentityHashBiMap<IBlockState>(1 << bitsIn);
+        this.statePaletteMap = new IntIdentityHashBiMap<>(1 << bitsIn);
     }
 
     public int idFor(IBlockState state)

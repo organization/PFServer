@@ -33,7 +33,7 @@ public interface Spellcaster extends Illager {
         /**
          * The spell that makes the target blind.
          */
-        BLINDNESS;
+        BLINDNESS
     }
 
     /**

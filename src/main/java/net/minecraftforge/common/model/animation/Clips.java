@@ -282,14 +282,9 @@ public final class Clips
 
     private static IJointClip blendClips(final IJoint joint, final IJointClip fromClip, final IJointClip toClip, final ITimeValue input, final ITimeValue progress)
     {
-        return new IJointClip()
-        {
-            @Override
-            public TRSRTransformation apply(float time)
-            {
-                float clipTime = input.apply(time);
-                return fromClip.apply(clipTime).slerp(toClip.apply(clipTime), MathHelper.clamp(progress.apply(time), 0, 1));
-            }
+        return time -> {
+            float clipTime = input.apply(time);
+            return fromClip.apply(clipTime).slerp(toClip.apply(clipTime), MathHelper.clamp(progress.apply(time), 0, 1));
         };
     }
 
@@ -298,27 +293,22 @@ public final class Clips
      */
     public static Pair<IModelState, Iterable<Event>> apply(final IClip clip, final float lastPollTime, final float time)
     {
-        return Pair.<IModelState, Iterable<Event>>of(new IModelState()
-        {
-            @Override
-            public Optional<TRSRTransformation> apply(Optional<? extends IModelPart> part)
+        return Pair.<IModelState, Iterable<Event>>of(part -> {
+            if(!part.isPresent() || !(part.get() instanceof IJoint))
             {
-                if(!part.isPresent() || !(part.get() instanceof IJoint))
-                {
-                    return Optional.empty();
-                }
-                IJoint joint = (IJoint)part.get();
-                // TODO: Cache clip application?
-                TRSRTransformation jointTransform = clip.apply(joint).apply(time).compose(joint.getInvBindPose());
-                Optional<? extends IJoint> parent = joint.getParent();
-                while(parent.isPresent())
-                {
-                    TRSRTransformation parentTransform = clip.apply(parent.get()).apply(time);
-                    jointTransform = parentTransform.compose(jointTransform);
-                    parent = parent.get().getParent();
-                }
-                return Optional.of(jointTransform);
+                return Optional.empty();
             }
+            IJoint joint = (IJoint)part.get();
+            // TODO: Cache clip application?
+            TRSRTransformation jointTransform = clip.apply(joint).apply(time).compose(joint.getInvBindPose());
+            Optional<? extends IJoint> parent = joint.getParent();
+            while(parent.isPresent())
+            {
+                TRSRTransformation parentTransform = clip.apply(parent.get()).apply(time);
+                jointTransform = parentTransform.compose(jointTransform);
+                parent = parent.get().getParent();
+            }
+            return Optional.of(jointTransform);
         }, clip.pastEvents(lastPollTime, time));
     }
 
@@ -436,7 +426,7 @@ public final class Clips
     {
         INSTANCE;
 
-        private final ThreadLocal<Function<String, IClip>> clipResolver = new ThreadLocal<Function<String, IClip>>();
+        private final ThreadLocal<Function<String, IClip>> clipResolver = new ThreadLocal<>();
 
         public void setClipResolver(@Nullable Function<String, IClip> clipResolver)
         {
@@ -554,7 +544,7 @@ public final class Clips
                             {
                                 int at = string.lastIndexOf('@');
                                 String location = string.substring(0, at);
-                                String clipName = string.substring(at + 1, string.length());
+                                String clipName = string.substring(at + 1);
                                 ResourceLocation model;
                                 if(location.indexOf('#') != -1)
                                 {

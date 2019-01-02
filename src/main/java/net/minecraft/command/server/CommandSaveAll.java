@@ -28,7 +28,7 @@ public class CommandSaveAll extends CommandBase
 
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        sender.sendMessage(new TextComponentTranslation("commands.save.start", new Object[0]));
+        sender.sendMessage(new TextComponentTranslation("commands.save.start"));
 
         if (server.getPlayerList() != null)
         {
@@ -51,7 +51,7 @@ public class CommandSaveAll extends CommandBase
 
             if (args.length > 0 && "flush".equals(args[0]))
             {
-                sender.sendMessage(new TextComponentTranslation("commands.save.flushStart", new Object[0]));
+                sender.sendMessage(new TextComponentTranslation("commands.save.flushStart"));
 
                 for (int j = 0; j < server.worlds.length; ++j)
                 {
@@ -65,20 +65,20 @@ public class CommandSaveAll extends CommandBase
                     }
                 }
 
-                sender.sendMessage(new TextComponentTranslation("commands.save.flushEnd", new Object[0]));
+                sender.sendMessage(new TextComponentTranslation("commands.save.flushEnd"));
             }
         }
         catch (MinecraftException minecraftexception)
         {
-            notifyCommandListener(sender, this, "commands.save.failed", new Object[] {minecraftexception.getMessage()});
+            notifyCommandListener(sender, this, "commands.save.failed", minecraftexception.getMessage());
             return;
         }
 
-        notifyCommandListener(sender, this, "commands.save.success", new Object[0]);
+        notifyCommandListener(sender, this, "commands.save.success");
     }
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"flush"}) : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "flush") : Collections.emptyList();
     }
 }

@@ -29,8 +29,8 @@ import java.util.Map;
 
 public class JsonContext
 {
-    private String modId;
-    private Map<String, Ingredient> constants = Maps.newHashMap();
+    private final String modId;
+    private final Map<String, Ingredient> constants = Maps.newHashMap();
 
     public JsonContext(String modId)
     {

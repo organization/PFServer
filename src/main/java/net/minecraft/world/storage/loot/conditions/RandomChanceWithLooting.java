@@ -36,8 +36,8 @@ public class RandomChanceWithLooting implements LootCondition
 
             public void serialize(JsonObject json, RandomChanceWithLooting value, JsonSerializationContext context)
             {
-                json.addProperty("chance", Float.valueOf(value.chance));
-                json.addProperty("looting_multiplier", Float.valueOf(value.lootingMultiplier));
+                json.addProperty("chance", value.chance);
+                json.addProperty("looting_multiplier", value.lootingMultiplier);
             }
 
             public RandomChanceWithLooting deserialize(JsonObject json, JsonDeserializationContext context)

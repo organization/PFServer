@@ -59,7 +59,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
     protected boolean needsRandomTick;
     protected boolean hasTileEntity;
     protected SoundType blockSoundType;
-    public float blockParticleGravity;
+    public final float blockParticleGravity;
     protected final Material blockMaterial;
     protected final MapColor blockMapColor;
     @Deprecated // Forge: State/world/pos/entity sensitive version below
@@ -709,7 +709,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
 
         if (this.canSilkHarvest(worldIn, pos, state, player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0)
         {
-            List<ItemStack> items = new java.util.ArrayList<ItemStack>();
+            List<ItemStack> items = new java.util.ArrayList<>();
             ItemStack itemstack = this.getSilkTouchDrop(state);
 
             if (!itemstack.isEmpty())
@@ -870,7 +870,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
     {
         if (blockIn != null && other != null)
         {
-            return blockIn == other ? true : blockIn.isAssociatedBlock(other);
+            return blockIn == other || blockIn.isAssociatedBlock(other);
         }
         else
         {
@@ -892,7 +892,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[0]);
+        return new BlockStateContainer(this);
     }
 
     public BlockStateContainer getBlockState()
@@ -949,9 +949,9 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
 
     /* ======================================== FORGE START =====================================*/
     //For ForgeInternal use Only!
-    protected ThreadLocal<EntityPlayer> harvesters = new ThreadLocal();
-    private ThreadLocal<IBlockState> silk_check_state = new ThreadLocal();
-    protected static Random RANDOM = new Random(); // Useful for random things without a seed.
+    protected final ThreadLocal<EntityPlayer> harvesters = new ThreadLocal();
+    private final ThreadLocal<IBlockState> silk_check_state = new ThreadLocal();
+    protected static final Random RANDOM = new Random(); // Useful for random things without a seed.
 
     /**
      * Gets the slipperiness at the given location at the given state. Normally
@@ -1232,12 +1232,10 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
             return false;
         if (this == Blocks.NETHERRACK || this == Blocks.MAGMA)
             return true;
-        if ((world.provider instanceof net.minecraft.world.WorldProviderEnd) && this == Blocks.BEDROCK)
-            return true;
-        return false;
+        return (world.provider instanceof net.minecraft.world.WorldProviderEnd) && this == Blocks.BEDROCK;
     }
 
-    private boolean isTileProvider = this instanceof ITileEntityProvider;
+    private final boolean isTileProvider = this instanceof ITileEntityProvider;
     /**
      * Called throughout the code as a replacement for block instanceof BlockContainer
      * Moving this to the Block base class allows for mods that wish to extend vanilla
@@ -1331,7 +1329,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
      */
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
-        silk_check_state.set(state);;
+        silk_check_state.set(state);
         boolean ret = this.canSilkHarvest();
         silk_check_state.set(null);
         return ret;
@@ -1894,7 +1892,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
             {
                 @SuppressWarnings("unchecked")
                 java.util.Collection<EnumFacing> values = ((java.util.Collection<EnumFacing>)prop.getAllowedValues());
-                return values.toArray(new EnumFacing[values.size()]);
+                return values.toArray(new EnumFacing[0]);
             }
         }
         return null;
@@ -1997,8 +1995,8 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
         return false;
     }
 
-    private String[] harvestTool = new String[16];;
-    private int[] harvestLevel = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+    private final String[] harvestTool = new String[16];
+    private final int[] harvestLevel = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     /**
      * Sets or removes the tool and level required to harvest this block.
      *
@@ -2012,10 +2010,8 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
      */
     public void setHarvestLevel(String toolClass, int level)
     {
-        java.util.Iterator<IBlockState> itr = getBlockState().getValidStates().iterator();
-        while (itr.hasNext())
-        {
-            setHarvestLevel(toolClass, level, itr.next());
+        for (IBlockState iBlockState : getBlockState().getValidStates()) {
+            setHarvestLevel(toolClass, level, iBlockState);
         }
     }
 
@@ -2135,8 +2131,8 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
         return getBlockLayer() == layer;
     }
     // For Internal use only to capture droped items inside getDrops
-    protected static ThreadLocal<Boolean> captureDrops = ThreadLocal.withInitial(() -> false);
-    protected static ThreadLocal<NonNullList<ItemStack>> capturedDrops = ThreadLocal.withInitial(NonNullList::create);
+    protected static final ThreadLocal<Boolean> captureDrops = ThreadLocal.withInitial(() -> false);
+    protected static final ThreadLocal<NonNullList<ItemStack>> capturedDrops = ThreadLocal.withInitial(NonNullList::create);
     protected NonNullList<ItemStack> captureDrops(boolean start)
     {
         if (start)
@@ -2635,6 +2631,6 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
     {
         NONE,
         XZ,
-        XYZ;
+        XYZ
     }
 }

@@ -13,12 +13,12 @@ public final class WeakCollection<T> implements Collection<T> {
     private final Collection<WeakReference<T>> collection;
 
     public WeakCollection() {
-        collection = new ArrayList<WeakReference<T>>();
+        collection = new ArrayList<>();
     }
 
     public boolean add(T value) {
         Validate.notNull(value, "Cannot add null value");
-        return collection.add(new WeakReference<T>(value));
+        return collection.add(new WeakReference<>(value));
     }
 
     public boolean addAll(Collection<? extends T> collection) {
@@ -26,7 +26,7 @@ public final class WeakCollection<T> implements Collection<T> {
         boolean ret = false;
         for (T value : collection) {
             Validate.notNull(value, "Cannot add null value");
-            ret |= values.add(new WeakReference<T>(value));
+            ret |= values.add(new WeakReference<>(value));
         }
         return ret;
     }
@@ -57,7 +57,7 @@ public final class WeakCollection<T> implements Collection<T> {
 
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            Iterator<WeakReference<T>> it = collection.iterator();
+            final Iterator<WeakReference<T>> it = collection.iterator();
             Object value = NO_VALUE;
 
             public boolean hasNext() {
@@ -160,10 +160,7 @@ public final class WeakCollection<T> implements Collection<T> {
     }
 
     private Collection<T> toCollection() {
-        ArrayList<T> collection = new ArrayList<T>();
-        for (T value : this) {
-            collection.add(value);
-        }
+        ArrayList<T> collection = new ArrayList<>(this);
         return collection;
     }
 }

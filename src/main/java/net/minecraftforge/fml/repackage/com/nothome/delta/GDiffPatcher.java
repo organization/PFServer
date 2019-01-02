@@ -35,8 +35,8 @@ import static net.minecraftforge.fml.repackage.com.nothome.delta.GDiffWriter.*;
  */
 public class GDiffPatcher {
 
-    private ByteBuffer buf = ByteBuffer.allocate(1024);
-    private byte buf2[] = buf.array();
+    private final ByteBuffer buf = ByteBuffer.allocate(1024);
+    private final byte[] buf2 = buf.array();
 
     /**
      * Constructs a new GDiffPatcher.
@@ -190,7 +190,7 @@ public class GDiffPatcher {
     /**
      * Simple command line tool to patch a file.
      */
-    public static void main(String argv[]) {
+    public static void main(String[] argv) {
 
         if (argv.length != 3) {
             System.err.println("usage GDiffPatch source patch output");

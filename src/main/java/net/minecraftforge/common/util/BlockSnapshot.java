@@ -143,7 +143,7 @@ public class BlockSnapshot
         if (world == null)
         {
             world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(getDimId());
-            this.world = new WeakReference<World>(world);
+            this.world = new WeakReference<>(world);
         }
         return world;
     }
@@ -267,11 +267,7 @@ public class BlockSnapshot
         {
             return false;
         }
-        if (!Objects.equals(this.getNbt(), other.getNbt()))
-        {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.getNbt(), other.getNbt());
     }
 
     @Override
@@ -299,7 +295,7 @@ public class BlockSnapshot
     @Nullable
     public NBTTagCompound getNbt() { return nbt; }
 
-    public void setWorld(World world) { this.world = new WeakReference<World>(world); }
+    public void setWorld(World world) { this.world = new WeakReference<>(world); }
 
     public ResourceLocation getRegistryName() { return registryName; }
 

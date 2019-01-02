@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 public class EntityAIPanic extends EntityAIBase
 {
     protected final EntityCreature creature;
-    protected double speed;
+    protected final double speed;
     protected double randPosX;
     protected double randPosY;
     protected double randPosZ;

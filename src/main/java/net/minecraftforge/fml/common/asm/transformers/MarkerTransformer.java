@@ -42,7 +42,7 @@ import java.util.zip.ZipOutputStream;
 
 public class MarkerTransformer implements IClassTransformer
 {
-    private ListMultimap<String, String> markers = ArrayListMultimap.create();
+    private final ListMultimap<String, String> markers = ArrayListMultimap.create();
 
     public MarkerTransformer() throws IOException
     {
@@ -106,10 +106,7 @@ public class MarkerTransformer implements IClassTransformer
         ClassReader classReader = new ClassReader(bytes);
         classReader.accept(classNode, 0);
 
-        for (String marker : markers.get(name))
-        {
-            classNode.interfaces.add(marker);
-        }
+        classNode.interfaces.addAll(markers.get(name));
 
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         classNode.accept(writer);

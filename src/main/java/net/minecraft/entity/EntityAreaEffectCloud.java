@@ -67,12 +67,12 @@ public class EntityAreaEffectCloud extends Entity
 
     protected void entityInit()
     {
-        this.getDataManager().register(COLOR, Integer.valueOf(0));
-        this.getDataManager().register(RADIUS, Float.valueOf(0.5F));
-        this.getDataManager().register(IGNORE_RADIUS, Boolean.valueOf(false));
-        this.getDataManager().register(PARTICLE, Integer.valueOf(EnumParticleTypes.SPELL_MOB.getParticleID()));
-        this.getDataManager().register(PARTICLE_PARAM_1, Integer.valueOf(0));
-        this.getDataManager().register(PARTICLE_PARAM_2, Integer.valueOf(0));
+        this.getDataManager().register(COLOR, 0);
+        this.getDataManager().register(RADIUS, 0.5F);
+        this.getDataManager().register(IGNORE_RADIUS, Boolean.FALSE);
+        this.getDataManager().register(PARTICLE, EnumParticleTypes.SPELL_MOB.getParticleID());
+        this.getDataManager().register(PARTICLE_PARAM_1, 0);
+        this.getDataManager().register(PARTICLE_PARAM_2, 0);
     }
 
     public void setRadius(float radiusIn)
@@ -85,13 +85,13 @@ public class EntityAreaEffectCloud extends Entity
 
         if (!this.world.isRemote)
         {
-            this.getDataManager().set(RADIUS, Float.valueOf(radiusIn));
+            this.getDataManager().set(RADIUS, radiusIn);
         }
     }
 
     public float getRadius()
     {
-        return ((Float)this.getDataManager().get(RADIUS)).floatValue();
+        return (Float) this.getDataManager().get(RADIUS);
     }
 
     public void setPotion(PotionType potionIn)
@@ -108,11 +108,11 @@ public class EntityAreaEffectCloud extends Entity
     {
         if (this.potion == PotionTypes.EMPTY && this.effects.isEmpty())
         {
-            this.getDataManager().set(COLOR, Integer.valueOf(0));
+            this.getDataManager().set(COLOR, 0);
         }
         else
         {
-            this.getDataManager().set(COLOR, Integer.valueOf(PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.effects))));
+            this.getDataManager().set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.effects)));
         }
     }
 
@@ -144,53 +144,53 @@ public class EntityAreaEffectCloud extends Entity
 
     public int getColor()
     {
-        return ((Integer)this.getDataManager().get(COLOR)).intValue();
+        return (Integer) this.getDataManager().get(COLOR);
     }
 
     public void setColor(int colorIn)
     {
         this.colorSet = true;
-        this.getDataManager().set(COLOR, Integer.valueOf(colorIn));
+        this.getDataManager().set(COLOR, colorIn);
     }
 
     public EnumParticleTypes getParticle()
     {
-        return EnumParticleTypes.getParticleFromId(((Integer)this.getDataManager().get(PARTICLE)).intValue());
+        return EnumParticleTypes.getParticleFromId((Integer) this.getDataManager().get(PARTICLE));
     }
 
     public void setParticle(EnumParticleTypes particleIn)
     {
-        this.getDataManager().set(PARTICLE, Integer.valueOf(particleIn.getParticleID()));
+        this.getDataManager().set(PARTICLE, particleIn.getParticleID());
     }
 
     public int getParticleParam1()
     {
-        return ((Integer)this.getDataManager().get(PARTICLE_PARAM_1)).intValue();
+        return (Integer) this.getDataManager().get(PARTICLE_PARAM_1);
     }
 
     public void setParticleParam1(int particleParam)
     {
-        this.getDataManager().set(PARTICLE_PARAM_1, Integer.valueOf(particleParam));
+        this.getDataManager().set(PARTICLE_PARAM_1, particleParam);
     }
 
     public int getParticleParam2()
     {
-        return ((Integer)this.getDataManager().get(PARTICLE_PARAM_2)).intValue();
+        return (Integer) this.getDataManager().get(PARTICLE_PARAM_2);
     }
 
     public void setParticleParam2(int particleParam)
     {
-        this.getDataManager().set(PARTICLE_PARAM_2, Integer.valueOf(particleParam));
+        this.getDataManager().set(PARTICLE_PARAM_2, particleParam);
     }
 
     protected void setIgnoreRadius(boolean ignoreRadius)
     {
-        this.getDataManager().set(IGNORE_RADIUS, Boolean.valueOf(ignoreRadius));
+        this.getDataManager().set(IGNORE_RADIUS, ignoreRadius);
     }
 
     public boolean shouldIgnoreRadius()
     {
-        return ((Boolean)this.getDataManager().get(IGNORE_RADIUS)).booleanValue();
+        return (Boolean) this.getDataManager().get(IGNORE_RADIUS);
     }
 
     public int getDuration()
@@ -317,7 +317,7 @@ public class EntityAreaEffectCloud extends Entity
                 {
                     Entry<Entity, Integer> entry = (Entry)iterator.next();
 
-                    if (this.ticksExisted >= ((Integer)entry.getValue()).intValue())
+                    if (this.ticksExisted >= (Integer) entry.getValue())
                     {
                         iterator.remove();
                     }
@@ -362,7 +362,7 @@ public class EntityAreaEffectCloud extends Entity
                             for (LivingEntity entity : event.getAffectedEntities()) {
                                 if (entity instanceof CraftLivingEntity) {
                                     EntityLivingBase entitylivingbase = ((CraftLivingEntity) entity).getHandle();
-                                    this.reapplicationDelayMap.put(entitylivingbase, Integer.valueOf(this.ticksExisted + this.reapplicationDelay));
+                                    this.reapplicationDelayMap.put(entitylivingbase, this.ticksExisted + this.reapplicationDelay);
 
                                     for (PotionEffect potioneffect : potions)
                                     {

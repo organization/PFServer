@@ -18,12 +18,12 @@ import java.util.UUID;
 
 public class DataSerializers
 {
-    private static final IntIdentityHashBiMap < DataSerializer<? >> REGISTRY = new IntIdentityHashBiMap < DataSerializer<? >> (16);
+    private static final IntIdentityHashBiMap < DataSerializer<? >> REGISTRY = new IntIdentityHashBiMap<>(16);
     public static final DataSerializer<Byte> BYTE = new DataSerializer<Byte>()
     {
         public void write(PacketBuffer buf, Byte value)
         {
-            buf.writeByte(value.byteValue());
+            buf.writeByte(value);
         }
         public Byte read(PacketBuffer buf) throws IOException
         {
@@ -31,7 +31,7 @@ public class DataSerializers
         }
         public DataParameter<Byte> createKey(int id)
         {
-            return new DataParameter<Byte>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Byte copyValue(Byte value)
         {
@@ -42,7 +42,7 @@ public class DataSerializers
     {
         public void write(PacketBuffer buf, Integer value)
         {
-            buf.writeVarInt(value.intValue());
+            buf.writeVarInt(value);
         }
         public Integer read(PacketBuffer buf) throws IOException
         {
@@ -50,7 +50,7 @@ public class DataSerializers
         }
         public DataParameter<Integer> createKey(int id)
         {
-            return new DataParameter<Integer>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Integer copyValue(Integer value)
         {
@@ -61,7 +61,7 @@ public class DataSerializers
     {
         public void write(PacketBuffer buf, Float value)
         {
-            buf.writeFloat(value.floatValue());
+            buf.writeFloat(value);
         }
         public Float read(PacketBuffer buf) throws IOException
         {
@@ -69,7 +69,7 @@ public class DataSerializers
         }
         public DataParameter<Float> createKey(int id)
         {
-            return new DataParameter<Float>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Float copyValue(Float value)
         {
@@ -88,7 +88,7 @@ public class DataSerializers
         }
         public DataParameter<String> createKey(int id)
         {
-            return new DataParameter<String>(id, this);
+            return new DataParameter<>(id, this);
         }
         public String copyValue(String value)
         {
@@ -107,7 +107,7 @@ public class DataSerializers
         }
         public DataParameter<ITextComponent> createKey(int id)
         {
-            return new DataParameter<ITextComponent>(id, this);
+            return new DataParameter<>(id, this);
         }
         public ITextComponent copyValue(ITextComponent value)
         {
@@ -126,7 +126,7 @@ public class DataSerializers
         }
         public DataParameter<ItemStack> createKey(int id)
         {
-            return new DataParameter<ItemStack>(id, this);
+            return new DataParameter<>(id, this);
         }
         public ItemStack copyValue(ItemStack value)
         {
@@ -153,7 +153,7 @@ public class DataSerializers
         }
         public DataParameter<Optional<IBlockState>> createKey(int id)
         {
-            return new DataParameter<Optional<IBlockState>>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Optional<IBlockState> copyValue(Optional<IBlockState> value)
         {
@@ -164,7 +164,7 @@ public class DataSerializers
     {
         public void write(PacketBuffer buf, Boolean value)
         {
-            buf.writeBoolean(value.booleanValue());
+            buf.writeBoolean(value);
         }
         public Boolean read(PacketBuffer buf) throws IOException
         {
@@ -172,7 +172,7 @@ public class DataSerializers
         }
         public DataParameter<Boolean> createKey(int id)
         {
-            return new DataParameter<Boolean>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Boolean copyValue(Boolean value)
         {
@@ -193,7 +193,7 @@ public class DataSerializers
         }
         public DataParameter<Rotations> createKey(int id)
         {
-            return new DataParameter<Rotations>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Rotations copyValue(Rotations value)
         {
@@ -212,7 +212,7 @@ public class DataSerializers
         }
         public DataParameter<BlockPos> createKey(int id)
         {
-            return new DataParameter<BlockPos>(id, this);
+            return new DataParameter<>(id, this);
         }
         public BlockPos copyValue(BlockPos value)
         {
@@ -236,7 +236,7 @@ public class DataSerializers
         }
         public DataParameter<Optional<BlockPos>> createKey(int id)
         {
-            return new DataParameter<Optional<BlockPos>>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Optional<BlockPos> copyValue(Optional<BlockPos> value)
         {
@@ -255,7 +255,7 @@ public class DataSerializers
         }
         public DataParameter<EnumFacing> createKey(int id)
         {
-            return new DataParameter<EnumFacing>(id, this);
+            return new DataParameter<>(id, this);
         }
         public EnumFacing copyValue(EnumFacing value)
         {
@@ -279,7 +279,7 @@ public class DataSerializers
         }
         public DataParameter<Optional<UUID>> createKey(int id)
         {
-            return new DataParameter<Optional<UUID>>(id, this);
+            return new DataParameter<>(id, this);
         }
         public Optional<UUID> copyValue(Optional<UUID> value)
         {
@@ -298,7 +298,7 @@ public class DataSerializers
         }
         public DataParameter<NBTTagCompound> createKey(int id)
         {
-            return new DataParameter<NBTTagCompound>(id, this);
+            return new DataParameter<>(id, this);
         }
         public NBTTagCompound copyValue(NBTTagCompound value)
         {

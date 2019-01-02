@@ -14,7 +14,7 @@ public class BlockStateListPopulator {
     private final List<BlockState> list;
 
     public BlockStateListPopulator(World world) {
-        this(world, new ArrayList<BlockState>());
+        this(world, new ArrayList<>());
     }
 
     public BlockStateListPopulator(World world, List<BlockState> list) {

@@ -29,7 +29,8 @@ import java.util.Set;
 public class DefaultGuiFactory implements IModGuiFactory
 {
     
-    protected String modid, title;
+    protected final String modid;
+    protected final String title;
     protected Minecraft minecraft;
     
     protected DefaultGuiFactory(String modid, String title)

@@ -109,7 +109,7 @@ public abstract class BlockFluidBase extends Block implements IFluidBlock
         defaultDisplacements.put(Blocks.WALL_SIGN,     false);
         defaultDisplacements.put(Blocks.REEDS,         false);
     }
-    protected Map<Block, Boolean> displacements = Maps.newHashMap();
+    protected final Map<Block, Boolean> displacements = Maps.newHashMap();
 
     private static final class UnlistedPropertyBool extends Properties.PropertyAdapter<Boolean>
     {
@@ -627,17 +627,14 @@ public abstract class BlockFluidBase extends Block implements IFluidBlock
         int count = 0;
 
 
-        for (int i = 0; i < flow.length; i++)
-        {
-            if (flow[i] >= quantaFraction)
-            {
-                total += flow[i] * 10;
+        for (float v : flow) {
+            if (v >= quantaFraction) {
+                total += v * 10;
                 count += 10;
             }
 
-            if (flow[i] >= 0)
-            {
-                total += flow[i];
+            if (v >= 0) {
+                total += v;
                 count++;
             }
         }

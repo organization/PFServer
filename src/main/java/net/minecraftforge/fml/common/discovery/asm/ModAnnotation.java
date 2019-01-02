@@ -51,10 +51,10 @@ public class ModAnnotation
             return value;
         }
     }
-    AnnotationType type;
-    Type asmType;
+    final AnnotationType type;
+    final Type asmType;
     String member;
-    Map<String,Object> values = Maps.newHashMap();
+    final Map<String,Object> values = Maps.newHashMap();
     private ArrayList<Object> arrayList;
     private String arrayName;
     public ModAnnotation(AnnotationType type, Type asmType, String member)

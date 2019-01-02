@@ -197,18 +197,14 @@ public class TileEntitySkull extends TileEntity implements ITickable
         // Spigot start
         GameProfile profile = this.playerProfile;
         setType( 0 ); // Work around client bug
-        updateGameprofile(profile, new Predicate<GameProfile>() {
-
-            @Override
-            public boolean apply(GameProfile input) {
-                setType(3); // Work around client bug
-                playerProfile = input;
-                markDirty();
-                if (world != null) {
-                    world.notifyLightSet(pos); // PAIL: notify
-                }
-                return false;
+        updateGameprofile(profile, input -> {
+            setType(3); // Work around client bug
+            playerProfile = input;
+            markDirty();
+            if (world != null) {
+                world.notifyLightSet(pos); // PAIL: notify
             }
+            return false;
         }, false);
         // Spigot end
 
@@ -233,22 +229,16 @@ public class TileEntitySkull extends TileEntity implements ITickable
                 }
                 else
                 {
-                    Callable<GameProfile> callable = new Callable<GameProfile>() {
-                        @Override
-                        public GameProfile call() {
-                            final GameProfile profile = skinCache.getUnchecked(input.getName().toLowerCase(java.util.Locale.ROOT));
-                            MinecraftServer.getServerInst().processQueue.add(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (profile == null) {
-                                        callback.apply(input);
-                                    } else {
-                                        callback.apply(profile);
-                                    }
-                                }
-                            });
-                            return profile;
-                        }
+                    Callable<GameProfile> callable = () -> {
+                        final GameProfile profile1 = skinCache.getUnchecked(input.getName().toLowerCase(java.util.Locale.ROOT));
+                        MinecraftServer.getServerInst().processQueue.add(() -> {
+                            if (profile1 == null) {
+                                callback.apply(input);
+                            } else {
+                                callback.apply(profile1);
+                            }
+                        });
+                        return profile1;
                     };
                     if (sync) {
                         try {

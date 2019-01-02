@@ -18,8 +18,8 @@ import javax.annotation.Nullable;
 
 public abstract class PathNavigate
 {
-    protected EntityLiving entity;
-    protected World world;
+    protected final EntityLiving entity;
+    protected final World world;
     @Nullable
     protected Path currentPath;
     protected double speed;
@@ -257,11 +257,10 @@ public abstract class PathNavigate
 
         int k = MathHelper.ceil(this.entity.width);
         int l = MathHelper.ceil(this.entity.height);
-        int i1 = k;
 
         for (int j1 = i - 1; j1 >= this.currentPath.getCurrentPathIndex(); --j1)
         {
-            if (this.isDirectPathBetweenPoints(vec3d, this.currentPath.getVectorFromIndex(this.entity, j1), k, l, i1))
+            if (this.isDirectPathBetweenPoints(vec3d, this.currentPath.getVectorFromIndex(this.entity, j1), k, l, k))
             {
                 this.currentPath.setCurrentPathIndex(j1);
                 break;

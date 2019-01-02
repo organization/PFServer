@@ -74,11 +74,8 @@ public class ChunkProviderClient implements IChunkProvider
     public boolean tick()
     {
         long i = System.currentTimeMillis();
-        ObjectIterator objectiterator = this.chunkMapping.values().iterator();
 
-        while (objectiterator.hasNext())
-        {
-            Chunk chunk = (Chunk)objectiterator.next();
+        for (Chunk chunk : this.chunkMapping.values()) {
             chunk.onTick(System.currentTimeMillis() - i > 5L);
         }
 

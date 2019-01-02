@@ -44,19 +44,19 @@ import static net.minecraftforge.fml.client.config.GuiUtils.UNDO_CHAR;
  */
 public class GuiEditArray extends GuiScreen
 {
-    protected GuiScreen parentScreen;
-    protected IConfigElement configElement;
+    protected final GuiScreen parentScreen;
+    protected final IConfigElement configElement;
     protected GuiEditArrayEntries entryList;
     protected GuiButtonExt btnUndoChanges, btnDefault, btnDone;
-    protected String title;
+    protected final String title;
     protected String titleLine2;
     protected String titleLine3;
-    protected int slotIndex;
+    protected final int slotIndex;
     protected final Object[] beforeValues;
     protected Object[] currentValues;
-    protected HoverChecker tooltipHoverChecker;
-    protected List<String> toolTip;
-    protected boolean enabled;
+    protected final HoverChecker tooltipHoverChecker;
+    protected final List<String> toolTip;
+    protected final boolean enabled;
 
     public GuiEditArray(GuiScreen parentScreen, IConfigElement configElement, int slotIndex, Object[] currentValues, boolean enabled)
     {
@@ -66,7 +66,7 @@ public class GuiEditArray extends GuiScreen
         this.slotIndex = slotIndex;
         this.beforeValues = currentValues;
         this.currentValues = currentValues;
-        this.toolTip = new ArrayList<String>();
+        this.toolTip = new ArrayList<>();
         this.enabled = enabled;
         String propName = I18n.format(configElement.getLanguageKey());
         String comment;

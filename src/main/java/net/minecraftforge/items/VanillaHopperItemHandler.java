@@ -41,14 +41,14 @@ public class VanillaHopperItemHandler extends InvWrapper
     {
         if (simulate)
         {
-            return super.insertItem(slot, stack, simulate);
+            return super.insertItem(slot, stack, true);
         }
         else
         {
             boolean wasEmpty = getInv().isEmpty();
 
             int originalStackSize = stack.getCount();
-            stack = super.insertItem(slot, stack, simulate);
+            stack = super.insertItem(slot, stack, false);
 
             if (wasEmpty && originalStackSize > stack.getCount())
             {

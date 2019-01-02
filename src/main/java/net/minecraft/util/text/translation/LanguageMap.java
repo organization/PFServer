@@ -63,12 +63,9 @@ public class LanguageMap
                 }
             }
 
-        }
-        catch (IOException var7)
+        } catch (Exception ignored)
         {
-            ;
         }
-        catch (Exception ex) {}
         return table;
     }
 

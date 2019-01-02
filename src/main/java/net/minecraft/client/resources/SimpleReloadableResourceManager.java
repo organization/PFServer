@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SideOnly(Side.CLIENT)
 public class SimpleReloadableResourceManager implements IReloadableResourceManager
@@ -95,13 +96,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
     {
         net.minecraftforge.fml.common.ProgressManager.ProgressBar resReload = net.minecraftforge.fml.common.ProgressManager.push("Loading Resources", resourcesPacksList.size()+1, true);
         this.clearResources();
-        LOGGER.info("Reloading ResourceManager: {}", (Object)JOINER_RESOURCE_PACKS.join(Iterables.transform(resourcesPacksList, new Function<IResourcePack, String>()
-        {
-            public String apply(@Nullable IResourcePack p_apply_1_)
-            {
-                return p_apply_1_ == null ? "<NULL>" : p_apply_1_.getPackName();
-            }
-        })));
+        LOGGER.info("Reloading ResourceManager: {}", (Object)JOINER_RESOURCE_PACKS.join(resourcesPacksList.stream().map(p_apply_1_ -> p_apply_1_ == null ? "<NULL>" : p_apply_1_.getPackName()).collect(Collectors.toList())));
 
         for (IResourcePack iresourcepack : resourcesPacksList)
         {

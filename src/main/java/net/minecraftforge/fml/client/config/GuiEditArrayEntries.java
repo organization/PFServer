@@ -41,15 +41,15 @@ import static net.minecraftforge.fml.client.config.GuiUtils.VALID;
  */
 public class GuiEditArrayEntries extends GuiListExtended
 {
-    protected GuiEditArray owningGui;
-    public IConfigElement configElement;
-    public List<IArrayEntry> listEntries;
+    protected final GuiEditArray owningGui;
+    public final IConfigElement configElement;
+    public final List<IArrayEntry> listEntries;
     public boolean isDefault;
     public boolean isChanged;
     public boolean canAddMoreEntries;
     public final int controlWidth;
     public final Object[] beforeValues;
-    public Object[] currentValues;
+    public final Object[] currentValues;
 
     public GuiEditArrayEntries(GuiEditArray parent, Minecraft mc, IConfigElement configElement, Object[] beforeValues, Object[] currentValues)
     {
@@ -63,7 +63,7 @@ public class GuiEditArrayEntries extends GuiListExtended
         this.isDefault = Arrays.deepEquals(currentValues, configElement.getDefaults());
         this.canAddMoreEntries = !configElement.isListLengthFixed() && (configElement.getMaxListLength() == -1 || currentValues.length < configElement.getMaxListLength());
 
-        listEntries = new ArrayList<IArrayEntry>();
+        listEntries = new ArrayList<>();
 
         controlWidth = (parent.width / 2) - (configElement.isListLengthFixed() ? 0 : 48);
 
@@ -341,10 +341,7 @@ public class GuiEditArrayEntries extends GuiListExtended
                     try
                     {
                         double value = Double.parseDouble(textFieldValue.getText().trim());
-                        if (value < Double.valueOf(configElement.getMinValue().toString()) || value > Double.valueOf(configElement.getMaxValue().toString()))
-                            this.isValidValue = false;
-                        else
-                            this.isValidValue = true;
+                        this.isValidValue = !(value < Double.valueOf(configElement.getMinValue().toString())) && !(value > Double.valueOf(configElement.getMaxValue().toString()));
                     }
                     catch (Throwable e)
                     {
@@ -397,10 +394,7 @@ public class GuiEditArrayEntries extends GuiListExtended
                     try
                     {
                         long value = Long.parseLong(textFieldValue.getText().trim());
-                        if (value < Integer.valueOf(configElement.getMinValue().toString()) || value > Integer.valueOf(configElement.getMaxValue().toString()))
-                            this.isValidValue = false;
-                        else
-                            this.isValidValue = true;
+                        this.isValidValue = value >= Integer.valueOf(configElement.getMinValue().toString()) && value <= Integer.valueOf(configElement.getMaxValue().toString());
                     }
                     catch (Throwable e)
                     {
@@ -440,10 +434,7 @@ public class GuiEditArrayEntries extends GuiListExtended
 
             if (configElement.getValidationPattern() != null)
             {
-                if (configElement.getValidationPattern().matcher(this.textFieldValue.getText().trim()).matches())
-                    isValidValue = true;
-                else
-                    isValidValue = false;
+                isValidValue = configElement.getValidationPattern().matcher(this.textFieldValue.getText().trim()).matches();
             }
         }
 
@@ -471,10 +462,7 @@ public class GuiEditArrayEntries extends GuiListExtended
 
                 if (configElement.getValidationPattern() != null)
                 {
-                    if (configElement.getValidationPattern().matcher(this.textFieldValue.getText().trim()).matches())
-                        isValidValue = true;
-                    else
-                        isValidValue = false;
+                    isValidValue = configElement.getValidationPattern().matcher(this.textFieldValue.getText().trim()).matches();
                 }
             }
         }
@@ -567,7 +555,8 @@ public class GuiEditArrayEntries extends GuiListExtended
         private final HoverChecker addNewEntryAboveHoverChecker;
         protected final GuiButtonExt btnRemoveEntry;
         private final HoverChecker removeEntryHoverChecker;
-        private List<String> addNewToolTip, removeToolTip;
+        private final List<String> addNewToolTip;
+        private final List<String> removeToolTip;
         protected boolean isValidValue = true;
         protected boolean isValidated = false;
 
@@ -584,8 +573,8 @@ public class GuiEditArrayEntries extends GuiListExtended
             this.btnRemoveEntry.enabled = owningScreen.enabled;
             this.addNewEntryAboveHoverChecker = new HoverChecker(this.btnAddNewEntryAbove, 800);
             this.removeEntryHoverChecker = new HoverChecker(this.btnRemoveEntry, 800);
-            this.addNewToolTip = new ArrayList<String>();
-            this.removeToolTip = new ArrayList<String>();
+            this.addNewToolTip = new ArrayList<>();
+            this.removeToolTip = new ArrayList<>();
             addNewToolTip.add(I18n.format("fml.configgui.tooltip.addNewEntryAbove"));
             removeToolTip.add(I18n.format("fml.configgui.tooltip.removeEntry"));
         }

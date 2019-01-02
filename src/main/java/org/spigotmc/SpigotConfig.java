@@ -52,7 +52,7 @@ public class SpigotConfig
         try
         {
             config.load( CONFIG_FILE );
-        } catch ( IOException ex )
+        } catch ( IOException ignored)
         {
         } catch ( InvalidConfigurationException ex )
         {
@@ -63,7 +63,7 @@ public class SpigotConfig
         config.options().header( HEADER );
         config.options().copyDefaults( true );
 
-        commands = new HashMap<String, Command>();
+        commands = new HashMap<>();
         commands.put( "spigot", new SpigotCommand( "spigot" ) );
 
         version = getInt( "config-version", 11 );
@@ -230,7 +230,7 @@ public class SpigotConfig
     }
 
     public static boolean disableStatSaving;
-    public static TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<String>();
+    public static final TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<>();
     private static void stats()
     {
         disableStatSaving = getBoolean( "stats.disable-saving", false );
@@ -275,10 +275,7 @@ public class SpigotConfig
     public static List<String> spamExclusions;
     private static void spamExclusions()
     {
-        spamExclusions = getList( "commands.spam-exclusions", Arrays.asList( new String[]
-        {
-                "/skill"
-        } ) );
+        spamExclusions = getList( "commands.spam-exclusions", Collections.singletonList("/skill"));
     }
 
     public static boolean silentCommandBlocks;
@@ -301,8 +298,8 @@ public class SpigotConfig
             set( "commands.replace-commands", config.getStringList( "replace-commands" ) );
             config.set( "replace-commands", null );
         }
-        replaceCommands = new HashSet<String>( (List<String>) getList( "commands.replace-commands",
-                Arrays.asList( "setblock", "summon", "testforblock", "tellraw" ) ) );
+        replaceCommands = new HashSet<>((List<String>) getList("commands.replace-commands",
+                Arrays.asList("setblock", "summon", "testforblock", "tellraw")));
     }
 
     public static int userCacheCap;
@@ -380,6 +377,6 @@ public class SpigotConfig
     public static List<String> disabledAdvancements;
     private static void disabledAdvancements() {
         disableAdvancementSaving = getBoolean("advancements.disable-saving", false);
-        disabledAdvancements = getList("advancements.disabled", Arrays.asList(new String[]{"minecraft:story/disabled"}));
+        disabledAdvancements = getList("advancements.disabled", Collections.singletonList("minecraft:story/disabled"));
     }
 }

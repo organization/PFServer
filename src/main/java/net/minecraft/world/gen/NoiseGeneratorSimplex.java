@@ -7,9 +7,9 @@ public class NoiseGeneratorSimplex
     private static final int[][] grad3 = new int[][] {{1, 1, 0}, { -1, 1, 0}, {1, -1, 0}, { -1, -1, 0}, {1, 0, 1}, { -1, 0, 1}, {1, 0, -1}, { -1, 0, -1}, {0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}};
     public static final double SQRT_3 = Math.sqrt(3.0D);
     private final int[] p;
-    public double xo;
-    public double yo;
-    public double zo;
+    public final double xo;
+    public final double yo;
+    public final double zo;
     private static final double F2 = 0.5D * (SQRT_3 - 1.0D);
     private static final double G2 = (3.0D - SQRT_3) / 6.0D;
 
@@ -27,7 +27,6 @@ public class NoiseGeneratorSimplex
 
         for (int i = 0; i < 256; this.p[i] = i++)
         {
-            ;
         }
 
         for (int l = 0; l < 256; ++l)

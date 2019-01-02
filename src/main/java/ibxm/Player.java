@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 public class Player {
 	private Thread play_thread;
-	private IBXM ibxm;
+	private final IBXM ibxm;
 	private Module module;
 	private int song_duration, play_position;
 	private boolean running, loop;
@@ -105,7 +105,7 @@ public class Player {
 		if( play_thread != null ) {
 			try {
 				play_thread.join();
-			} catch( InterruptedException ie ) {}
+			} catch( InterruptedException ignored) {}
 		}
 	}
 	

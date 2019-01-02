@@ -49,7 +49,7 @@ public class EntityMinecartFurnace extends EntityMinecart
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(POWERED, Boolean.valueOf(false));
+        this.dataManager.register(POWERED, Boolean.FALSE);
     }
 
     public void onUpdate()
@@ -180,12 +180,12 @@ public class EntityMinecartFurnace extends EntityMinecart
 
     protected boolean isMinecartPowered()
     {
-        return ((Boolean)this.dataManager.get(POWERED)).booleanValue();
+        return (Boolean) this.dataManager.get(POWERED);
     }
 
     protected void setMinecartPowered(boolean p_94107_1_)
     {
-        this.dataManager.set(POWERED, Boolean.valueOf(p_94107_1_));
+        this.dataManager.set(POWERED, p_94107_1_);
     }
 
     public IBlockState getDefaultDisplayTile()

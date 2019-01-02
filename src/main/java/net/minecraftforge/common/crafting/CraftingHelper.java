@@ -66,10 +66,10 @@ public class CraftingHelper {
 
     public static final Logger LOGGER = LogManager.getLogger();
     private static final boolean DEBUG_LOAD_MINECRAFT = false;
-    private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-    private static Map<ResourceLocation, IConditionFactory> conditions = Maps.newHashMap();
-    private static Map<ResourceLocation, IIngredientFactory> ingredients = Maps.newHashMap();
-    private static Map<ResourceLocation, IRecipeFactory> recipes = Maps.newHashMap();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Map<ResourceLocation, IConditionFactory> conditions = Maps.newHashMap();
+    private static final Map<ResourceLocation, IIngredientFactory> ingredients = Maps.newHashMap();
+    private static final Map<ResourceLocation, IRecipeFactory> recipes = Maps.newHashMap();
 
     static {
         init();
@@ -254,7 +254,7 @@ public class CraftingHelper {
     public static ShapedPrimer parseShaped(Object... recipe)
     {
         ShapedPrimer ret = new ShapedPrimer();
-        String shape = "";
+        StringBuilder shape = new StringBuilder();
         int idx = 0;
 
         if (recipe[idx] instanceof Boolean)
@@ -273,7 +273,7 @@ public class CraftingHelper {
             for (String s : parts)
             {
                 ret.width = s.length();
-                shape += s;
+                shape.append(s);
             }
 
             ret.height = parts.length;
@@ -283,7 +283,7 @@ public class CraftingHelper {
             while (recipe[idx] instanceof String)
             {
                 String s = (String)recipe[idx++];
-                shape += s;
+                shape.append(s);
                 ret.width = s.length();
                 ret.height++;
             }
@@ -291,12 +291,12 @@ public class CraftingHelper {
 
         if (ret.width * ret.height != shape.length() || shape.length() == 0)
         {
-            String err = "Invalid shaped recipe: ";
+            StringBuilder err = new StringBuilder("Invalid shaped recipe: ");
             for (Object tmp :  recipe)
             {
-                err += tmp + ", ";
+                err.append(tmp).append(", ");
             }
-            throw new RuntimeException(err);
+            throw new RuntimeException(err.toString());
         }
 
         HashMap<Character, Ingredient> itemMap = Maps.newHashMap();
@@ -308,7 +308,7 @@ public class CraftingHelper {
             Object in = recipe[idx + 1];
             Ingredient ing = CraftingHelper.getIngredient(in);
 
-            if (' ' == chr.charValue())
+            if (' ' == chr)
                 throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
 
             if (ing != null)
@@ -317,12 +317,12 @@ public class CraftingHelper {
             }
             else
             {
-                String err = "Invalid shaped ore recipe: ";
+                StringBuilder err = new StringBuilder("Invalid shaped ore recipe: ");
                 for (Object tmp :  recipe)
                 {
-                    err += tmp + ", ";
+                    err.append(tmp).append(", ");
                 }
-                throw new RuntimeException(err);
+                throw new RuntimeException(err.toString());
             }
         }
 
@@ -332,7 +332,7 @@ public class CraftingHelper {
         keys.remove(' ');
 
         int x = 0;
-        for (char chr : shape.toCharArray())
+        for (char chr : shape.toString().toCharArray())
         {
             Ingredient ing = itemMap.get(chr);
             if (ing == null)
@@ -432,11 +432,9 @@ public class CraftingHelper {
                     throw new JsonSyntaxException("And condition values must be an array of JsonObjects");
                 children.add(CraftingHelper.getCondition(j.getAsJsonObject(), context));
             }
-            return () -> children.stream().allMatch(c -> c.getAsBoolean());
+            return () -> children.stream().allMatch(BooleanSupplier::getAsBoolean);
         });
-        registerC("forge:false", (context, json) -> {
-            return () -> false;
-        });
+        registerC("forge:false", (context, json) -> () -> false);
 
         registerR("minecraft:crafting_shaped", (context, json) -> {
             String group = JsonUtils.getString(json, "group", "");
@@ -771,7 +769,7 @@ public class CraftingHelper {
             if (preprocessor != null)
             {
                 Boolean cont = preprocessor.apply(root);
-                if (cont == null || !cont.booleanValue())
+                if (cont == null || !cont)
                     return false;
             }
 

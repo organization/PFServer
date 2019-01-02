@@ -43,11 +43,10 @@ public class WorldGenMegaJungle extends WorldGenHugeTrees
                 }
 
                 int j2 = 1 + rand.nextInt(2);
-                int j1 = j;
 
-                for (int k1 = j - j2; k1 <= j1; ++k1)
+                for (int k1 = j - j2; k1 <= j; ++k1)
                 {
-                    int l1 = k1 - j1;
+                    int l1 = k1 - j;
                     this.growLeavesLayer(worldIn, new BlockPos(k, k1, l), 1 - l1);
                 }
             }
@@ -118,7 +117,7 @@ public class WorldGenMegaJungle extends WorldGenHugeTrees
     {
         if (p_181632_2_.nextInt(3) > 0 && p_181632_1_.isAirBlock(p_181632_3_))
         {
-            this.setBlockAndNotifyAdequately(p_181632_1_, p_181632_3_, Blocks.VINE.getDefaultState().withProperty(p_181632_4_, Boolean.valueOf(true)));
+            this.setBlockAndNotifyAdequately(p_181632_1_, p_181632_3_, Blocks.VINE.getDefaultState().withProperty(p_181632_4_, Boolean.TRUE));
         }
     }
 

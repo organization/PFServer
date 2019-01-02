@@ -42,7 +42,7 @@ import java.util.Set;
 public enum ObjectHolderRegistry
 {
     INSTANCE;
-    private List<ObjectHolderRef> objectHolders = Lists.newArrayList();
+    private final List<ObjectHolderRef> objectHolders = Lists.newArrayList();
 
     public void findObjectHolders(ASMDataTable table)
     {
@@ -63,7 +63,7 @@ public enum ObjectHolderRegistry
             boolean isClass = className.equals(annotationTarget);
             if (isClass)
             {
-                scanTarget(classModIds, classCache, className, annotationTarget, value, isClass, false);
+                scanTarget(classModIds, classCache, className, annotationTarget, value, true, false);
             }
         }
         // double pass - get all the class level annotations first, then the field level annotations
@@ -75,7 +75,7 @@ public enum ObjectHolderRegistry
             boolean isClass = className.equals(annotationTarget);
             if (!isClass)
             {
-                scanTarget(classModIds, classCache, className, annotationTarget, value, isClass, false);
+                scanTarget(classModIds, classCache, className, annotationTarget, value, false, false);
             }
         }
         scanTarget(classModIds, classCache, "net.minecraft.init.Blocks", null, "minecraft", true, true);

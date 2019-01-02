@@ -33,7 +33,7 @@ public class BlockChorusFlower extends Block
     protected BlockChorusFlower()
     {
         super(Material.PLANTS, MapColor.PURPLE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         this.setCreativeTab(CreativeTabs.DECORATIONS);
         this.setTickRandomly(true);
     }
@@ -55,7 +55,7 @@ public class BlockChorusFlower extends Block
 
             if (worldIn.isAirBlock(blockpos) && blockpos.getY() < 256)
             {
-                int i = ((Integer)state.getValue(AGE)).intValue();
+                int i = (Integer) state.getValue(AGE);
 
                 if (i < 5 &&  net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockpos, state, rand.nextInt(1) == 0))
                 {
@@ -110,12 +110,11 @@ public class BlockChorusFlower extends Block
                     {
 //                        worldIn.setBlockState(pos, Blocks.CHORUS_PLANT.getDefaultState(), 2);
 //                        this.placeGrownFlower(worldIn, blockpos, i);
-                        BlockPos target = blockpos;
                         if (CraftEventFactory.handleBlockSpreadEvent(
-                                worldIn.getWorld().getBlockAt(target.getX(), target.getY(), target.getZ()),
+                                worldIn.getWorld().getBlockAt(blockpos.getX(), blockpos.getY(), blockpos.getZ()),
                                 worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ()),
                                 this,
-                                getMetaFromState(this.getDefaultState().withProperty(BlockChorusFlower.AGE, Integer.valueOf(i)))
+                                getMetaFromState(this.getDefaultState().withProperty(BlockChorusFlower.AGE, i))
                         )) {
                             worldIn.setBlockState(pos, Blocks.CHORUS_PLANT.getDefaultState(), 2);
                             worldIn.playEvent(1033, pos, 0);
@@ -139,12 +138,11 @@ public class BlockChorusFlower extends Block
                             if (worldIn.isAirBlock(blockpos1) && worldIn.isAirBlock(blockpos1.down()) && areAllNeighborsEmpty(worldIn, blockpos1, enumfacing.getOpposite()))
                             {
 //                                this.placeGrownFlower(worldIn, blockpos1, i + 1);
-                                BlockPos target = blockpos1;
                                 if (CraftEventFactory.handleBlockSpreadEvent(
-                                        worldIn.getWorld().getBlockAt(target.getX(), target.getY(), target.getZ()),
+                                        worldIn.getWorld().getBlockAt(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ()),
                                         worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ()),
                                         this,
-                                        getMetaFromState(this.getDefaultState().withProperty(BlockChorusFlower.AGE, Integer.valueOf(i + 1)))
+                                        getMetaFromState(this.getDefaultState().withProperty(BlockChorusFlower.AGE, i + 1))
                                 )) {
                                     worldIn.playEvent(1033, pos, 0);
                                     flag2 = true;
@@ -166,7 +164,7 @@ public class BlockChorusFlower extends Block
                                     pos.getY(),
                                     pos.getZ(),
                                     this,
-                                    getMetaFromState(state.withProperty(BlockChorusFlower.AGE, Integer.valueOf(5)))
+                                    getMetaFromState(state.withProperty(BlockChorusFlower.AGE, 5))
                             )) {
                                 worldIn.playEvent(1034, pos, 0);
                             }
@@ -181,7 +179,7 @@ public class BlockChorusFlower extends Block
                                 pos.getY(),
                                 pos.getZ(),
                                 this,
-                                getMetaFromState(state.withProperty(BlockChorusFlower.AGE, Integer.valueOf(5)))
+                                getMetaFromState(state.withProperty(BlockChorusFlower.AGE, 5))
                         )) {
                             worldIn.playEvent(1034, pos, 0);
                         }
@@ -194,13 +192,13 @@ public class BlockChorusFlower extends Block
 
     private void placeGrownFlower(World worldIn, BlockPos pos, int age)
     {
-        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, Integer.valueOf(age)), 2);
+        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, age), 2);
         worldIn.playEvent(1033, pos, 0);
     }
 
     private void placeDeadFlower(World worldIn, BlockPos pos)
     {
-        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, Integer.valueOf(5)), 2);
+        worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, 5), 2);
         worldIn.playEvent(1034, pos, 0);
     }
 
@@ -298,17 +296,17 @@ public class BlockChorusFlower extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
     public static void generatePlant(World worldIn, BlockPos pos, Random rand, int p_185603_3_)
@@ -365,7 +363,7 @@ public class BlockChorusFlower extends Block
 
         if (!flag)
         {
-            worldIn.setBlockState(p_185601_1_.up(i), Blocks.CHORUS_FLOWER.getDefaultState().withProperty(AGE, Integer.valueOf(5)), 2);
+            worldIn.setBlockState(p_185601_1_.up(i), Blocks.CHORUS_FLOWER.getDefaultState().withProperty(AGE, 5), 2);
         }
     }
 

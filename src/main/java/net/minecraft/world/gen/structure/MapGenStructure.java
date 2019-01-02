@@ -22,7 +22,7 @@ import java.util.Random;
 public abstract class MapGenStructure extends MapGenBase
 {
     private MapGenStructureData structureData;
-    protected Long2ObjectMap<StructureStart> structureMap = new Long2ObjectOpenHashMap<StructureStart>(1024);
+    protected final Long2ObjectMap<StructureStart> structureMap = new Long2ObjectOpenHashMap<>(1024);
 
     public abstract String getStructureName();
 
@@ -51,28 +51,10 @@ public abstract class MapGenStructure extends MapGenBase
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception preparing structure feature");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Feature being prepared");
-                crashreportcategory.addDetail("Is feature chunk", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return MapGenStructure.this.canSpawnStructureAtCoords(chunkX, chunkZ) ? "True" : "False";
-                    }
-                });
+                crashreportcategory.addDetail("Is feature chunk", () -> MapGenStructure.this.canSpawnStructureAtCoords(chunkX, chunkZ) ? "True" : "False");
                 crashreportcategory.addCrashSection("Chunk location", String.format("%d,%d", chunkX, chunkZ));
-                crashreportcategory.addDetail("Chunk pos hash", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return String.valueOf(ChunkPos.asLong(chunkX, chunkZ));
-                    }
-                });
-                crashreportcategory.addDetail("Structure type", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return MapGenStructure.this.getClass().getCanonicalName();
-                    }
-                });
+                crashreportcategory.addDetail("Chunk pos hash", () -> String.valueOf(ChunkPos.asLong(chunkX, chunkZ)));
+                crashreportcategory.addDetail("Structure type", () -> MapGenStructure.this.getClass().getCanonicalName());
                 throw new ReportedException(crashreport);
             }
         }
@@ -84,14 +66,9 @@ public abstract class MapGenStructure extends MapGenBase
         int i = (chunkCoord.x << 4) + 8;
         int j = (chunkCoord.z << 4) + 8;
         boolean flag = false;
-        ObjectIterator objectiterator = this.structureMap.values().iterator();
 
-        while (objectiterator.hasNext())
-        {
-            StructureStart structurestart = (StructureStart)objectiterator.next();
-
-            if (structurestart.isSizeableStructure() && structurestart.isValidForPostProcess(chunkCoord) && structurestart.getBoundingBox().intersectsWith(i, j, i + 15, j + 15))
-            {
+        for (StructureStart structurestart : this.structureMap.values()) {
+            if (structurestart.isSizeableStructure() && structurestart.isValidForPostProcess(chunkCoord) && structurestart.getBoundingBox().intersectsWith(i, j, i + 15, j + 15)) {
                 structurestart.generateStructure(worldIn, randomIn, new StructureBoundingBox(i, j, i + 15, j + 15));
                 structurestart.notifyPostProcessAt(chunkCoord);
                 flag = true;
@@ -154,14 +131,9 @@ public abstract class MapGenStructure extends MapGenBase
     public boolean isPositionInStructure(World worldIn, BlockPos pos)
     {
         this.initializeStructureData(worldIn);
-        ObjectIterator objectiterator = this.structureMap.values().iterator();
 
-        while (objectiterator.hasNext())
-        {
-            StructureStart structurestart = (StructureStart)objectiterator.next();
-
-            if (structurestart.isSizeableStructure() && structurestart.getBoundingBox().isVecInside(pos))
-            {
+        for (StructureStart structurestart : this.structureMap.values()) {
+            if (structurestart.isSizeableStructure() && structurestart.getBoundingBox().isVecInside(pos)) {
                 return true;
             }
         }

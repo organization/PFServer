@@ -37,10 +37,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Registry for villager trading control
@@ -51,7 +48,7 @@ public class VillagerRegistry
     public static final VillagerProfession FARMER = null;
     private static final VillagerRegistry INSTANCE = new VillagerRegistry();
 
-    private Map<Class<?>, IVillageCreationHandler> villageCreationHandlers = Maps.newHashMap();
+    private final Map<Class<?>, IVillageCreationHandler> villageCreationHandlers = Maps.newHashMap();
 
     private VillagerRegistry()
     {
@@ -114,10 +111,9 @@ public class VillagerRegistry
 
     public static void addExtraVillageComponents(List<PieceWeight> list, Random random, int i)
     {
-        List<StructureVillagePieces.PieceWeight> parts = list;
         for (IVillageCreationHandler handler : instance().villageCreationHandlers.values())
         {
-            parts.add(handler.getVillagePieceWeight(random, i));
+            list.add(handler.getVillagePieceWeight(random, i));
         }
     }
 
@@ -127,14 +123,14 @@ public class VillagerRegistry
         return instance().villageCreationHandlers.get(villagePiece.villagePieceClass).buildComponent(villagePiece, startPiece, pieces, random, p1, p2, p3, facing, p5);
     }
 
-    RegistryNamespaced<ResourceLocation, VillagerProfession> REGISTRY = GameData.getWrapper(VillagerProfession.class);
+    final RegistryNamespaced<ResourceLocation, VillagerProfession> REGISTRY = GameData.getWrapper(VillagerProfession.class);
 
     private void register(VillagerProfession prof, int id)
     {
         REGISTRY.register(id, prof.name, prof);
     }
 
-    private boolean hasInit = false;
+    private final boolean hasInit = false;
     private void init()
     {
         if (hasInit)
@@ -195,10 +191,10 @@ public class VillagerRegistry
 
     public static class VillagerProfession extends IForgeRegistryEntry.Impl<VillagerProfession>
     {
-        private ResourceLocation name;
-        private ResourceLocation texture;
-        private ResourceLocation zombie;
-        private List<VillagerCareer> careers = Lists.newArrayList();
+        private final ResourceLocation name;
+        private final ResourceLocation texture;
+        private final ResourceLocation zombie;
+        private final List<VillagerCareer> careers = Lists.newArrayList();
 
         public VillagerProfession(String name, String texture, String zombie)
         {
@@ -236,10 +232,10 @@ public class VillagerRegistry
 
     public static class VillagerCareer
     {
-        private VillagerProfession profession;
-        private String name;
+        private final VillagerProfession profession;
+        private final String name;
         private int id;
-        private List<List<ITradeList>> trades = Lists.newArrayList();
+        private final List<List<ITradeList>> trades = Lists.newArrayList();
 
         public VillagerCareer(VillagerProfession parent, String name)
         {
@@ -273,8 +269,7 @@ public class VillagerRegistry
                 levelTrades = Lists.newArrayList();
                 this.trades.set(level - 1, levelTrades);
             }
-            for (ITradeList t : trades)
-                levelTrades.add(t);
+            levelTrades.addAll(Arrays.asList(trades));
             return this;
         }
 
@@ -285,8 +280,7 @@ public class VillagerRegistry
         }
         private VillagerCareer init(EntityVillager.ITradeList[][] trades)
         {
-            for (int x = 0; x < trades.length; x++)
-                this.trades.add(Lists.newArrayList(trades[x]));
+            for (ITradeList[] trade : trades) this.trades.add(Lists.newArrayList(trade));
             return this;
         }
 

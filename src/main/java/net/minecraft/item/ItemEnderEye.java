@@ -29,7 +29,7 @@ public class ItemEnderEye extends Item
         IBlockState iblockstate = worldIn.getBlockState(pos);
         ItemStack itemstack = player.getHeldItem(hand);
 
-        if (player.canPlayerEdit(pos.offset(facing), facing, itemstack) && iblockstate.getBlock() == Blocks.END_PORTAL_FRAME && !((Boolean)iblockstate.getValue(BlockEndPortalFrame.EYE)).booleanValue())
+        if (player.canPlayerEdit(pos.offset(facing), facing, itemstack) && iblockstate.getBlock() == Blocks.END_PORTAL_FRAME && !(Boolean) iblockstate.getValue(BlockEndPortalFrame.EYE))
         {
             if (worldIn.isRemote)
             {
@@ -37,7 +37,7 @@ public class ItemEnderEye extends Item
             }
             else
             {
-                worldIn.setBlockState(pos, iblockstate.withProperty(BlockEndPortalFrame.EYE, Boolean.valueOf(true)), 2);
+                worldIn.setBlockState(pos, iblockstate.withProperty(BlockEndPortalFrame.EYE, Boolean.TRUE), 2);
                 worldIn.updateComparatorOutputLevel(pos, Blocks.END_PORTAL_FRAME);
                 itemstack.shrink(1);
 
@@ -86,7 +86,7 @@ public class ItemEnderEye extends Item
 
         if (raytraceresult != null && raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK && worldIn.getBlockState(raytraceresult.getBlockPos()).getBlock() == Blocks.END_PORTAL_FRAME)
         {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+            return new ActionResult<>(EnumActionResult.PASS, itemstack);
         }
         else
         {
@@ -116,11 +116,11 @@ public class ItemEnderEye extends Item
                     }
 
                     playerIn.addStat(StatList.getObjectUseStats(this));
-                    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+                    return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
                 }
             }
 
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         }
     }
 }

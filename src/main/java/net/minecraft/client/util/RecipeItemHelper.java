@@ -100,16 +100,14 @@ public class RecipeItemHelper
         private final int[] possessedIngredientStacks;
         private final int possessedIngredientStackCount;
         private final BitSet data;
-        private IntList path = new IntArrayList();
+        private final IntList path = new IntArrayList();
 
         public RecipePicker(IRecipe p_i47608_2_)
         {
             this.recipe = p_i47608_2_;
             this.ingredients.addAll(p_i47608_2_.getIngredients());
             this.ingredients.removeIf((p_194103_0_) ->
-            {
-                return p_194103_0_ == Ingredient.EMPTY;
-            });
+                    p_194103_0_ == Ingredient.EMPTY);
             this.ingredientCount = this.ingredients.size();
             this.possessedIngredientStacks = this.getUniqueAvailIngredientItems();
             this.possessedIngredientStackCount = this.possessedIngredientStacks.length;
@@ -147,7 +145,7 @@ public class RecipeItemHelper
 
                     for (int i1 = 0; i1 < l; ++i1)
                     {
-                        this.toggleResidual((i1 & 1) == 0, ((Integer)this.path.get(i1)).intValue(), ((Integer)this.path.get(i1 + 1)).intValue());
+                        this.toggleResidual((i1 & 1) == 0, (Integer) this.path.get(i1), (Integer) this.path.get(i1 + 1));
                     }
 
                     this.path.clear();
@@ -166,23 +164,16 @@ public class RecipeItemHelper
                 int j1 = 0;
                 List<Ingredient> list = this.recipe.getIngredients();
 
-                for (int k1 = 0; k1 < list.size(); ++k1)
-                {
-                    if (flag1 && list.get(k1) == Ingredient.EMPTY)
-                    {
+                for (Ingredient ingredient : list) {
+                    if (flag1 && ingredient == Ingredient.EMPTY) {
                         listIn.add(0);
-                    }
-                    else
-                    {
-                        for (int l1 = 0; l1 < this.possessedIngredientStackCount; ++l1)
-                        {
-                            if (this.hasResidual(false, j1, l1))
-                            {
+                    } else {
+                        for (int l1 = 0; l1 < this.possessedIngredientStackCount; ++l1) {
+                            if (this.hasResidual(false, j1, l1)) {
                                 this.toggleResidual(true, l1, j1);
                                 RecipeItemHelper.this.increment(this.possessedIngredientStacks[l1], p_194092_1_);
 
-                                if (flag1)
-                                {
+                                if (flag1) {
                                     listIn.add(this.possessedIngredientStacks[l1]);
                                 }
                             }
@@ -361,7 +352,7 @@ public class RecipeItemHelper
 
                 for (IntListIterator intlistiterator = ingredient.getValidItemStacksPacked().iterator(); intlistiterator.hasNext(); l = Math.max(l, RecipeItemHelper.this.itemToCount.get(i1)))
                 {
-                    i1 = ((Integer)intlistiterator.next()).intValue();
+                    i1 = (Integer) intlistiterator.next();
                 }
 
                 if (k > 0)

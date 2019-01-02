@@ -57,7 +57,8 @@ class ASMInfo
                 .toString();
     }
 
-    public enum TargetType { CLASS, FIELD, METHOD, SUBTYPE };
+    public enum TargetType { CLASS, FIELD, METHOD, SUBTYPE }
+
     public enum ValueType
     {
         BOOL(Boolean::valueOf,         v -> {boolean[] ret = new boolean[v.length]; for (int x = 0; x < v.length; x++) ret[x] = Boolean.parseBoolean(v[x]); return ret; }),
@@ -70,7 +71,9 @@ class ASMInfo
         DOUBLE(Double::valueOf,        v -> {double[]  ret = new double[v.length];  for (int x = 0; x < v.length; x++) ret[x] = Double.parseDouble(v[x]);   return ret; }),
         STRING(x -> x, x -> x),
         CLASS(Type::getType,           v -> {Type[]       ret = new Type[v.length];       for (int x = 0; x < v.length; x++) ret[x] = Type.getType(v[x]);            return ret; }),
-        ENUM(ValueType::getEnumHolder, v -> {List<EnumHolder> ret = Lists.newArrayList(); for (int x = 0; x < v.length; x++) ret.add(ValueType.getEnumHolder(v[x])); return ret; }),
+        ENUM(ValueType::getEnumHolder, v -> {List<EnumHolder> ret = Lists.newArrayList();
+            for (String s : v) ret.add(ValueType.getEnumHolder(s));
+            return ret; }),
         ANNOTATION(null, null),
         NULL(x -> null, x -> null);
 
@@ -94,7 +97,7 @@ class ASMInfo
             value = value.substring(1, idx);
             return new EnumHolder(value, field);
         }
-    };
+    }
 
     static class Annotation
     {

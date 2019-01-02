@@ -16,13 +16,13 @@ import javax.annotation.Nullable;
 public class ContainerPlayer extends Container
 {
     private static final EntityEquipmentSlot[] VALID_EQUIPMENT_SLOTS = new EntityEquipmentSlot[] {EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
-    public InventoryCrafting craftMatrix; // CraftBukkit - move initialization into constructor
-    public InventoryCraftResult craftResult; // CraftBukkit - move initialization into constructor
-    public boolean isLocalWorld;
+    public final InventoryCrafting craftMatrix; // CraftBukkit - move initialization into constructor
+    public final InventoryCraftResult craftResult; // CraftBukkit - move initialization into constructor
+    public final boolean isLocalWorld;
     private final EntityPlayer player;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer playerInventory;
+    private final InventoryPlayer playerInventory;
 
     public ContainerPlayer(InventoryPlayer playerInventory, boolean localWorld, EntityPlayer playerIn)
     {
@@ -60,7 +60,7 @@ public class ContainerPlayer extends Container
                 public boolean canTakeStack(EntityPlayer playerIn)
                 {
                     ItemStack itemstack = this.getStack();
-                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.canTakeStack(playerIn);
+                    return (itemstack.isEmpty() || playerIn.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack)) && super.canTakeStack(playerIn);
                 }
                 @Nullable
                 @SideOnly(Side.CLIENT)

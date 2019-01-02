@@ -4,18 +4,14 @@ import java.util.Comparator;
 
 public class Score
 {
-    public static final Comparator<Score> SCORE_COMPARATOR = new Comparator<Score>()
-    {
-        public int compare(Score p_compare_1_, Score p_compare_2_)
+    public static final Comparator<Score> SCORE_COMPARATOR = (p_compare_1_, p_compare_2_) -> {
+        if (p_compare_1_.getScorePoints() > p_compare_2_.getScorePoints())
         {
-            if (p_compare_1_.getScorePoints() > p_compare_2_.getScorePoints())
-            {
-                return 1;
-            }
-            else
-            {
-                return p_compare_1_.getScorePoints() < p_compare_2_.getScorePoints() ? -1 : p_compare_2_.getPlayerName().compareToIgnoreCase(p_compare_1_.getPlayerName());
-            }
+            return 1;
+        }
+        else
+        {
+            return p_compare_1_.getScorePoints() < p_compare_2_.getScorePoints() ? -1 : p_compare_2_.getPlayerName().compareToIgnoreCase(p_compare_1_.getPlayerName());
         }
     };
     private final Scoreboard scoreboard;

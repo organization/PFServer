@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class EntityItem extends Entity
 {
@@ -39,7 +40,7 @@ public class EntityItem extends Entity
     private int health;
     private String thrower;
     private String owner;
-    public float hoverStart;
+    public final float hoverStart;
 
     /**
      * The maximum age of this EntityItem.  The item is expired once this is reached.
@@ -263,7 +264,7 @@ public class EntityItem extends Entity
                     {
                         return false;
                     }
-                    else if (itemstack1.hasTagCompound() && !itemstack1.getTagCompound().equals(itemstack.getTagCompound()))
+                    else if (itemstack1.hasTagCompound() && !Objects.equals(itemstack1.getTagCompound(), itemstack.getTagCompound()))
                     {
                         return false;
                     }
@@ -375,7 +376,7 @@ public class EntityItem extends Entity
 
     public static void registerFixesItem(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityItem.class, new String[] {"Item"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityItem.class, "Item"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

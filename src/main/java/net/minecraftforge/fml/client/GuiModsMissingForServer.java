@@ -29,7 +29,7 @@ import java.util.List;
 
 public class GuiModsMissingForServer extends GuiScreen
 {
-    private MissingModsException modsMissing;
+    private final MissingModsException modsMissing;
 
     public GuiModsMissingForServer(MissingModsException modsMissing)
     {

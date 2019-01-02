@@ -49,7 +49,7 @@ public class EntitySpider extends EntityMob
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new AISpiderTarget(this, EntityPlayer.class));
         this.targetTasks.addTask(3, new AISpiderTarget(this, EntityIronGolem.class));
     }
@@ -67,7 +67,7 @@ public class EntitySpider extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(CLIMBING, Byte.valueOf((byte)0));
+        this.dataManager.register(CLIMBING, (byte) 0);
     }
 
     public void onUpdate()
@@ -140,12 +140,12 @@ public class EntitySpider extends EntityMob
 
     public boolean isBesideClimbableBlock()
     {
-        return (((Byte)this.dataManager.get(CLIMBING)).byteValue() & 1) != 0;
+        return ((Byte) this.dataManager.get(CLIMBING) & 1) != 0;
     }
 
     public void setBesideClimbableBlock(boolean climbing)
     {
-        byte b0 = ((Byte)this.dataManager.get(CLIMBING)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(CLIMBING);
 
         if (climbing)
         {
@@ -156,7 +156,7 @@ public class EntitySpider extends EntityMob
             b0 = (byte)(b0 & -2);
         }
 
-        this.dataManager.set(CLIMBING, Byte.valueOf(b0));
+        this.dataManager.set(CLIMBING, b0);
     }
 
     @Nullable
@@ -240,7 +240,7 @@ public class EntitySpider extends EntityMob
             public boolean shouldExecute()
             {
                 float f = this.taskOwner.getBrightness();
-                return f >= 0.5F ? false : super.shouldExecute();
+                return !(f >= 0.5F) && super.shouldExecute();
             }
         }
 

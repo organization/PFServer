@@ -73,18 +73,18 @@ public class ForgeChunkManager
     private static int defaultMaxChunks;
     private static boolean overridesEnabled;
 
-    private static Map<World, Multimap<String, Ticket>> tickets = new MapMaker().weakKeys().makeMap();
-    private static Map<String, Integer> ticketConstraints = Maps.newHashMap();
-    private static Map<String, Integer> chunkConstraints = Maps.newHashMap();
+    private static final Map<World, Multimap<String, Ticket>> tickets = new MapMaker().weakKeys().makeMap();
+    private static final Map<String, Integer> ticketConstraints = Maps.newHashMap();
+    private static final Map<String, Integer> chunkConstraints = Maps.newHashMap();
 
-    private static SetMultimap<String, Ticket> playerTickets = HashMultimap.create();
+    private static final SetMultimap<String, Ticket> playerTickets = HashMultimap.create();
 
-    private static Map<String, LoadingCallback> callbacks = Maps.newHashMap();
+    private static final Map<String, LoadingCallback> callbacks = Maps.newHashMap();
 
-    private static Map<World, ImmutableSetMultimap<ChunkPos,Ticket>> forcedChunks = new MapMaker().weakKeys().makeMap();
-    private static BiMap<UUID,Ticket> pendingEntities = HashBiMap.create();
+    private static final Map<World, ImmutableSetMultimap<ChunkPos,Ticket>> forcedChunks = new MapMaker().weakKeys().makeMap();
+    private static final BiMap<UUID,Ticket> pendingEntities = HashBiMap.create();
 
-    private static Map<World,Cache<Long, ChunkEntry>> dormantChunkCache = new MapMaker().weakKeys().makeMap();
+    private static final Map<World,Cache<Long, ChunkEntry>> dormantChunkCache = new MapMaker().weakKeys().makeMap();
 
     private static File cfgFile;
     private static Configuration config;
@@ -93,9 +93,9 @@ public class ForgeChunkManager
 
     public static boolean asyncChunkLoading;
 
-    public static final List<String> MOD_PROP_ORDER = new ArrayList<String>(2);
+    public static final List<String> MOD_PROP_ORDER = new ArrayList<>(2);
 
-    private static Set<String> warnedMods = Sets.newHashSet();
+    private static final Set<String> warnedMods = Sets.newHashSet();
 
     static
     {
@@ -212,9 +212,9 @@ public class ForgeChunkManager
     }
     public static class Ticket
     {
-        private String modId;
-        private Type ticketType;
-        private LinkedHashSet<ChunkPos> requestedChunks;
+        private final String modId;
+        private final Type ticketType;
+        private final LinkedHashSet<ChunkPos> requestedChunks;
         private NBTTagCompound modData;
         public final World world;
         private int maxDepth;
@@ -424,13 +424,12 @@ public class ForgeChunkManager
 
         if (chunkLoaderData.exists() && chunkLoaderData.isFile())
         {
-            ;
             try
             {
                 NBTTagCompound forcedChunkData = CompressedStreamTools.read(chunkLoaderData);
                 return forcedChunkData.getTagList("TicketList", Constants.NBT.TAG_COMPOUND).tagCount() > 0;
             }
-            catch (IOException e)
+            catch (IOException ignored)
             {
             }
         }
@@ -651,20 +650,17 @@ public class ForgeChunkManager
 
     private static ModContainer getContainer(Object mod)
     {
-        ModContainer container = Loader.instance().getModObjectList().inverse().get(mod);
-        return container;
+        return Loader.instance().getModObjectList().inverse().get(mod);
     }
 
     public static int getMaxTicketLengthFor(String modId)
     {
-        int allowedCount = ticketConstraints.containsKey(modId) && overridesEnabled ? ticketConstraints.get(modId) : defaultMaxCount;
-        return allowedCount;
+        return ticketConstraints.containsKey(modId) && overridesEnabled ? ticketConstraints.get(modId) : defaultMaxCount;
     }
 
     public static int getMaxChunkDepthFor(String modId)
     {
-        int allowedCount = chunkConstraints.containsKey(modId) && overridesEnabled ? chunkConstraints.get(modId) : defaultMaxChunks;
-        return allowedCount;
+        return chunkConstraints.containsKey(modId) && overridesEnabled ? chunkConstraints.get(modId) : defaultMaxChunks;
     }
 
     public static int ticketCountAvailableFor(String username)
@@ -1042,7 +1038,7 @@ public class ForgeChunkManager
     {
         // By adding a property order list we are defining the order that the properties will appear both in the config file and on the GUIs.
         // Property order lists are defined per-ConfigCategory.
-        List<String> propOrder = new ArrayList<String>();
+        List<String> propOrder = new ArrayList<>();
 
         config.setCategoryComment("defaults", "Default configuration for forge chunk loading control")
                 .setCategoryRequiresWorldRestart("defaults", true);
@@ -1131,7 +1127,7 @@ public class ForgeChunkManager
 
     public static List<ConfigCategory> getModCategories()
     {
-        List<ConfigCategory> list = new ArrayList<ConfigCategory>();
+        List<ConfigCategory> list = new ArrayList<>();
         for (String mod : config.getCategoryNames())
         {
             if (mod.equals(ForgeVersion.MOD_ID) || mod.equals("defaults"))

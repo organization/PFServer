@@ -16,7 +16,7 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class GuiLanguage extends GuiScreen
 {
-    protected GuiScreen parentScreen;
+    protected final GuiScreen parentScreen;
     private List list;
     private final GameSettings game_settings_3;
     private final LanguageManager languageManager;

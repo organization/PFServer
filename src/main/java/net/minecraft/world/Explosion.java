@@ -147,23 +147,17 @@ public class Explosion
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, this, list, f3);
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
 
-        for (int k2 = 0; k2 < list.size(); ++k2)
-        {
-            Entity entity = list.get(k2);
+        for (Entity entity : list) {
+            if (!entity.isImmuneToExplosions()) {
+                double d12 = entity.getDistance(this.x, this.y, this.z) / (double) f3;
 
-            if (!entity.isImmuneToExplosions())
-            {
-                double d12 = entity.getDistance(this.x, this.y, this.z) / (double)f3;
-
-                if (d12 <= 1.0D)
-                {
+                if (d12 <= 1.0D) {
                     double d5 = entity.posX - this.x;
-                    double d7 = entity.posY + (double)entity.getEyeHeight() - this.y;
+                    double d7 = entity.posY + (double) entity.getEyeHeight() - this.y;
                     double d9 = entity.posZ - this.z;
-                    double d13 = (double)MathHelper.sqrt(d5 * d5 + d7 * d7 + d9 * d9);
+                    double d13 = (double) MathHelper.sqrt(d5 * d5 + d7 * d7 + d9 * d9);
 
-                    if (d13 != 0.0D)
-                    {
+                    if (d13 != 0.0D) {
                         d5 = d5 / d13;
                         d7 = d7 / d13;
                         d9 = d9 / d13;
@@ -179,21 +173,18 @@ public class Explosion
                         }
                         double d11 = d10;
 
-                        if (entity instanceof EntityLivingBase)
-                        {
-                            d11 = EnchantmentProtection.getBlastDamageReduction((EntityLivingBase)entity, d10);
+                        if (entity instanceof EntityLivingBase) {
+                            d11 = EnchantmentProtection.getBlastDamageReduction((EntityLivingBase) entity, d10);
                         }
 
                         entity.motionX += d5 * d11;
                         entity.motionY += d7 * d11;
                         entity.motionZ += d9 * d11;
 
-                        if (entity instanceof EntityPlayer)
-                        {
-                            EntityPlayer entityplayer = (EntityPlayer)entity;
+                        if (entity instanceof EntityPlayer) {
+                            EntityPlayer entityplayer = (EntityPlayer) entity;
 
-                            if (!entityplayer.isSpectator() && (!entityplayer.isCreative() || !entityplayer.capabilities.isFlying))
-                            {
+                            if (!entityplayer.isSpectator() && (!entityplayer.isCreative() || !entityplayer.capabilities.isFlying)) {
                                 this.playerKnockbackMap.put(entityplayer, new Vec3d(d5 * d10, d7 * d10, d9 * d10));
                             }
                         }

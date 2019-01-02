@@ -11,14 +11,14 @@ import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 
 public class ContainerWorkbench extends Container
 {
-    public InventoryCrafting craftMatrix; // CraftBukkit - move initialization into constructor
-    public InventoryCraftResult craftResult; // CraftBukkit - move initialization into constructor
+    public final InventoryCrafting craftMatrix; // CraftBukkit - move initialization into constructor
+    public final InventoryCraftResult craftResult; // CraftBukkit - move initialization into constructor
     private final World world;
     private final BlockPos pos;
     private final EntityPlayer player;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer playerInventory;
+    private final InventoryPlayer playerInventory;
 
     public ContainerWorkbench(InventoryPlayer playerInventory, World worldIn, BlockPos posIn)
     {

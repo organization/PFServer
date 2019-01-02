@@ -166,15 +166,10 @@ public class PhaseStrafePlayer extends PhaseBase
             double d2 = vec3d.z;
             double d1;
 
-            while (true)
-            {
-                d1 = vec3d.y + (double)(this.dragon.getRNG().nextFloat() * 20.0F);
+            do {
+                d1 = vec3d.y + (double) (this.dragon.getRNG().nextFloat() * 20.0F);
 
-                if (d1 >= vec3d.y)
-                {
-                    break;
-                }
-            }
+            } while (!(d1 >= vec3d.y));
 
             this.targetLocation = new Vec3d(d0, d1, d2);
         }

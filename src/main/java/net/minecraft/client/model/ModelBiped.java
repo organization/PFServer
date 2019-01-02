@@ -321,6 +321,6 @@ public class ModelBiped extends ModelBase
         EMPTY,
         ITEM,
         BLOCK,
-        BOW_AND_ARROW;
+        BOW_AND_ARROW
     }
 }

@@ -150,7 +150,6 @@ public class ChunkGeneratorEnd implements IChunkGenerator
             {
                 int k = 1;
                 int l = -1;
-                IBlockState iblockstate = END_STONE;
                 IBlockState iblockstate1 = END_STONE;
 
                 for (int i1 = 127; i1 >= 0; --i1)
@@ -169,7 +168,7 @@ public class ChunkGeneratorEnd implements IChunkGenerator
 
                             if (i1 >= 0)
                             {
-                                primer.setBlockState(i, i1, j, iblockstate);
+                                primer.setBlockState(i, i1, j, END_STONE);
                             }
                             else
                             {
@@ -438,7 +437,7 @@ public class ChunkGeneratorEnd implements IChunkGenerator
 
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
-        return "EndCity".equals(structureName) && this.endCityGen != null ? this.endCityGen.isInsideStructure(pos) : false;
+        return ("EndCity".equals(structureName) && this.endCityGen != null) && this.endCityGen.isInsideStructure(pos);
     }
 
     public void recreateStructures(Chunk chunkIn, int x, int z)

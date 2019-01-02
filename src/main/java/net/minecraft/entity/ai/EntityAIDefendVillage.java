@@ -7,7 +7,7 @@ import net.minecraft.village.Village;
 
 public class EntityAIDefendVillage extends EntityAITarget
 {
-    EntityIronGolem irongolem;
+    final EntityIronGolem irongolem;
     EntityLivingBase villageAgressorTarget;
 
     public EntityAIDefendVillage(EntityIronGolem ironGolemIn)

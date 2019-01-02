@@ -40,7 +40,7 @@ class TypeAdapters
     *    int, int[], Integer, Integer[]
     *    String, String[]
     */
-    static ITypeAdapter bool = new ITypeAdapter() {
+    static final ITypeAdapter bool = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getBoolean();
@@ -66,7 +66,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter boolA = new ITypeAdapter() {
+    static final ITypeAdapter boolA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getBooleanList();
@@ -92,10 +92,10 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Bool = new ITypeAdapter() {
+    static final ITypeAdapter Bool = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
-            return Boolean.valueOf(prop.getBoolean());
+            return prop.getBoolean();
         }
         @Override
         public void setDefaultValue(Property property, Object value)
@@ -118,7 +118,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter BoolA = new ITypeAdapter() {
+    static final ITypeAdapter BoolA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Booleans.asList(prop.getBooleanList()).toArray(new Boolean[prop.getBooleanList().length]);
@@ -144,7 +144,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter flt = new ITypeAdapter() {
+    static final ITypeAdapter flt = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return (float)prop.getDouble();
@@ -170,7 +170,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter fltA = new ITypeAdapter() {
+    static final ITypeAdapter fltA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Floats.toArray(Doubles.asList(prop.getDoubleList()));
@@ -196,10 +196,10 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Flt = new ITypeAdapter() {
+    static final ITypeAdapter Flt = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
-            return Float.valueOf((float)prop.getDouble());
+            return (float) prop.getDouble();
         }
         @Override
         public void setDefaultValue(Property property, Object value)
@@ -222,7 +222,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter FltA = new ITypeAdapter() {
+    static final ITypeAdapter FltA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Floats.asList(Floats.toArray(Doubles.asList(prop.getDoubleList()))).toArray(new Float[prop.getDoubleList().length]);
@@ -248,7 +248,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter dbl = new ITypeAdapter() {
+    static final ITypeAdapter dbl = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop)
         {
@@ -275,7 +275,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter dblA = new ITypeAdapter() {
+    static final ITypeAdapter dblA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getDoubleList();
@@ -304,10 +304,10 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Dbl = new ITypeAdapter() {
+    static final ITypeAdapter Dbl = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
-            return Double.valueOf(prop.getDouble());
+            return prop.getDouble();
         }
         @Override
         public void setDefaultValue(Property property, Object value)
@@ -330,7 +330,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter DblA = new ITypeAdapter() {
+    static final ITypeAdapter DblA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Doubles.asList(prop.getDoubleList()).toArray(new Double[prop.getDoubleList().length]);
@@ -356,7 +356,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter byt = new ITypeAdapter() {
+    static final ITypeAdapter byt = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop)
         {
@@ -383,7 +383,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter bytA = new ITypeAdapter() {
+    static final ITypeAdapter bytA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Bytes.toArray(Ints.asList(prop.getIntList()));
@@ -409,10 +409,10 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Byt = new ITypeAdapter() {
+    static final ITypeAdapter Byt = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
-            return Byte.valueOf((byte)prop.getInt());
+            return (byte) prop.getInt();
         }
         @Override
         public void setDefaultValue(Property property, Object value)
@@ -435,7 +435,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter BytA = new ITypeAdapter() {
+    static final ITypeAdapter BytA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Bytes.asList(Bytes.toArray(Ints.asList(prop.getIntList()))).toArray(new Byte[prop.getIntList().length]);
@@ -461,7 +461,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter chr = new ITypeAdapter() {
+    static final ITypeAdapter chr = new ITypeAdapter() {
         
         @Override
         public Object getValue(Property prop) {
@@ -488,7 +488,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter chrA = new ITypeAdapter() {
+    static final ITypeAdapter chrA = new ITypeAdapter() {
         private int[] toPrim(char[] v) {
             if (v == null) return new int[0];
             int[] ret = new int[v.length];
@@ -528,11 +528,11 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Chr = new ITypeAdapter() {
+    static final ITypeAdapter Chr = new ITypeAdapter() {
         
         @Override
         public Object getValue(Property prop) {
-            return Character.valueOf((char)prop.getInt());
+            return (char) prop.getInt();
         }
         @Override
         public void setDefaultValue(Property property, Object value)
@@ -555,7 +555,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter ChrA = new ITypeAdapter() {
+    static final ITypeAdapter ChrA = new ITypeAdapter() {
         private int[] toPrim(Character[] v) {
             if (v == null) return new int[0];
             int[] ret = new int[v.length];
@@ -569,7 +569,7 @@ class TypeAdapters
             int[] v = prop.getIntList();
             Character[] ret = new Character[v.length];
             for (int x = 0; x < v.length; x++)
-                ret[x] = Character.valueOf((char)v[x]);
+                ret[x] = (char) v[x];
             return ret;
         }
         @Override
@@ -596,7 +596,7 @@ class TypeAdapters
         }
 
     };
-    static ITypeAdapter shrt = new ITypeAdapter() {
+    static final ITypeAdapter shrt = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return (short)prop.getInt();
@@ -622,7 +622,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter shrtA = new ITypeAdapter() {
+    static final ITypeAdapter shrtA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Shorts.toArray(Ints.asList(prop.getIntList()));
@@ -649,10 +649,10 @@ class TypeAdapters
         }
         
     };
-    static ITypeAdapter Shrt = new ITypeAdapter() {
+    static final ITypeAdapter Shrt = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
-            return Short.valueOf((short)prop.getInt());
+            return (short) prop.getInt();
         }
         @Override
         public void setDefaultValue(Property property, Object value)
@@ -675,13 +675,13 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter ShrtA = new ITypeAdapter() {
+    static final ITypeAdapter ShrtA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             int[] v = prop.getIntList();
             Short[] ret = new Short[v.length];
             for (int x = 0; x < ret.length; x++)
-                ret[x] = Short.valueOf((short)v[x]);
+                ret[x] = (short) v[x];
             return ret;
         }
         @Override
@@ -705,7 +705,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter int_ = new ITypeAdapter() {
+    static final ITypeAdapter int_ = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getInt();
@@ -731,7 +731,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter intA = new ITypeAdapter() {
+    static final ITypeAdapter intA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getIntList();
@@ -757,7 +757,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Int = new ITypeAdapter() {
+    static final ITypeAdapter Int = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return (Integer)prop.getInt();
@@ -783,7 +783,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter IntA = new ITypeAdapter() {
+    static final ITypeAdapter IntA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return Ints.asList(prop.getIntList()).toArray(new Integer[prop.getIntList().length]);
@@ -809,7 +809,7 @@ class TypeAdapters
             return true;
         }
     };
-    static ITypeAdapter Str = new ITypeAdapter() {
+    static final ITypeAdapter Str = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getString();
@@ -835,7 +835,7 @@ class TypeAdapters
             return false;
         }
     };
-    static ITypeAdapter StrA = new ITypeAdapter() {
+    static final ITypeAdapter StrA = new ITypeAdapter() {
         @Override
         public Object getValue(Property prop) {
             return prop.getStringList();

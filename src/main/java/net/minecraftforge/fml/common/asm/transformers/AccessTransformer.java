@@ -79,7 +79,7 @@ public class AccessTransformer implements IClassTransformer
         }
     }
 
-    private Multimap<String, Modifier> modifiers = ArrayListMultimap.create();
+    private final Multimap<String, Modifier> modifiers = ArrayListMultimap.create();
 
     public AccessTransformer() throws IOException
     {

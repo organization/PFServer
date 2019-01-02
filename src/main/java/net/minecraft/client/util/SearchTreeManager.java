@@ -13,8 +13,8 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class SearchTreeManager implements IResourceManagerReloadListener
 {
-    public static final Key<ItemStack> ITEMS = new Key<ItemStack>();
-    public static final Key<RecipeList> RECIPES = new Key<RecipeList>();
+    public static final Key<ItemStack> ITEMS = new Key<>();
+    public static final Key<RecipeList> RECIPES = new Key<>();
     private final Map < Key<?>, SearchTree<? >> trees = Maps. < Key<?>, SearchTree<? >> newHashMap();
 
     public void onResourceManagerReload(IResourceManager resourceManager)

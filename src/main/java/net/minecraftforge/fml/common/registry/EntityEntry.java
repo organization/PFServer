@@ -28,8 +28,8 @@ import java.util.function.Function;
 
 public class EntityEntry extends Impl<EntityEntry>
 {
-    private Class<? extends Entity> cls;
-    private String name;
+    private final Class<? extends Entity> cls;
+    private final String name;
     private EntityEggInfo egg;
     Function<World, ? extends Entity> factory;
 

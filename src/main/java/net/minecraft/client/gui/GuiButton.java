@@ -18,7 +18,7 @@ public class GuiButton extends Gui
     public int x;
     public int y;
     public String displayString;
-    public int id;
+    public final int id;
     public boolean enabled;
     public boolean visible;
     protected boolean hovered;

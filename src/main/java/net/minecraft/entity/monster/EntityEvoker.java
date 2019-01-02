@@ -47,7 +47,7 @@ public class EntityEvoker extends EntitySpellcasterIllager
         this.tasks.addTask(8, new EntityAIWander(this, 0.6D));
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityEvoker.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityEvoker.class));
         this.targetTasks.addTask(2, (new EntityAINearestAttackableTarget(this, EntityPlayer.class, true)).setUnseenMemoryTicks(300));
         this.targetTasks.addTask(3, (new EntityAINearestAttackableTarget(this, EntityVillager.class, false)).setUnseenMemoryTicks(300));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, false));
@@ -333,13 +333,7 @@ public class EntityEvoker extends EntitySpellcasterIllager
 
     public class AIWololoSpell extends EntitySpellcasterIllager.AIUseSpell
     {
-        final Predicate<EntitySheep> wololoSelector = new Predicate<EntitySheep>()
-        {
-            public boolean apply(EntitySheep p_apply_1_)
-            {
-                return p_apply_1_.getFleeceColor() == EnumDyeColor.BLUE;
-            }
-        };
+        final Predicate<EntitySheep> wololoSelector = p_apply_1_ -> p_apply_1_.getFleeceColor() == EnumDyeColor.BLUE;
 
         public AIWololoSpell()
         {

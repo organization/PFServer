@@ -212,7 +212,7 @@ public class FMLNetworkHandler
         channelPair.get(side).attr(NetworkDispatcher.FML_DISPATCHER).set(target);
         channelPair.get(side).writeOutbound(push);
 
-        ArrayList<FMLProxyPacket> list = new ArrayList<FMLProxyPacket>();
+        ArrayList<FMLProxyPacket> list = new ArrayList<>();
         for (Object o: channelPair.get(side).outboundMessages())
         {
             list.add((FMLProxyPacket)o);

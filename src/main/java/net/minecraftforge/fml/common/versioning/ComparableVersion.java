@@ -318,7 +318,7 @@ public class ComparableVersion
                         Item r = right.hasNext() ? right.next() : null;
 
                         // if this is shorter, then invert the compare and mul with -1
-                        int result = l == null ? -1 * r.compareTo( l ) : l.compareTo( r );
+                        int result = l == null ? -1 * r.compareTo(null) : l.compareTo( r );
 
                         if ( result != 0 )
                         {
@@ -365,7 +365,7 @@ public class ComparableVersion
 
         ListItem list = items;
 
-        Stack<Item> stack = new Stack<Item>();
+        Stack<Item> stack = new Stack<>();
         stack.push( list );
 
         boolean isDigit = false;

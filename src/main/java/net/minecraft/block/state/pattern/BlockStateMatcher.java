@@ -13,13 +13,7 @@ import java.util.Map.Entry;
 
 public class BlockStateMatcher implements Predicate<IBlockState>
 {
-    public static final Predicate<IBlockState> ANY = new Predicate<IBlockState>()
-    {
-        public boolean apply(@Nullable IBlockState p_apply_1_)
-        {
-            return true;
-        }
-    };
+    public static final Predicate<IBlockState> ANY = p_apply_1_ -> true;
     private final BlockStateContainer blockstate;
     private final Map < IProperty<?>, Predicate<? >> propertyPredicates = Maps. < IProperty<?>, Predicate<? >> newHashMap();
 

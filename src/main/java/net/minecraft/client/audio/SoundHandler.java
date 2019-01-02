@@ -82,9 +82,8 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
                     }
                 }
             }
-            catch (IOException var11)
+            catch (IOException ignored)
             {
-                ;
             }
         }
 
@@ -230,14 +229,14 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
         {
             LOGGER.warn("Could not load sound file {}, cannot add it to event {}", resourcelocation, p_184401_2_, ioexception);
             flag = false;
-            return flag;
+            return false;
         }
         finally
         {
             IOUtils.closeQuietly((Closeable)iresource);
         }
 
-        return flag;
+        return false;
     }
 
     @Nullable

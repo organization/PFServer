@@ -141,9 +141,9 @@ public class GuiScreenCustomizePresets extends GuiScreen
     @SideOnly(Side.CLIENT)
     static class Info
         {
-            public String name;
-            public ResourceLocation texture;
-            public ChunkGeneratorSettings.Factory settings;
+            public final String name;
+            public final ResourceLocation texture;
+            public final ChunkGeneratorSettings.Factory settings;
 
             public Info(String nameIn, ResourceLocation textureIn, ChunkGeneratorSettings.Factory settingsIn)
             {

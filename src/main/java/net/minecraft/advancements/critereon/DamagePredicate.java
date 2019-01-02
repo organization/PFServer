@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public class DamagePredicate
 {
-    public static DamagePredicate ANY = new DamagePredicate();
+    public static final DamagePredicate ANY = new DamagePredicate();
     private final MinMaxBounds dealt;
     private final MinMaxBounds taken;
     private final EntityPredicate sourceEntity;
@@ -53,7 +53,7 @@ public class DamagePredicate
         {
             return false;
         }
-        else if (this.blocked != null && this.blocked.booleanValue() != blocked)
+        else if (this.blocked != null && this.blocked != blocked)
         {
             return false;
         }

@@ -87,7 +87,6 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
 
             for (j = this.values.length << 1; j < intKey; j <<= 1)
             {
-                ;
             }
 
             this.grow(j);

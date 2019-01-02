@@ -53,7 +53,7 @@ public class NettyPacketEncoder extends MessageToByteEncoder < Packet<? >>
             else
             {
                 PacketBuffer packetbuffer = new PacketBuffer(p_encode_3_);
-                packetbuffer.writeVarInt(integer.intValue());
+                packetbuffer.writeVarInt(integer);
 
                 try
                 {

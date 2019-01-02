@@ -89,7 +89,7 @@ public class GuiShareToLan extends GuiScreen
 
             if (s != null)
             {
-                itextcomponent = new TextComponentTranslation("commands.publish.started", new Object[] {s});
+                itextcomponent = new TextComponentTranslation("commands.publish.started", s);
             }
             else
             {

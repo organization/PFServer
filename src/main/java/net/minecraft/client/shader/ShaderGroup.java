@@ -210,7 +210,7 @@ public class ShaderGroup
                                 GlStateManager.glTexParameteri(3553, 10240, 9728);
                             }
 
-                            shader.addAuxFramebuffer(s4, Integer.valueOf(lvt_20_2_.getGlTextureId()), lvt_21_1_, lvt_22_1_);
+                            shader.addAuxFramebuffer(s4, lvt_20_2_.getGlTextureId(), lvt_21_1_, lvt_22_1_);
                         }
                         else
                         {
@@ -387,7 +387,6 @@ public class ShaderGroup
 
         for (this.lastStamp = partialTicks; this.time > 20.0F; this.time -= 20.0F)
         {
-            ;
         }
 
         for (Shader shader : this.listShaders)

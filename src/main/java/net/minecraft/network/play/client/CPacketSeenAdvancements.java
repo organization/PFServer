@@ -77,6 +77,6 @@ public class CPacketSeenAdvancements implements Packet<INetHandlerPlayServer>
     public static enum Action
     {
         OPENED_TAB,
-        CLOSED_SCREEN;
+        CLOSED_SCREEN
     }
 }

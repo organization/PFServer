@@ -20,19 +20,19 @@ public abstract class AbstractIllager extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(AGGRESSIVE, Byte.valueOf((byte)0));
+        this.dataManager.register(AGGRESSIVE, (byte) 0);
     }
 
     @SideOnly(Side.CLIENT)
     protected boolean isAggressive(int mask)
     {
-        int i = ((Byte)this.dataManager.get(AGGRESSIVE)).byteValue();
+        int i = (Byte) this.dataManager.get(AGGRESSIVE);
         return (i & mask) != 0;
     }
 
     protected void setAggressive(int mask, boolean value)
     {
-        int i = ((Byte)this.dataManager.get(AGGRESSIVE)).byteValue();
+        int i = (Byte) this.dataManager.get(AGGRESSIVE);
 
         if (value)
         {
@@ -43,7 +43,7 @@ public abstract class AbstractIllager extends EntityMob
             i = i & ~mask;
         }
 
-        this.dataManager.set(AGGRESSIVE, Byte.valueOf((byte)(i & 255)));
+        this.dataManager.set(AGGRESSIVE, (byte) (i & 255));
     }
 
     public EnumCreatureAttribute getCreatureAttribute()
@@ -63,6 +63,6 @@ public abstract class AbstractIllager extends EntityMob
         CROSSED,
         ATTACKING,
         SPELLCASTING,
-        BOW_AND_ARROW;
+        BOW_AND_ARROW
     }
 }

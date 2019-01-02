@@ -36,7 +36,7 @@ public final class ContextKey<T>
             throw new IllegalArgumentException("ContextKey's ID can't be blank!");
         }
 
-        return new ContextKey<E>(id, c);
+        return new ContextKey<>(id, c);
     }
 
     private ContextKey(String id, Class<T> c)

@@ -26,7 +26,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
     private final Random random;
     private final IBlockState[] cachedBlockIDs = new IBlockState[256];
     private final FlatGeneratorInfo flatWorldGenInfo;
-    private final Map<String, MapGenStructure> structureGenerators = new HashMap<String, MapGenStructure>();
+    private final Map<String, MapGenStructure> structureGenerators = new HashMap<>();
     private final boolean hasDecoration;
     private final boolean hasDungeons;
     private WorldGenLakes waterLakeGenerator;
@@ -115,7 +115,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
         }
 
         worldIn.setSeaLevel(j);
-        this.hasDecoration = flag && this.flatWorldGenInfo.getBiome() != Biome.getIdForBiome(Biomes.VOID) ? false : this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
+        this.hasDecoration = (!flag || this.flatWorldGenInfo.getBiome() == Biome.getIdForBiome(Biomes.VOID)) && this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
     }
 
     public Chunk generateChunk(int x, int z)
@@ -170,7 +170,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
         this.random.setSeed((long)x * k + (long)z * l ^ this.world.getSeed());
         ChunkPos chunkpos = new ChunkPos(x, z);
 
-        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.random, x, z, flag);
+        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.random, x, z, false);
 
         for (MapGenStructure mapgenstructure : this.structureGenerators.values())
         {
@@ -235,7 +235,7 @@ public class ChunkGeneratorFlat implements IChunkGenerator
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
         MapGenStructure mapgenstructure = this.structureGenerators.get(structureName);
-        return mapgenstructure != null ? mapgenstructure.isInsideStructure(pos) : false;
+        return mapgenstructure != null && mapgenstructure.isInsideStructure(pos);
     }
 
     public void recreateStructures(Chunk chunkIn, int x, int z)

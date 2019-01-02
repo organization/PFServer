@@ -26,31 +26,12 @@ public class PropertyManager
 
         if (propertiesFile.exists())
         {
-            FileInputStream fileinputstream = null;
 
-            try
-            {
-                fileinputstream = new FileInputStream(propertiesFile);
+            try (FileInputStream fileinputstream = new FileInputStream(propertiesFile)) {
                 this.serverProperties.load(fileinputstream);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 LOGGER.warn("Failed to load {}", propertiesFile, exception);
                 this.generateNewProperties();
-            }
-            finally
-            {
-                if (fileinputstream != null)
-                {
-                    try
-                    {
-                        fileinputstream.close();
-                    }
-                    catch (IOException var11)
-                    {
-                        ;
-                    }
-                }
             }
         }
         else
@@ -105,9 +86,8 @@ public class PropertyManager
                 {
                     fileoutputstream.close();
                 }
-                catch (IOException var10)
+                catch (IOException ignored)
                 {
-                    ;
                 }
             }
         }

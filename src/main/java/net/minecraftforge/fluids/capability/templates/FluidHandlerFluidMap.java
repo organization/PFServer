@@ -41,7 +41,7 @@ public class FluidHandlerFluidMap implements IFluidHandler
     public FluidHandlerFluidMap()
     {
         // LinkedHashMap to ensure iteration order is consistent.
-        this(new LinkedHashMap<Fluid, IFluidHandler>());
+        this(new LinkedHashMap<>());
     }
 
     public FluidHandlerFluidMap(Map<Fluid, IFluidHandler> handlers)
@@ -63,7 +63,7 @@ public class FluidHandlerFluidMap implements IFluidHandler
         {
             Collections.addAll(tanks, iFluidHandler.getTankProperties());
         }
-        return tanks.toArray(new IFluidTankProperties[tanks.size()]);
+        return tanks.toArray(new IFluidTankProperties[0]);
     }
 
     @Override

@@ -28,7 +28,7 @@ import net.minecraftforge.common.MinecraftForge;
 import java.util.Random;
 
 public class DeferredBiomeDecorator extends BiomeDecorator {
-    private BiomeDecorator wrapped;
+    private final BiomeDecorator wrapped;
 
     public DeferredBiomeDecorator(BiomeDecorator wrappedOriginal)
     {

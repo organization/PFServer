@@ -157,7 +157,7 @@ public class WorldType
 
     public boolean handleSlimeSpawnReduction(java.util.Random random, World world)
     {
-        return this == FLAT ? random.nextInt(4) != 1 : false;
+        return this == FLAT && random.nextInt(4) != 1;
     }
 
     /*=================================================== FORGE START ======================================*/

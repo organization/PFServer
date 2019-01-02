@@ -30,41 +30,37 @@ public class EntityAIFindEntityNearestPlayer extends EntityAIBase
             LOGGER.warn("Use NearestAttackableTargetGoal.class for PathfinerMob mobs!");
         }
 
-        this.predicate = new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity p_apply_1_)
+        this.predicate = p_apply_1_ -> {
+            if (!(p_apply_1_ instanceof EntityPlayer))
             {
-                if (!(p_apply_1_ instanceof EntityPlayer))
-                {
-                    return false;
-                }
-                else if (((EntityPlayer)p_apply_1_).capabilities.disableDamage)
-                {
-                    return false;
-                }
-                else
-                {
-                    double d0 = EntityAIFindEntityNearestPlayer.this.maxTargetRange();
+                return false;
+            }
+            else if (((EntityPlayer)p_apply_1_).capabilities.disableDamage)
+            {
+                return false;
+            }
+            else
+            {
+                double d0 = EntityAIFindEntityNearestPlayer.this.maxTargetRange();
 
-                    if (p_apply_1_.isSneaking())
+                if (p_apply_1_.isSneaking())
+                {
+                    d0 *= 0.800000011920929D;
+                }
+
+                if (p_apply_1_.isInvisible())
+                {
+                    float f = ((EntityPlayer)p_apply_1_).getArmorVisibility();
+
+                    if (f < 0.1F)
                     {
-                        d0 *= 0.800000011920929D;
+                        f = 0.1F;
                     }
 
-                    if (p_apply_1_.isInvisible())
-                    {
-                        float f = ((EntityPlayer)p_apply_1_).getArmorVisibility();
-
-                        if (f < 0.1F)
-                        {
-                            f = 0.1F;
-                        }
-
-                        d0 *= (double)(0.7F * f);
-                    }
-
-                    return (double)p_apply_1_.getDistance(EntityAIFindEntityNearestPlayer.this.entityLiving) > d0 ? false : EntityAITarget.isSuitableTarget(EntityAIFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)p_apply_1_, false, true);
+                    d0 *= (double)(0.7F * f);
                 }
+
+                return !((double) p_apply_1_.getDistance(EntityAIFindEntityNearestPlayer.this.entityLiving) > d0) && EntityAITarget.isSuitableTarget(EntityAIFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase) p_apply_1_, false, true);
             }
         };
         this.sorter = new EntityAINearestAttackableTarget.Sorter(entityLivingIn);
@@ -74,7 +70,7 @@ public class EntityAIFindEntityNearestPlayer extends EntityAIBase
     {
         double d0 = this.maxTargetRange();
         List<EntityPlayer> list = this.entityLiving.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, this.entityLiving.getEntityBoundingBox().grow(d0, 4.0D, d0), this.predicate);
-        Collections.sort(list, this.sorter);
+        list.sort(this.sorter);
 
         if (list.isEmpty())
         {

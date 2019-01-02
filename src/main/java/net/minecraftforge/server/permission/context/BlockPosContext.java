@@ -32,7 +32,7 @@ public class BlockPosContext extends PlayerContext
 {
     private final BlockPos blockPos;
     private IBlockState blockState;
-    private EnumFacing facing;
+    private final EnumFacing facing;
 
     public BlockPosContext(EntityPlayer ep, BlockPos pos, @Nullable IBlockState state, @Nullable EnumFacing f)
     {

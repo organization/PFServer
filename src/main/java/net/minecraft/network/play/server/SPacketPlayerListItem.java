@@ -214,7 +214,7 @@ public class SPacketPlayerListItem implements Packet<INetHandlerPlayClient>
         UPDATE_GAME_MODE,
         UPDATE_LATENCY,
         UPDATE_DISPLAY_NAME,
-        REMOVE_PLAYER;
+        REMOVE_PLAYER
     }
 
     public class AddPlayerData

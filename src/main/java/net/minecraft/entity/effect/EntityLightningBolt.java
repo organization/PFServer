@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class EntityLightningBolt extends EntityWeatherEffect
     private int boltLivingTime;
     private final boolean effectOnly;
 
-    public boolean isEffect; // CraftBukkit
+    public final boolean isEffect; // CraftBukkit
     public boolean isSilent = false; // Spigot
 
     public EntityLightningBolt(World worldIn, double x, double y, double z, boolean effectOnlyIn)
@@ -142,10 +143,8 @@ public class EntityLightningBolt extends EntityWeatherEffect
                 double d0 = 3.0D;
                 List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(this.posX - 3.0D, this.posY - 3.0D, this.posZ - 3.0D, this.posX + 3.0D, this.posY + 6.0D + 3.0D, this.posZ + 3.0D));
 
-                for (int i = 0; i < list.size(); ++i)
-                {
-                    Entity entity = list.get(i);
-                    if (!net.minecraftforge.event.ForgeEventFactory.onEntityStruckByLightning(entity, this))
+                for (Entity entity : list) {
+                    if (!ForgeEventFactory.onEntityStruckByLightning(entity, this))
                         entity.onStruckByLightning(this);
                 }
             }

@@ -120,17 +120,10 @@ public class SimpleResource implements IResource
 
             if (this.resourcePackName != null)
             {
-                if (!this.resourcePackName.equals(simpleresource.resourcePackName))
-                {
-                    return false;
-                }
+                return this.resourcePackName.equals(simpleresource.resourcePackName);
             }
-            else if (simpleresource.resourcePackName != null)
-            {
-                return false;
-            }
+            else return simpleresource.resourcePackName == null;
 
-            return true;
         }
     }
 

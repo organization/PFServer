@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class PathWorldListener implements IWorldEventListener
 {
@@ -53,7 +54,7 @@ public class PathWorldListener implements IWorldEventListener
     {
         AxisAlignedBB axisalignedbb = oldState.getCollisionBoundingBox(worldIn, pos);
         AxisAlignedBB axisalignedbb1 = newState.getCollisionBoundingBox(worldIn, pos);
-        return axisalignedbb != axisalignedbb1 && (axisalignedbb == null || !axisalignedbb.equals(axisalignedbb1));
+        return !Objects.equals(axisalignedbb, axisalignedbb1);
     }
 
     public void notifyLightSet(BlockPos pos)

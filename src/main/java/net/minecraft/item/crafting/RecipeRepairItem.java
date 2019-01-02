@@ -90,8 +90,8 @@ public class RecipeRepairItem extends ShapelessRecipes implements IRecipe
                 // CraftBukkit start - Construct a dummy repair recipe
                 ItemStack result = new ItemStack(itemstack3.getItem(), 1, i1);
                 NonNullList<Ingredient> ingredients = NonNullList.create();
-                ingredients.add(Ingredient.fromStacks(new ItemStack[]{itemstack2.copy()}));
-                ingredients.add(Ingredient.fromStacks(new ItemStack[]{itemstack3.copy()}));
+                ingredients.add(Ingredient.fromStacks(itemstack2.copy()));
+                ingredients.add(Ingredient.fromStacks(itemstack3.copy()));
                 ShapelessRecipes recipe = new ShapelessRecipes("", result.copy(), ingredients);
                 recipe.key = new ResourceLocation("repairitem");
                 inv.currentRecipe = recipe;

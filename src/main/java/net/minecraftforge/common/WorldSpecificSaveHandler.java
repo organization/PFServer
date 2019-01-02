@@ -39,8 +39,8 @@ import java.util.UUID;
 
 public class WorldSpecificSaveHandler implements ISaveHandler
 {
-    private WorldServer world;
-    private ISaveHandler parent;
+    private final WorldServer world;
+    private final ISaveHandler parent;
     private File dataDir;
 
     public WorldSpecificSaveHandler(WorldServer world, ISaveHandler parent)

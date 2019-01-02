@@ -30,7 +30,7 @@ public class BlockReed extends Block implements net.minecraftforge.common.IPlant
     protected BlockReed()
     {
         super(Material.PLANTS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         this.setTickRandomly(true);
     }
 
@@ -49,12 +49,11 @@ public class BlockReed extends Block implements net.minecraftforge.common.IPlant
 
                 for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i)
                 {
-                    ;
                 }
 
                 if (i < 3)
                 {
-                    int j = ((Integer)state.getValue(AGE)).intValue();
+                    int j = (Integer) state.getValue(AGE);
 
                     if(net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, true))
                     {
@@ -63,11 +62,11 @@ public class BlockReed extends Block implements net.minecraftforge.common.IPlant
 //                        worldIn.setBlockState(pos.up(), this.getDefaultState());
                         BlockPos upPos = pos.up();
                         org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockGrowEvent(worldIn, upPos.getX(), upPos.getY(), upPos.getZ(), this, 0);
-                        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(0)), 4);
+                        worldIn.setBlockState(pos, state.withProperty(AGE, 0), 4);
                     }
                     else
                     {
-                        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)), 4);
+                        worldIn.setBlockState(pos, state.withProperty(AGE, j + 1), 4);
                     }
                     net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
                     }
@@ -160,7 +159,7 @@ public class BlockReed extends Block implements net.minecraftforge.common.IPlant
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     @SideOnly(Side.CLIENT)
@@ -171,7 +170,7 @@ public class BlockReed extends Block implements net.minecraftforge.common.IPlant
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     @Override
@@ -187,7 +186,7 @@ public class BlockReed extends Block implements net.minecraftforge.common.IPlant
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

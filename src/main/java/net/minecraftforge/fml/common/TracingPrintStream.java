@@ -30,8 +30,8 @@ import java.io.PrintStream;
  */
 public class TracingPrintStream extends PrintStream {
 
-    private Logger logger;
-    private int BASE_DEPTH = 3;
+    private final Logger logger;
+    private final int BASE_DEPTH = 3;
 
     public TracingPrintStream(Logger logger, PrintStream original) {
         super(original);

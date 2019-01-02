@@ -48,14 +48,14 @@ public class ModAPIManager {
     private Map<String,APIContainer> apiContainers;
 
     private static class APIContainer extends DummyModContainer {
-        private List<ArtifactVersion> referredMods;
-        private ArtifactVersion ownerMod;
-        private ArtifactVersion ourVersion;
-        private String providedAPI;
-        private File source;
-        private String version;
-        private Set<String> currentReferents;
-        private Set<String> packages;
+        private final List<ArtifactVersion> referredMods;
+        private final ArtifactVersion ownerMod;
+        private final ArtifactVersion ourVersion;
+        private final String providedAPI;
+        private final File source;
+        private final String version;
+        private final Set<String> currentReferents;
+        private final Set<String> packages;
         private boolean selfReferenced;
 
         public APIContainer(String providedAPI, String apiVersion, File source, ArtifactVersion ownerMod)

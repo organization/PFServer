@@ -51,15 +51,15 @@ import java.util.jar.Manifest;
 public class CoreModManager {
     private static final Attributes.Name COREMODCONTAINSFMLMOD = new Attributes.Name("FMLCorePluginContainsFMLMod");
     private static final Attributes.Name MODTYPE = new Attributes.Name("ModType");
-    private static String[] rootPlugins = { "net.minecraftforge.fml.relauncher.FMLCorePlugin", "net.minecraftforge.classloading.FMLForgePlugin", "CorePlugin" };
-    private static List<String> ignoredModFiles = Lists.newArrayList();
-    private static Map<String, List<String>> transformers = Maps.newHashMap();
+    private static final String[] rootPlugins = { "net.minecraftforge.fml.relauncher.FMLCorePlugin", "net.minecraftforge.classloading.FMLForgePlugin", "CorePlugin" };
+    private static final List<String> ignoredModFiles = Lists.newArrayList();
+    private static final Map<String, List<String>> transformers = Maps.newHashMap();
     private static List<FMLPluginWrapper> loadPlugins;
     private static FMLTweaker tweaker;
     private static File mcDir;
-    private static List<String> candidateModFiles = Lists.newArrayList();
-    private static List<String> accessTransformers = Lists.newArrayList();
-    private static Set<String> rootNames = Sets.newHashSet();
+    private static final List<String> candidateModFiles = Lists.newArrayList();
+    private static final List<String> accessTransformers = Lists.newArrayList();
+    private static final Set<String> rootNames = Sets.newHashSet();
 
     static boolean deobfuscatedEnvironment;
 
@@ -121,7 +121,7 @@ public class CoreModManager {
             PFServer.LOGGER.debug("Injection complete");
 
             PFServer.LOGGER.debug("Running coremod plugin for {} \\{{}\\}", name, coreModInstance.getClass().getName());
-            Map<String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<>();
             data.put("mcLocation", mcDir);
             data.put("coremodList", loadPlugins);
             data.put("runtimeDeobfuscationEnabled", !deobfuscatedEnvironment);
@@ -134,7 +134,7 @@ public class CoreModManager {
                 try
                 {
                     IFMLCallHook call = (IFMLCallHook) Class.forName(setupClass, true, classLoader).newInstance();
-                    Map<String, Object> callData = new HashMap<String, Object>();
+                    Map<String, Object> callData = new HashMap<>();
                     callData.put("runtimeDeobfuscationEnabled", !deobfuscatedEnvironment);
                     callData.put("mcLocation", mcDir);
                     callData.put("classLoader", classLoader);
@@ -207,7 +207,7 @@ public class CoreModManager {
             throw new RuntimeException("The patch transformer failed to load! This is critical, loading cannot continue!", e);
         }
 
-        loadPlugins = new ArrayList<FMLPluginWrapper>();
+        loadPlugins = new ArrayList<>();
         for (String rootPluginName : rootPlugins)
         {
             loadCoreMod(classLoader, rootPluginName, new File(FMLTweaker.getJarLocation()));
@@ -608,13 +608,10 @@ public class CoreModManager {
         List<ITweaker> tweakers = (List<ITweaker>) Launch.blackboard.get("Tweaks");
         // Add the sorting tweaker first- it'll appear twice in the list
         tweakers.add(0, fmlInjectionAndSortingTweaker);
-        for (FMLPluginWrapper wrapper : loadPlugins)
-        {
-            tweakers.add(wrapper);
-        }
+        tweakers.addAll(loadPlugins);
     }
 
-    private static Map<String,Integer> tweakSorting = Maps.newHashMap();
+    private static final Map<String,Integer> tweakSorting = Maps.newHashMap();
 
     public static void sortTweakList()
     {
@@ -622,7 +619,7 @@ public class CoreModManager {
         List<ITweaker> tweakers = (List<ITweaker>) Launch.blackboard.get("Tweaks");
         // Basically a copy of Collections.sort pre 8u20, optimized as we know we're an array list.
         // Thanks unhelpful fixer of http://bugs.java.com/view_bug.do?bug_id=8032636
-        ITweaker[] toSort = tweakers.toArray(new ITweaker[tweakers.size()]);
+        ITweaker[] toSort = tweakers.toArray(new ITweaker[0]);
         ToIntFunction<ITweaker> getOrder = o -> o instanceof FMLInjectionAndSortingTweaker ? Integer.MIN_VALUE : o instanceof FMLPluginWrapper ? ((FMLPluginWrapper)o).sortIndex : tweakSorting.getOrDefault(o.getClass().getName(), 0);
         Arrays.sort(toSort, (o1, o2) -> Ints.saturatedCast((long)getOrder.applyAsInt(o1) - (long)getOrder.applyAsInt(o2)));
         for (int j = 0; j < toSort.length; j++) {
@@ -652,7 +649,7 @@ public class CoreModManager {
         try {
             if (closeable != null)
                 closeable.close();
-        } catch (final IOException ioe){}
+        } catch (final IOException ignored){}
     }
 
 }

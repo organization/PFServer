@@ -39,11 +39,11 @@ public class InventoryPlayer implements IInventory
     public final NonNullList<ItemStack> offHandInventory = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
     private final List<NonNullList<ItemStack>> allInventories;
     public int currentItem;
-    public EntityPlayer player;
+    public final EntityPlayer player;
     private ItemStack itemStack;
     private int timesChanged;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -258,7 +258,6 @@ public class InventoryPlayer implements IInventory
 
         for (this.currentItem -= direction; this.currentItem < 0; this.currentItem += 9)
         {
-            ;
         }
 
         while (this.currentItem >= 9)
@@ -480,24 +479,16 @@ public class InventoryPlayer implements IInventory
                 {
                     int i;
 
-                    while (true)
-                    {
+                    do {
                         i = p_191971_2_.getCount();
 
-                        if (p_191971_1_ == -1)
-                        {
+                        if (p_191971_1_ == -1) {
                             p_191971_2_.setCount(this.storePartialItemStack(p_191971_2_));
-                        }
-                        else
-                        {
+                        } else {
                             p_191971_2_.setCount(this.addResource(p_191971_1_, p_191971_2_));
                         }
 
-                        if (p_191971_2_.isEmpty() || p_191971_2_.getCount() >= i)
-                        {
-                            break;
-                        }
-                    }
+                    } while (!p_191971_2_.isEmpty() && p_191971_2_.getCount() < i);
 
                     if (p_191971_2_.getCount() == i && this.player.capabilities.isCreativeMode)
                     {
@@ -514,17 +505,11 @@ public class InventoryPlayer implements IInventory
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Adding item to inventory");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being added");
-                crashreportcategory.addCrashSection("Item ID", Integer.valueOf(Item.getIdFromItem(p_191971_2_.getItem())));
-                crashreportcategory.addCrashSection("Item data", Integer.valueOf(p_191971_2_.getMetadata()));
+                crashreportcategory.addCrashSection("Item ID", Item.getIdFromItem(p_191971_2_.getItem()));
+                crashreportcategory.addCrashSection("Item data", p_191971_2_.getMetadata());
                 crashreportcategory.addDetail("Registry Name", () -> String.valueOf(p_191971_2_.getItem().getRegistryName()));
                 crashreportcategory.addDetail("Item Class", () -> p_191971_2_.getItem().getClass().getName());
-                crashreportcategory.addDetail("Item name", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return p_191971_2_.getDisplayName();
-                    }
-                });
+                crashreportcategory.addDetail("Item name", p_191971_2_::getDisplayName);
                 throw new ReportedException(crashreport);
             }
         }
@@ -801,7 +786,7 @@ public class InventoryPlayer implements IInventory
         else
         {
             ItemStack itemstack = this.getStackInSlot(this.currentItem);
-            return !itemstack.isEmpty() ? itemstack.canHarvestBlock(state) : false;
+            return !itemstack.isEmpty() && itemstack.canHarvestBlock(state);
         }
     }
 
@@ -820,13 +805,9 @@ public class InventoryPlayer implements IInventory
             damage = 1.0F;
         }
 
-        for (int i = 0; i < this.armorInventory.size(); ++i)
-        {
-            ItemStack itemstack = this.armorInventory.get(i);
-
-            if (itemstack.getItem() instanceof ItemArmor)
-            {
-                itemstack.damageItem((int)damage, this.player);
+        for (ItemStack itemstack : this.armorInventory) {
+            if (itemstack.getItem() instanceof ItemArmor) {
+                itemstack.damageItem((int) damage, this.player);
             }
         }
     }

@@ -29,7 +29,7 @@ public class BukkitInjector {
             Item item = entry.getValue();
             if(!key.getResourceDomain().equals("minecraft")) {
                 String materialName = key.toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", "");
-                Material material = Material.addMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE, Integer.TYPE}, new Object[]{Item.getIdFromItem(item), item.getItemStackLimit()}));
+                Material material = Material.addMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE, Integer.TYPE}, Item.getIdFromItem(item), item.getItemStackLimit()));
                 if (material != null) {
                    PFServer.LOGGER.debug("Injected new Forge item material %s with ID %d.", material.name(), material.getId());
                 } else {
@@ -50,7 +50,7 @@ public class BukkitInjector {
             Block block = entry.getValue();
             if(!key.getResourceDomain().equals("minecraft")) {
                 String materialName = key.toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", "");
-                Material material = Material.addBlockMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, new Object[]{Block.getIdFromBlock(block)}));
+                Material material = Material.addBlockMaterial(EnumHelper.addEnum(Material.class, materialName, new Class[]{Integer.TYPE}, Block.getIdFromBlock(block)));
                 if (material != null) {
                     PFServer.LOGGER.debug("Injected new Forge block material %s with ID %d.", material.name(), material.getId());
                 } else {
@@ -67,7 +67,7 @@ public class BukkitInjector {
             for (Biome biome : Biome.values()) {
                 if (biome.toString().equals(biomeName)) continue for1;
             }
-            EnumHelper.addEnum(Biome.class, biomeName, new Class[]{}, new Object[]{});
+            EnumHelper.addEnum(Biome.class, biomeName, new Class[]{});
         }
     }
 
@@ -79,7 +79,7 @@ public class BukkitInjector {
             String name = entity.getKey();
             String entityType = name.replace("-", "_").toUpperCase();
             int typeId = GameData.getEntityRegistry().getID(EntityRegistry.getEntry(entity.getValue()));
-            EntityType bukkitType = EnumHelper.addEnum(EntityType.class, entityType, new Class[] { String.class, Class.class, Integer.TYPE, Boolean.TYPE }, new Object[] { name, CraftCustomEntity.class, typeId, false });
+            EntityType bukkitType = EnumHelper.addEnum(EntityType.class, entityType, new Class[] { String.class, Class.class, Integer.TYPE, Boolean.TYPE }, name, CraftCustomEntity.class, typeId, false);
 
             NAME_MAP.put(name.toLowerCase(), bukkitType);
             ID_MAP.put((short)typeId, bukkitType);

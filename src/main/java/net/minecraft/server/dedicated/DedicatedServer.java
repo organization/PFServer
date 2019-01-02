@@ -83,9 +83,8 @@ public class DedicatedServer extends MinecraftServer implements IServer
                     {
                         Thread.sleep(2147483647L);
                     }
-                    catch (InterruptedException var2)
+                    catch (InterruptedException ignored)
                     {
-                        ;
                     }
                 }
             }
@@ -191,11 +190,11 @@ public class DedicatedServer extends MinecraftServer implements IServer
 
             if (this.settings.getIntProperty("difficulty", 1) < 0)
             {
-                this.settings.setProperty("difficulty", Integer.valueOf(0));
+                this.settings.setProperty("difficulty", 0);
             }
             else if (this.settings.getIntProperty("difficulty", 1) > 3)
             {
-                this.settings.setProperty("difficulty", Integer.valueOf(3));
+                this.settings.setProperty("difficulty", 3);
             }
 
             this.canSpawnStructures = this.settings.getBooleanProperty("generate-structures", true);
@@ -226,7 +225,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
 
             LOGGER.info("Generating keypair");
             this.setKeyPair(CryptManager.generateKeyPair());
-            LOGGER.info("Starting Minecraft server on {}:{}", this.getServerHostname().isEmpty() ? "*" : this.getServerHostname(), Integer.valueOf(this.getServerPort()));
+            LOGGER.info("Starting Minecraft server on {}:{}", this.getServerHostname().isEmpty() ? "*" : this.getServerHostname(), this.getServerPort());
 
             if(!SpigotConfig.lateBind) {
                 try
@@ -316,7 +315,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
                 this.setBuildLimit(this.settings.getIntProperty("max-build-height", 256));
                 this.setBuildLimit((this.getBuildLimit() + 8) / 16 * 16);
                 this.setBuildLimit(MathHelper.clamp(this.getBuildLimit(), 64, 256));
-                this.settings.setProperty("max-build-height", Integer.valueOf(this.getBuildLimit()));
+                this.settings.setProperty("max-build-height", this.getBuildLimit());
                 TileEntitySkull.setProfileCache(this.getPlayerProfileCache());
                 TileEntitySkull.setSessionService(this.getMinecraftSessionService());
                 PlayerProfileCache.setOnlineMode(this.isServerInOnlineMode());
@@ -443,21 +442,11 @@ public class DedicatedServer extends MinecraftServer implements IServer
     public CrashReport addServerInfoToCrashReport(CrashReport report)
     {
         report = super.addServerInfoToCrashReport(report);
-        report.getCategory().addDetail("Is Modded", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                String s = DedicatedServer.this.getServerModName();
-                return !"vanilla".equals(s) ? "Definitely; Server brand changed to '" + s + "'" : "Unknown (can't tell)";
-            }
+        report.getCategory().addDetail("Is Modded", () -> {
+            String s = DedicatedServer.this.getServerModName();
+            return !"vanilla".equals(s) ? "Definitely; Server brand changed to '" + s + "'" : "Unknown (can't tell)";
         });
-        report.getCategory().addDetail("Type", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return "Dedicated Server (map_server.txt)";
-            }
-        });
+        report.getCategory().addDetail("Type", () -> "Dedicated Server (map_server.txt)");
         return report;
     }
 
@@ -484,8 +473,8 @@ public class DedicatedServer extends MinecraftServer implements IServer
 
     public void addServerStatsToSnooper(Snooper playerSnooper)
     {
-        playerSnooper.addClientStat("whitelist_enabled", Boolean.valueOf(this.getPlayerList().isWhiteListEnabled()));
-        playerSnooper.addClientStat("whitelist_count", Integer.valueOf(this.getPlayerList().getWhitelistedPlayerNames().length));
+        playerSnooper.addClientStat("whitelist_enabled", this.getPlayerList().isWhiteListEnabled());
+        playerSnooper.addClientStat("whitelist_count", this.getPlayerList().getWhitelistedPlayerNames().length);
         super.addServerStatsToSnooper(playerSnooper);
     }
 
@@ -640,7 +629,7 @@ public class DedicatedServer extends MinecraftServer implements IServer
     public void setPlayerIdleTimeout(int idleTimeout)
     {
         super.setPlayerIdleTimeout(idleTimeout);
-        this.settings.setProperty("player-idle-timeout", Integer.valueOf(idleTimeout));
+        this.settings.setProperty("player-idle-timeout", idleTimeout);
         this.saveProperties();
     }
 
@@ -754,9 +743,8 @@ public class DedicatedServer extends MinecraftServer implements IServer
         {
             Thread.sleep(5000L);
         }
-        catch (InterruptedException var2)
+        catch (InterruptedException ignored)
         {
-            ;
         }
     }
 

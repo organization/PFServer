@@ -16,6 +16,8 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @SideOnly(Side.CLIENT)
 public class Selector
@@ -121,16 +123,16 @@ public class Selector
                 {
                     if (json.has("OR"))
                     {
-                        return new ConditionOr(Iterables.transform(JsonUtils.getJsonArray(json, "OR"), FUNCTION_OR_AND));
+                        return new ConditionOr(StreamSupport.stream(JsonUtils.getJsonArray(json, "OR").spliterator(), false).map(FUNCTION_OR_AND::apply).collect(Collectors.toList()));
                     }
                     else
                     {
-                        return (ICondition)(json.has("AND") ? new ConditionAnd(Iterables.transform(JsonUtils.getJsonArray(json, "AND"), FUNCTION_OR_AND)) : makePropertyValue(set.iterator().next()));
+                        return (ICondition)(json.has("AND") ? new ConditionAnd(StreamSupport.stream(JsonUtils.getJsonArray(json, "AND").spliterator(), false).map(FUNCTION_OR_AND::apply).collect(Collectors.toList())) : makePropertyValue(set.iterator().next()));
                     }
                 }
                 else
                 {
-                    return new ConditionAnd(Iterables.transform(set, FUNCTION_PROPERTY_VALUE));
+                    return new ConditionAnd(set.stream().map(FUNCTION_PROPERTY_VALUE::apply).collect(Collectors.toList()));
                 }
             }
 

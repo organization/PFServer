@@ -56,22 +56,19 @@ public class MerchantRecipeList extends ArrayList<MerchantRecipe>
     {
         buffer.writeByte((byte)(this.size() & 255));
 
-        for (int i = 0; i < this.size(); ++i)
-        {
-            MerchantRecipe merchantrecipe = (MerchantRecipe)this.get(i);
-            buffer.writeItemStack(merchantrecipe.getItemToBuy());
-            buffer.writeItemStack(merchantrecipe.getItemToSell());
-            ItemStack itemstack = merchantrecipe.getSecondItemToBuy();
+        for (MerchantRecipe merchantRecipe : this) {
+            buffer.writeItemStack(((MerchantRecipe) merchantRecipe).getItemToBuy());
+            buffer.writeItemStack(((MerchantRecipe) merchantRecipe).getItemToSell());
+            ItemStack itemstack = ((MerchantRecipe) merchantRecipe).getSecondItemToBuy();
             buffer.writeBoolean(!itemstack.isEmpty());
 
-            if (!itemstack.isEmpty())
-            {
+            if (!itemstack.isEmpty()) {
                 buffer.writeItemStack(itemstack);
             }
 
-            buffer.writeBoolean(merchantrecipe.isRecipeDisabled());
-            buffer.writeInt(merchantrecipe.getToolUses());
-            buffer.writeInt(merchantrecipe.getMaxTradeUses());
+            buffer.writeBoolean(((MerchantRecipe) merchantRecipe).isRecipeDisabled());
+            buffer.writeInt(((MerchantRecipe) merchantRecipe).getToolUses());
+            buffer.writeInt(((MerchantRecipe) merchantRecipe).getMaxTradeUses());
         }
     }
 
@@ -91,10 +88,8 @@ public class MerchantRecipeList extends ArrayList<MerchantRecipe>
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.size(); ++i)
-        {
-            MerchantRecipe merchantrecipe = (MerchantRecipe)this.get(i);
-            nbttaglist.appendTag(merchantrecipe.writeToTags());
+        for (MerchantRecipe merchantRecipe : this) {
+            nbttaglist.appendTag(((MerchantRecipe) merchantRecipe).writeToTags());
         }
 
         nbttagcompound.setTag("Recipes", nbttaglist);

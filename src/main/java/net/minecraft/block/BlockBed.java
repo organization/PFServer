@@ -39,7 +39,7 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
     public BlockBed()
     {
         super(Material.CLOTH);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(PART, EnumPartType.FOOT).withProperty(OCCUPIED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(PART, EnumPartType.FOOT).withProperty(OCCUPIED, Boolean.FALSE));
         this.hasTileEntity = true;
     }
 
@@ -82,17 +82,17 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
             if (sleepResult != net.minecraft.world.WorldProvider.WorldSleepResult.BED_EXPLODES)
             {
                 if (sleepResult == net.minecraft.world.WorldProvider.WorldSleepResult.DENY) return true;
-                if (((Boolean)state.getValue(OCCUPIED)).booleanValue())
+                if ((Boolean) state.getValue(OCCUPIED))
                 {
                     EntityPlayer entityplayer = this.getPlayerInBed(worldIn, pos);
 
                     if (entityplayer != null)
                     {
-                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.occupied", new Object[0]), true);
+                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.occupied"), true);
                         return true;
                     }
 
-                    state = state.withProperty(OCCUPIED, Boolean.valueOf(false));
+                    state = state.withProperty(OCCUPIED, Boolean.FALSE);
                     worldIn.setBlockState(pos, state, 4);
                 }
 
@@ -100,7 +100,7 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
 
                 if (entityplayer$sleepresult == EntityPlayer.SleepResult.OK)
                 {
-                    state = state.withProperty(OCCUPIED, Boolean.valueOf(true));
+                    state = state.withProperty(OCCUPIED, Boolean.TRUE);
                     worldIn.setBlockState(pos, state, 4);
                     return true;
                 }
@@ -108,15 +108,15 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
                 {
                     if (entityplayer$sleepresult == EntityPlayer.SleepResult.NOT_POSSIBLE_NOW)
                     {
-                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.noSleep", new Object[0]), true);
+                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.noSleep"), true);
                     }
                     else if (entityplayer$sleepresult == EntityPlayer.SleepResult.NOT_SAFE)
                     {
-                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.notSafe", new Object[0]), true);
+                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.notSafe"), true);
                     }
                     else if (entityplayer$sleepresult == EntityPlayer.SleepResult.TOO_FAR_AWAY)
                     {
-                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.tooFarAway", new Object[0]), true);
+                        playerIn.sendStatusMessage(new TextComponentTranslation("tile.bed.tooFarAway"), true);
                     }
 
                     return true;
@@ -340,7 +340,7 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-        return (meta & 8) > 0 ? this.getDefaultState().withProperty(PART, EnumPartType.HEAD).withProperty(FACING, enumfacing).withProperty(OCCUPIED, Boolean.valueOf((meta & 4) > 0)) : this.getDefaultState().withProperty(PART, EnumPartType.FOOT).withProperty(FACING, enumfacing);
+        return (meta & 8) > 0 ? this.getDefaultState().withProperty(PART, EnumPartType.HEAD).withProperty(FACING, enumfacing).withProperty(OCCUPIED, (meta & 4) > 0) : this.getDefaultState().withProperty(PART, EnumPartType.FOOT).withProperty(FACING, enumfacing);
     }
 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
@@ -377,7 +377,7 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
         {
             i |= 8;
 
-            if (((Boolean)state.getValue(OCCUPIED)).booleanValue())
+            if ((Boolean) state.getValue(OCCUPIED))
             {
                 i |= 4;
             }
@@ -393,7 +393,7 @@ public class BlockBed extends BlockHorizontal implements ITileEntityProvider
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, PART, OCCUPIED});
+        return new BlockStateContainer(this, FACING, PART, OCCUPIED);
     }
 
     public TileEntity createNewTileEntity(World worldIn, int meta)

@@ -80,7 +80,7 @@ public class GuiConfigEntries extends GuiListExtended
         this.owningScreen = parent;
         this.setShowSelectionBox(false);
         this.mc = mc;
-        this.listEntries = new ArrayList<IConfigEntry>();
+        this.listEntries = new ArrayList<>();
 
         for (IConfigElement configElement : parent.configElements)
         {
@@ -143,7 +143,7 @@ public class GuiConfigEntries extends GuiListExtended
                     }
                     else if (configElement.getType() == ConfigGuiType.MOD_ID)
                     {
-                        Map<Object, String> values = new TreeMap<Object, String>();
+                        Map<Object, String> values = new TreeMap<>();
                         for (ModContainer mod : Loader.instance().getActiveModList())
                             values.put(mod.getModId(), mod.getName());
                         values.put("minecraft", "Minecraft");
@@ -579,7 +579,7 @@ public class GuiConfigEntries extends GuiListExtended
     {
         protected final String        beforeValue;
         protected Object              currentValue;
-        protected Map<Object, String> selectableValues;
+        protected final Map<Object, String> selectableValues;
 
         public SelectValueEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement, Map<Object, String> selectableValues)
         {
@@ -986,10 +986,7 @@ public class GuiConfigEntries extends GuiListExtended
                     try
                     {
                         long value = Long.parseLong(textFieldValue.getText().trim());
-                        if (value < Integer.valueOf(configElement.getMinValue().toString()) || value > Integer.valueOf(configElement.getMaxValue().toString()))
-                            this.isValidValue = false;
-                        else
-                            this.isValidValue = true;
+                        this.isValidValue = value >= Integer.valueOf(configElement.getMinValue().toString()) && value <= Integer.valueOf(configElement.getMaxValue().toString());
                     }
                     catch (Throwable e)
                     {
@@ -1092,10 +1089,7 @@ public class GuiConfigEntries extends GuiListExtended
                     try
                     {
                         double value = Double.parseDouble(textFieldValue.getText().trim());
-                        if (value < Double.valueOf(configElement.getMinValue().toString()) || value > Double.valueOf(configElement.getMaxValue().toString()))
-                            this.isValidValue = false;
-                        else
-                            this.isValidValue = true;
+                        this.isValidValue = !(value < Double.valueOf(configElement.getMinValue().toString())) && !(value > Double.valueOf(configElement.getMaxValue().toString()));
                     }
                     catch (Throwable e)
                     {
@@ -1202,10 +1196,7 @@ public class GuiConfigEntries extends GuiListExtended
 
                 if (configElement.getValidationPattern() != null)
                 {
-                    if (configElement.getValidationPattern().matcher(this.textFieldValue.getText().trim()).matches())
-                        isValidValue = true;
-                    else
-                        isValidValue = false;
+                    isValidValue = configElement.getValidationPattern().matcher(this.textFieldValue.getText().trim()).matches();
                 }
             }
         }
@@ -1292,7 +1283,7 @@ public class GuiConfigEntries extends GuiListExtended
      */
     public static class CategoryEntry extends ListEntryBase
     {
-        protected GuiScreen childScreen;
+        protected final GuiScreen childScreen;
         protected final GuiButtonExt btnSelectCategory;
 
         public CategoryEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement)
@@ -1464,13 +1455,13 @@ public class GuiConfigEntries extends GuiListExtended
         protected final String name;
         protected final GuiButtonExt btnUndoChanges;
         protected final GuiButtonExt btnDefault;
-        protected List<String> toolTip;
-        protected List<String> undoToolTip;
-        protected List<String> defaultToolTip;
+        protected final List<String> toolTip;
+        protected final List<String> undoToolTip;
+        protected final List<String> defaultToolTip;
         protected boolean isValidValue = true;
         protected HoverChecker tooltipHoverChecker;
-        protected HoverChecker undoHoverChecker;
-        protected HoverChecker defaultHoverChecker;
+        protected final HoverChecker undoHoverChecker;
+        protected final HoverChecker defaultHoverChecker;
         protected boolean drawLabel;
 
         public ListEntryBase(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement)
@@ -1489,9 +1480,9 @@ public class GuiConfigEntries extends GuiListExtended
 
             this.undoHoverChecker = new HoverChecker(this.btnUndoChanges, 800);
             this.defaultHoverChecker = new HoverChecker(this.btnDefault, 800);
-            this.undoToolTip = Arrays.asList(new String[] { I18n.format("fml.configgui.tooltip.undoChanges") });
-            this.defaultToolTip = Arrays.asList(new String[] { I18n.format("fml.configgui.tooltip.resetToDefault") });
-            this.toolTip = new ArrayList<String>();
+            this.undoToolTip = Collections.singletonList(I18n.format("fml.configgui.tooltip.undoChanges"));
+            this.defaultToolTip = Collections.singletonList(I18n.format("fml.configgui.tooltip.resetToDefault"));
+            this.toolTip = new ArrayList<>();
 
             this.drawLabel = true;
 
@@ -1622,7 +1613,7 @@ public class GuiConfigEntries extends GuiListExtended
         @Override
         public boolean enabled()
         {
-            return owningScreen.isWorldRunning ? !owningScreen.allRequireWorldRestart && !configElement.requiresWorldRestart() : true;
+            return !owningScreen.isWorldRunning || !owningScreen.allRequireWorldRestart && !configElement.requiresWorldRestart();
         }
 
         @Override
@@ -1664,14 +1655,14 @@ public class GuiConfigEntries extends GuiListExtended
          */
         private String removeTag(String target, String tagStart, String tagEnd)
         {
-            int tagStartPosition = tagStartPosition = target.indexOf(tagStart);
-            int tagEndPosition = tagEndPosition = target.indexOf(tagEnd, tagStartPosition + tagStart.length());
+            int tagStartPosition = target.indexOf(tagStart);
+            int tagEndPosition = target.indexOf(tagEnd, tagStartPosition + tagStart.length());
 
             if (-1 == tagStartPosition || -1 == tagEndPosition)
                 return target;
 
             String taglessResult = target.substring(0, tagStartPosition);
-            taglessResult += target.substring(tagEndPosition + 1, target.length());
+            taglessResult += target.substring(tagEndPosition + 1);
 
             return taglessResult;
         }

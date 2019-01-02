@@ -19,7 +19,7 @@ import java.util.Random;
 public class Vector implements Cloneable, ConfigurationSerializable {
     private static final long serialVersionUID = -2657651106777219169L;
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     /**
      * Threshold for fuzzy equals().
@@ -669,7 +669,7 @@ public class Vector implements Cloneable, ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        Map<String, Object> result = new LinkedHashMap<>();
 
         result.put("x", getX());
         result.put("y", getY());

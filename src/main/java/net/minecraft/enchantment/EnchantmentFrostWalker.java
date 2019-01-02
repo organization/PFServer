@@ -59,7 +59,7 @@ public class EnchantmentFrostWalker extends Enchantment
                     {
                         IBlockState iblockstate1 = worldIn.getBlockState(blockpos$mutableblockpos1);
 
-                        if (iblockstate1.getMaterial() == Material.WATER && (iblockstate1.getBlock() == Blocks.WATER || iblockstate1.getBlock() == Blocks.FLOWING_WATER) && ((Integer)iblockstate1.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.mayPlace(Blocks.FROSTED_ICE, blockpos$mutableblockpos1, false, EnumFacing.DOWN, (Entity)null))
+                        if (iblockstate1.getMaterial() == Material.WATER && (iblockstate1.getBlock() == Blocks.WATER || iblockstate1.getBlock() == Blocks.FLOWING_WATER) && (Integer) iblockstate1.getValue(BlockLiquid.LEVEL) == 0 && worldIn.mayPlace(Blocks.FROSTED_ICE, blockpos$mutableblockpos1, false, EnumFacing.DOWN, (Entity)null))
                         {
                             // CraftBukkit Start - Call EntityBlockFormEvent for Frost Walker
                             if (org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockFormEvent(worldIn, blockpos$mutableblockpos1, Blocks.FROSTED_ICE.getDefaultState(), living)) {

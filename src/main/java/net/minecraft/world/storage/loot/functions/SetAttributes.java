@@ -166,21 +166,15 @@ public class SetAttributes extends LootFunction
 
             private static int getOperationFromInt(String operationIn)
             {
-                if ("addition".equals(operationIn))
-                {
-                    return 0;
-                }
-                else if ("multiply_base".equals(operationIn))
-                {
-                    return 1;
-                }
-                else if ("multiply_total".equals(operationIn))
-                {
-                    return 2;
-                }
-                else
-                {
-                    throw new JsonSyntaxException("Unknown attribute modifier operation " + operationIn);
+                switch (operationIn) {
+                    case "addition":
+                        return 0;
+                    case "multiply_base":
+                        return 1;
+                    case "multiply_total":
+                        return 2;
+                    default:
+                        throw new JsonSyntaxException("Unknown attribute modifier operation " + operationIn);
                 }
             }
         }

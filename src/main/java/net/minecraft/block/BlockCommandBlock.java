@@ -34,7 +34,7 @@ public class BlockCommandBlock extends BlockContainer
     public BlockCommandBlock(MapColor color)
     {
         super(Material.IRON, color);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(CONDITIONAL, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(CONDITIONAL, Boolean.FALSE));
     }
 
     public TileEntity createNewTileEntity(World worldIn, int meta)
@@ -215,12 +215,12 @@ public class BlockCommandBlock extends BlockContainer
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(CONDITIONAL, Boolean.valueOf((meta & 8) != 0));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(CONDITIONAL, (meta & 8) != 0);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing)state.getValue(FACING)).getIndex() | (((Boolean)state.getValue(CONDITIONAL)).booleanValue() ? 8 : 0);
+        return ((EnumFacing)state.getValue(FACING)).getIndex() | ((Boolean) state.getValue(CONDITIONAL) ? 8 : 0);
     }
 
     public IBlockState withRotation(IBlockState state, Rotation rot)
@@ -235,12 +235,12 @@ public class BlockCommandBlock extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, CONDITIONAL});
+        return new BlockStateContainer(this, FACING, CONDITIONAL);
     }
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)).withProperty(CONDITIONAL, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)).withProperty(CONDITIONAL, Boolean.FALSE);
     }
 
     private static void executeChain(World p_193386_0_, BlockPos p_193386_1_, EnumFacing p_193386_2_)

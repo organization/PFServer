@@ -51,8 +51,8 @@ public class FMLProxyPacket implements Packet<INetHandler> {
     private final PacketBuffer payload;
     private INetHandler netHandler;
     private NetworkDispatcher dispatcher;
-    private static Multiset<String> badPackets = ConcurrentHashMultiset.create();
-    private static int packetCountWarning = Integer.parseInt(System.getProperty("fml.badPacketCounter", "100"));
+    private static final Multiset<String> badPackets = ConcurrentHashMultiset.create();
+    private static final int packetCountWarning = Integer.parseInt(System.getProperty("fml.badPacketCounter", "100"));
 
     public FMLProxyPacket(SPacketCustomPayload original)
     {

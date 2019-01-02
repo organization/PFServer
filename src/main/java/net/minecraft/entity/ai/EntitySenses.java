@@ -8,9 +8,9 @@ import java.util.List;
 
 public class EntitySenses
 {
-    EntityLiving entity;
-    List<Entity> seenEntities = Lists.<Entity>newArrayList();
-    List<Entity> unseenEntities = Lists.<Entity>newArrayList();
+    final EntityLiving entity;
+    final List<Entity> seenEntities = Lists.<Entity>newArrayList();
+    final List<Entity> unseenEntities = Lists.<Entity>newArrayList();
 
     public EntitySenses(EntityLiving entityIn)
     {

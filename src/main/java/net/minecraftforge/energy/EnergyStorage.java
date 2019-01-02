@@ -28,9 +28,9 @@ package net.minecraftforge.energy;
 public class EnergyStorage implements IEnergyStorage
 {
     protected int energy;
-    protected int capacity;
-    protected int maxReceive;
-    protected int maxExtract;
+    protected final int capacity;
+    protected final int maxReceive;
+    protected final int maxExtract;
 
     public EnergyStorage(int capacity)
     {

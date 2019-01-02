@@ -21,7 +21,7 @@ public class Locale
 {
     private static final Splitter SPLITTER = Splitter.on('=').limit(2);
     private static final Pattern PATTERN = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
-    Map<String, String> properties = Maps.<String, String>newHashMap();
+    final Map<String, String> properties = Maps.<String, String>newHashMap();
     private boolean unicode;
 
     public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageList)
@@ -38,9 +38,8 @@ public class Locale
                 {
                     this.loadLocaleData(resourceManager.getAllResources(new ResourceLocation(s2, s1)));
                 }
-                catch (IOException var9)
+                catch (IOException ignored)
                 {
-                    ;
                 }
             }
         }

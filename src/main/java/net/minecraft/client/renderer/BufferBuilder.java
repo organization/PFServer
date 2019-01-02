@@ -47,7 +47,7 @@ public class BufferBuilder
         {
             int i = this.byteBuffer.capacity();
             int j = i + MathHelper.roundUp(p_181670_1_, 2097152);
-            LOGGER.debug("Needed to grow BufferBuilder buffer: Old size {} bytes, new size {} bytes.", Integer.valueOf(i), Integer.valueOf(j));
+            LOGGER.debug("Needed to grow BufferBuilder buffer: Old size {} bytes, new size {} bytes.", i, j);
             int k = this.rawIntBuffer.position();
             ByteBuffer bytebuffer = GLAllocation.createDirectByteBuffer(j);
             this.byteBuffer.position(0);
@@ -79,20 +79,14 @@ public class BufferBuilder
             ainteger[k] = k;
         }
 
-        Arrays.sort(ainteger, new Comparator<Integer>()
-        {
-            public int compare(Integer p_compare_1_, Integer p_compare_2_)
-            {
-                return Floats.compare(afloat[p_compare_2_.intValue()], afloat[p_compare_1_.intValue()]);
-            }
-        });
+        Arrays.sort(ainteger, (p_compare_1_, p_compare_2_) -> Floats.compare(afloat[p_compare_2_], afloat[p_compare_1_]));
         BitSet bitset = new BitSet();
         int l = this.vertexFormat.getNextOffset();
         int[] aint = new int[l];
 
         for (int i1 = bitset.nextClearBit(0); i1 < ainteger.length; i1 = bitset.nextClearBit(i1 + 1))
         {
-            int j1 = ainteger[i1].intValue();
+            int j1 = ainteger[i1];
 
             if (j1 != i1)
             {
@@ -101,7 +95,7 @@ public class BufferBuilder
                 this.rawIntBuffer.get(aint);
                 int k1 = j1;
 
-                for (int l1 = ainteger[j1].intValue(); k1 != i1; l1 = ainteger[l1].intValue())
+                for (int l1 = ainteger[j1]; k1 != i1; l1 = ainteger[l1])
                 {
                     this.rawIntBuffer.limit(l1 * l + l);
                     this.rawIntBuffer.position(l1 * l);

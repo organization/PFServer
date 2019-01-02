@@ -44,7 +44,7 @@ public abstract class Biome extends net.minecraftforge.registries.IForgeRegistry
     protected static final IBlockState SANDSTONE = Blocks.SANDSTONE.getDefaultState();
     protected static final IBlockState ICE = Blocks.ICE.getDefaultState();
     protected static final IBlockState WATER = Blocks.WATER.getDefaultState();
-    public static final ObjectIntIdentityMap<Biome> MUTATION_TO_BASE_ID_MAP = new ObjectIntIdentityMap<Biome>();
+    public static final ObjectIntIdentityMap<Biome> MUTATION_TO_BASE_ID_MAP = new ObjectIntIdentityMap<>();
     protected static final NoiseGeneratorPerlin TEMPERATURE_NOISE = new NoiseGeneratorPerlin(new Random(1234L), 1);
     protected static final NoiseGeneratorPerlin GRASS_COLOR_NOISE = new NoiseGeneratorPerlin(new Random(2345L), 1);
     protected static final WorldGenDoublePlant DOUBLE_PLANT_GENERATOR = new WorldGenDoublePlant();
@@ -65,12 +65,12 @@ public abstract class Biome extends net.minecraftforge.registries.IForgeRegistry
     public IBlockState topBlock = Blocks.GRASS.getDefaultState();
     public IBlockState fillerBlock = Blocks.DIRT.getDefaultState();
     public BiomeDecorator decorator;
-    protected List<SpawnListEntry> spawnableMonsterList = Lists.<SpawnListEntry>newArrayList();
-    protected List<SpawnListEntry> spawnableCreatureList = Lists.<SpawnListEntry>newArrayList();
-    protected List<SpawnListEntry> spawnableWaterCreatureList = Lists.<SpawnListEntry>newArrayList();
-    protected List<SpawnListEntry> spawnableCaveCreatureList = Lists.<SpawnListEntry>newArrayList();
+    protected final List<SpawnListEntry> spawnableMonsterList = Lists.<SpawnListEntry>newArrayList();
+    protected final List<SpawnListEntry> spawnableCreatureList = Lists.<SpawnListEntry>newArrayList();
+    protected final List<SpawnListEntry> spawnableWaterCreatureList = Lists.<SpawnListEntry>newArrayList();
+    protected final List<SpawnListEntry> spawnableCaveCreatureList = Lists.<SpawnListEntry>newArrayList();
     // Forge: Stores the spawnable lists for non-vanilla EnumCreatureTypes. Can't be an EnumMap as that doesn't handle new enum values being added after it's created.
-    protected java.util.Map<EnumCreatureType, List<SpawnListEntry>> modSpawnableLists = com.google.common.collect.Maps.newHashMap();
+    protected final java.util.Map<EnumCreatureType, List<SpawnListEntry>> modSpawnableLists = com.google.common.collect.Maps.newHashMap();
 
     public static int getIdForBiome(Biome biome)
     {
@@ -177,7 +177,7 @@ public abstract class Biome extends net.minecraftforge.registries.IForgeRegistry
 
     public boolean canRain()
     {
-        return this.isSnowyBiome() ? false : this.enableRain;
+        return !this.isSnowyBiome() && this.enableRain;
     }
 
     public boolean isHighHumidity()
@@ -386,7 +386,7 @@ public abstract class Biome extends net.minecraftforge.registries.IForgeRegistry
     }
 
     /* ========================================= FORGE START ======================================*/
-    protected List<FlowerEntry> flowers = new java.util.ArrayList<FlowerEntry>();
+    protected final List<FlowerEntry> flowers = new java.util.ArrayList<>();
 
     public BiomeDecorator getModdedBiomeDecorator(BiomeDecorator original)
     {
@@ -616,7 +616,7 @@ public abstract class Biome extends net.minecraftforge.registries.IForgeRegistry
 
     public static class SpawnListEntry extends WeightedRandom.Item
         {
-            public Class <? extends EntityLiving > entityClass;
+            public final Class <? extends EntityLiving > entityClass;
             public int minGroupCount;
             public int maxGroupCount;
 
@@ -646,6 +646,6 @@ public abstract class Biome extends net.minecraftforge.registries.IForgeRegistry
         OCEAN,
         COLD,
         MEDIUM,
-        WARM;
+        WARM
     }
 }

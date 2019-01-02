@@ -13,16 +13,10 @@ public class CompressedStreamTools
 {
     public static NBTTagCompound readCompressed(InputStream is) throws IOException
     {
-        DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(is)));
         NBTTagCompound nbttagcompound;
+        try (DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(is)))) {
 
-        try
-        {
             nbttagcompound = read(datainputstream, NBTSizeTracker.INFINITE);
-        }
-        finally
-        {
-            datainputstream.close();
         }
 
         return nbttagcompound;
@@ -30,15 +24,9 @@ public class CompressedStreamTools
 
     public static void writeCompressed(NBTTagCompound compound, OutputStream outputStream) throws IOException
     {
-        DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(outputStream)));
 
-        try
-        {
+        try (DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(outputStream)))) {
             write(compound, dataoutputstream);
-        }
-        finally
-        {
-            dataoutputstream.close();
         }
     }
 
@@ -127,7 +115,7 @@ public class CompressedStreamTools
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(ioexception, "Loading NBT data");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("NBT Tag");
-                crashreportcategory.addCrashSection("Tag type", Byte.valueOf(b0));
+                crashreportcategory.addCrashSection("Tag type", b0);
                 throw new ReportedException(crashreport);
             }
         }
@@ -135,15 +123,9 @@ public class CompressedStreamTools
 
     public static void write(NBTTagCompound compound, File fileIn) throws IOException
     {
-        DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(fileIn));
 
-        try
-        {
+        try (DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(fileIn))) {
             write(compound, dataoutputstream);
-        }
-        finally
-        {
-            dataoutputstream.close();
         }
     }
 
@@ -156,16 +138,10 @@ public class CompressedStreamTools
         }
         else
         {
-            DataInputStream datainputstream = new DataInputStream(new FileInputStream(fileIn));
             NBTTagCompound nbttagcompound;
+            try (DataInputStream datainputstream = new DataInputStream(new FileInputStream(fileIn))) {
 
-            try
-            {
                 nbttagcompound = read(datainputstream, NBTSizeTracker.INFINITE);
-            }
-            finally
-            {
-                datainputstream.close();
             }
 
             return nbttagcompound;

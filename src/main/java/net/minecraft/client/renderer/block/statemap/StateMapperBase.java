@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 @SideOnly(Side.CLIENT)
 public abstract class StateMapperBase implements IStateMapper
 {
-    protected Map<IBlockState, ModelResourceLocation> mapStateModelLocations = Maps.<IBlockState, ModelResourceLocation>newLinkedHashMap();
+    protected final Map<IBlockState, ModelResourceLocation> mapStateModelLocations = Maps.<IBlockState, ModelResourceLocation>newLinkedHashMap();
 
     public String getPropertyString(Map < IProperty<?>, Comparable<? >> values)
     {
@@ -49,11 +49,8 @@ public abstract class StateMapperBase implements IStateMapper
 
     public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn)
     {
-        UnmodifiableIterator unmodifiableiterator = blockIn.getBlockState().getValidStates().iterator();
 
-        while (unmodifiableiterator.hasNext())
-        {
-            IBlockState iblockstate = (IBlockState)unmodifiableiterator.next();
+        for (IBlockState iblockstate : blockIn.getBlockState().getValidStates()) {
             this.mapStateModelLocations.put(iblockstate, this.getModelResourceLocation(iblockstate));
         }
 

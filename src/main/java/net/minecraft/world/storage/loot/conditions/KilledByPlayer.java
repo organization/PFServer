@@ -33,7 +33,7 @@ public class KilledByPlayer implements LootCondition
 
             public void serialize(JsonObject json, KilledByPlayer value, JsonSerializationContext context)
             {
-                json.addProperty("inverse", Boolean.valueOf(value.inverse));
+                json.addProperty("inverse", value.inverse);
             }
 
             public KilledByPlayer deserialize(JsonObject json, JsonDeserializationContext context)

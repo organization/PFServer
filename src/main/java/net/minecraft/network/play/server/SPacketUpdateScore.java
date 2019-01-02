@@ -101,6 +101,6 @@ public class SPacketUpdateScore implements Packet<INetHandlerPlayClient>
     public static enum Action
     {
         CHANGE,
-        REMOVE;
+        REMOVE
     }
 }

@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class MapGenBase
 {
-    protected int range = 8;
-    protected Random rand = new Random();
+    protected final int range = 8;
+    protected final Random rand = new Random();
     protected World world;
 
     public void generate(World worldIn, int x, int z, ChunkPrimer primer)

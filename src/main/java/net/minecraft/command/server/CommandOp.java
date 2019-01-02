@@ -38,17 +38,17 @@ public class CommandOp extends CommandBase
 
             if (gameprofile == null)
             {
-                throw new CommandException("commands.op.failed", new Object[] {args[0]});
+                throw new CommandException("commands.op.failed", args[0]);
             }
             else
             {
                 server.getPlayerList().addOp(gameprofile);
-                notifyCommandListener(sender, this, "commands.op.success", new Object[] {args[0]});
+                notifyCommandListener(sender, this, "commands.op.success", args[0]);
             }
         }
         else
         {
-            throw new WrongUsageException("commands.op.usage", new Object[0]);
+            throw new WrongUsageException("commands.op.usage");
         }
     }
 

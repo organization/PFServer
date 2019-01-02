@@ -68,7 +68,7 @@ public class EntityAITempt extends EntityAIBase
                 return this.isTempting(this.temptingPlayer.getHeldItemMainhand()) || this.isTempting(this.temptingPlayer.getHeldItemOffhand());
             }
             */
-            boolean tempt = this.temptingPlayer == null ? false : this.isTempting(this.temptingPlayer.getHeldItemMainhand()) || this.isTempting(this.temptingPlayer.getHeldItemOffhand());
+            boolean tempt = this.temptingPlayer != null && (this.isTempting(this.temptingPlayer.getHeldItemMainhand()) || this.isTempting(this.temptingPlayer.getHeldItemOffhand()));
             if (tempt) {
                 EntityTargetLivingEntityEvent event = CraftEventFactory.callEntityTargetLivingEvent(this.temptedEntity, this.temptingPlayer, EntityTargetEvent.TargetReason.TEMPT);
                 if (event.isCancelled()) {

@@ -42,9 +42,9 @@ public class SpigotTimings {
     public static final CustomTimingsHandler entityActivationCheckTimer = new CustomTimingsHandler("entityActivationCheck");
     public static final CustomTimingsHandler checkIfActiveTimer = new CustomTimingsHandler("** checkIfActive");
 
-    public static final HashMap<String, CustomTimingsHandler> entityTypeTimingMap = new HashMap<String, CustomTimingsHandler>();
-    public static final HashMap<String, CustomTimingsHandler> tileEntityTypeTimingMap = new HashMap<String, CustomTimingsHandler>();
-    public static final HashMap<String, CustomTimingsHandler> pluginTaskTimingMap = new HashMap<String, CustomTimingsHandler>();
+    public static final HashMap<String, CustomTimingsHandler> entityTypeTimingMap = new HashMap<>();
+    public static final HashMap<String, CustomTimingsHandler> tileEntityTypeTimingMap = new HashMap<>();
+    public static final HashMap<String, CustomTimingsHandler> pluginTaskTimingMap = new HashMap<>();
 
     /**
      * Gets a timer associated with a plugins tasks.

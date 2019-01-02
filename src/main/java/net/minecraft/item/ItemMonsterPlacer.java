@@ -157,7 +157,7 @@ public class ItemMonsterPlacer extends Item
 
         if (worldIn.isRemote)
         {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+            return new ActionResult<>(EnumActionResult.PASS, itemstack);
         }
         else
         {
@@ -169,7 +169,7 @@ public class ItemMonsterPlacer extends Item
 
                 if (!(worldIn.getBlockState(blockpos).getBlock() instanceof BlockLiquid))
                 {
-                    return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+                    return new ActionResult<>(EnumActionResult.PASS, itemstack);
                 }
                 else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.sideHit, itemstack))
                 {
@@ -177,7 +177,7 @@ public class ItemMonsterPlacer extends Item
 
                     if (entity == null)
                     {
-                        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+                        return new ActionResult<>(EnumActionResult.PASS, itemstack);
                     }
                     else
                     {
@@ -194,17 +194,17 @@ public class ItemMonsterPlacer extends Item
                         }
 
                         playerIn.addStat(StatList.getObjectUseStats(this));
-                        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
                     }
                 }
                 else
                 {
-                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                    return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                 }
             }
             else
             {
-                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+                return new ActionResult<>(EnumActionResult.PASS, itemstack);
             }
         }
     }

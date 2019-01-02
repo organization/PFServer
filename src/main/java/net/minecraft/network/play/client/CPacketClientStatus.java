@@ -42,6 +42,6 @@ public class CPacketClientStatus implements Packet<INetHandlerPlayServer>
     public static enum State
     {
         PERFORM_RESPAWN,
-        REQUEST_STATS;
+        REQUEST_STATS
     }
 }

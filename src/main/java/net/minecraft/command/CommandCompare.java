@@ -34,7 +34,7 @@ public class CommandCompare extends CommandBase
     {
         if (args.length < 9)
         {
-            throw new WrongUsageException("commands.compare.usage", new Object[0]);
+            throw new WrongUsageException("commands.compare.usage");
         }
         else
         {
@@ -48,7 +48,7 @@ public class CommandCompare extends CommandBase
 
             if (i > 524288)
             {
-                throw new CommandException("commands.compare.tooManyBlocks", new Object[] {i, 524288});
+                throw new CommandException("commands.compare.tooManyBlocks", i, 524288);
             }
             else if (structureboundingbox.minY >= 0 && structureboundingbox.maxY < 256 && structureboundingbox1.minY >= 0 && structureboundingbox1.maxY < 256)
             {
@@ -116,7 +116,7 @@ public class CommandCompare extends CommandBase
 
                                     if (flag1)
                                     {
-                                        throw new CommandException("commands.compare.failed", new Object[0]);
+                                        throw new CommandException("commands.compare.failed");
                                     }
                                 }
                             }
@@ -124,16 +124,16 @@ public class CommandCompare extends CommandBase
                     }
 
                     sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, i);
-                    notifyCommandListener(sender, this, "commands.compare.success", new Object[] {i});
+                    notifyCommandListener(sender, this, "commands.compare.success", i);
                 }
                 else
                 {
-                    throw new CommandException("commands.compare.outOfWorld", new Object[0]);
+                    throw new CommandException("commands.compare.outOfWorld");
                 }
             }
             else
             {
-                throw new CommandException("commands.compare.outOfWorld", new Object[0]);
+                throw new CommandException("commands.compare.outOfWorld");
             }
         }
     }
@@ -154,7 +154,7 @@ public class CommandCompare extends CommandBase
         }
         else
         {
-            return args.length == 10 ? getListOfStringsMatchingLastWord(args, new String[] {"masked", "all"}) : Collections.emptyList();
+            return args.length == 10 ? getListOfStringsMatchingLastWord(args, "masked", "all") : Collections.emptyList();
         }
     }
 }

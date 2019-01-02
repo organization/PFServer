@@ -1,6 +1,5 @@
 package net.minecraft.entity;
 
-import cn.pfcraft.server.PFServer;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -143,14 +142,14 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     public float stepHeight;
     public boolean noClip;
     public float entityCollisionReduction;
-    protected Random rand;
+    protected final Random rand;
     public int ticksExisted;
     public int fire;
     public boolean inWater;
     public int hurtResistantTime;
     protected boolean firstUpdate;
     protected boolean isImmuneToFire;
-    protected EntityDataManager dataManager;
+    protected final EntityDataManager dataManager;
     protected static final DataParameter<Byte> FLAGS = EntityDataManager.<Byte>createKey(Entity.class, DataSerializers.BYTE);
     private static final DataParameter<Integer> AIR = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
     private static final DataParameter<String> CUSTOM_NAME = EntityDataManager.<String>createKey(Entity.class, DataSerializers.STRING);
@@ -243,12 +242,12 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
         // Spigot end
 
         this.dataManager = new EntityDataManager(this);
-        this.dataManager.register(FLAGS, Byte.valueOf((byte)0));
-        this.dataManager.register(AIR, Integer.valueOf(300));
-        this.dataManager.register(CUSTOM_NAME_VISIBLE, Boolean.valueOf(false));
+        this.dataManager.register(FLAGS, (byte) 0);
+        this.dataManager.register(AIR, 300);
+        this.dataManager.register(CUSTOM_NAME_VISIBLE, Boolean.FALSE);
         this.dataManager.register(CUSTOM_NAME, "");
-        this.dataManager.register(SILENT, Boolean.valueOf(false));
-        this.dataManager.register(NO_GRAVITY, Boolean.valueOf(false));
+        this.dataManager.register(SILENT, Boolean.FALSE);
+        this.dataManager.register(NO_GRAVITY, Boolean.FALSE);
         this.entityInit();
         if(!(this instanceof EntityPlayer)) { // PFServer - move to EntityPlayer
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.EntityEvent.EntityConstructing(this));
@@ -259,7 +258,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     /** Forge: Used to store custom data for each entity. */
     private NBTTagCompound customEntityData;
     public boolean captureDrops = false;
-    public java.util.ArrayList<EntityItem> capturedDrops = new java.util.ArrayList<EntityItem>();
+    public final java.util.ArrayList<EntityItem> capturedDrops = new java.util.ArrayList<>();
     public net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities; // PFServer - private -> public
 
     public int getEntityId()
@@ -645,7 +644,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
                     // TODO: shouldn't be sending null for the block
                     org.bukkit.block.Block damager = null; // ((WorldServer) this.l).getWorld().getBlockAt(i, j, k);
                     org.bukkit.entity.Entity damagee = this.getBukkitEntity();
-                    EntityCombustEvent combustEvent = new org.bukkit.event.entity.EntityCombustByBlockEvent(damager, damagee, 15);
+                    EntityCombustEvent combustEvent = new org.bukkit.event.entity.EntityCombustByBlockEvent(null, damagee, 15);
                     this.world.getServer().getPluginManager().callEvent(combustEvent);
 
                     if (!combustEvent.isCancelled()) {
@@ -1274,22 +1273,22 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public boolean isSilent()
     {
-        return ((Boolean)this.dataManager.get(SILENT)).booleanValue();
+        return (Boolean) this.dataManager.get(SILENT);
     }
 
     public void setSilent(boolean isSilent)
     {
-        this.dataManager.set(SILENT, Boolean.valueOf(isSilent));
+        this.dataManager.set(SILENT, isSilent);
     }
 
     public boolean hasNoGravity()
     {
-        return ((Boolean)this.dataManager.get(NO_GRAVITY)).booleanValue();
+        return (Boolean) this.dataManager.get(NO_GRAVITY);
     }
 
     public void setNoGravity(boolean noGravity)
     {
-        this.dataManager.set(NO_GRAVITY, Boolean.valueOf(noGravity));
+        this.dataManager.set(NO_GRAVITY, noGravity);
     }
 
     protected boolean canTriggerWalking()
@@ -1849,22 +1848,18 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public static void registerFixes(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.ENTITY, (fixer1, compound, versionIn) -> {
+            if (compound.hasKey("Passengers", 9))
             {
-                if (compound.hasKey("Passengers", 9))
+                NBTTagList nbttaglist = compound.getTagList("Passengers", 10);
+
+                for (int i = 0; i < nbttaglist.tagCount(); ++i)
                 {
-                    NBTTagList nbttaglist = compound.getTagList("Passengers", 10);
-
-                    for (int i = 0; i < nbttaglist.tagCount(); ++i)
-                    {
-                        nbttaglist.set(i, fixer.process(FixTypes.ENTITY, nbttaglist.getCompoundTagAt(i), versionIn));
-                    }
+                    nbttaglist.set(i, fixer1.process(FixTypes.ENTITY, nbttaglist.getCompoundTagAt(i), versionIn));
                 }
-
-                return compound;
             }
+
+            return compound;
         });
     }
 
@@ -1923,7 +1918,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
             if (this.glowing)
             {
-                compound.setBoolean("Glowing", this.glowing);
+                compound.setBoolean("Glowing", true);
             }
             compound.setBoolean("UpdateBlocked", updateBlocked);
 
@@ -2215,7 +2210,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
             for (int i = 0; i < 8; ++i)
             {
-                int j = MathHelper.floor(this.posY + (double)(((float)((i >> 0) % 2) - 0.5F) * 0.1F) + (double)this.getEyeHeight());
+                int j = MathHelper.floor(this.posY + (double)(((float)((i) % 2) - 0.5F) * 0.1F) + (double)this.getEyeHeight());
                 int k = MathHelper.floor(this.posX + (double)(((float)((i >> 1) % 2) - 0.5F) * this.width * 0.8F));
                 int l = MathHelper.floor(this.posZ + (double)(((float)((i >> 2) % 2) - 0.5F) * this.width * 0.8F));
 
@@ -2586,7 +2581,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
         else
         {
             Team team = this.getTeam();
-            return team != null && player != null && player.getTeam() == team && team.getSeeFriendlyInvisiblesEnabled() ? false : this.isInvisible();
+            return (team == null || player == null || player.getTeam() != team || !team.getSeeFriendlyInvisiblesEnabled()) && this.isInvisible();
         }
     }
 
@@ -2603,7 +2598,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public boolean isOnScoreboardTeam(Team teamIn)
     {
-        return this.getTeam() != null ? this.getTeam().isSameTeam(teamIn) : false;
+        return this.getTeam() != null && this.getTeam().isSameTeam(teamIn);
     }
 
     public void setInvisible(boolean invisible)
@@ -2613,26 +2608,26 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public boolean getFlag(int flag)
     {
-        return (((Byte)this.dataManager.get(FLAGS)).byteValue() & 1 << flag) != 0;
+        return ((Byte) this.dataManager.get(FLAGS) & 1 << flag) != 0;
     }
 
     public void setFlag(int flag, boolean set)
     {
-        byte b0 = ((Byte)this.dataManager.get(FLAGS)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(FLAGS);
 
         if (set)
         {
-            this.dataManager.set(FLAGS, Byte.valueOf((byte)(b0 | 1 << flag)));
+            this.dataManager.set(FLAGS, (byte) (b0 | 1 << flag));
         }
         else
         {
-            this.dataManager.set(FLAGS, Byte.valueOf((byte)(b0 & ~(1 << flag))));
+            this.dataManager.set(FLAGS, (byte) (b0 & ~(1 << flag)));
         }
     }
 
     public int getAir()
     {
-        return ((Integer)this.dataManager.get(AIR)).intValue();
+        return (Integer) this.dataManager.get(AIR);
     }
 
     public void setAir(int air)
@@ -2927,8 +2922,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
         if (true) {
             WorldServer worldserver = ((CraftWorld) getBukkitEntity().getLocation().getWorld()).getHandle();
             WorldServer worldserver1 = ((CraftWorld) exit.getWorld()).getHandle();
-            int i = worldserver1.dimension;
-            this.dimension = i;
+            this.dimension = worldserver1.dimension;
             /* CraftBukkit start - TODO: Check if we need this
             if (i == 1 && dimensionIn == 1 && teleporter.isVanilla())
             {
@@ -3062,38 +3056,14 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public void addEntityCrashInfo(CrashReportCategory category)
     {
-        category.addDetail("Entity Type", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return EntityList.getKey(Entity.this) + " (" + Entity.this.getClass().getCanonicalName() + ")";
-            }
-        });
-        category.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
-        category.addDetail("Entity Name", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return Entity.this.getName();
-            }
-        });
+        category.addDetail("Entity Type", () -> EntityList.getKey(Entity.this) + " (" + Entity.this.getClass().getCanonicalName() + ")");
+        category.addCrashSection("Entity ID", this.entityId);
+        category.addDetail("Entity Name", Entity.this::getName);
         category.addCrashSection("Entity's Exact location", String.format("%.2f, %.2f, %.2f", this.posX, this.posY, this.posZ));
         category.addCrashSection("Entity's Block location", CrashReportCategory.getCoordinateInfo(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)));
         category.addCrashSection("Entity's Momentum", String.format("%.2f, %.2f, %.2f", this.motionX, this.motionY, this.motionZ));
-        category.addDetail("Entity's Passengers", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return Entity.this.getPassengers().toString();
-            }
-        });
-        category.addDetail("Entity's Vehicle", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return Entity.this.getRidingEntity().toString();
-            }
-        });
+        category.addDetail("Entity's Passengers", () -> Entity.this.getPassengers().toString());
+        category.addDetail("Entity's Vehicle", () -> Entity.this.getRidingEntity().toString());
     }
 
     public void setUniqueId(UUID uniqueIdIn)
@@ -3165,12 +3135,12 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
     public void setAlwaysRenderNameTag(boolean alwaysRenderNameTag)
     {
-        this.dataManager.set(CUSTOM_NAME_VISIBLE, Boolean.valueOf(alwaysRenderNameTag));
+        this.dataManager.set(CUSTOM_NAME_VISIBLE, alwaysRenderNameTag);
     }
 
     public boolean getAlwaysRenderNameTag()
     {
-        return ((Boolean)this.dataManager.get(CUSTOM_NAME_VISIBLE)).booleanValue();
+        return (Boolean) this.dataManager.get(CUSTOM_NAME_VISIBLE);
     }
 
     public void setPositionAndUpdate(double x, double y, double z)
@@ -3672,7 +3642,6 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
 
         for (entity = this; entity.isRiding(); entity = entity.getRidingEntity())
         {
-            ;
         }
 
         return entity;

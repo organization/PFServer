@@ -40,14 +40,10 @@ import java.util.regex.Pattern;
 public class ResourcePackRepository
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final FileFilter RESOURCE_PACK_FILTER = new FileFilter()
-    {
-        public boolean accept(File p_accept_1_)
-        {
-            boolean flag = p_accept_1_.isFile() && p_accept_1_.getName().endsWith(".zip");
-            boolean flag1 = p_accept_1_.isDirectory() && (new File(p_accept_1_, "pack.mcmeta")).isFile();
-            return flag || flag1;
-        }
+    private static final FileFilter RESOURCE_PACK_FILTER = p_accept_1_ -> {
+        boolean flag = p_accept_1_.isFile() && p_accept_1_.getName().endsWith(".zip");
+        boolean flag1 = p_accept_1_.isDirectory() && (new File(p_accept_1_, "pack.mcmeta")).isFile();
+        return flag || flag1;
     };
     private static final Pattern SHA1 = Pattern.compile("^[a-fA-F0-9]{40}$");
     private static final ResourceLocation UNKNOWN_PACK_TEXTURE = new ResourceLocation("textures/misc/unknown_pack.png");
@@ -143,9 +139,8 @@ public class ResourcePackRepository
                 return new LegacyV2Adapter(iresourcepack);
             }
         }
-        catch (Exception var4)
+        catch (Exception ignored)
         {
-            ;
         }
 
         return iresourcepack;
@@ -204,9 +199,8 @@ public class ResourcePackRepository
                 resourcepackrepository$entry.updateResourcePack();
                 return resourcepackrepository$entry;
             }
-            catch (IOException var3)
+            catch (IOException ignored)
             {
-                ;
             }
         }
 
@@ -249,8 +243,7 @@ public class ResourcePackRepository
             {
                 if (this.checkHash(s1, file1))
                 {
-                    ListenableFuture listenablefuture1 = this.setServerResourcePack(file1);
-                    return listenablefuture1;
+                    return this.setServerResourcePack(file1);
                 }
 
                 LOGGER.warn("Deleting file {}", (Object)file1);
@@ -261,13 +254,7 @@ public class ResourcePackRepository
             final GuiScreenWorking guiscreenworking = new GuiScreenWorking();
             Map<String, String> map = getDownloadHeaders();
             final Minecraft minecraft = Minecraft.getMinecraft();
-            Futures.getUnchecked(minecraft.addScheduledTask(new Runnable()
-            {
-                public void run()
-                {
-                    minecraft.displayGuiScreen(guiscreenworking);
-                }
-            }));
+            Futures.getUnchecked(minecraft.addScheduledTask(() -> minecraft.displayGuiScreen(guiscreenworking)));
             final SettableFuture<Object> settablefuture = SettableFuture.<Object>create();
             this.downloadingPacks = HttpUtil.downloadResourcePack(file1, url, map, 52428800, guiscreenworking, minecraft.getProxy());
             Futures.addCallback(this.downloadingPacks, new FutureCallback<Object>()
@@ -291,8 +278,7 @@ public class ResourcePackRepository
                     settablefuture.setException(p_onFailure_1_);
                 }
             });
-            ListenableFuture listenablefuture = this.downloadingPacks;
-            return listenablefuture;
+            return this.downloadingPacks;
         }
         finally
         {
@@ -349,7 +335,7 @@ public class ResourcePackRepository
         try
         {
             List<File> list = Lists.newArrayList(FileUtils.listFiles(this.dirServerResourcepacks, TrueFileFilter.TRUE, (IOFileFilter)null));
-            Collections.sort(list, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
+            list.sort(LastModifiedFileComparator.LASTMODIFIED_REVERSE);
             int i = 0;
 
             for (File file1 : list)
@@ -442,9 +428,8 @@ public class ResourcePackRepository
             {
                 bufferedimage = this.reResourcePack.getPackImage();
             }
-            catch (IOException var5)
+            catch (IOException ignored)
             {
-                ;
             }
 
             if (bufferedimage == null)
@@ -503,7 +488,7 @@ public class ResourcePackRepository
             }
             else
             {
-                return p_equals_1_ instanceof Entry ? this.toString().equals(p_equals_1_.toString()) : false;
+                return p_equals_1_ instanceof Entry && this.toString().equals(p_equals_1_.toString());
             }
         }
 

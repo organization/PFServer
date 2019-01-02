@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SideOnly(Side.CLIENT)
 public class ConditionPropertyValue implements ICondition
@@ -58,14 +59,7 @@ public class ConditionPropertyValue implements ICondition
                 }
                 else
                 {
-                    predicate = Predicates.or(Iterables.transform(list, new Function<String, Predicate<IBlockState>>()
-                    {
-                        @Nullable
-                        public Predicate<IBlockState> apply(@Nullable String p_apply_1_)
-                        {
-                            return ConditionPropertyValue.this.makePredicate(iproperty, p_apply_1_);
-                        }
-                    }));
+                    predicate = Predicates.or(list.stream().map(p_apply_1_ -> ConditionPropertyValue.this.makePredicate(iproperty, p_apply_1_)).collect(Collectors.toList()));
                 }
 
                 return flag ? Predicates.not(predicate) : predicate;
@@ -83,13 +77,7 @@ public class ConditionPropertyValue implements ICondition
         }
         else
         {
-            return new Predicate<IBlockState>()
-            {
-                public boolean apply(@Nullable IBlockState p_apply_1_)
-                {
-                    return p_apply_1_ != null && p_apply_1_.getValue(property).equals(optional.get());
-                }
-            };
+            return p_apply_1_ -> p_apply_1_ != null && p_apply_1_.getValue(property).equals(optional.get());
         }
     }
 

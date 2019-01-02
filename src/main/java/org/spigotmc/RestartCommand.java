@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 public class RestartCommand extends Command
 {
@@ -25,14 +26,7 @@ public class RestartCommand extends Command
     {
         if ( testPermission( sender ) )
         {
-            MinecraftServer.getServerInst().processQueue.add( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    restart();
-                }
-            } );
+            MinecraftServer.getServerInst().processQueue.add(RestartCommand::restart);
         }
         return true;
     }
@@ -63,7 +57,7 @@ public class RestartCommand extends Command
                 try
                 {
                     Thread.sleep( 100 );
-                } catch ( InterruptedException ex )
+                } catch ( InterruptedException ignored)
                 {
                 }
                 // Close the socket so we can rebind with the new process
@@ -73,7 +67,7 @@ public class RestartCommand extends Command
                 try
                 {
                     Thread.sleep( 100 );
-                } catch ( InterruptedException ex )
+                } catch ( InterruptedException ignored)
                 {
                 }
 
@@ -81,35 +75,30 @@ public class RestartCommand extends Command
                 try
                 {
                     MinecraftServer.getServerInst().stopServer();
-                } catch ( Throwable t )
+                } catch ( Throwable ignored)
                 {
                 }
 
                 // This will be done AFTER the server has completely halted
-                Thread shutdownHook = new Thread()
-                {
-                    @Override
-                    public void run()
+                Thread shutdownHook = new Thread(() -> {
+                    try
                     {
-                        try
+                        String os = System.getProperty( "os.name" ).toLowerCase(Locale.ENGLISH);
+                        if ( os.contains( "win" ) )
                         {
-                            String os = System.getProperty( "os.name" ).toLowerCase(java.util.Locale.ENGLISH);
-                            if ( os.contains( "win" ) )
-                            {
-                                Runtime.getRuntime().exec( "cmd /c start " + script.getPath() );
-                            } else
-                            {
-                                Runtime.getRuntime().exec( new String[]
-                                {
-                                    "sh", script.getPath()
-                                } );
-                            }
-                        } catch ( Exception e )
+                            Runtime.getRuntime().exec( "cmd /c start " + script.getPath() );
+                        } else
                         {
-                            e.printStackTrace();
+                            Runtime.getRuntime().exec( new String[]
+                            {
+                                "sh", script.getPath()
+                            } );
                         }
+                    } catch ( Exception e )
+                    {
+                        e.printStackTrace();
                     }
-                };
+                });
 
                 shutdownHook.setDaemon( true );
                 Runtime.getRuntime().addShutdownHook( shutdownHook );
@@ -121,7 +110,7 @@ public class RestartCommand extends Command
                 try
                 {
                     MinecraftServer.getServerInst().stopServer();
-                } catch ( Throwable t )
+                } catch ( Throwable ignored)
                 {
                 }
             }

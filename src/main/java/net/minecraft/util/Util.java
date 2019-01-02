@@ -51,13 +51,9 @@ public class Util
             task.run();
             return task.get();
         }
-        catch (ExecutionException executionexception)
+        catch (ExecutionException | InterruptedException executionexception)
         {
             logger.fatal("Error executing task", (Throwable)executionexception);
-        }
-        catch (InterruptedException interruptedexception)
-        {
-            logger.fatal("Error executing task", (Throwable)interruptedexception);
         }
 
         return (V)null;
@@ -75,6 +71,6 @@ public class Util
         SOLARIS,
         WINDOWS,
         OSX,
-        UNKNOWN;
+        UNKNOWN
     }
 }

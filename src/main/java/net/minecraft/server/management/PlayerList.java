@@ -68,6 +68,7 @@ import java.io.File;
 import java.net.SocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class PlayerList
 {
@@ -94,7 +95,7 @@ public abstract class PlayerList
     private boolean commandsAllowedForAll;
     private int playerPingIndex;
 
-    private CraftServer cserver;
+    private final CraftServer cserver;
 
     public PlayerList(MinecraftServer server)
     {
@@ -421,12 +422,11 @@ public abstract class PlayerList
     {
         this.playerEntityList.add(playerIn);
         this.uuidToPlayerMap.put(playerIn.getUniqueID(), playerIn);
-        this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, new EntityPlayerMP[] {playerIn}));
+        this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, playerIn));
         WorldServer worldserver = this.mcServer.getWorld(playerIn.dimension);
 
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, new EntityPlayerMP[] {this.playerEntityList.get(i)}));
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, entityPlayerMP));
         }
 
         net.minecraftforge.common.chunkio.ChunkIOExecutor.adjustPoolSize(this.getCurrentPlayerCount());
@@ -460,11 +460,8 @@ public abstract class PlayerList
 
         // CraftBukkit start - sendAll above replaced with this loop
         SPacketPlayerListItem packet = new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, playerIn);
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
+        for (EntityPlayerMP entityplayer1 : this.playerEntityList) {
             // playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, new EntityPlayerMP[] {this.playerEntityList.get(i)}));
-            EntityPlayerMP entityplayer1 = this.playerEntityList.get(i);
-
             if (entityplayer1.getBukkitEntity().canSee(playerIn.getBukkitEntity())) {
                 entityplayer1.connection.sendPacket(packet);
             }
@@ -473,7 +470,7 @@ public abstract class PlayerList
                 continue;
             }
 
-            playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, new EntityPlayerMP[] { entityplayer1}));
+            playerIn.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.ADD_PLAYER, entityplayer1));
         }
         playerIn.sentListPacket = true;
         // CraftBukkit end
@@ -550,13 +547,12 @@ public abstract class PlayerList
 
         // this.sendPacketToAllPlayers(new SPacketPlayerListItem(SPacketPlayerListItem.Action.REMOVE_PLAYER, new EntityPlayerMP[] {playerIn}));
         SPacketPlayerListItem packet = new SPacketPlayerListItem(SPacketPlayerListItem.Action.REMOVE_PLAYER, playerIn);
-        for (int i = 0; i < playerEntityList.size(); i++) {
-            EntityPlayerMP entityplayer2 = (EntityPlayerMP) this.playerEntityList.get(i);
+        for (EntityPlayerMP entityPlayerMP : playerEntityList) {
 
-            if (entityplayer2.getBukkitEntity().canSee(playerIn.getBukkitEntity())) {
-                entityplayer2.connection.sendPacket(packet);
+            if (((EntityPlayerMP) entityPlayerMP).getBukkitEntity().canSee(playerIn.getBukkitEntity())) {
+                ((EntityPlayerMP) entityPlayerMP).connection.sendPacket(packet);
             } else {
-                entityplayer2.getBukkitEntity().removeDisconnectingPlayer(playerIn.getBukkitEntity());
+                ((EntityPlayerMP) entityPlayerMP).getBukkitEntity().removeDisconnectingPlayer(playerIn.getBukkitEntity());
             }
         }
         // This removes the scoreboard (and player reference) for the specific player in the manager
@@ -612,19 +608,17 @@ public abstract class PlayerList
 
         EntityPlayerMP entityplayer;
 
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            entityplayer = (EntityPlayerMP) this.playerEntityList.get(i);
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            entityplayer = (EntityPlayerMP) entityPlayerMP;
             if (entityplayer.getUniqueID().equals(uuid)) {
                 arraylist.add(entityplayer);
             }
         }
 
-        Iterator iterator = arraylist.iterator();
-
-        while (iterator.hasNext()) {
-            entityplayer = (EntityPlayerMP) iterator.next();
+        for (Object o : arraylist) {
+            entityplayer = (EntityPlayerMP) o;
             writePlayerData(entityplayer); // CraftBukkit - Force the player's inventory to be saved
-            entityplayer.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login", new Object[0]));
+            entityplayer.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login"));
         }
 
         // Instead of kicking then returning, we need to store the kick reason
@@ -689,12 +683,8 @@ public abstract class PlayerList
         UUID uuid = EntityPlayer.getUUID(profile);
         List<EntityPlayerMP> list = Lists.<EntityPlayerMP>newArrayList();
 
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
-            if (entityplayermp.getUniqueID().equals(uuid))
-            {
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
+            if (entityplayermp.getUniqueID().equals(uuid)) {
                 list.add(entityplayermp);
             }
         }
@@ -708,7 +698,7 @@ public abstract class PlayerList
 
         for (EntityPlayerMP entityplayermp1 : list)
         {
-            entityplayermp1.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login", new Object[0]));
+            entityplayermp1.connection.disconnect(new TextComponentTranslation("multiplayer.disconnect.duplicate_login"));
         }
 
         PlayerInteractionManager playerinteractionmanager;
@@ -809,20 +799,19 @@ public abstract class PlayerList
 
         EntityPlayerMP entityplayermp = new EntityPlayerMP(this.mcServer, this.mcServer.getWorld(playerIn.dimension), playerIn.getGameProfile(), playerinteractionmanager);
         */
-        EntityPlayerMP entityplayermp = playerIn;
         org.bukkit.World fromWorld = playerIn.getBukkitEntity().getWorld();
         playerIn.queuedEndExit = false;
 
-        entityplayermp.connection = playerIn.connection;
-        entityplayermp.copyFrom(playerIn, conqueredEnd);
-        entityplayermp.dimension = dimension;
-        entityplayermp.setEntityId(playerIn.getEntityId());
-        entityplayermp.setCommandStats(playerIn);
-        entityplayermp.setPrimaryHand(playerIn.getPrimaryHand());
+        playerIn.connection = playerIn.connection;
+        playerIn.copyFrom(playerIn, conqueredEnd);
+        playerIn.dimension = dimension;
+        playerIn.setEntityId(playerIn.getEntityId());
+        playerIn.setCommandStats(playerIn);
+        playerIn.setPrimaryHand(playerIn.getPrimaryHand());
 
         for (String s : playerIn.getTags())
         {
-            entityplayermp.addTag(s);
+            playerIn.addTag(s);
         }
 
         // WorldServer worldserver = this.mcServer.getWorld(playerIn.dimension); // CraftBukkit - handled later
@@ -838,17 +827,17 @@ public abstract class PlayerList
                     isBedSpawn = true;
                     location = new Location(cworld, (double) ((float) blockposition1.getX() + 0.5F), (double) ((float) blockposition1.getY() + 0.1F), (double) ((float) blockposition1.getZ() + 0.5F));
                 } else {
-                    entityplayermp.setSpawnPoint(null, true);
-                    entityplayermp.connection.sendPacket(new SPacketChangeGameState(0, 0.0F));
+                    playerIn.setSpawnPoint(null, true);
+                    playerIn.connection.sendPacket(new SPacketChangeGameState(0, 0.0F));
                 }
             }
 
             if (location == null) {
                 cworld = (CraftWorld) this.mcServer.server.getWorlds().get(0);
-                blockpos = entityplayermp.getSpawnPoint(this.mcServer, cworld.getHandle());
+                blockpos = playerIn.getSpawnPoint(this.mcServer, cworld.getHandle());
                 location = new Location(cworld, (double) ((float) blockpos.getX() + 0.5F), (double) ((float) blockpos.getY() + 0.1F), (double) ((float) blockpos.getZ() + 0.5F));
             }
-            Player respawnPlayer = cserver.getPlayer(entityplayermp);
+            Player respawnPlayer = cserver.getPlayer(playerIn);
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
             // Spigot Start
@@ -864,13 +853,13 @@ public abstract class PlayerList
         }
 
         WorldServer worldserver = ((CraftWorld) location.getWorld()).getHandle();
-        entityplayermp.forceSetPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        playerIn.forceSetPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
-        worldserver.getChunkProvider().provideChunk((int)entityplayermp.posX >> 4, (int)entityplayermp.posZ >> 4);
+        worldserver.getChunkProvider().provideChunk((int) playerIn.posX >> 4, (int) playerIn.posZ >> 4);
 
-        while (avoidSuffocation && !worldserver.getCollisionBoxes(entityplayermp, entityplayermp.getEntityBoundingBox()).isEmpty() && entityplayermp.posY < 256.0D)
+        while (avoidSuffocation && !worldserver.getCollisionBoxes(playerIn, playerIn.getEntityBoundingBox()).isEmpty() && playerIn.posY < 256.0D)
         {
-            entityplayermp.setPosition(entityplayermp.posX, entityplayermp.posY + 1.0D, entityplayermp.posZ);
+            playerIn.setPosition(playerIn.posX, playerIn.posY + 1.0D, playerIn.posZ);
         }
 
         int actualDimension = worldserver.provider.getDimension();
@@ -879,30 +868,30 @@ public abstract class PlayerList
         {
             FMLEmbeddedChannel serverChannel = ForgeNetworkHandler.getServerChannel();
             serverChannel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
-            serverChannel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(entityplayermp);
+            serverChannel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(playerIn);
             serverChannel.writeOutbound(new ForgeMessage.DimensionRegisterMessage(actualDimension, DimensionManager.getProviderType(actualDimension).name()));
         }
         // PFServer end
         // entityplayermp.connection.sendPacket(new SPacketRespawn(entityplayermp.dimension, entityplayermp.world.getDifficulty(), entityplayermp.world.getWorldInfo().getTerrainType(), entityplayermp.interactionManager.getGameType()));
-        entityplayermp.connection.sendPacket(new SPacketRespawn(actualDimension, worldserver.getDifficulty(), worldserver.getWorldInfo().getTerrainType(), entityplayermp.interactionManager.getGameType()));
-        entityplayermp.setWorld(worldserver);
-        entityplayermp.isDead = false;
-        entityplayermp.connection.teleport(new Location(worldserver.getWorld(), entityplayermp.posX, entityplayermp.posY, entityplayermp.posZ, entityplayermp.rotationYaw, entityplayermp.rotationPitch));
-        entityplayermp.setSneaking(false);
+        playerIn.connection.sendPacket(new SPacketRespawn(actualDimension, worldserver.getDifficulty(), worldserver.getWorldInfo().getTerrainType(), playerIn.interactionManager.getGameType()));
+        playerIn.setWorld(worldserver);
+        playerIn.isDead = false;
+        playerIn.connection.teleport(new Location(worldserver.getWorld(), playerIn.posX, playerIn.posY, playerIn.posZ, playerIn.rotationYaw, playerIn.rotationPitch));
+        playerIn.setSneaking(false);
         BlockPos blockpos2 = worldserver.getSpawnPoint();
         // entityplayermp.connection.setPlayerLocation(entityplayermp.posX, entityplayermp.posY, entityplayermp.posZ, entityplayermp.rotationYaw, entityplayermp.rotationPitch);
-        entityplayermp.connection.sendPacket(new SPacketSpawnPosition(blockpos2));
-        entityplayermp.connection.sendPacket(new SPacketSetExperience(entityplayermp.experience, entityplayermp.experienceTotal, entityplayermp.experienceLevel));
-        this.updateTimeAndWeatherForPlayer(entityplayermp, worldserver);
-        this.updatePermissionLevel(entityplayermp);
+        playerIn.connection.sendPacket(new SPacketSpawnPosition(blockpos2));
+        playerIn.connection.sendPacket(new SPacketSetExperience(playerIn.experience, playerIn.experienceTotal, playerIn.experienceLevel));
+        this.updateTimeAndWeatherForPlayer(playerIn, worldserver);
+        this.updatePermissionLevel(playerIn);
         if (!playerIn.connection.isDisconnected()) {
-            worldserver.getPlayerChunkMap().addPlayer(entityplayermp);
-            worldserver.spawnEntity(entityplayermp);
-            this.playerEntityList.add(entityplayermp);
-            this.uuidToPlayerMap.put(entityplayermp.getUniqueID(), entityplayermp);
+            worldserver.getPlayerChunkMap().addPlayer(playerIn);
+            worldserver.spawnEntity(playerIn);
+            this.playerEntityList.add(playerIn);
+            this.uuidToPlayerMap.put(playerIn.getUniqueID(), playerIn);
         }
         // entityplayermp.addSelfToInternalCraftingInventory();
-        entityplayermp.setHealth(entityplayermp.getHealth());
+        playerIn.setHealth(playerIn.getHealth());
         // Added from changeDimension
         syncPlayerInventory(playerIn); // Update health, etc...
         playerIn.sendPlayerAbilities();
@@ -928,8 +917,8 @@ public abstract class PlayerList
             this.writePlayerData(playerIn);
         }
         // CraftBukkit end
-        net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerRespawnEvent(entityplayermp, conqueredEnd);
-        return entityplayermp;
+        net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerRespawnEvent(playerIn, conqueredEnd);
+        return playerIn;
     }
 
     // CraftBukkit start - Replaced the standard handling of portals with a more customised method.
@@ -959,7 +948,7 @@ public abstract class PlayerList
                 }
             } else {
                 exit = this.calculateTarget(enter, exitWorld);
-                if (cause != cause.MOD) // don't use travel agent for custom dimensions
+                if (cause != PlayerTeleportEvent.TeleportCause.MOD) // don't use travel agent for custom dimensions
                 {
                     useTravelAgent = true;
                 }
@@ -974,7 +963,7 @@ public abstract class PlayerList
             return;
         }
 
-        exit = event.useTravelAgent() && cause != cause.MOD ? event.getPortalTravelAgent().findOrCreate(event.getTo()) : event.getTo();
+        exit = event.useTravelAgent() && cause != PlayerTeleportEvent.TeleportCause.MOD ? event.getPortalTravelAgent().findOrCreate(event.getTo()) : event.getTo();
         if (exit == null) {
             return;
         }
@@ -1278,12 +1267,7 @@ public abstract class PlayerList
             for (int i = 0; i < this.playerEntityList.size(); ++i) {
                 final EntityPlayerMP target = this.playerEntityList.get(i);
 
-                target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.UPDATE_LATENCY, Iterables.filter(this.playerEntityList, new Predicate<EntityPlayerMP>() {
-                    @Override
-                    public boolean apply(EntityPlayerMP input) {
-                        return target.getBukkitEntity().canSee(input.getBukkitEntity());
-                    }
-                })));
+                target.connection.sendPacket(new SPacketPlayerListItem(SPacketPlayerListItem.Action.UPDATE_LATENCY, this.playerEntityList.stream().filter(input -> target.getBukkitEntity().canSee(input.getBukkitEntity())).collect(Collectors.toList())));
             }
             this.playerPingIndex = 0;
         }
@@ -1291,20 +1275,18 @@ public abstract class PlayerList
 
     public void sendPacketToAllPlayers(Packet<?> packetIn)
     {
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            (this.playerEntityList.get(i)).connection.sendPacket(packetIn);
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            entityPlayerMP.connection.sendPacket(packetIn);
         }
     }
 
     // CraftBukkit start - add a world/entity limited version
     public void sendAll(Packet packet, EntityPlayer entityhuman) {
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            EntityPlayerMP entityplayer =  this.playerEntityList.get(i);
+        for (EntityPlayerMP entityplayer : this.playerEntityList) {
             if (entityhuman != null && entityhuman instanceof EntityPlayerMP && !entityplayer.getBukkitEntity().canSee(((EntityPlayerMP) entityhuman).getBukkitEntity())) {
                 continue;
             }
-            ((EntityPlayerMP) this.playerEntityList.get(i)).connection.sendPacket(packet);
+            ((EntityPlayerMP) entityplayer).connection.sendPacket(packet);
         }
     }
 
@@ -1317,12 +1299,8 @@ public abstract class PlayerList
 
     public void sendPacketToAllPlayersInDimension(Packet<?> packetIn, int dimension)
     {
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
-            if (entityplayermp.dimension == dimension)
-            {
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
+            if (entityplayermp.dimension == dimension) {
                 entityplayermp.connection.sendPacket(packetIn);
             }
         }
@@ -1356,12 +1334,8 @@ public abstract class PlayerList
         }
         else
         {
-            for (int i = 0; i < this.playerEntityList.size(); ++i)
-            {
-                EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
-                if (entityplayermp.getTeam() != team)
-                {
+            for (EntityPlayerMP entityplayermp : this.playerEntityList) {
+                if (entityplayermp.getTeam() != team) {
                     entityplayermp.sendMessage(message);
                 }
             }
@@ -1370,25 +1344,25 @@ public abstract class PlayerList
 
     public String getFormattedListOfPlayers(boolean includeUUIDs)
     {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         List<EntityPlayerMP> list = Lists.newArrayList(this.playerEntityList);
 
         for (int i = 0; i < list.size(); ++i)
         {
             if (i > 0)
             {
-                s = s + ", ";
+                s.append(", ");
             }
 
-            s = s + ((EntityPlayerMP)list.get(i)).getName();
+            s.append(((EntityPlayerMP) list.get(i)).getName());
 
             if (includeUUIDs)
             {
-                s = s + " (" + ((EntityPlayerMP)list.get(i)).getCachedUniqueIdString() + ")";
+                s.append(" (").append(((EntityPlayerMP) list.get(i)).getCachedUniqueIdString()).append(")");
             }
         }
 
-        return s;
+        return s.toString();
     }
 
     public String[] getOnlinePlayerNames()
@@ -1495,24 +1469,19 @@ public abstract class PlayerList
 
     public void sendToAllNearExcept(@Nullable EntityPlayer except, double x, double y, double z, double radius, int dimension, Packet<?> packetIn)
     {
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
             // CraftBukkit start - Test if player receiving packet can see the source of the packet
             if (except != null && except instanceof EntityPlayerMP && !entityplayermp.getBukkitEntity().canSee(((EntityPlayerMP) except).getBukkitEntity())) {
                 continue;
             }
             // CraftBukkit end
 
-            if (entityplayermp != except && entityplayermp.dimension == dimension)
-            {
+            if (entityplayermp != except && entityplayermp.dimension == dimension) {
                 double d0 = x - entityplayermp.posX;
                 double d1 = y - entityplayermp.posY;
                 double d2 = z - entityplayermp.posZ;
 
-                if (d0 * d0 + d1 * d1 + d2 * d2 < radius * radius)
-                {
+                if (d0 * d0 + d1 * d1 + d2 * d2 < radius * radius) {
                     entityplayermp.connection.sendPacket(packetIn);
                 }
             }
@@ -1521,9 +1490,8 @@ public abstract class PlayerList
 
     public void saveAllPlayerData()
     {
-        for (int i = 0; i < this.playerEntityList.size(); ++i)
-        {
-            this.writePlayerData(this.playerEntityList.get(i));
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            this.writePlayerData(entityPlayerMP);
         }
     }
 

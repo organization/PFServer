@@ -87,19 +87,15 @@ public class EntityMinecartCommandBlock extends EntityMinecart
     public static void registerFixesMinecartCommand(DataFixer fixer)
     {
         EntityMinecart.registerFixesMinecart(fixer, EntityMinecartCommandBlock.class);
-        fixer.registerWalker(FixTypes.ENTITY, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.ENTITY, (fixer1, compound, versionIn) -> {
+            if (TileEntity.getKey(TileEntityCommandBlock.class).equals(new ResourceLocation(compound.getString("id"))))
             {
-                if (TileEntity.getKey(TileEntityCommandBlock.class).equals(new ResourceLocation(compound.getString("id"))))
-                {
-                    compound.setString("id", "Control");
-                    fixer.process(FixTypes.BLOCK_ENTITY, compound, versionIn);
-                    compound.setString("id", "MinecartCommandBlock");
-                }
-
-                return compound;
+                compound.setString("id", "Control");
+                fixer1.process(FixTypes.BLOCK_ENTITY, compound, versionIn);
+                compound.setString("id", "MinecartCommandBlock");
             }
+
+            return compound;
         });
     }
 
@@ -165,9 +161,8 @@ public class EntityMinecartCommandBlock extends EntityMinecart
             {
                 this.commandBlockLogic.setLastOutput((ITextComponent)this.getDataManager().get(LAST_OUTPUT));
             }
-            catch (Throwable var3)
+            catch (Throwable ignored)
             {
-                ;
             }
         }
         else if (COMMAND.equals(key))

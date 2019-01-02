@@ -33,10 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiScreen extends Gui implements GuiYesNoCallback
@@ -49,7 +47,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     public int width;
     public int height;
     protected List<GuiButton> buttonList = Lists.<GuiButton>newArrayList();
-    protected List<GuiLabel> labelList = Lists.<GuiLabel>newArrayList();
+    protected final List<GuiLabel> labelList = Lists.<GuiLabel>newArrayList();
     public boolean allowUserInput;
     protected FontRenderer fontRenderer;
     protected GuiButton selectedButton;
@@ -62,14 +60,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        for (int i = 0; i < this.buttonList.size(); ++i)
-        {
-            ((GuiButton)this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY, partialTicks);
+        for (GuiButton guiButton : this.buttonList) {
+            ((GuiButton) guiButton).drawButton(this.mc, mouseX, mouseY, partialTicks);
         }
 
-        for (int j = 0; j < this.labelList.size(); ++j)
-        {
-            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+        for (GuiLabel guiLabel : this.labelList) {
+            ((GuiLabel) guiLabel).drawLabel(this.mc, mouseX, mouseY);
         }
     }
 
@@ -103,9 +99,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 return (String)transferable.getTransferData(DataFlavor.stringFlavor);
             }
         }
-        catch (Exception var1)
+        catch (Exception ignored)
         {
-            ;
         }
 
         return "";
@@ -120,9 +115,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 StringSelection stringselection = new StringSelection(copyText);
                 Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner)null);
             }
-            catch (Exception var2)
+            catch (Exception ignored)
             {
-                ;
             }
         }
     }
@@ -156,7 +150,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public void drawHoveringText(String text, int x, int y)
     {
-        this.drawHoveringText(Arrays.asList(text), x, y);
+        this.drawHoveringText(Collections.singletonList(text), x, y);
     }
 
     public void setFocused(boolean hasFocusedControlIn)
@@ -270,9 +264,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                         itemstack = new ItemStack((NBTTagCompound)nbtbase);
                     }
                 }
-                catch (NBTException var9)
+                catch (NBTException ignored)
                 {
-                    ;
                 }
 
                 if (itemstack.isEmpty())

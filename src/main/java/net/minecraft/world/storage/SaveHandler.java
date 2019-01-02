@@ -60,15 +60,9 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         try
         {
             File file1 = new File(this.worldDirectory, "session.lock");
-            DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file1));
 
-            try
-            {
+            try (DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file1))) {
                 dataoutputstream.writeLong(this.initializationTime);
-            }
-            finally
-            {
-                dataoutputstream.close();
             }
         }
         catch (IOException ioexception)
@@ -88,18 +82,11 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         try
         {
             File file1 = new File(this.worldDirectory, "session.lock");
-            DataInputStream datainputstream = new DataInputStream(new FileInputStream(file1));
 
-            try
-            {
-                if (datainputstream.readLong() != this.initializationTime)
-                {
+            try (DataInputStream datainputstream = new DataInputStream(new FileInputStream(file1))) {
+                if (datainputstream.readLong() != this.initializationTime) {
                     throw new MinecraftException("The save is being accessed from another location, aborting");
                 }
-            }
-            finally
-            {
-                datainputstream.close();
             }
         }
         catch (IOException var7)
@@ -312,39 +299,21 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
         if (uuid != null) return uuid;
         File file1 = new File(this.worldDirectory, "uid.dat");
         if (file1.exists()) {
-            DataInputStream dis = null;
-            try {
-                dis = new DataInputStream(new FileInputStream(file1));
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file1))) {
                 return uuid = new UUID(dis.readLong(), dis.readLong());
             } catch (IOException ex) {
                 LOGGER.warn("Failed to read " + file1 + ", generating new random UUID", ex);
-            } finally {
-                if (dis != null) {
-                    try {
-                        dis.close();
-                    } catch (IOException ex) {
-                        // NOOP
-                    }
-                }
             }
+            // NOOP
         }
         uuid = UUID.randomUUID();
-        DataOutputStream dos = null;
-        try {
-            dos = new DataOutputStream(new FileOutputStream(file1));
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file1))) {
             dos.writeLong(uuid.getMostSignificantBits());
             dos.writeLong(uuid.getLeastSignificantBits());
         } catch (IOException ex) {
             LOGGER.warn("Failed to write " + file1, ex);
-        } finally {
-            if (dos != null) {
-                try {
-                    dos.close();
-                } catch (IOException ex) {
-                    // NOOP
-                }
-            }
         }
+        // NOOP
         return uuid;
     }
 

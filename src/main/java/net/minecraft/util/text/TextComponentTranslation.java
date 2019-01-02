@@ -19,6 +19,7 @@ public class TextComponentTranslation extends TextComponentBase
     private final Object syncLock = new Object();
     private long lastTranslationUpdateTimeInMilliseconds = -1L;
     @VisibleForTesting
+    final
     List<ITextComponent> children = Lists.<ITextComponent>newArrayList();
     public static final Pattern STRING_VARIABLE_PATTERN = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
@@ -90,7 +91,7 @@ public class TextComponentTranslation extends TextComponentBase
 
                 if (k > j)
                 {
-                    TextComponentString textcomponentstring = new TextComponentString(String.format(format.substring(j, k)));
+                    TextComponentString textcomponentstring = new TextComponentString(format.substring(j, k));
                     textcomponentstring.getStyle().setParentStyle(this.getStyle());
                     this.children.add(textcomponentstring);
                 }
@@ -123,7 +124,7 @@ public class TextComponentTranslation extends TextComponentBase
 
             if (j < format.length())
             {
-                TextComponentString textcomponentstring1 = new TextComponentString(String.format(format.substring(j)));
+                TextComponentString textcomponentstring1 = new TextComponentString(format.substring(j));
                 textcomponentstring1.getStyle().setParentStyle(this.getStyle());
                 this.children.add(textcomponentstring1);
             }

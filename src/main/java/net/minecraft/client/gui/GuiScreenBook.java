@@ -314,7 +314,7 @@ public class GuiScreenBook extends GuiScreen
 
                 if (this.bookTitle.length() < 16 && ChatAllowedCharacters.isAllowedCharacter(typedChar))
                 {
-                    this.bookTitle = this.bookTitle + Character.toString(typedChar);
+                    this.bookTitle = this.bookTitle + typedChar;
                     this.updateButtons();
                     this.bookIsModified = true;
                 }
@@ -497,9 +497,8 @@ public class GuiScreenBook extends GuiScreen
                     return true;
                 }
             }
-            catch (Throwable var5)
+            catch (Throwable ignored)
             {
-                ;
             }
 
             return false;

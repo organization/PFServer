@@ -8,7 +8,7 @@ import net.minecraft.world.gen.ChunkGeneratorSettings;
 public class GenLayerBiome extends GenLayer
 {
     @SuppressWarnings("unchecked")
-    private java.util.List<net.minecraftforge.common.BiomeManager.BiomeEntry>[] biomes = new java.util.ArrayList[net.minecraftforge.common.BiomeManager.BiomeType.values().length];
+    private final java.util.List<net.minecraftforge.common.BiomeManager.BiomeEntry>[] biomes = new java.util.ArrayList[net.minecraftforge.common.BiomeManager.BiomeType.values().length];
     private final ChunkGeneratorSettings settings;
 
     public GenLayerBiome(long p_i45560_1_, GenLayer p_i45560_3_, WorldType p_i45560_4_, ChunkGeneratorSettings p_i45560_5_)
@@ -21,7 +21,7 @@ public class GenLayerBiome extends GenLayer
             com.google.common.collect.ImmutableList<net.minecraftforge.common.BiomeManager.BiomeEntry> biomesToAdd = net.minecraftforge.common.BiomeManager.getBiomes(type);
             int idx = type.ordinal();
 
-            if (biomes[idx] == null) biomes[idx] = new java.util.ArrayList<net.minecraftforge.common.BiomeManager.BiomeEntry>();
+            if (biomes[idx] == null) biomes[idx] = new java.util.ArrayList<>();
             if (biomesToAdd != null) biomes[idx].addAll(biomesToAdd);
         }
 

@@ -35,23 +35,23 @@ public class CommandWhitelist extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.whitelist.usage", new Object[0]);
+            throw new WrongUsageException("commands.whitelist.usage");
         }
         else
         {
             if ("on".equals(args[0]))
             {
                 server.getPlayerList().setWhiteListEnabled(true);
-                notifyCommandListener(sender, this, "commands.whitelist.enabled", new Object[0]);
+                notifyCommandListener(sender, this, "commands.whitelist.enabled");
             }
             else if ("off".equals(args[0]))
             {
                 server.getPlayerList().setWhiteListEnabled(false);
-                notifyCommandListener(sender, this, "commands.whitelist.disabled", new Object[0]);
+                notifyCommandListener(sender, this, "commands.whitelist.disabled");
             }
             else if ("list".equals(args[0]))
             {
-                sender.sendMessage(new TextComponentTranslation("commands.whitelist.list", new Object[] {server.getPlayerList().getWhitelistedPlayerNames().length, server.getPlayerList().getAvailablePlayerDat().length}));
+                sender.sendMessage(new TextComponentTranslation("commands.whitelist.list", server.getPlayerList().getWhitelistedPlayerNames().length, server.getPlayerList().getAvailablePlayerDat().length));
                 String[] astring = server.getPlayerList().getWhitelistedPlayerNames();
                 sender.sendMessage(new TextComponentString(joinNiceString(astring)));
             }
@@ -59,40 +59,40 @@ public class CommandWhitelist extends CommandBase
             {
                 if (args.length < 2)
                 {
-                    throw new WrongUsageException("commands.whitelist.add.usage", new Object[0]);
+                    throw new WrongUsageException("commands.whitelist.add.usage");
                 }
 
                 GameProfile gameprofile = server.getPlayerProfileCache().getGameProfileForUsername(args[1]);
 
                 if (gameprofile == null)
                 {
-                    throw new CommandException("commands.whitelist.add.failed", new Object[] {args[1]});
+                    throw new CommandException("commands.whitelist.add.failed", args[1]);
                 }
 
                 server.getPlayerList().addWhitelistedPlayer(gameprofile);
-                notifyCommandListener(sender, this, "commands.whitelist.add.success", new Object[] {args[1]});
+                notifyCommandListener(sender, this, "commands.whitelist.add.success", args[1]);
             }
             else if ("remove".equals(args[0]))
             {
                 if (args.length < 2)
                 {
-                    throw new WrongUsageException("commands.whitelist.remove.usage", new Object[0]);
+                    throw new WrongUsageException("commands.whitelist.remove.usage");
                 }
 
                 GameProfile gameprofile1 = server.getPlayerList().getWhitelistedPlayers().getByName(args[1]);
 
                 if (gameprofile1 == null)
                 {
-                    throw new CommandException("commands.whitelist.remove.failed", new Object[] {args[1]});
+                    throw new CommandException("commands.whitelist.remove.failed", args[1]);
                 }
 
                 server.getPlayerList().removePlayerFromWhitelist(gameprofile1);
-                notifyCommandListener(sender, this, "commands.whitelist.remove.success", new Object[] {args[1]});
+                notifyCommandListener(sender, this, "commands.whitelist.remove.success", args[1]);
             }
             else if ("reload".equals(args[0]))
             {
                 server.getPlayerList().reloadWhitelist();
-                notifyCommandListener(sender, this, "commands.whitelist.reloaded", new Object[0]);
+                notifyCommandListener(sender, this, "commands.whitelist.reloaded");
             }
         }
     }
@@ -101,7 +101,7 @@ public class CommandWhitelist extends CommandBase
     {
         if (args.length == 1)
         {
-            return getListOfStringsMatchingLastWord(args, new String[] {"on", "off", "list", "add", "remove", "reload"});
+            return getListOfStringsMatchingLastWord(args, "on", "off", "list", "add", "remove", "reload");
         }
         else
         {

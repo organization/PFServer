@@ -44,7 +44,7 @@ public class DamageSource
     private boolean difficultyScaled;
     private boolean magicDamage;
     private boolean explosion;
-    public String damageType;
+    public final String damageType;
 
     private boolean sweep;
 
@@ -197,7 +197,7 @@ public class DamageSource
         EntityLivingBase entitylivingbase = entityLivingBaseIn.getAttackingEntity();
         String s = "death.attack." + this.damageType;
         String s1 = s + ".player";
-        return entitylivingbase != null && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, new Object[] {entityLivingBaseIn.getDisplayName(), entitylivingbase.getDisplayName()}) : new TextComponentTranslation(s, new Object[] {entityLivingBaseIn.getDisplayName()});
+        return entitylivingbase != null && I18n.canTranslate(s1) ? new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName(), entitylivingbase.getDisplayName()) : new TextComponentTranslation(s, entityLivingBaseIn.getDisplayName());
     }
 
     public boolean isFireDamage()

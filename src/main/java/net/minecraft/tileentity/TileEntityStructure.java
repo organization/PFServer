@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TileEntityStructure extends TileEntity
 {
@@ -363,13 +364,7 @@ public class TileEntityStructure extends TileEntity
 
     private List<TileEntityStructure> filterRelatedCornerBlocks(List<TileEntityStructure> p_184415_1_)
     {
-        Iterable<TileEntityStructure> iterable = Iterables.filter(p_184415_1_, new Predicate<TileEntityStructure>()
-        {
-            public boolean apply(@Nullable TileEntityStructure p_apply_1_)
-            {
-                return p_apply_1_.mode == Mode.CORNER && TileEntityStructure.this.name.equals(p_apply_1_.name);
-            }
-        });
+        Iterable<TileEntityStructure> iterable = p_184415_1_.stream().filter(p_apply_1_ -> p_apply_1_.mode == Mode.CORNER && TileEntityStructure.this.name.equals(p_apply_1_.name)).collect(Collectors.toList());
         return Lists.newArrayList(iterable);
     }
 
@@ -524,7 +519,7 @@ public class TileEntityStructure extends TileEntity
 
                     if (this.integrity < 1.0F)
                     {
-                        placementsettings.setIntegrity(MathHelper.clamp(this.integrity, 0.0F, 1.0F)).setSeed(Long.valueOf(this.seed));
+                        placementsettings.setIntegrity(MathHelper.clamp(this.integrity, 0.0F, 1.0F)).setSeed(this.seed);
                     }
 
                     template.addBlocksToWorldChunk(this.world, blockpos1, placementsettings);
@@ -595,7 +590,7 @@ public class TileEntityStructure extends TileEntity
     @Nullable
     public ITextComponent getDisplayName()
     {
-        return new TextComponentTranslation("structure_block.hover." + this.mode.modeName, new Object[] {this.mode == Mode.DATA ? this.metadata : this.name});
+        return new TextComponentTranslation("structure_block.hover." + this.mode.modeName, this.mode == Mode.DATA ? this.metadata : this.name);
     }
 
     public static enum Mode implements IStringSerializable

@@ -50,7 +50,7 @@ public class BlockPrismarine extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
     public IBlockState getStateFromMeta(int meta)

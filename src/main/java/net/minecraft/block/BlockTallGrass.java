@@ -122,7 +122,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable, net.minecraf
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {TYPE});
+        return new BlockStateContainer(this, TYPE);
     }
 
     public EnumOffsetType getOffsetType()

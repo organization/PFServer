@@ -20,8 +20,8 @@ public class FurnaceRecipes
     public Map<ItemStack, ItemStack> smeltingList = Maps.<ItemStack, ItemStack>newHashMap();
     private final Map<ItemStack, Float> experienceList = Maps.<ItemStack, Float>newHashMap();
 
-    public Map<ItemStack,ItemStack> customRecipes = Maps.newHashMap();
-    public Map<ItemStack,Float> customExperience = Maps.newHashMap();
+    public final Map<ItemStack,ItemStack> customRecipes = Maps.newHashMap();
+    public final Map<ItemStack,Float> customExperience = Maps.newHashMap();
 
     public static FurnaceRecipes instance()
     {
@@ -125,7 +125,7 @@ public class FurnaceRecipes
     {
         if (getSmeltingResult(input) != ItemStack.EMPTY) { PFServer.LOGGER.info("Ignored smelting recipe with conflicting input: {} = {}", input, stack); return; }
         this.smeltingList.put(input, stack);
-        this.experienceList.put(stack, Float.valueOf(experience));
+        this.experienceList.put(stack, experience);
     }
 
     // TODO: Test this
@@ -170,7 +170,7 @@ public class FurnaceRecipes
         {
             if (this.compareItemStacks(stack, entry.getKey()))
             {
-                return ((Float)entry.getValue()).floatValue();
+                return (Float) entry.getValue();
             }
         }
 
@@ -178,7 +178,7 @@ public class FurnaceRecipes
         {
             if (this.compareItemStacks(stack, entry.getKey()))
             {
-                return ((Float)entry.getValue()).floatValue();
+                return (Float) entry.getValue();
             }
         }
 

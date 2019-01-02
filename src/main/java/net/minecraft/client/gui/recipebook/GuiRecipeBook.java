@@ -52,7 +52,7 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
     private String lastSearch = "";
     private RecipeBook recipeBook;
     private final RecipeBookPage recipeBookPage = new RecipeBookPage();
-    private RecipeItemHelper stackedContents = new RecipeItemHelper();
+    private final RecipeItemHelper stackedContents = new RecipeItemHelper();
     private int timesInventoryChanged;
 
     public void func_194303_a(int p_194303_1_, int p_194303_2_, Minecraft p_194303_3_, boolean p_194303_4_, InventoryCrafting p_194303_5_)
@@ -155,35 +155,25 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
     {
         List<RecipeList> list = (List)RecipeBookClient.RECIPES_BY_TAB.get(this.currentTab.getCategory());
         list.forEach((p_193944_1_) ->
-        {
-            p_193944_1_.canCraft(this.stackedContents, this.craftingSlots.getWidth(), this.craftingSlots.getHeight(), this.recipeBook);
-        });
+                p_193944_1_.canCraft(this.stackedContents, this.craftingSlots.getWidth(), this.craftingSlots.getHeight(), this.recipeBook));
         List<RecipeList> list1 = Lists.newArrayList(list);
         list1.removeIf((p_193952_0_) ->
-        {
-            return !p_193952_0_.isNotEmpty();
-        });
+                !p_193952_0_.isNotEmpty());
         list1.removeIf((p_193953_0_) ->
-        {
-            return !p_193953_0_.containsValidRecipes();
-        });
+                !p_193953_0_.containsValidRecipes());
         String s = this.searchBar.getText();
 
         if (!s.isEmpty())
         {
-            ObjectSet<RecipeList> objectset = new ObjectLinkedOpenHashSet<RecipeList>(this.mc.getSearchTree(SearchTreeManager.RECIPES).search(s.toLowerCase(Locale.ROOT)));
+            ObjectSet<RecipeList> objectset = new ObjectLinkedOpenHashSet<>(this.mc.getSearchTree(SearchTreeManager.RECIPES).search(s.toLowerCase(Locale.ROOT)));
             list1.removeIf((p_193947_1_) ->
-            {
-                return !objectset.contains(p_193947_1_);
-            });
+                    !objectset.contains(p_193947_1_));
         }
 
         if (this.recipeBook.isFilteringCraftable())
         {
             list1.removeIf((p_193958_0_) ->
-            {
-                return !p_193958_0_.containsCraftableRecipes();
-            });
+                    !p_193958_0_.containsCraftableRecipes());
         }
 
         this.recipeBookPage.updateLists(list1, p_193003_1_);

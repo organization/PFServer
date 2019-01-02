@@ -15,7 +15,7 @@ public class ReloadCommand extends BukkitCommand {
         this.description = "Reloads the server configuration and plugins";
         this.usageMessage = "/reload";
         this.setPermission("bukkit.command.reload");
-        this.setAliases(Arrays.asList("rl"));
+        this.setAliases(Collections.singletonList("rl"));
     }
 
     @Override

@@ -166,8 +166,8 @@ public abstract class EntityFireball extends Entity
 
     public void writeEntityToNBT(NBTTagCompound compound)
     {
-        compound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
-        compound.setTag("power", this.newDoubleNBTList(new double[] {this.accelerationX, this.accelerationY, this.accelerationZ}));
+        compound.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
+        compound.setTag("power", this.newDoubleNBTList(this.accelerationX, this.accelerationY, this.accelerationZ));
         compound.setInteger("life", this.ticksAlive);
     }
 

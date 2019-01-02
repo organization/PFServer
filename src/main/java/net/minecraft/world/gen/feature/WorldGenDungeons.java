@@ -147,7 +147,7 @@ public class WorldGenDungeons extends WorldGenerator
             }
             else
             {
-                LOGGER.error("Failed to fetch mob spawner entity at ({}, {}, {})", Integer.valueOf(position.getX()), Integer.valueOf(position.getY()), Integer.valueOf(position.getZ()));
+                LOGGER.error("Failed to fetch mob spawner entity at ({}, {}, {})", position.getX(), position.getY(), position.getZ());
             }
 
             return true;

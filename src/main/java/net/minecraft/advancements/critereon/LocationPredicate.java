@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class LocationPredicate
 {
-    public static LocationPredicate ANY = new LocationPredicate(MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, (Biome)null, (String)null, (DimensionType)null);
+    public static final LocationPredicate ANY = new LocationPredicate(MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, MinMaxBounds.UNBOUNDED, (Biome)null, (String)null, (DimensionType)null);
     private final MinMaxBounds x;
     private final MinMaxBounds y;
     private final MinMaxBounds z;

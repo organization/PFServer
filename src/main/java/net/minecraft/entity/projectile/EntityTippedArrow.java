@@ -75,7 +75,7 @@ public class EntityTippedArrow extends EntityArrow
         {
             this.potion = PotionTypes.EMPTY;
             this.customPotionEffects.clear();
-            this.dataManager.set(COLOR, Integer.valueOf(-1));
+            this.dataManager.set(COLOR, -1);
         }
     }
 
@@ -88,19 +88,19 @@ public class EntityTippedArrow extends EntityArrow
     private void refreshColor()
     {
         this.fixedColor = false;
-        this.dataManager.set(COLOR, Integer.valueOf(PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.customPotionEffects))));
+        this.dataManager.set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.customPotionEffects)));
     }
 
     public void addEffect(PotionEffect effect)
     {
         this.customPotionEffects.add(effect);
-        this.getDataManager().set(COLOR, Integer.valueOf(PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.customPotionEffects))));
+        this.getDataManager().set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(this.potion, this.customPotionEffects)));
     }
 
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(COLOR, Integer.valueOf(-1));
+        this.dataManager.register(COLOR, -1);
     }
 
     public void onUpdate()
@@ -126,7 +126,7 @@ public class EntityTippedArrow extends EntityArrow
             this.world.setEntityState(this, (byte)0);
             this.potion = PotionTypes.EMPTY;
             this.customPotionEffects.clear();
-            this.dataManager.set(COLOR, Integer.valueOf(-1));
+            this.dataManager.set(COLOR, -1);
         }
     }
 
@@ -138,7 +138,7 @@ public class EntityTippedArrow extends EntityArrow
         {
             double d0 = (double)(i >> 16 & 255) / 255.0D;
             double d1 = (double)(i >> 8 & 255) / 255.0D;
-            double d2 = (double)(i >> 0 & 255) / 255.0D;
+            double d2 = (double)(i & 255) / 255.0D;
 
             for (int j = 0; j < particleCount; ++j)
             {
@@ -167,13 +167,13 @@ public class EntityTippedArrow extends EntityArrow
 
     public int getColor()
     {
-        return ((Integer)this.dataManager.get(COLOR)).intValue();
+        return (Integer) this.dataManager.get(COLOR);
     }
 
     public void setFixedColor(int p_191507_1_)
     {
         this.fixedColor = true;
-        this.dataManager.set(COLOR, Integer.valueOf(p_191507_1_));
+        this.dataManager.set(COLOR, p_191507_1_);
     }
 
     public static void registerFixesTippedArrow(DataFixer fixer)
@@ -290,7 +290,7 @@ public class EntityTippedArrow extends EntityArrow
             {
                 double d0 = (double)(i >> 16 & 255) / 255.0D;
                 double d1 = (double)(i >> 8 & 255) / 255.0D;
-                double d2 = (double)(i >> 0 & 255) / 255.0D;
+                double d2 = (double)(i & 255) / 255.0D;
 
                 for (int j = 0; j < 20; ++j)
                 {

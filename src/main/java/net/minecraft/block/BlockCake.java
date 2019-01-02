@@ -32,13 +32,13 @@ public class BlockCake extends Block
     protected BlockCake()
     {
         super(Material.CAKE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, 0));
         this.setTickRandomly(true);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return CAKE_AABB[((Integer)state.getValue(BITES)).intValue()];
+        return CAKE_AABB[(Integer) state.getValue(BITES)];
     }
 
     public boolean isFullCube(IBlockState state)
@@ -83,11 +83,11 @@ public class BlockCake extends Block
             }
 
             ((EntityPlayerMP) player).getBukkitEntity().sendHealthUpdate();
-            int i = ((Integer)state.getValue(BITES)).intValue();
+            int i = (Integer) state.getValue(BITES);
 
             if (i < 6)
             {
-                worldIn.setBlockState(pos, state.withProperty(BITES, Integer.valueOf(i + 1)), 3);
+                worldIn.setBlockState(pos, state.withProperty(BITES, i + 1), 3);
             }
             else
             {
@@ -100,7 +100,7 @@ public class BlockCake extends Block
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
@@ -133,7 +133,7 @@ public class BlockCake extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BITES, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(BITES, meta);
     }
 
     @SideOnly(Side.CLIENT)
@@ -144,17 +144,17 @@ public class BlockCake extends Block
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(BITES)).intValue();
+        return (Integer) state.getValue(BITES);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {BITES});
+        return new BlockStateContainer(this, BITES);
     }
 
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        return (7 - ((Integer)blockState.getValue(BITES)).intValue()) * 2;
+        return (7 - (Integer) blockState.getValue(BITES)) * 2;
     }
 
     public boolean hasComparatorInputOverride(IBlockState state)

@@ -59,7 +59,7 @@ public class EntityOcelot extends EntityTameable
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(OCELOT_VARIANT, Integer.valueOf(0));
+        this.dataManager.register(OCELOT_VARIANT, 0);
     }
 
     public void updateAITasks()
@@ -280,12 +280,12 @@ public class EntityOcelot extends EntityTameable
 
     public int getTameSkin()
     {
-        return ((Integer)this.dataManager.get(OCELOT_VARIANT)).intValue();
+        return (Integer) this.dataManager.get(OCELOT_VARIANT);
     }
 
     public void setTameSkin(int skinId)
     {
-        this.dataManager.set(OCELOT_VARIANT, Integer.valueOf(skinId));
+        this.dataManager.set(OCELOT_VARIANT, skinId);
     }
 
     public boolean getCanSpawnHere()
@@ -307,10 +307,7 @@ public class EntityOcelot extends EntityTameable
             IBlockState iblockstate = this.world.getBlockState(blockpos.down());
             Block block = iblockstate.getBlock();
 
-            if (block == Blocks.GRASS || block.isLeaves(iblockstate, this.world, blockpos.down()))
-            {
-                return true;
-            }
+            return block == Blocks.GRASS || block.isLeaves(iblockstate, this.world, blockpos.down());
         }
 
         return false;
@@ -332,7 +329,7 @@ public class EntityOcelot extends EntityTameable
     {
         if (this.avoidEntity == null)
         {
-            this.avoidEntity = new EntityAIAvoidEntity<EntityPlayer>(this, EntityPlayer.class, 16.0F, 0.8D, 1.33D);
+            this.avoidEntity = new EntityAIAvoidEntity<>(this, EntityPlayer.class, 16.0F, 0.8D, 1.33D);
         }
 
         this.tasks.removeTask(this.avoidEntity);

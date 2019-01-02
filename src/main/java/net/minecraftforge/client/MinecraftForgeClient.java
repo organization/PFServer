@@ -63,7 +63,7 @@ public class MinecraftForgeClient
         return Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getJavaLocale();
     }
 
-    private static BitSet stencilBits = new BitSet(8);
+    private static final BitSet stencilBits = new BitSet(8);
     static
     {
         stencilBits.set(0,8);
@@ -132,7 +132,7 @@ public class MinecraftForgeClient
         regionCache.cleanUp();
     }
 
-    private static HashMap<ResourceLocation, Supplier<BufferedImage>> bufferedImageSuppliers = new HashMap<ResourceLocation, Supplier<BufferedImage>>();
+    private static final HashMap<ResourceLocation, Supplier<BufferedImage>> bufferedImageSuppliers = new HashMap<>();
     public static void registerImageLayerSupplier(ResourceLocation resourceLocation, Supplier<BufferedImage> supplier)
     {
         bufferedImageSuppliers.put(resourceLocation, supplier);

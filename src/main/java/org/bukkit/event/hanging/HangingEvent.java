@@ -7,7 +7,7 @@ import org.bukkit.event.Event;
  * Represents a hanging entity-related event.
  */
 public abstract class HangingEvent extends Event {
-    protected Hanging hanging;
+    protected final Hanging hanging;
 
     protected HangingEvent(final Hanging painting) {
         this.hanging = painting;

@@ -26,7 +26,7 @@ public class TextComponentUtils
 
                 if (list.size() != 1)
                 {
-                    throw new EntityNotFoundException("commands.generic.selector.notFound", new Object[] {s});
+                    throw new EntityNotFoundException("commands.generic.selector.notFound", s);
                 }
 
                 Entity entity = list.get(0);

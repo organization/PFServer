@@ -97,6 +97,6 @@ public class SPacketCombatEvent implements Packet<INetHandlerPlayClient>
     {
         ENTER_COMBAT,
         END_COMBAT,
-        ENTITY_DIED;
+        ENTITY_DIED
     }
 }

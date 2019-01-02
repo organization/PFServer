@@ -59,9 +59,8 @@ public class KeyBinding implements Comparable<KeyBinding>
             {
                 setKeyBindState(keybinding.keyCode, keybinding.keyCode < 256 && Keyboard.isKeyDown(keybinding.keyCode));
             }
-            catch (IndexOutOfBoundsException var3)
+            catch (IndexOutOfBoundsException ignored)
             {
-                ;
             }
         }
     }
@@ -277,10 +276,7 @@ public class KeyBinding implements Comparable<KeyBinding>
     {
         if (getKeyConflictContext().conflicts(other.getKeyConflictContext()) || other.getKeyConflictContext().conflicts(getKeyConflictContext()))
         {
-            if (getKeyModifier().matches(other.getKeyCode()) || other.getKeyModifier().matches(getKeyCode()))
-            {
-                return true;
-            }
+            return getKeyModifier().matches(other.getKeyCode()) || other.getKeyModifier().matches(getKeyCode());
         }
         return false;
     }
@@ -295,22 +291,17 @@ public class KeyBinding implements Comparable<KeyBinding>
     {
         KeyBinding keybinding = KEYBIND_ARRAY.get(key);
         return keybinding == null ? () ->
-        {
-            return key;
-        } : () ->
-        {
-            return keybinding.getDisplayName();
-        };
+                key : keybinding::getDisplayName;
     }
 
     static
     {
-        CATEGORY_ORDER.put("key.categories.movement", Integer.valueOf(1));
-        CATEGORY_ORDER.put("key.categories.gameplay", Integer.valueOf(2));
-        CATEGORY_ORDER.put("key.categories.inventory", Integer.valueOf(3));
-        CATEGORY_ORDER.put("key.categories.creative", Integer.valueOf(4));
-        CATEGORY_ORDER.put("key.categories.multiplayer", Integer.valueOf(5));
-        CATEGORY_ORDER.put("key.categories.ui", Integer.valueOf(6));
-        CATEGORY_ORDER.put("key.categories.misc", Integer.valueOf(7));
+        CATEGORY_ORDER.put("key.categories.movement", 1);
+        CATEGORY_ORDER.put("key.categories.gameplay", 2);
+        CATEGORY_ORDER.put("key.categories.inventory", 3);
+        CATEGORY_ORDER.put("key.categories.creative", 4);
+        CATEGORY_ORDER.put("key.categories.multiplayer", 5);
+        CATEGORY_ORDER.put("key.categories.ui", 6);
+        CATEGORY_ORDER.put("key.categories.misc", 7);
     }
 }

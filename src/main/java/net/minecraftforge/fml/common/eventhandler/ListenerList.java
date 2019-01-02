@@ -33,7 +33,7 @@ public class ListenerList
     private static int maxSize = 0;
 
     @Nullable
-    private ListenerList parent;
+    private final ListenerList parent;
     private ListenerListInst[] lists = new ListenerListInst[0];
 
     public ListenerList()
@@ -142,7 +142,7 @@ public class ListenerList
     {
         private boolean rebuild = true;
         private IEventListener[] listeners;
-        private ArrayList<ArrayList<IEventListener>> priorities;
+        private final ArrayList<ArrayList<IEventListener>> priorities;
         private ListenerListInst parent;
         private List<ListenerListInst> children;
 
@@ -150,11 +150,11 @@ public class ListenerList
         private ListenerListInst()
         {
             int count = EventPriority.values().length;
-            priorities = new ArrayList<ArrayList<IEventListener>>(count);
+            priorities = new ArrayList<>(count);
 
             for (int x = 0; x < count; x++)
             {
-                priorities.add(new ArrayList<IEventListener>());
+                priorities.add(new ArrayList<>());
             }
         }
 
@@ -189,7 +189,7 @@ public class ListenerList
          */
         public ArrayList<IEventListener> getListeners(EventPriority priority)
         {
-            ArrayList<IEventListener> ret = new ArrayList<IEventListener>(priorities.get(priority.ordinal()));
+            ArrayList<IEventListener> ret = new ArrayList<>(priorities.get(priority.ordinal()));
             if (parent != null)
             {
                 ret.addAll(parent.getListeners(priority));
@@ -245,7 +245,7 @@ public class ListenerList
                 parent.buildCache();
             }
 
-            ArrayList<IEventListener> ret = new ArrayList<IEventListener>();
+            ArrayList<IEventListener> ret = new ArrayList<>();
             for (EventPriority value : EventPriority.values())
             {
                 List<IEventListener> listeners = getListeners(value);
@@ -255,7 +255,7 @@ public class ListenerList
                     ret.addAll(listeners);
                 }
             }
-            listeners = ret.toArray(new IEventListener[ret.size()]);
+            listeners = ret.toArray(new IEventListener[0]);
             rebuild = false;
         }
 

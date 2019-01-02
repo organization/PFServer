@@ -64,7 +64,7 @@ public class LootingEnchantBonus extends LootFunction
 
                 if (functionClazz.limit > 0)
                 {
-                    object.add("limit", serializationContext.serialize(Integer.valueOf(functionClazz.limit)));
+                    object.add("limit", serializationContext.serialize(functionClazz.limit));
                 }
             }
 

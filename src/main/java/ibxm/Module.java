@@ -12,8 +12,8 @@ public class Module {
 	private Pattern[] patterns;
 	private Instrument[] instruments;
 	
-	private Pattern default_pattern;
-	private Instrument default_instrument;
+	private final Pattern default_pattern;
+	private final Instrument default_instrument;
 	
 	public Module() {
 		song_title = IBXM.VERSION;

@@ -18,7 +18,7 @@ import java.util.Random;
 public class Particle
 {
     private static final AxisAlignedBB EMPTY_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-    protected World world;
+    protected final World world;
     protected double prevPosX;
     protected double prevPosY;
     protected double prevPosZ;
@@ -30,15 +30,15 @@ public class Particle
     protected double motionZ;
     private AxisAlignedBB boundingBox;
     protected boolean onGround;
-    protected boolean canCollide;
+    protected final boolean canCollide;
     protected boolean isExpired;
     protected float width;
     protected float height;
-    protected Random rand;
+    protected final Random rand;
     protected int particleTextureIndexX;
     protected int particleTextureIndexY;
-    protected float particleTextureJitterX;
-    protected float particleTextureJitterY;
+    protected final float particleTextureJitterX;
+    protected final float particleTextureJitterY;
     protected int particleAge;
     protected int particleMaxAge;
     protected float particleScale;

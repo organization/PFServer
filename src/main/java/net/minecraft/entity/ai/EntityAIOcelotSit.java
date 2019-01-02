@@ -67,10 +67,7 @@ public class EntityAIOcelotSit extends EntityAIMoveToBlock
             {
                 TileEntity tileentity = worldIn.getTileEntity(pos);
 
-                if (tileentity instanceof TileEntityChest && ((TileEntityChest)tileentity).numPlayersUsing < 1)
-                {
-                    return true;
-                }
+                return tileentity instanceof TileEntityChest && ((TileEntityChest) tileentity).numPlayersUsing < 1;
             }
             else
             {
@@ -79,13 +76,9 @@ public class EntityAIOcelotSit extends EntityAIMoveToBlock
                     return true;
                 }
 
-                if (block == Blocks.BED && iblockstate.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD)
-                {
-                    return true;
-                }
+                return block == Blocks.BED && iblockstate.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD;
             }
 
-            return false;
         }
     }
 }

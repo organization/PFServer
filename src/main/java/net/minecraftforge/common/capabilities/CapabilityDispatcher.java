@@ -43,9 +43,9 @@ import java.util.Map;
  */
 public final class CapabilityDispatcher implements INBTSerializable<NBTTagCompound>, ICapabilityProvider
 {
-    private ICapabilityProvider[] caps;
-    private INBTSerializable<NBTBase>[] writers;
-    private String[] names;
+    private final ICapabilityProvider[] caps;
+    private final INBTSerializable<NBTBase>[] writers;
+    private final String[] names;
 
     public CapabilityDispatcher(Map<ResourceLocation, ICapabilityProvider> list)
     {
@@ -80,9 +80,9 @@ public final class CapabilityDispatcher implements INBTSerializable<NBTTagCompou
             }
         }
 
-        caps = lstCaps.toArray(new ICapabilityProvider[lstCaps.size()]);
-        writers = lstWriters.toArray(new INBTSerializable[lstWriters.size()]);
-        names = lstNames.toArray(new String[lstNames.size()]);
+        caps = lstCaps.toArray(new ICapabilityProvider[0]);
+        writers = lstWriters.toArray(new INBTSerializable[0]);
+        names = lstNames.toArray(new String[0]);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class NBTTagIntArray extends NBTBase
         for (int i = 0; i < p_193584_0_.size(); ++i)
         {
             Integer integer = p_193584_0_.get(i);
-            aint[i] = integer == null ? 0 : integer.intValue();
+            aint[i] = integer == null ? 0 : integer;
         }
 
         return aint;

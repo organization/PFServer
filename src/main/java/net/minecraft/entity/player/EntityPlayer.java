@@ -74,9 +74,9 @@ import java.util.UUID;
 public abstract class EntityPlayer extends EntityLivingBase
 {
     public static final String PERSISTED_NBT_TAG = "PlayerPersisted";
-    protected java.util.HashMap<Integer, BlockPos> spawnChunkMap = new java.util.HashMap<Integer, BlockPos>();
-    protected java.util.HashMap<Integer, Boolean> spawnForcedMap = new java.util.HashMap<Integer, Boolean>();
-    public float eyeHeight = this.getDefaultEyeHeight();
+    protected java.util.HashMap<Integer, BlockPos> spawnChunkMap = new java.util.HashMap<>();
+    protected java.util.HashMap<Integer, Boolean> spawnForcedMap = new java.util.HashMap<>();
+    public final float eyeHeight = this.getDefaultEyeHeight();
     public static final net.minecraft.entity.ai.attributes.IAttribute REACH_DISTANCE = new net.minecraft.entity.ai.attributes.RangedAttribute(null, "generic.reachDistance", 5.0D, 0.0D, 1024.0D).setShouldWatch(true);
 
     private static final DataParameter<Float> ABSORPTION = EntityDataManager.<Float>createKey(EntityPlayer.class, DataSerializers.FLOAT);
@@ -85,9 +85,9 @@ public abstract class EntityPlayer extends EntityLivingBase
     protected static final DataParameter<Byte> MAIN_HAND = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
     protected static final DataParameter<NBTTagCompound> LEFT_SHOULDER_ENTITY = EntityDataManager.<NBTTagCompound>createKey(EntityPlayer.class, DataSerializers.COMPOUND_TAG);
     protected static final DataParameter<NBTTagCompound> RIGHT_SHOULDER_ENTITY = EntityDataManager.<NBTTagCompound>createKey(EntityPlayer.class, DataSerializers.COMPOUND_TAG);
-    public InventoryPlayer inventory = new InventoryPlayer(this);
+    public final InventoryPlayer inventory = new InventoryPlayer(this);
     protected InventoryEnderChest enderChest = new InventoryEnderChest(this); // CraftBukkit - add "this" to constructor
-    public Container inventoryContainer;
+    public final Container inventoryContainer;
     public Container openContainer;
     protected FoodStats foodStats = new FoodStats(this); // CraftBukkit - add "this" to constructor
     protected int flyToggleTimer;
@@ -109,12 +109,12 @@ public abstract class EntityPlayer extends EntityLivingBase
     public float renderOffsetZ;
     public BlockPos spawnPos;
     public boolean spawnForced;
-    public PlayerCapabilities capabilities = new PlayerCapabilities();
+    public final PlayerCapabilities capabilities = new PlayerCapabilities();
     public int experienceLevel;
     public int experienceTotal;
     public float experience;
     protected int xpSeed;
-    protected float speedInAir = 0.02F;
+    protected final float speedInAir = 0.02F;
     private int lastXPSound;
     private final GameProfile gameProfile;
     @SideOnly(Side.CLIENT)
@@ -161,10 +161,10 @@ public abstract class EntityPlayer extends EntityLivingBase
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(ABSORPTION, Float.valueOf(0.0F));
-        this.dataManager.register(PLAYER_SCORE, Integer.valueOf(0));
-        this.dataManager.register(PLAYER_MODEL_FLAG, Byte.valueOf((byte)0));
-        this.dataManager.register(MAIN_HAND, Byte.valueOf((byte)1));
+        this.dataManager.register(ABSORPTION, 0.0F);
+        this.dataManager.register(PLAYER_SCORE, 0);
+        this.dataManager.register(PLAYER_MODEL_FLAG, (byte) 0);
+        this.dataManager.register(MAIN_HAND, (byte) 1);
         this.dataManager.register(LEFT_SHOULDER_ENTITY, new NBTTagCompound());
         this.dataManager.register(RIGHT_SHOULDER_ENTITY, new NBTTagCompound());
     }
@@ -547,12 +547,8 @@ public abstract class EntityPlayer extends EntityLivingBase
 
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity = list.get(i);
-
-                if (!entity.isDead)
-                {
+            for (Entity entity : list) {
+                if (!entity.isDead) {
                     this.collideWithPlayer(entity);
                 }
             }
@@ -587,18 +583,18 @@ public abstract class EntityPlayer extends EntityLivingBase
 
     public int getScore()
     {
-        return ((Integer)this.dataManager.get(PLAYER_SCORE)).intValue();
+        return (Integer) this.dataManager.get(PLAYER_SCORE);
     }
 
     public void setScore(int scoreIn)
     {
-        this.dataManager.set(PLAYER_SCORE, Integer.valueOf(scoreIn));
+        this.dataManager.set(PLAYER_SCORE, scoreIn);
     }
 
     public void addScore(int scoreIn)
     {
         int i = this.getScore();
-        this.dataManager.set(PLAYER_SCORE, Integer.valueOf(i + scoreIn));
+        this.dataManager.set(PLAYER_SCORE, i + scoreIn);
     }
 
     public void onDeath(DamageSource cause)
@@ -862,25 +858,21 @@ public abstract class EntityPlayer extends EntityLivingBase
 
     public static void registerFixesPlayer(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.PLAYER, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.PLAYER, (fixer1, compound, versionIn) -> {
+            DataFixesManager.processInventory(fixer1, compound, versionIn, "Inventory");
+            DataFixesManager.processInventory(fixer1, compound, versionIn, "EnderItems");
+
+            if (compound.hasKey("ShoulderEntityLeft", 10))
             {
-                DataFixesManager.processInventory(fixer, compound, versionIn, "Inventory");
-                DataFixesManager.processInventory(fixer, compound, versionIn, "EnderItems");
-
-                if (compound.hasKey("ShoulderEntityLeft", 10))
-                {
-                    compound.setTag("ShoulderEntityLeft", fixer.process(FixTypes.ENTITY, compound.getCompoundTag("ShoulderEntityLeft"), versionIn));
-                }
-
-                if (compound.hasKey("ShoulderEntityRight", 10))
-                {
-                    compound.setTag("ShoulderEntityRight", fixer.process(FixTypes.ENTITY, compound.getCompoundTag("ShoulderEntityRight"), versionIn));
-                }
-
-                return compound;
+                compound.setTag("ShoulderEntityLeft", fixer1.process(FixTypes.ENTITY, compound.getCompoundTag("ShoulderEntityLeft"), versionIn));
             }
+
+            if (compound.hasKey("ShoulderEntityRight", 10))
+            {
+                compound.setTag("ShoulderEntityRight", fixer1.process(FixTypes.ENTITY, compound.getCompoundTag("ShoulderEntityRight"), versionIn));
+            }
+
+            return compound;
         });
     }
 
@@ -2479,12 +2471,12 @@ public abstract class EntityPlayer extends EntityLivingBase
             amount = 0.0F;
         }
 
-        this.getDataManager().set(ABSORPTION, Float.valueOf(amount));
+        this.getDataManager().set(ABSORPTION, amount);
     }
 
     public float getAbsorptionAmount()
     {
-        return ((Float)this.getDataManager().get(ABSORPTION)).floatValue();
+        return (Float) this.getDataManager().get(ABSORPTION);
     }
 
     public static UUID getUUID(GameProfile profile)
@@ -2513,14 +2505,14 @@ public abstract class EntityPlayer extends EntityLivingBase
         else
         {
             ItemStack itemstack = this.getHeldItemMainhand();
-            return !itemstack.isEmpty() && itemstack.hasDisplayName() ? itemstack.getDisplayName().equals(code.getLock()) : false;
+            return (!itemstack.isEmpty() && itemstack.hasDisplayName()) && itemstack.getDisplayName().equals(code.getLock());
         }
     }
 
     @SideOnly(Side.CLIENT)
     public boolean isWearing(EnumPlayerModelParts part)
     {
-        return (((Byte)this.getDataManager().get(PLAYER_MODEL_FLAG)).byteValue() & part.getPartMask()) == part.getPartMask();
+        return ((Byte) this.getDataManager().get(PLAYER_MODEL_FLAG) & part.getPartMask()) == part.getPartMask();
     }
 
     public boolean sendCommandFeedback()
@@ -2621,12 +2613,12 @@ public abstract class EntityPlayer extends EntityLivingBase
 
     public EnumHandSide getPrimaryHand()
     {
-        return ((Byte)this.dataManager.get(MAIN_HAND)).byteValue() == 0 ? EnumHandSide.LEFT : EnumHandSide.RIGHT;
+        return (Byte) this.dataManager.get(MAIN_HAND) == 0 ? EnumHandSide.LEFT : EnumHandSide.RIGHT;
     }
 
     public void setPrimaryHand(EnumHandSide hand)
     {
-        this.dataManager.set(MAIN_HAND, Byte.valueOf((byte)(hand == EnumHandSide.LEFT ? 0 : 1)));
+        this.dataManager.set(MAIN_HAND, (byte) (hand == EnumHandSide.LEFT ? 0 : 1));
     }
 
     public NBTTagCompound getLeftShoulderEntity()
@@ -2797,8 +2789,8 @@ public abstract class EntityPlayer extends EntityLivingBase
         this.displayname = net.minecraftforge.event.ForgeEventFactory.getPlayerDisplayName(this, this.getName());
     }
 
-    private final java.util.Collection<ITextComponent> prefixes = new java.util.LinkedList<ITextComponent>();
-    private final java.util.Collection<ITextComponent> suffixes = new java.util.LinkedList<ITextComponent>();
+    private final java.util.Collection<ITextComponent> prefixes = new java.util.LinkedList<>();
+    private final java.util.Collection<ITextComponent> suffixes = new java.util.LinkedList<>();
 
     /**
      * Add a prefix to the player's username in chat
@@ -2914,7 +2906,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         NOT_POSSIBLE_NOW,
         TOO_FAR_AWAY,
         OTHER_PROBLEM,
-        NOT_SAFE;
+        NOT_SAFE
     }
 
     @Override

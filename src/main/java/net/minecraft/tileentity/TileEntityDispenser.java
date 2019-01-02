@@ -22,7 +22,7 @@ public class TileEntityDispenser extends TileEntityLockableLoot
     private static final Random RNG = new Random();
     private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -101,7 +101,7 @@ public class TileEntityDispenser extends TileEntityLockableLoot
 
     public static void registerFixes(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDispenser.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityDispenser.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)

@@ -42,11 +42,11 @@ public class ItemSnow extends ItemBlock
 
             if (block == this.block)
             {
-                int i = ((Integer)iblockstate.getValue(BlockSnow.LAYERS)).intValue();
+                int i = (Integer) iblockstate.getValue(BlockSnow.LAYERS);
 
                 if (i < 8)
                 {
-                    IBlockState iblockstate1 = iblockstate.withProperty(BlockSnow.LAYERS, Integer.valueOf(i + 1));
+                    IBlockState iblockstate1 = iblockstate.withProperty(BlockSnow.LAYERS, i + 1);
                     AxisAlignedBB axisalignedbb = iblockstate1.getCollisionBoundingBox(worldIn, blockpos);
 
                     if (axisalignedbb != Block.NULL_AABB && worldIn.checkNoEntityCollision(axisalignedbb.offset(blockpos)) && worldIn.setBlockState(blockpos, iblockstate1, 10))
@@ -81,6 +81,6 @@ public class ItemSnow extends ItemBlock
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack)
     {
         IBlockState state = world.getBlockState(pos);
-        return (state.getBlock() != net.minecraft.init.Blocks.SNOW_LAYER || ((Integer)state.getValue(BlockSnow.LAYERS)) > 7) ? super.canPlaceBlockOnSide(world, pos, side, player, stack) : true;
+        return (state.getBlock() == net.minecraft.init.Blocks.SNOW_LAYER && ((Integer) state.getValue(BlockSnow.LAYERS)) <= 7) || super.canPlaceBlockOnSide(world, pos, side, player, stack);
     }
 }

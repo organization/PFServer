@@ -405,7 +405,7 @@ public class Potion extends net.minecraftforge.registries.IForgeRegistryEntry.Im
      */
     public java.util.List<net.minecraft.item.ItemStack> getCurativeItems()
     {
-        java.util.ArrayList<net.minecraft.item.ItemStack> ret = new java.util.ArrayList<net.minecraft.item.ItemStack>();
+        java.util.ArrayList<net.minecraft.item.ItemStack> ret = new java.util.ArrayList<>();
         ret.add(new net.minecraft.item.ItemStack(net.minecraft.init.Items.MILK_BUCKET));
         return ret;
     }

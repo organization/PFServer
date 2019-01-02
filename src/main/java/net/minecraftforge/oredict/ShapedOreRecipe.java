@@ -61,7 +61,7 @@ public class ShapedOreRecipe extends IForgeRegistryEntry.Impl<IRecipe> implement
     protected int width = 0;
     protected int height = 0;
     protected boolean mirrored = true;
-    protected ResourceLocation group;
+    protected final ResourceLocation group;
     private Recipe bukkitRecip;
 
     public ShapedOreRecipe(ResourceLocation group, Block     result, Object... recipe){ this(group, new ItemStack(result), recipe); }

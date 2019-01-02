@@ -12,7 +12,7 @@ import java.util.logging.Level;
  */
 public class ConversationTracker {
 
-    private LinkedList<Conversation> conversationQueue = new LinkedList<Conversation>();
+    private LinkedList<Conversation> conversationQueue = new LinkedList<>();
 
     public synchronized boolean beginConversation(Conversation conversation) {
         if (!conversationQueue.contains(conversation)) {
@@ -31,9 +31,7 @@ public class ConversationTracker {
             if (conversationQueue.getFirst() == conversation) {
                 conversation.abandon(details);
             }
-            if (conversationQueue.contains(conversation)) {
-                conversationQueue.remove(conversation);
-            }
+            conversationQueue.remove(conversation);
             if (!conversationQueue.isEmpty()) {
                 conversationQueue.getFirst().outputNextPrompt();
             }
@@ -43,7 +41,7 @@ public class ConversationTracker {
     public synchronized void abandonAllConversations() {
 
         LinkedList<Conversation> oldQueue = conversationQueue;
-        conversationQueue = new LinkedList<Conversation>();
+        conversationQueue = new LinkedList<>();
         for (Conversation conversation : oldQueue) {
             try {
                 conversation.abandon(new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));

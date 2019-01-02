@@ -111,7 +111,7 @@ public class EntityMooshroom extends EntityCow implements net.minecraftforge.com
 
         this.world.spawnEntity(entitycow);
 
-        java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+        java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         for (int i = 0; i < 5; ++i)
         {
             ret.add(new ItemStack(Blocks.RED_MUSHROOM));

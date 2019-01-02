@@ -46,15 +46,15 @@ import java.util.stream.Stream;
 
 public class LoadController
 {
-    private Loader loader;
-    private EventBus masterChannel;
+    private final Loader loader;
+    private final EventBus masterChannel;
     private ImmutableMap<String, EventBus> eventChannels;
     private LoaderState state;
-    private Multimap<String, ModState> modStates = MultimapBuilder.hashKeys().enumSetValues(ModState.class).build();
-    private List<ModContainer> activeModList = Lists.newArrayList();
+    private final Multimap<String, ModState> modStates = MultimapBuilder.hashKeys().enumSetValues(ModState.class).build();
+    private final List<ModContainer> activeModList = Lists.newArrayList();
     private ModContainer activeContainer;
     private BiMap<ModContainer, Object> modObjectList;
-    private ListMultimap<String, ModContainer> packageOwners;
+    private final ListMultimap<String, ModContainer> packageOwners;
 
     public LoadController(Loader loader)
     {
@@ -350,7 +350,7 @@ public class LoadController
         return null;
     }
 
-    private FMLSecurityManager accessibleManager = new FMLSecurityManager();
+    private final FMLSecurityManager accessibleManager = new FMLSecurityManager();
 
     class FMLSecurityManager extends SecurityManager
     {

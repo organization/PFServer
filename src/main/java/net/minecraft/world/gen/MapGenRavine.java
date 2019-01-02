@@ -214,8 +214,7 @@ public class MapGenRavine extends MapGenBase
         if (biome == net.minecraft.init.Biomes.BEACH) return true;
         if (biome == net.minecraft.init.Biomes.DESERT) return true;
         if (biome == net.minecraft.init.Biomes.MUSHROOM_ISLAND) return true;
-        if (biome == net.minecraft.init.Biomes.MUSHROOM_ISLAND_SHORE) return true;
-        return false;
+        return biome == net.minecraft.init.Biomes.MUSHROOM_ISLAND_SHORE;
     }
 
     //Determine if the block at the specified location is the top block for the biome, we take into account

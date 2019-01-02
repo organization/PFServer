@@ -25,10 +25,10 @@ import java.util.*;
 
 public class LinkRepository extends Repository
 {
-    private Map<String, File> artifact_to_file = new HashMap<>();
-    private Map<String, File> filesystem = new HashMap<>();
-    private Map<String, Artifact> snapshots = new HashMap<>();
-    private Set<File> known = new HashSet<>();
+    private final Map<String, File> artifact_to_file = new HashMap<>();
+    private final Map<String, File> filesystem = new HashMap<>();
+    private final Map<String, Artifact> snapshots = new HashMap<>();
+    private final Set<File> known = new HashSet<>();
 
     LinkRepository(File root)
     {
@@ -78,7 +78,7 @@ public class LinkRepository extends Repository
     @Override
     public void filterLegacy(List<File> list)
     {
-        list.removeIf(e -> known.contains(e));
+        list.removeIf(known::contains);
     }
 
     public Artifact resolve(Artifact artifact)

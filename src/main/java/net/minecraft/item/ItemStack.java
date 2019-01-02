@@ -481,7 +481,7 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
         }
         else
         {
-            return !stackA.isEmpty() && !stackB.isEmpty() ? stackA.isItemStackEqual(stackB) : false;
+            return (!stackA.isEmpty() && !stackB.isEmpty()) && stackA.isItemStackEqual(stackB);
         }
     }
 
@@ -517,7 +517,7 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
         }
         else
         {
-            return !stackA.isEmpty() && !stackB.isEmpty() ? stackA.isItemEqual(stackB) : false;
+            return (!stackA.isEmpty() && !stackB.isEmpty()) && stackA.isItemEqual(stackB);
         }
     }
 
@@ -529,7 +529,7 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
         }
         else
         {
-            return !stackA.isEmpty() && !stackB.isEmpty() ? stackA.isItemEqualIgnoreDurability(stackB) : false;
+            return (!stackA.isEmpty() && !stackB.isEmpty()) && stackA.isItemEqualIgnoreDurability(stackB);
         }
     }
 
@@ -1110,7 +1110,7 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
 
         if (this.hasDisplayName())
         {
-            textcomponentstring.getStyle().setItalic(Boolean.valueOf(true));
+            textcomponentstring.getStyle().setItalic(Boolean.TRUE);
         }
 
         ITextComponent itextcomponent = (new TextComponentString("[")).appendSibling(textcomponentstring).appendText("]");
@@ -1221,7 +1221,7 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
     @Override
     public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing)
     {
-        return this.isEmpty  || this.capabilities == null ? false : this.capabilities.hasCapability(capability, facing);
+        return !this.isEmpty && this.capabilities != null && this.capabilities.hasCapability(capability, facing);
     }
 
     @Override
@@ -1325,7 +1325,7 @@ public final class ItemStack implements net.minecraftforge.common.capabilities.I
         if (shareTagA == null)
             return shareTagB == null;
         else
-            return shareTagB != null && shareTagA.equals(shareTagB);
+            return shareTagA.equals(shareTagB);
     }
 
     /**

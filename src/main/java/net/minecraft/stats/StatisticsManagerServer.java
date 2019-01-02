@@ -162,7 +162,7 @@ public class StatisticsManagerServer extends StatisticsManager
             if (((TupleIntJsonSerializable)entry.getValue()).getJsonSerializableValue() != null)
             {
                 JsonObject jsonobject1 = new JsonObject();
-                jsonobject1.addProperty("value", Integer.valueOf(((TupleIntJsonSerializable)entry.getValue()).getIntegerValue()));
+                jsonobject1.addProperty("value", ((TupleIntJsonSerializable) entry.getValue()).getIntegerValue());
 
                 try
                 {
@@ -177,7 +177,7 @@ public class StatisticsManagerServer extends StatisticsManager
             }
             else
             {
-                jsonobject.addProperty((entry.getKey()).statId, Integer.valueOf(((TupleIntJsonSerializable)entry.getValue()).getIntegerValue()));
+                jsonobject.addProperty((entry.getKey()).statId, ((TupleIntJsonSerializable) entry.getValue()).getIntegerValue());
             }
         }
 
@@ -200,7 +200,7 @@ public class StatisticsManagerServer extends StatisticsManager
 
             for (StatBase statbase : this.getDirty())
             {
-                map.put(statbase, Integer.valueOf(this.readStat(statbase)));
+                map.put(statbase, this.readStat(statbase));
             }
         }
 

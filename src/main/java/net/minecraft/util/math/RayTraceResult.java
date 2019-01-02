@@ -12,9 +12,9 @@ public class RayTraceResult
     public Object hitInfo = null;
 
     private BlockPos blockPos;
-    public Type typeOfHit;
+    public final Type typeOfHit;
     public EnumFacing sideHit;
-    public Vec3d hitVec;
+    public final Vec3d hitVec;
     public Entity entityHit;
 
     public RayTraceResult(Vec3d hitVecIn, EnumFacing sideHitIn, BlockPos blockPosIn)
@@ -61,6 +61,6 @@ public class RayTraceResult
     {
         MISS,
         BLOCK,
-        ENTITY;
+        ENTITY
     }
 }

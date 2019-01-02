@@ -130,8 +130,9 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
         return superType;
     }
 
+    @SafeVarargs
     @Override
-    public void registerAll(@SuppressWarnings("unchecked") V... values)
+    public final void registerAll(@SuppressWarnings("unchecked") V... values)
     {
         for (V value : values)
             register(value);
@@ -223,7 +224,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
         Integer ret = this.ids.inverse().get(value);
         if (ret == null && this.defaultValue != null)
             ret = this.ids.inverse().get(this.defaultValue);
-        return ret == null ? -1 : ret.intValue();
+        return ret == null ? -1 : ret;
     }
 
     public int getID(ResourceLocation name)
@@ -233,7 +234,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
     private int getIDRaw(V value)
     {
         Integer ret = this.ids.inverse().get(value);
-        return ret == null ? -1 : ret.intValue();
+        return ret == null ? -1 : ret;
     }
     private int getIDRaw(ResourceLocation name)
     {
@@ -254,7 +255,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
 
     ForgeRegistry<V> copy(RegistryManager stage)
     {
-        return new ForgeRegistry<V>(superType, defaultKey, min, max, create, add, clear, validate, stage, allowOverrides, isModifiable, dummyFactory, missing);
+        return new ForgeRegistry<>(superType, defaultKey, min, max, create, add, clear, validate, stage, allowOverrides, isModifiable, dummyFactory, missing);
     }
 
     int add(int id, V value)
@@ -606,7 +607,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
 
     RegistryEvent.Register<V> getRegisterEvent(ResourceLocation name)
     {
-        return new RegistryEvent.Register<V>(name, this);
+        return new RegistryEvent.Register<>(name, this);
     }
 
     void dump(ResourceLocation name)
@@ -667,7 +668,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
                     continue;
                 }
 
-                if (primaryName.equals(owner.owner))
+                if (Objects.equals(primaryName, owner.owner))
                     continue;
 
                 int realId = add(newId, value, owner.owner);
@@ -782,7 +783,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
             NBTTagCompound data = new NBTTagCompound();
 
             NBTTagList ids = new NBTTagList();
-            this.ids.entrySet().stream().sorted((o1, o2) -> o1.getKey().compareTo(o2.getKey())).forEach(e ->
+            this.ids.entrySet().stream().sorted(Comparator.comparing(Entry::getKey)).forEach(e ->
             {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setString("K", e.getKey().toString());
@@ -792,7 +793,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
             data.setTag("ids", ids);
 
             NBTTagList aliases = new NBTTagList();
-            this.aliases.entrySet().stream().sorted((o1, o2) -> o1.getKey().compareTo(o2.getKey())).forEach(e ->
+            this.aliases.entrySet().stream().sorted(Comparator.comparing(Entry::getKey)).forEach(e ->
             {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setString("K", e.getKey().toString());
@@ -802,7 +803,7 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
             data.setTag("aliases", aliases);
 
             NBTTagList overrides = new NBTTagList();
-            this.overrides.entrySet().stream().sorted((o1, o2) -> o1.getKey().compareTo(o2.getKey())).forEach(e ->
+            this.overrides.entrySet().stream().sorted(Comparator.comparing(Entry::getKey)).forEach(e ->
             {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setString("K", e.getKey().toString());
@@ -887,8 +888,8 @@ public class ForgeRegistry<V extends IForgeRegistryEntry<V>> implements IForgeRe
     {
         List<MissingMappings.Mapping<V>> lst = Lists.newArrayList();
         ForgeRegistry<V> pool = RegistryManager.ACTIVE.getRegistry(name);
-        map.forEach((rl, id) -> lst.add(new MissingMappings.Mapping<V>(this, pool, rl, id)));
-        return new MissingMappings<V>(name, this, lst);
+        map.forEach((rl, id) -> lst.add(new MissingMappings.Mapping<>(this, pool, rl, id)));
+        return new MissingMappings<>(name, this, lst);
     }
 
     void processMissingEvent(ResourceLocation name, ForgeRegistry<V> pool, List<MissingMappings.Mapping<V>> mappings, Map<ResourceLocation, Integer> missing, Map<ResourceLocation, Integer[]> remaps, Collection<ResourceLocation> defaulted, Collection<ResourceLocation> failed, boolean injectNetworkDummies)

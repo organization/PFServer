@@ -35,8 +35,8 @@ import java.util.regex.Pattern;
 public final class JavaPluginLoader implements PluginLoader {
     final Server server;
     private final Pattern[] fileFilters = new Pattern[] { Pattern.compile("\\.jar$"), };
-    private final Map<String, Class<?>> classes = new java.util.concurrent.ConcurrentHashMap<String, Class<?>>(); // Spigot
-    private final List<PluginClassLoader> loaders = new CopyOnWriteArrayList<PluginClassLoader>();
+    private final Map<String, Class<?>> classes = new java.util.concurrent.ConcurrentHashMap<>(); // Spigot
+    private final List<PluginClassLoader> loaders = new CopyOnWriteArrayList<>();
     public static final CustomTimingsHandler pluginParentTimer = new CustomTimingsHandler("** Plugins"); // Spigot
 
     /**
@@ -142,21 +142,19 @@ public final class JavaPluginLoader implements PluginLoader {
 
             return new PluginDescriptionFile(stream);
 
-        } catch (IOException ex) {
-            throw new InvalidDescriptionException(ex);
-        } catch (YAMLException ex) {
+        } catch (IOException | YAMLException ex) {
             throw new InvalidDescriptionException(ex);
         } finally {
             if (jar != null) {
                 try {
                     jar.close();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
             if (stream != null) {
                 try {
                     stream.close();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         }
@@ -175,7 +173,7 @@ public final class JavaPluginLoader implements PluginLoader {
             for (PluginClassLoader loader : loaders) {
                 try {
                     cachedClass = loader.findClass(name, false);
-                } catch (ClassNotFoundException cnfe) {}
+                } catch (ClassNotFoundException ignored) {}
                 if (cachedClass != null) {
                     return cachedClass;
                 }
@@ -214,18 +212,14 @@ public final class JavaPluginLoader implements PluginLoader {
         Validate.notNull(listener, "Listener can not be null");
 
         boolean useTimings = server.getPluginManager().useTimings();
-        Map<Class<? extends Event>, Set<RegisteredListener>> ret = new HashMap<Class<? extends Event>, Set<RegisteredListener>>();
+        Map<Class<? extends Event>, Set<RegisteredListener>> ret = new HashMap<>();
         Set<Method> methods;
         try {
             Method[] publicMethods = listener.getClass().getMethods();
             Method[] privateMethods = listener.getClass().getDeclaredMethods();
-            methods = new HashSet<Method>(publicMethods.length + privateMethods.length, 1.0f);
-            for (Method method : publicMethods) {
-                methods.add(method);
-            }
-            for (Method method : privateMethods) {
-                methods.add(method);
-            }
+            methods = new HashSet<>(publicMethods.length + privateMethods.length, 1.0f);
+            methods.addAll(Arrays.asList(publicMethods));
+            methods.addAll(Arrays.asList(privateMethods));
         } catch (NoClassDefFoundError e) {
             plugin.getLogger().severe("Plugin " + plugin.getDescription().getFullName() + " has failed to register events for " + listener.getClass() + " because " + e.getMessage() + " does not exist.");
             return ret;
@@ -246,11 +240,7 @@ public final class JavaPluginLoader implements PluginLoader {
             }
             final Class<? extends Event> eventClass = checkClass.asSubclass(Event.class);
             method.setAccessible(true);
-            Set<RegisteredListener> eventSet = ret.get(eventClass);
-            if (eventSet == null) {
-                eventSet = new HashSet<RegisteredListener>();
-                ret.put(eventClass, eventSet);
-            }
+            Set<RegisteredListener> eventSet = ret.computeIfAbsent(eventClass, k -> new HashSet<>());
 
             for (Class<?> clazz = eventClass; Event.class.isAssignableFrom(clazz); clazz = clazz.getSuperclass()) {
                 // This loop checks for extending deprecated events
@@ -276,23 +266,21 @@ public final class JavaPluginLoader implements PluginLoader {
             }
 
             final CustomTimingsHandler timings = new CustomTimingsHandler("Plugin: " + plugin.getDescription().getFullName() + " Event: " + listener.getClass().getName() + "::" + method.getName()+"("+eventClass.getSimpleName()+")", pluginParentTimer); // Spigot
-            EventExecutor executor = new EventExecutor() {
-                public void execute(Listener listener, Event event) throws EventException {
-                    try {
-                        if (!eventClass.isAssignableFrom(event.getClass())) {
-                            return;
-                        }
-                        // Spigot start
-                        boolean isAsync = event.isAsynchronous();
-                        if (!isAsync) timings.startTiming();
-                        method.invoke(listener, event);
-                        if (!isAsync) timings.stopTiming();
-                        // Spigot end
-                    } catch (InvocationTargetException ex) {
-                        throw new EventException(ex.getCause());
-                    } catch (Throwable t) {
-                        throw new EventException(t);
+            EventExecutor executor = (listener1, event) -> {
+                try {
+                    if (!eventClass.isAssignableFrom(event.getClass())) {
+                        return;
                     }
+                    // Spigot start
+                    boolean isAsync = event.isAsynchronous();
+                    if (!isAsync) timings.startTiming();
+                    method.invoke(listener1, event);
+                    if (!isAsync) timings.stopTiming();
+                    // Spigot end
+                } catch (InvocationTargetException ex) {
+                    throw new EventException(ex.getCause());
+                } catch (Throwable t) {
+                    throw new EventException(t);
                 }
             };
             if (false) { // Spigot - RL handles useTimings check now

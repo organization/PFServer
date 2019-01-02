@@ -250,7 +250,7 @@ public enum B3DLoader implements ICustomModelLoader
             return Optional.of(nodeTransform);
         }
 
-        private static LoadingCache<Triple<Animation, Node<?>, Integer>, TRSRTransformation> cache = CacheBuilder.newBuilder()
+        private static final LoadingCache<Triple<Animation, Node<?>, Integer>, TRSRTransformation> cache = CacheBuilder.newBuilder()
             .maximumSize(16384)
             .expireAfterAccess(2, TimeUnit.MINUTES)
             .build(new CacheLoader<Triple<Animation, Node<?>, Integer>, TRSRTransformation>()

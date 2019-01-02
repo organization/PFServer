@@ -84,9 +84,8 @@ public class SignStrictJSON implements IFixableData
                         itextcomponent = new TextComponentString("");
                     }
                 }
-                catch (JsonParseException var8)
+                catch (JsonParseException ignored)
                 {
-                    ;
                 }
 
                 if (itextcomponent == null)
@@ -95,9 +94,8 @@ public class SignStrictJSON implements IFixableData
                     {
                         itextcomponent = ITextComponent.Serializer.jsonToComponent(s);
                     }
-                    catch (JsonParseException var7)
+                    catch (JsonParseException ignored)
                     {
-                        ;
                     }
                 }
 
@@ -107,9 +105,8 @@ public class SignStrictJSON implements IFixableData
                     {
                         itextcomponent = ITextComponent.Serializer.fromJsonLenient(s);
                     }
-                    catch (JsonParseException var6)
+                    catch (JsonParseException ignored)
                     {
-                        ;
                     }
                 }
 

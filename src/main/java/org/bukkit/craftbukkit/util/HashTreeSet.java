@@ -4,8 +4,8 @@ import java.util.*;
 
 public class HashTreeSet<V> implements Set<V> {
 
-    private HashSet<V> hash = new HashSet<V>();
-    private TreeSet<V> tree = new TreeSet<V>();
+    private final HashSet<V> hash = new HashSet<>();
+    private final TreeSet<V> tree = new TreeSet<>();
 
     public HashTreeSet() {
 
@@ -30,7 +30,7 @@ public class HashTreeSet<V> implements Set<V> {
     public Iterator<V> iterator() {
         return new Iterator<V>() {
 
-            private Iterator<V> it = tree.iterator();
+            private final Iterator<V> it = tree.iterator();
             private V last;
 
             @Override

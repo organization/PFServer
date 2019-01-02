@@ -24,6 +24,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Artifact implements Comparable<Artifact>
 {
@@ -176,7 +177,7 @@ public class Artifact implements Comparable<Artifact>
     {
         if (o == null)
             return false;
-        return group.equals(o.group) && artifact.equals(o.artifact) && (o.classifier == null ? classifier == null : o.classifier.equals(classifier)); //TODO: Case sensitive?
+        return group.equals(o.group) && artifact.equals(o.artifact) && (Objects.equals(o.classifier, classifier)); //TODO: Case sensitive?
     }
 
     public int compareVersion(Artifact o)

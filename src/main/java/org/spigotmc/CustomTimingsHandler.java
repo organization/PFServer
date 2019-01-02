@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class CustomTimingsHandler
 {
 
-    private static Queue<CustomTimingsHandler> HANDLERS = new ConcurrentLinkedQueue<CustomTimingsHandler>();
+    private static final Queue<CustomTimingsHandler> HANDLERS = new ConcurrentLinkedQueue<>();
     /*========================================================================*/
     private final String name;
     private final CustomTimingsHandler parent;

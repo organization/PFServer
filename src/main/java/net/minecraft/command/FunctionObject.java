@@ -55,7 +55,7 @@ public class FunctionObject
             }
         }
 
-        return new FunctionObject((Entry[])list.toArray(new Entry[list.size()]));
+        return new FunctionObject((Entry[])list.toArray(new Entry[0]));
     }
 
     public static class CacheableFunction

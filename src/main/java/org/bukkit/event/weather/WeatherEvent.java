@@ -7,7 +7,7 @@ import org.bukkit.event.Event;
  * Represents a Weather-related event
  */
 public abstract class WeatherEvent extends Event {
-    protected World world;
+    protected final World world;
 
     public WeatherEvent(final World where) {
         world = where;

@@ -47,7 +47,7 @@ public class ItemWrittenBook extends Item
         else
         {
             String s = nbt.getString("title");
-            return s != null && s.length() <= 32 ? nbt.hasKey("author", 8) : false;
+            return (s != null && s.length() <= 32) && nbt.hasKey("author", 8);
         }
     }
 
@@ -100,7 +100,7 @@ public class ItemWrittenBook extends Item
 
         playerIn.openBook(itemstack, handIn);
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 
     private void resolveContents(ItemStack stack, EntityPlayer player)

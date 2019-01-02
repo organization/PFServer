@@ -14,7 +14,7 @@ public class ContainerMerchant extends Container
     private final World world;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerMerchant(InventoryPlayer playerInventory, IMerchant merchant, World worldIn)
     {

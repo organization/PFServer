@@ -48,7 +48,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         this.type = potionMeta.type;
         this.color = potionMeta.color;
         if (potionMeta.hasCustomEffects()) {
-            this.customEffects = new ArrayList<PotionEffect>(potionMeta.customEffects);
+            this.customEffects = new ArrayList<>(potionMeta.customEffects);
         }
     }
 
@@ -63,7 +63,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         if (tag.hasKey(POTION_EFFECTS.NBT)) {
             NBTTagList list = tag.getTagList(POTION_EFFECTS.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND);
             int length = list.tagCount();
-            customEffects = new ArrayList<PotionEffect>(length);
+            customEffects = new ArrayList<>(length);
 
             for (int i = 0; i < length; i++) {
                 NBTTagCompound effect = list.getCompoundTagAt(i);
@@ -156,7 +156,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         CraftMetaPotion clone = (CraftMetaPotion) super.clone();
         clone.type = type;
         if (this.customEffects != null) {
-            clone.customEffects = new ArrayList<PotionEffect>(this.customEffects);
+            clone.customEffects = new ArrayList<>(this.customEffects);
         }
         return clone;
     }
@@ -200,7 +200,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
             }
         } else {
             if (customEffects == null) {
-                customEffects = new ArrayList<PotionEffect>();
+                customEffects = new ArrayList<>();
             }
             customEffects.add(effect);
             return true;

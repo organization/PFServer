@@ -105,9 +105,9 @@ public class ServerCommandManager extends CommandHandler implements ICommandList
             flag = false;
         }
 
-        ITextComponent itextcomponent = new TextComponentTranslation("chat.type.admin", new Object[] {sender.getName(), new TextComponentTranslation(translationKey, translationArgs)});
+        ITextComponent itextcomponent = new TextComponentTranslation("chat.type.admin", sender.getName(), new TextComponentTranslation(translationKey, translationArgs));
         itextcomponent.getStyle().setColor(TextFormatting.GRAY);
-        itextcomponent.getStyle().setItalic(Boolean.valueOf(true));
+        itextcomponent.getStyle().setItalic(Boolean.TRUE);
 
         if (flag)
         {

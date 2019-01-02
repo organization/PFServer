@@ -39,7 +39,7 @@ public class BlockBrewingStand extends BlockContainer
     public BlockBrewingStand()
     {
         super(Material.IRON);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_BOTTLE[0], Boolean.valueOf(false)).withProperty(HAS_BOTTLE[1], Boolean.valueOf(false)).withProperty(HAS_BOTTLE[2], Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_BOTTLE[0], Boolean.FALSE).withProperty(HAS_BOTTLE[1], Boolean.FALSE).withProperty(HAS_BOTTLE[2], Boolean.FALSE));
     }
 
     public String getLocalizedName()
@@ -164,7 +164,7 @@ public class BlockBrewingStand extends BlockContainer
 
         for (int i = 0; i < 3; ++i)
         {
-            iblockstate = iblockstate.withProperty(HAS_BOTTLE[i], Boolean.valueOf((meta & 1 << i) > 0));
+            iblockstate = iblockstate.withProperty(HAS_BOTTLE[i], (meta & 1 << i) > 0);
         }
 
         return iblockstate;
@@ -176,7 +176,7 @@ public class BlockBrewingStand extends BlockContainer
 
         for (int j = 0; j < 3; ++j)
         {
-            if (((Boolean)state.getValue(HAS_BOTTLE[j])).booleanValue())
+            if ((Boolean) state.getValue(HAS_BOTTLE[j]))
             {
                 i |= 1 << j;
             }
@@ -187,7 +187,7 @@ public class BlockBrewingStand extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {HAS_BOTTLE[0], HAS_BOTTLE[1], HAS_BOTTLE[2]});
+        return new BlockStateContainer(this, HAS_BOTTLE[0], HAS_BOTTLE[1], HAS_BOTTLE[2]);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

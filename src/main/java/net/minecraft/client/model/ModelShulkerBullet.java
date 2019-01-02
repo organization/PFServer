@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelShulkerBullet extends ModelBase
 {
-    public ModelRenderer renderer;
+    public final ModelRenderer renderer;
 
     public ModelShulkerBullet()
     {

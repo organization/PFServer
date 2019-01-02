@@ -55,7 +55,7 @@ public class DeobfuscationTransformer implements IClassTransformer, IClassNameTr
     // If reported we need to add a custom implementation of ClassWriter.getCommonSuperClass
     // that does not cause class loading.
 
-    private boolean deobfuscatedEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+    private final boolean deobfuscatedEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes)

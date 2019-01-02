@@ -35,21 +35,15 @@ public final class ProjectileHelper
             List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(projectile, projectile.getEntityBoundingBox().expand(d3, d4, d5).grow(1.0D));
             double d6 = 0.0D;
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity1 = list.get(i);
-
-                if (entity1.canBeCollidedWith() && (ignoreExcludedEntity || !entity1.isEntityEqual(excludedEntity)) && !entity1.noClip)
-                {
+            for (Entity entity1 : list) {
+                if (entity1.canBeCollidedWith() && (ignoreExcludedEntity || !entity1.isEntityEqual(excludedEntity)) && !entity1.noClip) {
                     AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
                     RayTraceResult raytraceresult1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
 
-                    if (raytraceresult1 != null)
-                    {
+                    if (raytraceresult1 != null) {
                         double d7 = vec3d.squareDistanceTo(raytraceresult1.hitVec);
 
-                        if (d7 < d6 || d6 == 0.0D)
-                        {
+                        if (d7 < d6 || d6 == 0.0D) {
                             entity = entity1;
                             d6 = d7;
                         }
@@ -76,7 +70,6 @@ public final class ProjectileHelper
 
         for (projectile.rotationPitch = (float)(MathHelper.atan2((double)f, d1) * (180D / Math.PI)) - 90.0F; projectile.rotationPitch - projectile.prevRotationPitch < -180.0F; projectile.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (projectile.rotationPitch - projectile.prevRotationPitch >= 180.0F)

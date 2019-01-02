@@ -32,7 +32,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
 
         if (this.isDouble())
         {
-            iblockstate = iblockstate.withProperty(SEAMLESS, Boolean.valueOf(false));
+            iblockstate = iblockstate.withProperty(SEAMLESS, Boolean.FALSE);
         }
         else
         {
@@ -87,7 +87,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
 
         if (this.isDouble())
         {
-            iblockstate = iblockstate.withProperty(SEAMLESS, Boolean.valueOf((meta & 8) != 0));
+            iblockstate = iblockstate.withProperty(SEAMLESS, (meta & 8) != 0);
         }
         else
         {
@@ -104,7 +104,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
 
         if (this.isDouble())
         {
-            if (((Boolean)state.getValue(SEAMLESS)).booleanValue())
+            if ((Boolean) state.getValue(SEAMLESS))
             {
                 i |= 8;
             }
@@ -119,7 +119,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
 
     protected BlockStateContainer createBlockState()
     {
-        return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {SEAMLESS, VARIANT}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, SEAMLESS, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
 
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)

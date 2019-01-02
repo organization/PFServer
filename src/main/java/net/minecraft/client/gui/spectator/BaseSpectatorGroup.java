@@ -28,6 +28,6 @@ public class BaseSpectatorGroup implements ISpectatorMenuView
 
     public ITextComponent getPrompt()
     {
-        return new TextComponentTranslation("spectatorMenu.root.prompt", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.root.prompt");
     }
 }

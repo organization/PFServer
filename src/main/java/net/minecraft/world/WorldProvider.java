@@ -416,7 +416,7 @@ public abstract class WorldProvider
     {
         ALLOW,
         DENY,
-        BED_EXPLODES;
+        BED_EXPLODES
     }
 
     /*======================================= Start Moved From World =========================================*/

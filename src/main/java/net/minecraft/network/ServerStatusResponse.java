@@ -123,8 +123,8 @@ public class ServerStatusResponse
                     public JsonElement serialize(Players p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_)
                     {
                         JsonObject jsonobject = new JsonObject();
-                        jsonobject.addProperty("max", Integer.valueOf(p_serialize_1_.getMaxPlayers()));
-                        jsonobject.addProperty("online", Integer.valueOf(p_serialize_1_.getOnlinePlayerCount()));
+                        jsonobject.addProperty("max", p_serialize_1_.getMaxPlayers());
+                        jsonobject.addProperty("online", p_serialize_1_.getOnlinePlayerCount());
 
                         if (p_serialize_1_.getPlayers() != null && p_serialize_1_.getPlayers().length > 0)
                         {
@@ -207,7 +207,7 @@ public class ServerStatusResponse
             }
         }
 
-    private java.util.concurrent.Semaphore mutex = new java.util.concurrent.Semaphore(1);
+    private final java.util.concurrent.Semaphore mutex = new java.util.concurrent.Semaphore(1);
     private String json = null;
     /**
      * Returns this object as a Json string.
@@ -279,7 +279,7 @@ public class ServerStatusResponse
                     {
                         JsonObject jsonobject = new JsonObject();
                         jsonobject.addProperty("name", p_serialize_1_.getName());
-                        jsonobject.addProperty("protocol", Integer.valueOf(p_serialize_1_.getProtocol()));
+                        jsonobject.addProperty("protocol", p_serialize_1_.getProtocol());
                         return jsonobject;
                     }
                 }

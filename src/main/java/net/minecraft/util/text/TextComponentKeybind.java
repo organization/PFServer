@@ -6,11 +6,7 @@ import java.util.function.Supplier;
 public class TextComponentKeybind extends TextComponentBase
 {
     public static Function<String, Supplier<String>> displaySupplierFunction = (p_193635_0_) ->
-    {
-        return () -> {
-            return p_193635_0_;
-        };
-    };
+            () -> p_193635_0_;
     private final String keybind;
     private Supplier<String> displaySupplier;
 

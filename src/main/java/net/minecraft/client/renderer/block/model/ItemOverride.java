@@ -42,7 +42,7 @@ public class ItemOverride
         {
             IItemPropertyGetter iitempropertygetter = item.getPropertyGetter(entry.getKey());
 
-            if (iitempropertygetter == null || iitempropertygetter.apply(stack, worldIn, livingEntity) < ((Float)entry.getValue()).floatValue())
+            if (iitempropertygetter == null || iitempropertygetter.apply(stack, worldIn, livingEntity) < (Float) entry.getValue())
             {
                 return false;
             }
@@ -69,7 +69,7 @@ public class ItemOverride
 
                 for (Entry<String, JsonElement> entry : jsonobject.entrySet())
                 {
-                    map.put(new ResourceLocation(entry.getKey()), Float.valueOf(JsonUtils.getFloat(entry.getValue(), entry.getKey())));
+                    map.put(new ResourceLocation(entry.getKey()), JsonUtils.getFloat(entry.getValue(), entry.getKey()));
                 }
 
                 return map;

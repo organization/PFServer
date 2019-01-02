@@ -35,7 +35,7 @@ public class CommandTP extends CommandBase
     {
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.tp.usage", new Object[0]);
+            throw new WrongUsageException("commands.tp.usage");
         }
         else
         {
@@ -56,7 +56,7 @@ public class CommandTP extends CommandBase
             {
                 if (args.length < i + 3)
                 {
-                    throw new WrongUsageException("commands.tp.usage", new Object[0]);
+                    throw new WrongUsageException("commands.tp.usage");
                 }
                 else if (entity.world != null)
                 {
@@ -68,7 +68,7 @@ public class CommandTP extends CommandBase
                     CommandBase.CoordinateArg commandbase$coordinatearg3 = parseCoordinate((double)entity.rotationYaw, args.length > k ? args[k++] : "~", false);
                     CommandBase.CoordinateArg commandbase$coordinatearg4 = parseCoordinate((double)entity.rotationPitch, args.length > k ? args[k] : "~", false);
                     teleportEntityToCoordinates(entity, commandbase$coordinatearg, commandbase$coordinatearg1, commandbase$coordinatearg2, commandbase$coordinatearg3, commandbase$coordinatearg4);
-                    notifyCommandListener(sender, this, "commands.tp.success.coordinates", new Object[] {entity.getName(), commandbase$coordinatearg.getResult(), commandbase$coordinatearg1.getResult(), commandbase$coordinatearg2.getResult()});
+                    notifyCommandListener(sender, this, "commands.tp.success.coordinates", entity.getName(), commandbase$coordinatearg.getResult(), commandbase$coordinatearg1.getResult(), commandbase$coordinatearg2.getResult());
                 }
             }
             else
@@ -78,7 +78,7 @@ public class CommandTP extends CommandBase
                 // CraftBukkit Start
                 // Use Bukkit teleport method in all cases. It has cross dimensional handling, events
                 if (entity.getBukkitEntity().teleport(entity1.getBukkitEntity(), org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.COMMAND)) {
-                    notifyCommandListener(sender, (ICommand) this, "commands.tp.success", new Object[] { entity.getName(), entity1.getName()});
+                    notifyCommandListener(sender, (ICommand) this, "commands.tp.success", entity.getName(), entity1.getName());
                     // CraftBukkit End
                 }
             }

@@ -75,8 +75,8 @@ public class ModAccessTransformer extends AccessTransformer
 
     private static class JarByteSource extends ByteSource
     {
-        private JarFile jar;
-        private JarEntry entry;
+        private final JarFile jar;
+        private final JarEntry entry;
         public JarByteSource(JarFile jar, JarEntry entry)
         {
             this.jar = jar;

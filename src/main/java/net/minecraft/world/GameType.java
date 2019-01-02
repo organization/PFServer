@@ -12,9 +12,9 @@ public enum GameType
     ADVENTURE(2, "adventure", "a"),
     SPECTATOR(3, "spectator", "sp");
 
-    int id;
-    String name;
-    String shortName;
+    final int id;
+    final String name;
+    final String shortName;
 
     private GameType(int idIn, String nameIn, String shortNameIn)
     {

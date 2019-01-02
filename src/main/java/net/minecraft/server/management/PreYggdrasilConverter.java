@@ -38,13 +38,7 @@ public class PreYggdrasilConverter
 
     private static void lookupNames(MinecraftServer server, Collection<String> names, ProfileLookupCallback callback)
     {
-        String[] astring = (String[])Iterators.toArray(Iterators.filter(names.iterator(), new Predicate<String>()
-        {
-            public boolean apply(@Nullable String p_apply_1_)
-            {
-                return !StringUtils.isNullOrEmpty(p_apply_1_);
-            }
-        }), String.class);
+        String[] astring = (String[])Iterators.toArray(Iterators.filter(names.iterator(), p_apply_1_ -> !StringUtils.isNullOrEmpty(p_apply_1_)), String.class);
 
         if (server.isServerInOnlineMode() || org.spigotmc.SpigotConfig.bungee) // Spigot: bungee = online mode, for now.
         {
@@ -400,7 +394,7 @@ public class PreYggdrasilConverter
 
             try
             {
-                final String[] astring = (String[])list.toArray(new String[list.size()]);
+                final String[] astring = (String[])list.toArray(new String[0]);
                 ProfileLookupCallback profilelookupcallback = new ProfileLookupCallback()
                 {
                     public void onProfileLookupSucceeded(GameProfile p_onProfileLookupSucceeded_1_)

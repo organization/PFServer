@@ -30,7 +30,7 @@ public class BlockCactus extends Block implements net.minecraftforge.common.IPla
     protected BlockCactus()
     {
         super(Material.CACTUS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         this.setTickRandomly(true);
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
@@ -46,26 +46,25 @@ public class BlockCactus extends Block implements net.minecraftforge.common.IPla
 
             for (i = 1; worldIn.getBlockState(pos.down(i)).getBlock() == this; ++i)
             {
-                ;
             }
 
             if (i < 3)
             {
-                int j = ((Integer)state.getValue(AGE)).intValue();
+                int j = (Integer) state.getValue(AGE);
 
                 if(net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, blockpos, state, true))
                 {
                     if (j >= (byte) range(3,((100.0F/ worldIn.spigotConfig.cactusModifier)*15) + 0.5F, 15)) //Spigot
                         {
                     // worldIn.setBlockState(blockpos, this.getDefaultState());
-                    IBlockState iblockstate = state.withProperty(AGE, Integer.valueOf(0));
+                    IBlockState iblockstate = state.withProperty(AGE, 0);
                     CraftEventFactory.handleBlockGrowEvent(worldIn, blockpos.getX(), blockpos.getY(), blockpos.getZ(), this, 0);
                     worldIn.setBlockState(pos, iblockstate, 4);
                     iblockstate.neighborChanged(worldIn, blockpos, this, pos);
                 }
                 else
                 {
-                    worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)), 4);
+                    worldIn.setBlockState(pos, state.withProperty(AGE, j + 1), 4);
                 }
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
                 }
@@ -96,7 +95,7 @@ public class BlockCactus extends Block implements net.minecraftforge.common.IPla
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
+        return super.canPlaceBlockAt(worldIn, pos) && this.canBlockStay(worldIn, pos);
     }
 
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
@@ -132,7 +131,7 @@ public class BlockCactus extends Block implements net.minecraftforge.common.IPla
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     @SideOnly(Side.CLIENT)
@@ -143,7 +142,7 @@ public class BlockCactus extends Block implements net.minecraftforge.common.IPla
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     @Override
@@ -160,7 +159,7 @@ public class BlockCactus extends Block implements net.minecraftforge.common.IPla
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

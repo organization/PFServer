@@ -76,17 +76,13 @@ public class WorldInfo
 
     public static void registerFixes(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.LEVEL, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.LEVEL, (fixer1, compound, versionIn) -> {
+            if (compound.hasKey("Player", 10))
             {
-                if (compound.hasKey("Player", 10))
-                {
-                    compound.setTag("Player", fixer.process(FixTypes.PLAYER, compound.getCompoundTag("Player"), versionIn));
-                }
-
-                return compound;
+                compound.setTag("Player", fixer1.process(FixTypes.PLAYER, compound.getCompoundTag("Player"), versionIn));
             }
+
+            return compound;
         });
     }
 
@@ -752,87 +748,34 @@ public class WorldInfo
 
     public void addToCrashReport(CrashReportCategory category)
     {
-        category.addDetail("Level seed", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return String.valueOf(WorldInfo.this.getSeed());
-            }
-        });
-        category.addDetail("Level generator", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return String.format("ID %02d - %s, ver %d. Features enabled: %b", WorldInfo.this.terrainType.getId(), WorldInfo.this.terrainType.getName(), WorldInfo.this.terrainType.getVersion(), WorldInfo.this.mapFeaturesEnabled);
-            }
-        });
-        category.addDetail("Level generator options", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return WorldInfo.this.generatorOptions;
-            }
-        });
-        category.addDetail("Level spawn location", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return CrashReportCategory.getCoordinateInfo(WorldInfo.this.spawnX, WorldInfo.this.spawnY, WorldInfo.this.spawnZ);
-            }
-        });
-        category.addDetail("Level time", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return String.format("%d game time, %d day time", WorldInfo.this.totalTime, WorldInfo.this.worldTime);
-            }
-        });
-        category.addDetail("Level dimension", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return String.valueOf(WorldInfo.this.dimension);
-            }
-        });
-        category.addDetail("Level storage version", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                String s = "Unknown?";
+        category.addDetail("Level seed", () -> String.valueOf(WorldInfo.this.getSeed()));
+        category.addDetail("Level generator", () -> String.format("ID %02d - %s, ver %d. Features enabled: %b", WorldInfo.this.terrainType.getId(), WorldInfo.this.terrainType.getName(), WorldInfo.this.terrainType.getVersion(), WorldInfo.this.mapFeaturesEnabled));
+        category.addDetail("Level generator options", () -> WorldInfo.this.generatorOptions);
+        category.addDetail("Level spawn location", () -> CrashReportCategory.getCoordinateInfo(WorldInfo.this.spawnX, WorldInfo.this.spawnY, WorldInfo.this.spawnZ));
+        category.addDetail("Level time", () -> String.format("%d game time, %d day time", WorldInfo.this.totalTime, WorldInfo.this.worldTime));
+        category.addDetail("Level dimension", () -> String.valueOf(WorldInfo.this.dimension));
+        category.addDetail("Level storage version", () -> {
+            String s = "Unknown?";
 
-                try
+            try
+            {
+                switch (WorldInfo.this.saveVersion)
                 {
-                    switch (WorldInfo.this.saveVersion)
-                    {
-                        case 19132:
-                            s = "McRegion";
-                            break;
-                        case 19133:
-                            s = "Anvil";
-                    }
+                    case 19132:
+                        s = "McRegion";
+                        break;
+                    case 19133:
+                        s = "Anvil";
                 }
-                catch (Throwable var3)
-                {
-                    ;
-                }
+            }
+            catch (Throwable ignored)
+            {
+            }
 
-                return String.format("0x%05X - %s", WorldInfo.this.saveVersion, s);
-            }
+            return String.format("0x%05X - %s", WorldInfo.this.saveVersion, s);
         });
-        category.addDetail("Level weather", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return String.format("Rain time: %d (now: %b), thunder time: %d (now: %b)", WorldInfo.this.rainTime, WorldInfo.this.raining, WorldInfo.this.thunderTime, WorldInfo.this.thundering);
-            }
-        });
-        category.addDetail("Level game mode", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return String.format("Game mode: %s (ID %d). Hardcore: %b. Cheats: %b", WorldInfo.this.gameType.getName(), WorldInfo.this.gameType.getID(), WorldInfo.this.hardcore, WorldInfo.this.allowCommands);
-            }
-        });
+        category.addDetail("Level weather", () -> String.format("Rain time: %d (now: %b), thunder time: %d (now: %b)", WorldInfo.this.rainTime, WorldInfo.this.raining, WorldInfo.this.thunderTime, WorldInfo.this.thundering));
+        category.addDetail("Level game mode", () -> String.format("Game mode: %s (ID %d). Hardcore: %b. Cheats: %b", WorldInfo.this.gameType.getName(), WorldInfo.this.gameType.getID(), WorldInfo.this.hardcore, WorldInfo.this.allowCommands));
     }
     /**
      * Allow access to additional mod specific world based properties

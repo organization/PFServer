@@ -60,7 +60,7 @@ import java.util.Map;
 
     // TODO build test suites to validate the behaviour of this stuff and make it less annoyingly magical
     public class NetworkDispatcher extends SimpleChannelInboundHandler<Packet<?>> implements ChannelOutboundHandler {
-    private static boolean DEBUG_HANDSHAKE = Boolean.parseBoolean(System.getProperty("fml.debugNetworkHandshake", "false"));
+    private static final boolean DEBUG_HANDSHAKE = Boolean.parseBoolean(System.getProperty("fml.debugNetworkHandshake", "false"));
     private static enum ConnectionState {
         OPENING, AWAITING_HANDSHAKE, HANDSHAKING, HANDSHAKECOMPLETE, FINALIZING, CONNECTED
     }
@@ -109,7 +109,7 @@ import java.util.Map;
         this.manager = manager;
         this.scm = null;
         this.side = Side.CLIENT;
-        this.handshakeChannel = new EmbeddedChannel(new HandshakeInjector(this), new ChannelRegistrationHandler(), new FMLHandshakeCodec(), new HandshakeMessageHandler<FMLHandshakeClientState>(FMLHandshakeClientState.class));
+        this.handshakeChannel = new EmbeddedChannel(new HandshakeInjector(this), new ChannelRegistrationHandler(), new FMLHandshakeCodec(), new HandshakeMessageHandler<>(FMLHandshakeClientState.class));
         this.handshakeChannel.attr(FML_DISPATCHER).set(this);
         this.handshakeChannel.attr(NetworkRegistry.CHANNEL_SOURCE).set(Side.SERVER);
         this.handshakeChannel.attr(NetworkRegistry.FML_CHANNEL).set("FML|HS");
@@ -124,7 +124,7 @@ import java.util.Map;
         this.manager = manager;
         this.scm = scm;
         this.side = Side.SERVER;
-        this.handshakeChannel = new EmbeddedChannel(new HandshakeInjector(this), new ChannelRegistrationHandler(), new FMLHandshakeCodec(), new HandshakeMessageHandler<FMLHandshakeServerState>(FMLHandshakeServerState.class));
+        this.handshakeChannel = new EmbeddedChannel(new HandshakeInjector(this), new ChannelRegistrationHandler(), new FMLHandshakeCodec(), new HandshakeMessageHandler<>(FMLHandshakeServerState.class));
         this.handshakeChannel.attr(FML_DISPATCHER).set(this);
         this.handshakeChannel.attr(NetworkRegistry.CHANNEL_SOURCE).set(Side.CLIENT);
         this.handshakeChannel.attr(NetworkRegistry.FML_CHANNEL).set("FML|HS");
@@ -320,14 +320,7 @@ import java.util.Map;
         }
         else
         {
-            manager.sendPacket(new SPacketDisconnect(TextComponentString), new GenericFutureListener<Future<? super Void>>()
-            {
-                @Override
-                public void operationComplete(Future<? super Void> result)
-                {
-                    manager.closeChannel(TextComponentString);
-                }
-            }, (GenericFutureListener<? extends Future<? super Void>>[])null);
+            manager.sendPacket(new SPacketDisconnect(TextComponentString), result -> manager.closeChannel(TextComponentString), (GenericFutureListener<? extends Future<? super Void>>[])null);
         }
         manager.channel().config().setAutoRead(false);
     }
@@ -617,7 +610,7 @@ import java.util.Map;
 
     private class MultiPartCustomPayload extends SPacketCustomPayload
     {
-        private String channel;
+        private final String channel;
         private byte[] data;
         private PacketBuffer data_buf = null;
         private int part_count = 0;

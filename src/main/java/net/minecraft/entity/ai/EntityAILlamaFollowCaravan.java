@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EntityAILlamaFollowCaravan extends EntityAIBase
 {
-    public EntityLlama llama;
+    public final EntityLlama llama;
     private double speedModifier;
     private int distCheckCounter;
 

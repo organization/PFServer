@@ -27,8 +27,8 @@ import java.io.File;
 
 public class GuiBackupFailed extends GuiScreen
 {
-    private GuiScreen parent;
-    private File zipName;
+    private final GuiScreen parent;
+    private final File zipName;
     public GuiBackupFailed(GuiScreen parent, File zipName)
     {
         this.parent = parent;
@@ -56,7 +56,7 @@ public class GuiBackupFailed extends GuiScreen
         int offset = Math.max(85 - 2 * 10, 10);
         this.drawCenteredString(this.fontRenderer, String.format("There was an error saving the archive %s", zipName.getName()), this.width / 2, offset, 0xFFFFFF);
         offset += 10;
-        this.drawCenteredString(this.fontRenderer, String.format("Please fix the problem and try again"), this.width / 2, offset, 0xFFFFFF);
+        this.drawCenteredString(this.fontRenderer, "Please fix the problem and try again", this.width / 2, offset, 0xFFFFFF);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

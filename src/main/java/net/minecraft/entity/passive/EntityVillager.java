@@ -276,38 +276,34 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(PROFESSION, Integer.valueOf(0));
+        this.dataManager.register(PROFESSION, 0);
     }
 
     public static void registerFixesVillager(DataFixer fixer)
     {
         EntityLiving.registerFixesMob(fixer, EntityVillager.class);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(EntityVillager.class, new String[] {"Inventory"}));
-        fixer.registerWalker(FixTypes.ENTITY, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(EntityVillager.class, "Inventory"));
+        fixer.registerWalker(FixTypes.ENTITY, (fixer1, compound, versionIn) -> {
+            if (EntityList.getKey(EntityVillager.class).equals(new ResourceLocation(compound.getString("id"))) && compound.hasKey("Offers", 10))
             {
-                if (EntityList.getKey(EntityVillager.class).equals(new ResourceLocation(compound.getString("id"))) && compound.hasKey("Offers", 10))
+                NBTTagCompound nbttagcompound = compound.getCompoundTag("Offers");
+
+                if (nbttagcompound.hasKey("Recipes", 9))
                 {
-                    NBTTagCompound nbttagcompound = compound.getCompoundTag("Offers");
+                    NBTTagList nbttaglist = nbttagcompound.getTagList("Recipes", 10);
 
-                    if (nbttagcompound.hasKey("Recipes", 9))
+                    for (int i = 0; i < nbttaglist.tagCount(); ++i)
                     {
-                        NBTTagList nbttaglist = nbttagcompound.getTagList("Recipes", 10);
-
-                        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-                        {
-                            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-                            DataFixesManager.processItemStack(fixer, nbttagcompound1, versionIn, "buy");
-                            DataFixesManager.processItemStack(fixer, nbttagcompound1, versionIn, "buyB");
-                            DataFixesManager.processItemStack(fixer, nbttagcompound1, versionIn, "sell");
-                            nbttaglist.set(i, nbttagcompound1);
-                        }
+                        NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+                        DataFixesManager.processItemStack(fixer1, nbttagcompound1, versionIn, "buy");
+                        DataFixesManager.processItemStack(fixer1, nbttagcompound1, versionIn, "buyB");
+                        DataFixesManager.processItemStack(fixer1, nbttagcompound1, versionIn, "sell");
+                        nbttaglist.set(i, nbttagcompound1);
                     }
                 }
-
-                return compound;
             }
+
+            return compound;
         });
     }
 
@@ -408,14 +404,14 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
     public void setProfession(int professionId)
     {
-        this.dataManager.set(PROFESSION, Integer.valueOf(professionId));
+        this.dataManager.set(PROFESSION, professionId);
         net.minecraftforge.fml.common.registry.VillagerRegistry.onSetProfession(this, professionId);
     }
 
     @Deprecated //Use Forge Variant below
     public int getProfession()
     {
-        return Math.max(((Integer)this.dataManager.get(PROFESSION)).intValue(), 0);
+        return Math.max((Integer) this.dataManager.get(PROFESSION), 0);
     }
 
     private net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession prof;
@@ -792,7 +788,7 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
             s1 = this.getProfessionForge().getCareer(this.careerId-1).getName();
             {
-                ITextComponent itextcomponent = new TextComponentTranslation("entity.Villager." + s1, new Object[0]);
+                ITextComponent itextcomponent = new TextComponentTranslation("entity.Villager." + s1);
                 itextcomponent.getStyle().setHoverEvent(this.getHoverEvent());
                 itextcomponent.getStyle().setInsertion(this.getCachedUniqueIdString());
 
@@ -1019,8 +1015,8 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
     public static class EmeraldForItems implements ITradeList
         {
-            public Item buyingItem;
-            public PriceInfo price;
+            public final Item buyingItem;
+            public final PriceInfo price;
 
             public EmeraldForItems(Item itemIn, PriceInfo priceIn)
             {
@@ -1048,10 +1044,10 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
     public static class ItemAndEmeraldToItem implements ITradeList
         {
-            public ItemStack buyingItemStack;
-            public PriceInfo buyingPriceInfo;
-            public ItemStack sellingItemstack;
-            public PriceInfo sellingPriceInfo;
+            public final ItemStack buyingItemStack;
+            public final PriceInfo buyingPriceInfo;
+            public final ItemStack sellingItemstack;
+            public final PriceInfo sellingPriceInfo;
 
             public ItemAndEmeraldToItem(Item p_i45813_1_, PriceInfo p_i45813_2_, Item p_i45813_3_, PriceInfo p_i45813_4_)
             {
@@ -1094,8 +1090,8 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
     public static class ListEnchantedItemForEmeralds implements ITradeList
         {
-            public ItemStack enchantedItemStack;
-            public PriceInfo priceInfo;
+            public final ItemStack enchantedItemStack;
+            public final PriceInfo priceInfo;
 
             public ListEnchantedItemForEmeralds(Item p_i45814_1_, PriceInfo p_i45814_2_)
             {
@@ -1123,8 +1119,8 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
 
     public static class ListItemForEmeralds implements ITradeList
         {
-            public ItemStack itemToBuy;
-            public PriceInfo priceInfo;
+            public final ItemStack itemToBuy;
+            public final PriceInfo priceInfo;
 
             public ListItemForEmeralds(Item par1Item, PriceInfo priceInfo)
             {
@@ -1169,25 +1165,25 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant
         {
             public PriceInfo(int p_i45810_1_, int p_i45810_2_)
             {
-                super(Integer.valueOf(p_i45810_1_), Integer.valueOf(p_i45810_2_));
+                super(p_i45810_1_, p_i45810_2_);
 
                 if (p_i45810_2_ < p_i45810_1_)
                 {
-                    EntityVillager.LOGGER.warn("PriceRange({}, {}) invalid, {} smaller than {}", Integer.valueOf(p_i45810_1_), Integer.valueOf(p_i45810_2_), Integer.valueOf(p_i45810_2_), Integer.valueOf(p_i45810_1_));
+                    EntityVillager.LOGGER.warn("PriceRange({}, {}) invalid, {} smaller than {}", p_i45810_1_, p_i45810_2_, p_i45810_2_, p_i45810_1_);
                 }
             }
 
             public int getPrice(Random rand)
             {
-                return ((Integer)this.getFirst()).intValue() >= ((Integer)this.getSecond()).intValue() ? ((Integer)this.getFirst()).intValue() : ((Integer)this.getFirst()).intValue() + rand.nextInt(((Integer)this.getSecond()).intValue() - ((Integer)this.getFirst()).intValue() + 1);
+                return (Integer) this.getFirst() >= (Integer) this.getSecond() ? (Integer) this.getFirst() : (Integer) this.getFirst() + rand.nextInt((Integer) this.getSecond() - (Integer) this.getFirst() + 1);
             }
         }
 
     static class TreasureMapForEmeralds implements ITradeList
         {
-            public PriceInfo value;
-            public String destination;
-            public MapDecoration.Type destinationType;
+            public final PriceInfo value;
+            public final String destination;
+            public final MapDecoration.Type destinationType;
 
             public TreasureMapForEmeralds(PriceInfo p_i47340_1_, String p_i47340_2_, MapDecoration.Type p_i47340_3_)
             {

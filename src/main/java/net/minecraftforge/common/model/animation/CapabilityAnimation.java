@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 public class CapabilityAnimation
 {
     @CapabilityInject(IAnimationStateMachine.class)
-    public static Capability<IAnimationStateMachine> ANIMATION_CAPABILITY = null;
+    public static final Capability<IAnimationStateMachine> ANIMATION_CAPABILITY = null;
 
     public static void register()
     {

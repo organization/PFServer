@@ -22,7 +22,7 @@ package net.minecraftforge.client.model.pipeline;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 
 public abstract class TransformerConsumer implements IVertexConsumer {
-    private IVertexConsumer parent;
+    private final IVertexConsumer parent;
 
     protected TransformerConsumer(IVertexConsumer parent)
     {

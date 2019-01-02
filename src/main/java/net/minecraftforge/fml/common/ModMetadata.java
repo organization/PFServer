@@ -51,13 +51,13 @@ public class ModMetadata
     public String version = "";
     public List<String> authorList = Lists.newArrayList();
     public String credits = "";
-    public String parent = "";
+    public final String parent = "";
     public String[] screenshots;
 
     // this field is not for use in the json
     public transient ModContainer parentMod;
     // this field is not for use in the json
-    public transient List<ModContainer> childMods = Lists.newArrayList();
+    public final transient List<ModContainer> childMods = Lists.newArrayList();
 
     public boolean useDependencyInformation;
     public Set<ArtifactVersion> requiredMods = Sets.newHashSet();

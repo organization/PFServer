@@ -17,7 +17,6 @@ public class RConUtils
 
         for (j = p_72661_1_ > i ? i : p_72661_1_; 0 != p_72661_0_[j] && j < i; ++j)
         {
-            ;
         }
 
         return new String(p_72661_0_, p_72661_1_, j - p_72661_1_, StandardCharsets.UTF_8);

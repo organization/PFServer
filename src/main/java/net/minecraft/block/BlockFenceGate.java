@@ -37,7 +37,7 @@ public class BlockFenceGate extends BlockHorizontal
     public BlockFenceGate(BlockPlanks.EnumType p_i46394_1_)
     {
         super(Material.WOOD, p_i46394_1_.getMapColor());
-        this.setDefaultState(this.blockState.getBaseState().withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)).withProperty(IN_WALL, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(OPEN, Boolean.FALSE).withProperty(POWERED, Boolean.FALSE).withProperty(IN_WALL, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.REDSTONE);
     }
 
@@ -45,7 +45,7 @@ public class BlockFenceGate extends BlockHorizontal
     {
         state = this.getActualState(state, source, pos);
 
-        if (((Boolean)state.getValue(IN_WALL)).booleanValue())
+        if ((Boolean) state.getValue(IN_WALL))
         {
             return ((EnumFacing)state.getValue(FACING)).getAxis() == EnumFacing.Axis.X ? AABB_HITBOX_XAXIS_INWALL : AABB_HITBOX_ZAXIS_INWALL;
         }
@@ -61,7 +61,7 @@ public class BlockFenceGate extends BlockHorizontal
 
         if (enumfacing$axis == EnumFacing.Axis.Z && (worldIn.getBlockState(pos.west()).getBlock() instanceof BlockWall || worldIn.getBlockState(pos.east()).getBlock() instanceof BlockWall) || enumfacing$axis == EnumFacing.Axis.X && (worldIn.getBlockState(pos.north()).getBlock() instanceof BlockWall || worldIn.getBlockState(pos.south()).getBlock() instanceof BlockWall))
         {
-            state = state.withProperty(IN_WALL, Boolean.valueOf(true));
+            state = state.withProperty(IN_WALL, Boolean.TRUE);
         }
 
         return state;
@@ -79,13 +79,13 @@ public class BlockFenceGate extends BlockHorizontal
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getMaterial().isSolid() ? super.canPlaceBlockAt(worldIn, pos) : false;
+        return worldIn.getBlockState(pos.down()).getMaterial().isSolid() && super.canPlaceBlockAt(worldIn, pos);
     }
 
     @Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        if (((Boolean)blockState.getValue(OPEN)).booleanValue())
+        if ((Boolean) blockState.getValue(OPEN))
         {
             return NULL_AABB;
         }
@@ -107,20 +107,20 @@ public class BlockFenceGate extends BlockHorizontal
 
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
-        return ((Boolean)worldIn.getBlockState(pos).getValue(OPEN)).booleanValue();
+        return (Boolean) worldIn.getBlockState(pos).getValue(OPEN);
     }
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         boolean flag = worldIn.isBlockPowered(pos);
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(OPEN, Boolean.valueOf(flag)).withProperty(POWERED, Boolean.valueOf(flag)).withProperty(IN_WALL, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(OPEN, flag).withProperty(POWERED, flag).withProperty(IN_WALL, Boolean.FALSE);
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (((Boolean)state.getValue(OPEN)).booleanValue())
+        if ((Boolean) state.getValue(OPEN))
         {
-            state = state.withProperty(OPEN, Boolean.valueOf(false));
+            state = state.withProperty(OPEN, Boolean.FALSE);
             worldIn.setBlockState(pos, state, 10);
         }
         else
@@ -132,11 +132,11 @@ public class BlockFenceGate extends BlockHorizontal
                 state = state.withProperty(FACING, enumfacing);
             }
 
-            state = state.withProperty(OPEN, Boolean.valueOf(true));
+            state = state.withProperty(OPEN, Boolean.TRUE);
             worldIn.setBlockState(pos, state, 10);
         }
 
-        worldIn.playEvent(playerIn, ((Boolean)state.getValue(OPEN)).booleanValue() ? 1008 : 1014, pos, 0);
+        worldIn.playEvent(playerIn, (Boolean) state.getValue(OPEN) ? 1008 : 1014, pos, 0);
         return true;
     }
 
@@ -146,11 +146,11 @@ public class BlockFenceGate extends BlockHorizontal
         {
             boolean flag = worldIn.isBlockPowered(pos);
 
-            if (((Boolean)state.getValue(POWERED)).booleanValue() != flag)
+            if ((Boolean) state.getValue(POWERED) != flag)
             {
-                worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)).withProperty(OPEN, Boolean.valueOf(flag)), 2);
+                worldIn.setBlockState(pos, state.withProperty(POWERED, flag).withProperty(OPEN, flag), 2);
 
-                if (((Boolean)state.getValue(OPEN)).booleanValue() != flag)
+                if ((Boolean) state.getValue(OPEN) != flag)
                 {
                     worldIn.playEvent((EntityPlayer)null, flag ? 1008 : 1014, pos, 0);
                 }
@@ -166,7 +166,7 @@ public class BlockFenceGate extends BlockHorizontal
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(OPEN, Boolean.valueOf((meta & 4) != 0)).withProperty(POWERED, Boolean.valueOf((meta & 8) != 0));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta)).withProperty(OPEN, (meta & 4) != 0).withProperty(POWERED, (meta & 8) != 0);
     }
 
     public int getMetaFromState(IBlockState state)
@@ -174,12 +174,12 @@ public class BlockFenceGate extends BlockHorizontal
         int i = 0;
         i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             i |= 8;
         }
 
-        if (((Boolean)state.getValue(OPEN)).booleanValue())
+        if ((Boolean) state.getValue(OPEN))
         {
             i |= 4;
         }
@@ -189,7 +189,7 @@ public class BlockFenceGate extends BlockHorizontal
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, OPEN, POWERED, IN_WALL});
+        return new BlockStateContainer(this, FACING, OPEN, POWERED, IN_WALL);
     }
 
     /* ======================================== FORGE START ======================================== */

@@ -46,11 +46,11 @@ import java.util.Set;
 
 public class ConfigManager
 {
-    private static Map<String, Multimap<Config.Type, ASMData>> asm_data = Maps.newHashMap();
-    static Map<Class<?>, ITypeAdapter> ADAPTERS = Maps.newHashMap();
-    static Map<Class<?>, Class<?>> ARRAY_REMAP = Maps.newHashMap();
-    private static Map<String, Configuration> CONFIGS = Maps.newHashMap();
-    private static Map<String, Set<Class<?>>> MOD_CONFIG_CLASSES = Maps.newHashMap();
+    private static final Map<String, Multimap<Config.Type, ASMData>> asm_data = Maps.newHashMap();
+    static final Map<Class<?>, ITypeAdapter> ADAPTERS = Maps.newHashMap();
+    static final Map<Class<?>, Class<?>> ARRAY_REMAP = Maps.newHashMap();
+    private static final Map<String, Configuration> CONFIGS = Maps.newHashMap();
+    private static final Map<String, Set<Class<?>>> MOD_CONFIG_CLASSES = Maps.newHashMap();
 
     static
     {
@@ -360,10 +360,7 @@ public class ConfigManager
     {
         if (!propValue.equals(fieldValue))
         {
-            if (property.hasChanged())
-                return false;
-            else
-                return true;
+            return !property.hasChanged();
         }
         return false;
     }

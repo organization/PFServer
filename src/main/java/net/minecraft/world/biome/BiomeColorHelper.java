@@ -8,27 +8,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class BiomeColorHelper
 {
-    private static final ColorResolver GRASS_COLOR = new ColorResolver()
-    {
-        public int getColorAtPos(Biome biome, BlockPos blockPosition)
-        {
-            return biome.getGrassColorAtPos(blockPosition);
-        }
-    };
-    private static final ColorResolver FOLIAGE_COLOR = new ColorResolver()
-    {
-        public int getColorAtPos(Biome biome, BlockPos blockPosition)
-        {
-            return biome.getFoliageColorAtPos(blockPosition);
-        }
-    };
-    private static final ColorResolver WATER_COLOR = new ColorResolver()
-    {
-        public int getColorAtPos(Biome biome, BlockPos blockPosition)
-        {
-            return biome.getWaterColor();
-        }
-    };
+    private static final ColorResolver GRASS_COLOR = Biome::getGrassColorAtPos;
+    private static final ColorResolver FOLIAGE_COLOR = Biome::getFoliageColorAtPos;
+    private static final ColorResolver WATER_COLOR = (biome, blockPosition) -> biome.getWaterColor();
 
     private static int getColorAtPos(IBlockAccess blockAccess, BlockPos pos, ColorResolver colorResolver)
     {

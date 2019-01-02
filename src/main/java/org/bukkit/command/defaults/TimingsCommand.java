@@ -65,30 +65,23 @@ public class TimingsCommand extends BukkitCommand {
             File timings = new File(timingFolder, "timings.txt");
             ByteArrayOutputStream bout = ( paste ) ? new ByteArrayOutputStream() : null;
             while (timings.exists()) timings = new File(timingFolder, "timings" + (++index) + ".txt");
-            PrintStream fileTimings = null;
-            try {
-                fileTimings = ( paste ) ? new PrintStream( bout ) : new PrintStream( timings );
+            try (PrintStream fileTimings = (paste) ? new PrintStream(bout) : new PrintStream(timings)) {
 
                 CustomTimingsHandler.printTimings(fileTimings);
-                fileTimings.println( "Sample time " + sampleTime + " (" + sampleTime / 1E9 + "s)" );
+                fileTimings.println("Sample time " + sampleTime + " (" + sampleTime / 1E9 + "s)");
 
-                fileTimings.println( "<spigotConfig>" );
-                fileTimings.println( Bukkit.spigot().getConfig().saveToString() );
-                fileTimings.println( "</spigotConfig>" );
+                fileTimings.println("<spigotConfig>");
+                fileTimings.println(Bukkit.spigot().getConfig().saveToString());
+                fileTimings.println("</spigotConfig>");
 
-                if (!paste )
-                {
+                if (!paste) {
                     sender.sendMessage("Timings written to " + timings.getPath());
-                    sender.sendMessage( "Paste contents of file into form at http://www.spigotmc.org/go/timings to read results." );
+                    sender.sendMessage("Paste contents of file into form at http://www.spigotmc.org/go/timings to read results.");
                     return;
                 }
-                new PasteThread( sender, bout ).start();
+                new PasteThread(sender, bout).start();
             } catch (IOException e) {
                 return;
-            } finally {
-                if (fileTimings != null) {
-                    fileTimings.close();
-                }
             }
             return;
         }
@@ -161,7 +154,7 @@ public class TimingsCommand extends BukkitCommand {
                 }
                 sender.sendMessage("Timings written to " + timings.getPath());
                 if (separate) sender.sendMessage("Names written to " + names.getPath());
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             } finally {
                 if (fileTimings != null) {
                     fileTimings.close();
@@ -184,7 +177,7 @@ public class TimingsCommand extends BukkitCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], TIMINGS_SUBCOMMANDS, new ArrayList<String>(TIMINGS_SUBCOMMANDS.size()));
+            return StringUtil.copyPartialMatches(args[0], TIMINGS_SUBCOMMANDS, new ArrayList<>(TIMINGS_SUBCOMMANDS.size()));
         }
         return ImmutableList.of();
     }

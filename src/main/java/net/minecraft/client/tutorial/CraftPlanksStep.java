@@ -16,8 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class CraftPlanksStep implements ITutorialStep
 {
-    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.craft_planks.title", new Object[0]);
-    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.craft_planks.description", new Object[0]);
+    private static final ITextComponent TITLE = new TextComponentTranslation("tutorial.craft_planks.title");
+    private static final ITextComponent DESCRIPTION = new TextComponentTranslation("tutorial.craft_planks.description");
     private final Tutorial tutorial;
     private TutorialToast toast;
     private int timeWaiting;

@@ -467,7 +467,7 @@ public class GuiEditStructure extends GuiScreen
     {
         try
         {
-            return Long.valueOf(p_189821_1_).longValue();
+            return Long.valueOf(p_189821_1_);
         }
         catch (NumberFormatException var3)
         {
@@ -479,7 +479,7 @@ public class GuiEditStructure extends GuiScreen
     {
         try
         {
-            return Float.valueOf(p_189819_1_).floatValue();
+            return Float.valueOf(p_189819_1_);
         }
         catch (NumberFormatException var3)
         {

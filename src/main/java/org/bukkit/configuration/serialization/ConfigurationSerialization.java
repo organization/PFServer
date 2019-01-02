@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 public class ConfigurationSerialization {
     public static final String SERIALIZED_TYPE_KEY = "==";
     private final Class<? extends ConfigurationSerializable> clazz;
-    private static Map<String, Class<? extends ConfigurationSerializable>> aliases = new HashMap<String, Class<? extends ConfigurationSerializable>>();
+    private static final Map<String, Class<? extends ConfigurationSerializable>> aliases = new HashMap<>();
 
     static {
         registerClass(Vector.class);
@@ -57,9 +57,7 @@ public class ConfigurationSerialization {
             }
 
             return method;
-        } catch (NoSuchMethodException ex) {
-            return null;
-        } catch (SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException ex) {
             return null;
         }
     }
@@ -67,9 +65,7 @@ public class ConfigurationSerialization {
     protected Constructor<? extends ConfigurationSerializable> getConstructor() {
         try {
             return clazz.getConstructor(Map.class);
-        } catch (NoSuchMethodException ex) {
-            return null;
-        } catch (SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException ex) {
             return null;
         }
     }
@@ -241,7 +237,6 @@ public class ConfigurationSerialization {
      */
     public static void unregisterClass(Class<? extends ConfigurationSerializable> clazz) {
         while (aliases.values().remove(clazz)) {
-            ;
         }
     }
 

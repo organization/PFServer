@@ -65,7 +65,7 @@ public class EnumHelper
     private static boolean isSetup               = false;
 
     //Some enums are decompiled with extra arguments, so lets check for that
-    private static Class<?>[][] commonTypes =
+    private static final Class<?>[][] commonTypes =
     {
         {EnumAction.class},
         {ArmorMaterial.class, String.class, int.class, int[].class, int.class, SoundEvent.class, float.class},
@@ -415,7 +415,7 @@ public class EnumHelper
 
     static
     {
-        if (!isSetup)
+        if (!false)
         {
             setup();
         }
@@ -425,6 +425,6 @@ public class EnumHelper
         if(!isSetup){
             setup();
         }
-        return (World.Environment)addEnum(World.Environment.class,name,new Class[]{Integer.TYPE}, new Object[]{Integer.valueOf(id)});
+        return (World.Environment)addEnum(World.Environment.class,name,new Class[]{Integer.TYPE}, new Object[]{id});
     }
 }

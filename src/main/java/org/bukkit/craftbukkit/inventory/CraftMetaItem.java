@@ -134,9 +134,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
             try {
                 return constructor.newInstance(map);
-            } catch (final InstantiationException e) {
-                throw new AssertionError(e);
-            } catch (final IllegalAccessException e) {
+            } catch (final InstantiationException | IllegalAccessException e) {
                 throw new AssertionError(e);
             } catch (final InvocationTargetException e) {
                 throw e.getCause();
@@ -213,7 +211,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
     private static final Set<String> HANDLED_TAGS = Sets.newHashSet();
 
     private NBTTagCompound internalTag;
-    private final Map<String, NBTBase> unhandledTags = new HashMap<String, NBTBase>();
+    private final Map<String, NBTBase> unhandledTags = new HashMap<>();
 
     CraftMetaItem(CraftMetaItem meta) {
         if (meta == null) {
@@ -224,11 +222,11 @@ class CraftMetaItem implements ItemMeta, Repairable {
         this.locName = meta.locName;
 
         if (meta.hasLore()) {
-            this.lore = new ArrayList<String>(meta.lore);
+            this.lore = new ArrayList<>(meta.lore);
         }
 
         if (meta.hasEnchants()) {
-            this.enchantments = new HashMap<Enchantment, Integer>(meta.enchantments);
+            this.enchantments = new HashMap<>(meta.enchantments);
         }
 
         this.repairCost = meta.repairCost;
@@ -256,7 +254,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
             if (display.hasKey(LORE.NBT)) {
                 NBTTagList list = display.getTagList(LORE.NBT, CraftMagicNumbers.NBT.TAG_STRING);
-                lore = new ArrayList<String>(list.tagCount());
+                lore = new ArrayList<>(list.tagCount());
 
                 for (int index = 0; index < list.tagCount(); index++) {
                     String line = list.getStringTagAt(index);
@@ -338,7 +336,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
         }
 
         NBTTagList ench = tag.getTagList(key.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND);
-        Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>(ench.tagCount());
+        Map<Enchantment, Integer> enchantments = new HashMap<>(ench.tagCount());
 
         for (int i = 0; i < ench.tagCount(); i++) {
             int id = 0xffff & ((NBTTagCompound) ench.get(i)).getShort(ENCHANTMENTS_ID.NBT);
@@ -359,7 +357,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
         Iterable<?> lore = SerializableMeta.getObject(Iterable.class, map, LORE.BUKKIT, true);
         if (lore != null) {
-            safelyAdd(lore, this.lore = new ArrayList<String>(), Integer.MAX_VALUE);
+            safelyAdd(lore, this.lore = new ArrayList<>(), Integer.MAX_VALUE);
         }
 
         enchantments = buildEnchantments(map, ENCHANTMENTS);
@@ -414,7 +412,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             return null;
         }
 
-        Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>(ench.size());
+        Map<Enchantment, Integer> enchantments = new HashMap<>(ench.size());
         for (Map.Entry<?, ?> entry : ench.entrySet()) {
             // Doctor older enchants
             String enchantKey = entry.getKey().toString();
@@ -571,7 +569,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
     public boolean addEnchant(Enchantment ench, int level, boolean ignoreRestrictions) {
         Validate.notNull(ench, "Enchantment cannot be null");
         if (enchantments == null) {
-            enchantments = new HashMap<Enchantment, Integer>(4);
+            enchantments = new HashMap<>(4);
         }
 
         if (ignoreRestrictions || level >= ench.getStartLevel() && level <= ench.getMaxLevel()) {
@@ -632,7 +630,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
     }
 
     public List<String> getLore() {
-        return this.lore == null ? null : new ArrayList<String>(this.lore);
+        return this.lore == null ? null : new ArrayList<>(this.lore);
     }
 
     public void setLore(List<String> lore) { // too tired to think if .clone is better
@@ -640,7 +638,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             this.lore = null;
         } else {
             if (this.lore == null) {
-                safelyAdd(lore, this.lore = new ArrayList<String>(lore.size()), Integer.MAX_VALUE);
+                safelyAdd(lore, this.lore = new ArrayList<>(lore.size()), Integer.MAX_VALUE);
             } else {
                 this.lore.clear();
                 safelyAdd(lore, this.lore, Integer.MAX_VALUE);
@@ -732,10 +730,10 @@ class CraftMetaItem implements ItemMeta, Repairable {
         try {
             CraftMetaItem clone = (CraftMetaItem) super.clone();
             if (this.lore != null) {
-                clone.lore = new ArrayList<String>(this.lore);
+                clone.lore = new ArrayList<>(this.lore);
             }
             if (this.enchantments != null) {
-                clone.enchantments = new HashMap<Enchantment, Integer>(this.enchantments);
+                clone.enchantments = new HashMap<>(this.enchantments);
             }
             clone.hideFlag = this.hideFlag;
             clone.unbreakable = this.unbreakable;
@@ -771,7 +769,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             builder.put(REPAIR.BUKKIT, repairCost);
         }
 
-        List<String> hideFlags = new ArrayList<String>();
+        List<String> hideFlags = new ArrayList<>();
         for (ItemFlag hideFlagEnum : getItemFlags()) {
             hideFlags.add(hideFlagEnum.name());
         }
@@ -783,7 +781,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             builder.put(UNBREAKABLE.BUKKIT, unbreakable);
         }
 
-        final Map<String, NBTBase> internalTags = new HashMap<String, NBTBase>(unhandledTags);
+        final Map<String, NBTBase> internalTags = new HashMap<>(unhandledTags);
         serializeInternal(internalTags);
         if (!internalTags.isEmpty()) {
             NBTTagCompound internal = new NBTTagCompound();

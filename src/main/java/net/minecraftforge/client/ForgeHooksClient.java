@@ -185,7 +185,7 @@ public class ForgeHooksClient
         renderPass = pass;
     }
 
-    static final ThreadLocal<BlockRenderLayer> renderLayer = new ThreadLocal<BlockRenderLayer>();
+    static final ThreadLocal<BlockRenderLayer> renderLayer = new ThreadLocal<>();
 
     public static void setRenderLayer(BlockRenderLayer layer)
     {
@@ -207,7 +207,7 @@ public class ForgeHooksClient
             return base + complex;
         }
 
-        String name = complex.substring(idx + 1, complex.length());
+        String name = complex.substring(idx + 1);
         if (idx > 1)
         {
             String domain = complex.substring(0, idx);
@@ -521,7 +521,7 @@ public class ForgeHooksClient
         }
     }
 
-    private static Map<Pair<Item, Integer>, Class<? extends TileEntity>> tileItemMap = Maps.newHashMap();
+    private static final Map<Pair<Item, Integer>, Class<? extends TileEntity>> tileItemMap = Maps.newHashMap();
 
     public static void renderTileItem(Item item, int metadata)
     {

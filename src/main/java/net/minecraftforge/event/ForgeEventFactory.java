@@ -403,21 +403,21 @@ public class ForgeEventFactory
     public static ActionResult<ItemStack> onBucketUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull ItemStack stack, @Nullable RayTraceResult target)
     {
         FillBucketEvent event = new FillBucketEvent(player, stack, world, target);
-        if (MinecraftForge.EVENT_BUS.post(event)) return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+        if (MinecraftForge.EVENT_BUS.post(event)) return new ActionResult<>(EnumActionResult.FAIL, stack);
 
         if (event.getResult() == Result.ALLOW)
         {
             if (player.capabilities.isCreativeMode)
-                return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+                return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 
             stack.shrink(1);
             if (stack.isEmpty())
-                return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, event.getFilledBucket());
+                return new ActionResult<>(EnumActionResult.SUCCESS, event.getFilledBucket());
 
             if (!player.inventory.addItemStackToInventory(event.getFilledBucket()))
                 player.dropItem(event.getFilledBucket(), false);
 
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         return null;
     }
@@ -589,37 +589,37 @@ public class ForgeEventFactory
     @Nullable
     public static CapabilityDispatcher gatherCapabilities(TileEntity tileEntity)
     {
-        return gatherCapabilities(new AttachCapabilitiesEvent<TileEntity>(TileEntity.class, tileEntity), null);
+        return gatherCapabilities(new AttachCapabilitiesEvent<>(TileEntity.class, tileEntity), null);
     }
 
     @Nullable
     public static CapabilityDispatcher gatherCapabilities(Entity entity)
     {
-        return gatherCapabilities(new AttachCapabilitiesEvent<Entity>(Entity.class, entity), null);
+        return gatherCapabilities(new AttachCapabilitiesEvent<>(Entity.class, entity), null);
     }
 
     @Nullable
     public static CapabilityDispatcher gatherCapabilities(Village village)
     {
-        return gatherCapabilities(new AttachCapabilitiesEvent<Village>(Village.class, village), null);
+        return gatherCapabilities(new AttachCapabilitiesEvent<>(Village.class, village), null);
     }
 
     @Nullable
     public static CapabilityDispatcher gatherCapabilities(ItemStack stack, ICapabilityProvider parent)
     {
-        return gatherCapabilities(new AttachCapabilitiesEvent<ItemStack>(ItemStack.class, stack), parent);
+        return gatherCapabilities(new AttachCapabilitiesEvent<>(ItemStack.class, stack), parent);
     }
 
     @Nullable
     public static CapabilityDispatcher gatherCapabilities(World world, ICapabilityProvider parent)
     {
-        return gatherCapabilities(new AttachCapabilitiesEvent<World>(World.class, world), parent);
+        return gatherCapabilities(new AttachCapabilitiesEvent<>(World.class, world), parent);
     }
 
     @Nullable
     public static CapabilityDispatcher gatherCapabilities(Chunk chunk)
     {
-        return gatherCapabilities(new AttachCapabilitiesEvent<Chunk>(Chunk.class, chunk), null);
+        return gatherCapabilities(new AttachCapabilitiesEvent<>(Chunk.class, chunk), null);
     }
 
     @Nullable
@@ -660,7 +660,7 @@ public class ForgeEventFactory
     {
         ArrowNockEvent event = new ArrowNockEvent(player, item, hand, world, hasAmmo);
         if (MinecraftForge.EVENT_BUS.post(event))
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, item);
+            return new ActionResult<>(EnumActionResult.FAIL, item);
         return event.getAction();
     }
 

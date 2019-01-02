@@ -125,7 +125,7 @@ public class ServerData
 
         private ServerResourceMode(String name)
         {
-            this.motd = new TextComponentTranslation("addServer.resourcePack." + name, new Object[0]);
+            this.motd = new TextComponentTranslation("addServer.resourcePack." + name);
         }
 
         public ITextComponent getMotd()

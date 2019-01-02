@@ -74,7 +74,7 @@ public class FMLServerHandler implements IFMLSidedHandler
      * A reference to the server itself
      */
     private MinecraftServer server;
-    private List<String> injectedModContainers;
+    private final List<String> injectedModContainers;
     private FMLServerHandler()
     {
         injectedModContainers = FMLCommonHandler.instance().beginLoading(this);
@@ -187,23 +187,22 @@ public class FMLServerHandler implements IFMLSidedHandler
                     {
                         String cmd = it.next().command.trim().toLowerCase();
 
-                        if (cmd.equals("/fml confirm"))
-                        {
-                            PFServer.LOGGER.info("confirmed");
-                            query.setResult(true);
-                            done = true;
-                            it.remove();
-                        }
-                        else if (cmd.equals("/fml cancel"))
-                        {
-                            PFServer.LOGGER.info("cancelled");
-                            query.setResult(false);
-                            done = true;
-                            it.remove();
-                        }
-                        else if (cmd.equals("/stop"))
-                        {
-                            StartupQuery.abort();
+                        switch (cmd) {
+                            case "/fml confirm":
+                                PFServer.LOGGER.info("confirmed");
+                                query.setResult(true);
+                                done = true;
+                                it.remove();
+                                break;
+                            case "/fml cancel":
+                                PFServer.LOGGER.info("cancelled");
+                                query.setResult(false);
+                                done = true;
+                                it.remove();
+                                break;
+                            case "/stop":
+                                StartupQuery.abort();
+                                break;
                         }
                     }
                 }
@@ -301,7 +300,7 @@ public class FMLServerHandler implements IFMLSidedHandler
     @Override
     public void fireNetRegistrationEvent(EventBus bus, NetworkManager manager, Set<String> channelSet, String channel, Side side)
     {
-        bus.post(new FMLNetworkEvent.CustomPacketRegistrationEvent<NetHandlerPlayServer>(manager, channelSet, channel, side, NetHandlerPlayServer.class));
+        bus.post(new FMLNetworkEvent.CustomPacketRegistrationEvent<>(manager, channelSet, channel, side, NetHandlerPlayServer.class));
     }
 
     @Override

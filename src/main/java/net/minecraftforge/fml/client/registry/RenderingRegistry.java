@@ -29,8 +29,8 @@ public class RenderingRegistry
 {
     private static final RenderingRegistry INSTANCE = new RenderingRegistry();
 
-    private Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenderers = Maps.newHashMap();
-    private Map<Class<? extends Entity>, Render<? extends Entity>> entityRenderersOld = Maps.newHashMap();
+    private final Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenderers = Maps.newHashMap();
+    private final Map<Class<? extends Entity>, Render<? extends Entity>> entityRenderersOld = Maps.newHashMap();
 
     /**
      * Register an entity rendering handler. This will, after mod initialization, be inserted into the main

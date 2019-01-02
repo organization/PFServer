@@ -124,7 +124,7 @@ public class Scoreboard
             }
         }
 
-        Collections.sort(list, Score.SCORE_COMPARATOR);
+        list.sort(Score.SCORE_COMPARATOR);
         return list;
     }
 

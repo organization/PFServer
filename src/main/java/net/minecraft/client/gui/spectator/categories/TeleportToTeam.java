@@ -46,7 +46,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
 
     public ITextComponent getPrompt()
     {
-        return new TextComponentTranslation("spectatorMenu.team_teleport.prompt", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.team_teleport.prompt");
     }
 
     public void selectItem(SpectatorMenu menu)
@@ -56,7 +56,7 @@ public class TeleportToTeam implements ISpectatorMenuView, ISpectatorMenuObject
 
     public ITextComponent getSpectatorName()
     {
-        return new TextComponentTranslation("spectatorMenu.team_teleport", new Object[0]);
+        return new TextComponentTranslation("spectatorMenu.team_teleport");
     }
 
     public void renderIcon(float brightness, int alpha)

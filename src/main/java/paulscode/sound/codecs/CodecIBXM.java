@@ -1,6 +1,7 @@
 package paulscode.sound.codecs;
 
 import ibxm.*;
+import ibxm.Module;
 import paulscode.sound.ICodec;
 import paulscode.sound.SoundBuffer;
 import paulscode.sound.SoundSystemConfig;
@@ -146,7 +147,7 @@ public class CodecIBXM implements ICodec
 /**
  * Processes status messages, warnings, and error messages.
  */
-    private SoundSystemLogger logger;
+    private final SoundSystemLogger logger;
 
 /**
  * Constructor:  Grabs a handle to the logger.
@@ -222,7 +223,7 @@ public class CodecIBXM implements ICodec
                 {
                     is.close();
                 }
-                catch( IOException ioe )
+                catch( IOException ignored)
                 {}
             }
             return false;
@@ -237,7 +238,7 @@ public class CodecIBXM implements ICodec
                 {
                     is.close();
                 }
-                catch( IOException ioe2 )
+                catch( IOException ignored)
                 {}
             }
             return false;
@@ -249,7 +250,7 @@ public class CodecIBXM implements ICodec
             {
                 is.close();
             }
-            catch( IOException ioe )
+            catch( IOException ignored)
             {}
         }
 
@@ -320,9 +321,8 @@ public class CodecIBXM implements ICodec
             reverseBytes( outputBuffer, 0, frames * 4 );
 
         // Wrap the data into a SoundBuffer:
-        SoundBuffer buffer = new SoundBuffer( outputBuffer, myAudioFormat );
 
-        return buffer;
+        return new SoundBuffer( outputBuffer, myAudioFormat );
     }
 
 /**
@@ -384,9 +384,8 @@ public class CodecIBXM implements ICodec
             reverseBytes( fullBuffer, 0, totalBytes );
 
         // Wrap the data into a SoundBuffer:
-        SoundBuffer buffer = new SoundBuffer( fullBuffer, myAudioFormat );
 
-        return buffer;
+        return new SoundBuffer( fullBuffer, myAudioFormat );
     }
 
 /**

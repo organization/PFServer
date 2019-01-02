@@ -96,8 +96,8 @@ public abstract class InventoryView {
          * The repair's cost in xp levels
          */
         REPAIR_COST(0, InventoryType.ANVIL);
-        int id;
-        InventoryType style;
+        final int id;
+        final InventoryType style;
         private Property(int id, InventoryType appliesTo) {
             this.id = id;
             style = appliesTo;

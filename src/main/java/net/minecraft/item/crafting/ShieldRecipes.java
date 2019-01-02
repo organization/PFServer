@@ -59,14 +59,7 @@ public class ShieldRecipes
                     }
                 }
 
-                if (!itemstack.isEmpty() && !itemstack1.isEmpty())
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return !itemstack.isEmpty() && !itemstack1.isEmpty();
             }
 
             public ItemStack getCraftingResult(InventoryCrafting inv)

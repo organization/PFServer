@@ -40,8 +40,7 @@ public final class DefaultPermissions {
     }
 
     public static Permission registerPermission(String name, String desc) {
-        Permission perm = registerPermission(new Permission(name, desc));
-        return perm;
+        return registerPermission(new Permission(name, desc));
     }
 
     public static Permission registerPermission(String name, String desc, Permission parent) {
@@ -51,8 +50,7 @@ public final class DefaultPermissions {
     }
 
     public static Permission registerPermission(String name, String desc, PermissionDefault def) {
-        Permission perm = registerPermission(new Permission(name, desc, def));
-        return perm;
+        return registerPermission(new Permission(name, desc, def));
     }
 
     public static Permission registerPermission(String name, String desc, PermissionDefault def, Permission parent) {
@@ -62,8 +60,7 @@ public final class DefaultPermissions {
     }
 
     public static Permission registerPermission(String name, String desc, PermissionDefault def, Map<String, Boolean> children) {
-        Permission perm = registerPermission(new Permission(name, desc, def, children));
-        return perm;
+        return registerPermission(new Permission(name, desc, def, children));
     }
 
     public static Permission registerPermission(String name, String desc, PermissionDefault def, Map<String, Boolean> children, Permission parent) {

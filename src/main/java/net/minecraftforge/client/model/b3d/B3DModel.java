@@ -61,7 +61,7 @@ public class B3DModel
         private static final int version = 1;
         private final ByteBuffer buf;
 
-        private byte[] tag = new byte[4];
+        private final byte[] tag = new byte[4];
         private int length;
         public Parser(InputStream in) throws IOException
         {
@@ -179,7 +179,7 @@ public class B3DModel
             return new String(tmp, "UTF8");
         }
 
-        private Deque<Integer> limitStack = new ArrayDeque<>();
+        private final Deque<Integer> limitStack = new ArrayDeque<>();
 
         private void pushLimit()
         {
@@ -1012,7 +1012,7 @@ public class B3DModel
         private final ImmutableList<Face> faces;
         //private final ImmutableList<Bone> bones;
 
-        private Set<Node<Bone>> bones = new HashSet<>();
+        private final Set<Node<Bone>> bones = new HashSet<>();
 
         private ImmutableMultimap<Vertex, Pair<Float, Node<Bone>>> weightMap = ImmutableMultimap.of();
 

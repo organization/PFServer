@@ -220,7 +220,7 @@ public class BlockHugeMushroom extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
     public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)

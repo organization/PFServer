@@ -32,10 +32,10 @@ import java.io.IOException;
 
 public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback {
 
-    private String dirName;
-    private String saveName;
-    private File zip;
-    private GuiScreen parent;
+    private final String dirName;
+    private final String saveName;
+    private final File zip;
+    private final GuiScreen parent;
     public GuiOldSaveLoadConfirm(String dirName, String saveName, GuiScreen parent)
     {
         super(null, "", "", 0);
@@ -50,9 +50,9 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRenderer, String.format("The world %s contains pre-update modding data", saveName), this.width / 2, 50, 16777215);
-        this.drawCenteredString(this.fontRenderer, String.format("There may be problems updating it to this version"), this.width / 2, 70, 16777215);
+        this.drawCenteredString(this.fontRenderer, "There may be problems updating it to this version", this.width / 2, 70, 16777215);
         this.drawCenteredString(this.fontRenderer, String.format("FML will save a zip to %s", zip.getName()), this.width / 2, 90, 16777215);
-        this.drawCenteredString(this.fontRenderer, String.format("Do you wish to continue loading?"), this.width / 2, 110, 16777215);
+        this.drawCenteredString(this.fontRenderer, "Do you wish to continue loading?", this.width / 2, 110, 16777215);
         int k;
 
         for (k = 0; k < this.buttonList.size(); ++k)
@@ -78,7 +78,7 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
             try
             {
                 String skip = System.getProperty("fml.doNotBackup");
-                if (skip == null || !"true".equals(skip))
+                if (!"true".equals(skip))
                 {
                     ZipperUtil.zip(new File(FMLClientHandler.instance().getSavesDir(), dirName), zip);
                 }

@@ -34,17 +34,17 @@ import java.util.Random;
 
 public class ContainerEnchantment extends Container
 {
-    public IInventory tableInventory;
+    public final IInventory tableInventory;
     private World worldPointer;
     private final BlockPos position;
     private final Random rand;
     public int xpSeed;
-    public int[] enchantLevels;
-    public int[] enchantClue;
-    public int[] worldClue;
+    public final int[] enchantLevels;
+    public final int[] enchantClue;
+    public final int[] worldClue;
 
     private CraftInventoryView bukkitEntity = null;
-    private Player player;
+    private final Player player;
 
     @SideOnly(Side.CLIENT)
     public ContainerEnchantment(InventoryPlayer playerInv, World worldIn)
@@ -91,7 +91,7 @@ public class ContainerEnchantment extends Container
         });
         this.addSlotToContainer(new Slot(this.tableInventory, 1, 35, 47)
         {
-            List<ItemStack> ores = net.minecraftforge.oredict.OreDictionary.getOres("gemLapis");
+            final List<ItemStack> ores = net.minecraftforge.oredict.OreDictionary.getOres("gemLapis");
             public boolean isItemValid(ItemStack stack)
             {
                 for (ItemStack ore : ores)
@@ -140,9 +140,7 @@ public class ContainerEnchantment extends Container
     {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.listeners.size(); ++i)
-        {
-            IContainerListener icontainerlistener = this.listeners.get(i);
+        for (IContainerListener icontainerlistener : this.listeners) {
             this.broadcastData(icontainerlistener);
         }
     }
@@ -305,7 +303,7 @@ public class ContainerEnchantment extends Container
 //                    playerIn.onEnchant(itemstack, i); // Moved down
                     boolean flag = itemstack.getItem() == Items.BOOK;
 
-                    Map<org.bukkit.enchantments.Enchantment, Integer> enchants = new java.util.HashMap<org.bukkit.enchantments.Enchantment, Integer>();
+                    Map<org.bukkit.enchantments.Enchantment, Integer> enchants = new java.util.HashMap<>();
                     for (Object obj : list) {
                         EnchantmentData instance = (EnchantmentData) obj;
                         enchants.put(org.bukkit.enchantments.Enchantment.getById(Enchantment.getEnchantmentID(instance.enchantment)), instance.enchantmentLevel);

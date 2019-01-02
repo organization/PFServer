@@ -32,7 +32,7 @@ public class PFSConfig {
         config = new YamlConfiguration();
         try {
             config.load(CONFIG_FILE);
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {
             PFServer.LOGGER.error("Could not load pfserver.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
@@ -40,7 +40,7 @@ public class PFSConfig {
         config.options().header(HEADER);
         config.options().copyDefaults(true);
 
-        commands = new HashMap<String, Command>();
+        commands = new HashMap<>();
         commands.put("pfserver", new PFSCommand("pfserver"));
 
         version = getInt("config-version", 1);

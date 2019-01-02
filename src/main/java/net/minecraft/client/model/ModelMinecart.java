@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelMinecart extends ModelBase
 {
-    public ModelRenderer[] sideModels = new ModelRenderer[7];
+    public final ModelRenderer[] sideModels = new ModelRenderer[7];
 
     public ModelMinecart()
     {

@@ -35,7 +35,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
  */
 @Sharable
 public class NetworkEventFiringHandler extends SimpleChannelInboundHandler<FMLProxyPacket> {
-    private FMLEventChannel eventChannel;
+    private final FMLEventChannel eventChannel;
 
     NetworkEventFiringHandler(FMLEventChannel fmlEventChannel)
     {

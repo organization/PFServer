@@ -46,7 +46,7 @@ public class RenderManager
     private double renderPosX;
     private double renderPosY;
     private double renderPosZ;
-    public TextureManager renderEngine;
+    public final TextureManager renderEngine;
     public World world;
     public Entity renderViewEntity;
     public Entity pointedEntity;
@@ -342,8 +342,8 @@ public class RenderManager
             CrashReportCategory crashreportcategory1 = crashreport.makeCategory("Renderer details");
             crashreportcategory1.addCrashSection("Assigned renderer", render);
             crashreportcategory1.addCrashSection("Location", CrashReportCategory.getCoordinateInfo(x, y, z));
-            crashreportcategory1.addCrashSection("Rotation", Float.valueOf(yaw));
-            crashreportcategory1.addCrashSection("Delta", Float.valueOf(partialTicks));
+            crashreportcategory1.addCrashSection("Rotation", yaw);
+            crashreportcategory1.addCrashSection("Delta", partialTicks);
             throw new ReportedException(crashreport);
         }
     }

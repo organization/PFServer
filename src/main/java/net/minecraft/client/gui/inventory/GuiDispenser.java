@@ -13,7 +13,7 @@ public class GuiDispenser extends GuiContainer
 {
     private static final ResourceLocation DISPENSER_GUI_TEXTURES = new ResourceLocation("textures/gui/container/dispenser.png");
     private final InventoryPlayer playerInventory;
-    public IInventory dispenserInventory;
+    public final IInventory dispenserInventory;
 
     public GuiDispenser(InventoryPlayer playerInv, IInventory dispenserInv)
     {

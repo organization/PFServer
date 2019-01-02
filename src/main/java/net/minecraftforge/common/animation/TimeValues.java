@@ -296,7 +296,7 @@ public final class TimeValues
     {
         INSTANCE;
 
-        private final ThreadLocal<Function<String, ITimeValue>> valueResolver = new ThreadLocal<Function<String, ITimeValue>>();
+        private final ThreadLocal<Function<String, ITimeValue>> valueResolver = new ThreadLocal<>();
 
         public void setValueResolver(@Nullable Function<String, ITimeValue> valueResolver)
         {

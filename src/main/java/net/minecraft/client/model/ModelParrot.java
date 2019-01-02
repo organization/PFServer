@@ -10,17 +10,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelParrot extends ModelBase
 {
-    ModelRenderer body;
-    ModelRenderer tail;
-    ModelRenderer wingLeft;
-    ModelRenderer wingRight;
-    ModelRenderer head;
-    ModelRenderer head2;
-    ModelRenderer beak1;
-    ModelRenderer beak2;
-    ModelRenderer feather;
-    ModelRenderer legLeft;
-    ModelRenderer legRight;
+    final ModelRenderer body;
+    final ModelRenderer tail;
+    final ModelRenderer wingLeft;
+    final ModelRenderer wingRight;
+    final ModelRenderer head;
+    final ModelRenderer head2;
+    final ModelRenderer beak1;
+    final ModelRenderer beak2;
+    final ModelRenderer feather;
+    final ModelRenderer legLeft;
+    final ModelRenderer legRight;
     private State state = State.STANDING;
 
     public ModelParrot()
@@ -198,6 +198,6 @@ public class ModelParrot extends ModelBase
         FLYING,
         STANDING,
         SITTING,
-        PARTY;
+        PARTY
     }
 }

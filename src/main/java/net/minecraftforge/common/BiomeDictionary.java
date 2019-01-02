@@ -41,8 +41,8 @@ public class BiomeDictionary
     public static final class Type
     {
 
-        private static final Map<String, Type> byName = new HashMap<String, Type>();
-        private static Collection<Type> allTypes = Collections.unmodifiableCollection(byName.values());
+        private static final Map<String, Type> byName = new HashMap<>();
+        private static final Collection<Type> allTypes = Collections.unmodifiableCollection(byName.values());
 
         /*Temperature-based tags. Specifying neither implies a biome is temperate*/
         public static final Type HOT = new Type("HOT");
@@ -94,7 +94,7 @@ public class BiomeDictionary
 
         private final String name;
         private final List<Type> subTypes;
-        private final Set<Biome> biomes = new HashSet<Biome>();
+        private final Set<Biome> biomes = new HashSet<>();
         private final Set<Biome> biomesUn = Collections.unmodifiableSet(biomes);
 
         private Type(String name, Type... subTypes)
@@ -160,12 +160,12 @@ public class BiomeDictionary
         }
     }
 
-    private static final Map<ResourceLocation, BiomeInfo> biomeInfoMap = new HashMap<ResourceLocation, BiomeInfo>();
+    private static final Map<ResourceLocation, BiomeInfo> biomeInfoMap = new HashMap<>();
 
     private static class BiomeInfo
     {
 
-        private final Set<Type> types = new HashSet<Type>();
+        private final Set<Type> types = new HashSet<>();
         private final Set<Type> typesUn = Collections.unmodifiableSet(this.types);
 
     }
@@ -385,8 +385,8 @@ public class BiomeDictionary
 
     private static Collection<Type> listSupertypes(Type... types)
     {
-        Set<Type> supertypes = new HashSet<Type>();
-        Deque<Type> next = new ArrayDeque<Type>();
+        Set<Type> supertypes = new HashSet<>();
+        Deque<Type> next = new ArrayDeque<>();
         Collections.addAll(next, types);
 
         while (!next.isEmpty())
@@ -474,9 +474,7 @@ public class BiomeDictionary
             PFServer.LOGGER.debug("BiomeDictionary:");
             for (Type type : Type.byName.values())
             {
-                StringBuilder buf = new StringBuilder();
-                buf.append("    ").append(type.name).append(": ").append(type.biomes.stream().map(Biome::getBiomeName).collect(Collectors.joining(", ")));
-                PFServer.LOGGER.debug(buf.toString());
+                PFServer.LOGGER.debug("    " + type.name + ": " + type.biomes.stream().map(Biome::getBiomeName).collect(Collectors.joining(", ")));
             }
         }
     }

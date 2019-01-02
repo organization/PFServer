@@ -48,16 +48,16 @@ public class RecipeSorter implements Comparator<IRecipe>
         UNKNOWN,
         SHAPELESS,
         SHAPED
-    };
+    }
 
     private static class SortEntry
     {
-        private String name;
+        private final String name;
         @Nullable
-        private Class<?> cls;
-        private Category cat;
-        List<String> before = Lists.newArrayList();
-        List<String> after = Lists.newArrayList();
+        private final Class<?> cls;
+        private final Category cat;
+        final List<String> before = Lists.newArrayList();
+        final List<String> after = Lists.newArrayList();
 
         private SortEntry(String name, @Nullable Class<?> cls, Category cat, String deps)
         {
@@ -113,18 +113,18 @@ public class RecipeSorter implements Comparator<IRecipe>
         {
             return name.hashCode();
         }
-    };
+    }
 
-    private static Map<Class<?>, Category>     categories = Maps.newHashMap();
+    private static final Map<Class<?>, Category>     categories = Maps.newHashMap();
     //private static Map<String, Class<?>>       types = Maps.newHashMap();
-    private static Map<String, SortEntry>   entries = Maps.newHashMap();
-    private static Map<Class<?>, Integer>      priorities = Maps.newHashMap();
+    private static final Map<String, SortEntry>   entries = Maps.newHashMap();
+    private static final Map<Class<?>, Integer>      priorities = Maps.newHashMap();
 
     public static final RecipeSorter INSTANCE = new RecipeSorter();
     private static boolean isDirty = true;
 
-    private static SortEntry before = new SortEntry("Before", null, UNKNOWN, "");
-    private static SortEntry after  = new SortEntry("After",  null, UNKNOWN, "");
+    private static final SortEntry before = new SortEntry("Before", null, UNKNOWN, "");
+    private static final SortEntry after  = new SortEntry("After",  null, UNKNOWN, "");
 
     private RecipeSorter()
     {
@@ -163,7 +163,7 @@ public class RecipeSorter implements Comparator<IRecipe>
         }
     }
 
-    private static Set<Class<?>> warned = Sets.newHashSet();
+    private static final Set<Class<?>> warned = Sets.newHashSet();
     public static void sortCraftManager()
     {
         bake();
@@ -247,7 +247,7 @@ public class RecipeSorter implements Comparator<IRecipe>
     {
         if (!isDirty) return;
         PFServer.LOGGER.debug("Forge RecipeSorter Baking:");
-        DirectedGraph<SortEntry> sorter = new DirectedGraph<SortEntry>();
+        DirectedGraph<SortEntry> sorter = new DirectedGraph<>();
         sorter.addNode(before);
         sorter.addNode(after);
         sorter.addEdge(before, after);

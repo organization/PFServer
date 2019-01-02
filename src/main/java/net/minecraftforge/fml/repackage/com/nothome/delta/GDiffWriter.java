@@ -52,9 +52,9 @@ public class GDiffWriter implements DiffWriter {
     public static final int COPY_INT_INT = 254;
     public static final int COPY_LONG_INT = 255;
 
-    private ByteArrayOutputStream buf = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream buf = new ByteArrayOutputStream();
 
-    private boolean debug = false;
+    private final boolean debug = false;
     
     private DataOutputStream output = null;
     

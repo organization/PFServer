@@ -30,14 +30,14 @@ import java.util.Set;
 
 public class ModCandidate
 {
-    private File classPathRoot;
-    private File modContainer;
-    private ContainerType sourceType;
-    private boolean classpath;
-    private boolean isMinecraft;
-    private Set<String> foundClasses = Sets.newHashSet();
+    private final File classPathRoot;
+    private final File modContainer;
+    private final ContainerType sourceType;
+    private final boolean classpath;
+    private final boolean isMinecraft;
+    private final Set<String> foundClasses = Sets.newHashSet();
     private List<ModContainer> mods;
-    private List<String> packages = Lists.newArrayList();
+    private final List<String> packages = Lists.newArrayList();
     private ASMDataTable table;
 
     public ModCandidate(File classPathRoot, File modContainer, ContainerType sourceType)

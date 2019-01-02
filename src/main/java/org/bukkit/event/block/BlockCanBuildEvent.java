@@ -24,7 +24,7 @@ public class BlockCanBuildEvent extends BlockEvent {
      * @deprecated Magic value
      */
     @Deprecated
-    protected int material;
+    protected final int material;
 
     /**
      *

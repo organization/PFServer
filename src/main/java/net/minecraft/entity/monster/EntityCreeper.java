@@ -59,7 +59,7 @@ public class EntityCreeper extends EntityMob
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
     }
 
     protected void applyEntityAttributes()
@@ -87,9 +87,9 @@ public class EntityCreeper extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(STATE, Integer.valueOf(-1));
-        this.dataManager.register(POWERED, Boolean.valueOf(false));
-        this.dataManager.register(IGNITED, Boolean.valueOf(false));
+        this.dataManager.register(STATE, -1);
+        this.dataManager.register(POWERED, Boolean.FALSE);
+        this.dataManager.register(IGNITED, Boolean.FALSE);
     }
 
     public static void registerFixesCreeper(DataFixer fixer)
@@ -101,7 +101,7 @@ public class EntityCreeper extends EntityMob
     {
         super.writeEntityToNBT(compound);
 
-        if (((Boolean)this.dataManager.get(POWERED)).booleanValue())
+        if ((Boolean) this.dataManager.get(POWERED))
         {
             compound.setBoolean("powered", true);
         }
@@ -114,7 +114,7 @@ public class EntityCreeper extends EntityMob
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.dataManager.set(POWERED, Boolean.valueOf(compound.getBoolean("powered")));
+        this.dataManager.set(POWERED, compound.getBoolean("powered"));
 
         if (compound.hasKey("Fuse", 99))
         {
@@ -206,7 +206,7 @@ public class EntityCreeper extends EntityMob
 
     public boolean getPowered()
     {
-        return ((Boolean)this.dataManager.get(POWERED)).booleanValue();
+        return (Boolean) this.dataManager.get(POWERED);
     }
 
     @SideOnly(Side.CLIENT)
@@ -223,12 +223,12 @@ public class EntityCreeper extends EntityMob
 
     public int getCreeperState()
     {
-        return ((Integer)this.dataManager.get(STATE)).intValue();
+        return (Integer) this.dataManager.get(STATE);
     }
 
     public void setCreeperState(int state)
     {
-        this.dataManager.set(STATE, Integer.valueOf(state));
+        this.dataManager.set(STATE, state);
     }
 
     public void onStruckByLightning(@Nullable EntityLightningBolt lightningBolt)
@@ -316,12 +316,12 @@ public class EntityCreeper extends EntityMob
 
     public boolean hasIgnited()
     {
-        return ((Boolean)this.dataManager.get(IGNITED)).booleanValue();
+        return (Boolean) this.dataManager.get(IGNITED);
     }
 
     public void ignite()
     {
-        this.dataManager.set(IGNITED, Boolean.valueOf(true));
+        this.dataManager.set(IGNITED, Boolean.TRUE);
     }
 
     public boolean ableToCauseSkullDrop()

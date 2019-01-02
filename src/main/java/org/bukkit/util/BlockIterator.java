@@ -24,7 +24,7 @@ public class BlockIterator implements Iterator<Block> {
 
     private boolean end = false;
 
-    private Block[] blockQueue = new Block[3];
+    private final Block[] blockQueue = new Block[3];
     private int currentBlock = 0;
     private int currentDistance = 0;
     private int maxDistanceInt;
@@ -32,8 +32,8 @@ public class BlockIterator implements Iterator<Block> {
     private int secondError;
     private int thirdError;
 
-    private int secondStep;
-    private int thirdStep;
+    private final int secondStep;
+    private final int thirdStep;
 
     private BlockFace mainFace;
     private BlockFace secondFace;

@@ -53,12 +53,12 @@ class QueuedChunk {
         StringBuilder result = new StringBuilder();
         String NEW_LINE = System.getProperty("line.separator");
 
-        result.append(this.getClass().getName() + " {" + NEW_LINE);
-        result.append(" x: " + x + NEW_LINE);
-        result.append(" z: " + z + NEW_LINE);
-        result.append(" world: " + world.getWorldInfo().getWorldName() + NEW_LINE);
-        result.append(" dimension: " + world.provider.getDimension() + NEW_LINE);
-        result.append(" provider: " + world.provider.getClass().getName() + NEW_LINE);
+        result.append(this.getClass().getName()).append(" {").append(NEW_LINE);
+        result.append(" x: ").append(x).append(NEW_LINE);
+        result.append(" z: ").append(z).append(NEW_LINE);
+        result.append(" world: ").append(world.getWorldInfo().getWorldName()).append(NEW_LINE);
+        result.append(" dimension: ").append(world.provider.getDimension()).append(NEW_LINE);
+        result.append(" provider: ").append(world.provider.getClass().getName()).append(NEW_LINE);
         result.append("}");
 
         return result.toString();

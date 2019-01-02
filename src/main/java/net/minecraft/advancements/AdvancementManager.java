@@ -30,13 +30,9 @@ import java.util.Map;
 public class AdvancementManager
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final Gson GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(Advancement.Builder.class, new JsonDeserializer<Advancement.Builder>()
-    {
-        public Advancement.Builder deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
-        {
-            JsonObject jsonobject = JsonUtils.getJsonObject(p_deserialize_1_, "advancement");
-            return Advancement.Builder.deserialize(jsonobject, p_deserialize_3_);
-        }
+    public static final Gson GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(Advancement.Builder.class, (JsonDeserializer<Advancement.Builder>) (p_deserialize_1_, p_deserialize_2_, p_deserialize_3_) -> {
+        JsonObject jsonobject = JsonUtils.getJsonObject(p_deserialize_1_, "advancement");
+        return Advancement.Builder.deserialize(jsonobject, p_deserialize_3_);
     }).registerTypeAdapter(AdvancementRewards.class, new AdvancementRewards.Deserializer()).registerTypeHierarchyAdapter(ITextComponent.class, new ITextComponent.Serializer()).registerTypeHierarchyAdapter(Style.class, new Style.Serializer()).registerTypeAdapterFactory(new EnumTypeAdapterFactory()).create();
     public static final AdvancementList ADVANCEMENT_LIST = new AdvancementList();
     public final File advancementsDir;

@@ -17,13 +17,7 @@ import javax.annotation.Nullable;
 
 public class BlockOldLog extends BlockLog
 {
-    public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.<BlockPlanks.EnumType>create("variant", BlockPlanks.EnumType.class, new Predicate<BlockPlanks.EnumType>()
-    {
-        public boolean apply(@Nullable BlockPlanks.EnumType p_apply_1_)
-        {
-            return p_apply_1_.getMetadata() < 4;
-        }
-    });
+    public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.<BlockPlanks.EnumType>create("variant", BlockPlanks.EnumType.class, p_apply_1_ -> p_apply_1_.getMetadata() < 4);
 
     public BlockOldLog()
     {
@@ -112,7 +106,7 @@ public class BlockOldLog extends BlockLog
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT, LOG_AXIS});
+        return new BlockStateContainer(this, VARIANT, LOG_AXIS);
     }
 
     protected ItemStack getSilkTouchDrop(IBlockState state)

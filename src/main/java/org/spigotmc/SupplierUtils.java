@@ -56,7 +56,7 @@ public class SupplierUtils {
      * be called only when the value is first needed.
      */
     public static <V> Supplier<V> createUnivaluedSupplier(Supplier<V> completion, boolean doLazily) {
-        return doLazily ? new LazyHeadSupplier<V>(completion) : new ValueSupplier<V>(completion.get());
+        return doLazily ? new LazyHeadSupplier<>(completion) : new ValueSupplier<>(completion.get());
     }
 
     /**

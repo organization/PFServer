@@ -187,7 +187,7 @@ public class ModList
 
     public void save() throws IOException
     {
-        mod_list.modRef = artifacts.stream().map(a -> a.toString()).collect(Collectors.toList());
+        mod_list.modRef = artifacts.stream().map(Artifact::toString).collect(Collectors.toList());
         Files.write(GSON.toJson(mod_list), path, StandardCharsets.UTF_8);
     }
 

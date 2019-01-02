@@ -196,7 +196,7 @@ public enum EnumConnectionState
         }
         else
         {
-            bimap.put(Integer.valueOf(bimap.size()), packetClass);
+            bimap.put(bimap.size(), packetClass);
             return this;
         }
     }
@@ -209,7 +209,7 @@ public enum EnumConnectionState
     @Nullable
     public Packet<?> getPacket(EnumPacketDirection direction, int packetId) throws InstantiationException, IllegalAccessException
     {
-        Class <? extends Packet<? >> oclass = (Class)((BiMap)this.directionMaps.get(direction)).get(Integer.valueOf(packetId));
+        Class <? extends Packet<? >> oclass = (Class)((BiMap)this.directionMaps.get(direction)).get(packetId);
         return oclass == null ? null : (Packet)oclass.newInstance();
     }
 
@@ -236,7 +236,7 @@ public enum EnumConnectionState
 
             if (i < -1 || i > 2)
             {
-                throw new Error("Invalid protocol ID " + Integer.toString(i));
+                throw new Error("Invalid protocol ID " + i);
             }
 
             STATES_BY_ID[i - -1] = enumconnectionstate;

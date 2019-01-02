@@ -281,7 +281,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable, net.minecr
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {HALF, VARIANT, FACING});
+        return new BlockStateContainer(this, HALF, VARIANT, FACING);
     }
 
     public EnumOffsetType getOffsetType()
@@ -300,7 +300,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable, net.minecr
     @Override
     public java.util.List<ItemStack> onSheared(ItemStack item, net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune)
     {
-        java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+        java.util.List<ItemStack> ret = new java.util.ArrayList<>();
         EnumPlantType type = (EnumPlantType)world.getBlockState(pos).getValue(VARIANT);
         if (type == EnumPlantType.FERN) ret.add(new ItemStack(Blocks.TALLGRASS, 2, BlockTallGrass.EnumType.FERN.getMeta()));
         if (type == EnumPlantType.GRASS) ret.add(new ItemStack(Blocks.TALLGRASS, 2, BlockTallGrass.EnumType.GRASS.getMeta()));

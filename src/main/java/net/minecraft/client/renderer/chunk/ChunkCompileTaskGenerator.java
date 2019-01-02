@@ -148,13 +148,13 @@ public class ChunkCompileTaskGenerator implements Comparable<ChunkCompileTaskGen
         PENDING,
         COMPILING,
         UPLOADING,
-        DONE;
+        DONE
     }
 
     @SideOnly(Side.CLIENT)
     public static enum Type
     {
         REBUILD_CHUNK,
-        RESORT_TRANSPARENCY;
+        RESORT_TRANSPARENCY
     }
 }

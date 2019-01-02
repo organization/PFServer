@@ -94,10 +94,7 @@ public class Restriction
             {
                 return false;
             }
-            if ( comparison < 0 )
-            {
-                return false;
-            }
+            return comparison >= 0;
         }
 
         return true;
@@ -176,12 +173,7 @@ public class Restriction
             return false;
         }
 
-        if ( upperBoundInclusive != restriction.upperBoundInclusive )
-        {
-            return false;
-        }
-
-        return true;
+        return upperBoundInclusive == restriction.upperBoundInclusive;
     }
 
     @Override

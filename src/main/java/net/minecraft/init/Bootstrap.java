@@ -380,13 +380,13 @@ public class Bootstrap
                 Material material = iblockstate.getMaterial();
                 Item item;
 
-                if (Material.WATER.equals(material) && block instanceof BlockLiquid && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                if (Material.WATER.equals(material) && block instanceof BlockLiquid && (Integer) iblockstate.getValue(BlockLiquid.LEVEL) == 0)
                 {
                     item = Items.WATER_BUCKET;
                 }
                 else
                 {
-                    if (!Material.LAVA.equals(material) || !(block instanceof BlockLiquid) || ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() != 0)
+                    if (!Material.LAVA.equals(material) || !(block instanceof BlockLiquid) || (Integer) iblockstate.getValue(BlockLiquid.LEVEL) != 0)
                     {
                         return super.dispenseStack(source, stack);
                     }
@@ -472,7 +472,7 @@ public class Bootstrap
                 }
                 else if (world.getBlockState(blockpos).getBlock() == Blocks.TNT)
                 {
-                    Blocks.TNT.onBlockDestroyedByPlayer(world, blockpos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
+                    Blocks.TNT.onBlockDestroyedByPlayer(world, blockpos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, Boolean.TRUE));
                     world.setBlockToAir(blockpos);
                 }
                 else

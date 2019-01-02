@@ -43,7 +43,7 @@ public class BlockAnvil extends BlockFalling
     protected BlockAnvil()
     {
         super(Material.ANVIL);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(DAMAGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(DAMAGE, 0));
         this.setLightOpacity(0);
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
@@ -69,7 +69,7 @@ public class BlockAnvil extends BlockFalling
 
         try
         {
-            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing).withProperty(DAMAGE, Integer.valueOf(meta >> 2));
+            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing).withProperty(DAMAGE, meta >> 2);
         }
         catch (IllegalArgumentException var11)
         {
@@ -79,11 +79,11 @@ public class BlockAnvil extends BlockFalling
 
                 if (placer instanceof EntityPlayer)
                 {
-                    placer.sendMessage(new TextComponentTranslation("Invalid damage property. Please pick in [0, 1, 2]", new Object[0]));
+                    placer.sendMessage(new TextComponentTranslation("Invalid damage property. Please pick in [0, 1, 2]"));
                 }
             }
 
-            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, 0, placer).withProperty(FACING, enumfacing).withProperty(DAMAGE, Integer.valueOf(0));
+            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, 0, placer).withProperty(FACING, enumfacing).withProperty(DAMAGE, 0);
         }
     }
 
@@ -99,7 +99,7 @@ public class BlockAnvil extends BlockFalling
 
     public int damageDropped(IBlockState state)
     {
-        return ((Integer)state.getValue(DAMAGE)).intValue();
+        return (Integer) state.getValue(DAMAGE);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -138,14 +138,14 @@ public class BlockAnvil extends BlockFalling
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(DAMAGE, Integer.valueOf((meta & 15) >> 2));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(DAMAGE, (meta & 15) >> 2);
     }
 
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
         i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-        i = i | ((Integer)state.getValue(DAMAGE)).intValue() << 2;
+        i = i | (Integer) state.getValue(DAMAGE) << 2;
         return i;
     }
 
@@ -156,7 +156,7 @@ public class BlockAnvil extends BlockFalling
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, DAMAGE});
+        return new BlockStateContainer(this, FACING, DAMAGE);
     }
 
     public static class Anvil implements IInteractionObject
@@ -182,7 +182,7 @@ public class BlockAnvil extends BlockFalling
 
             public ITextComponent getDisplayName()
             {
-                return new TextComponentTranslation(Blocks.ANVIL.getUnlocalizedName() + ".name", new Object[0]);
+                return new TextComponentTranslation(Blocks.ANVIL.getUnlocalizedName() + ".name");
             }
 
             public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)

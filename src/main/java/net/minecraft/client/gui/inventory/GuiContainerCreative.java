@@ -478,7 +478,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                             itemstack.getOrCreateSubCompound("CustomCreativeLock");
                             String s = GameSettings.getKeyDisplayString(this.mc.gameSettings.keyBindsHotbar[j].getKeyCode());
                             String s1 = GameSettings.getKeyDisplayString(this.mc.gameSettings.keyBindSaveToolbar.getKeyCode());
-                            itemstack.setStackDisplayName((new TextComponentTranslation("inventory.hotbarInfo", new Object[] {s1, s})).getUnformattedText());
+                            itemstack.setStackDisplayName((new TextComponentTranslation("inventory.hotbarInfo", s1, s)).getUnformattedText());
                             guicontainercreative$containercreative.itemList.add(itemstack);
                         }
                         else
@@ -972,7 +972,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
             String s = GameSettings.getKeyDisplayString(p_192044_0_.gameSettings.keyBindsHotbar[p_192044_1_].getKeyCode());
             String s1 = GameSettings.getKeyDisplayString(p_192044_0_.gameSettings.keyBindLoadToolbar.getKeyCode());
-            p_192044_0_.ingameGUI.setOverlayMessage(new TextComponentTranslation("inventory.hotbarSaved", new Object[] {s1, s}), false);
+            p_192044_0_.ingameGUI.setOverlayMessage(new TextComponentTranslation("inventory.hotbarSaved", s1, s), false);
             creativesettings.write();
         }
     }
@@ -980,7 +980,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     @SideOnly(Side.CLIENT)
     public static class ContainerCreative extends Container
         {
-            public NonNullList<ItemStack> itemList = NonNullList.<ItemStack>create();
+            public final NonNullList<ItemStack> itemList = NonNullList.<ItemStack>create();
 
             public ContainerCreative(EntityPlayer player)
             {

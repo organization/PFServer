@@ -32,6 +32,7 @@ import org.objectweb.asm.Type;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -40,12 +41,12 @@ public class ASMModParser
     private Type asmType;
     private int classVersion;
     private Type asmSuperType;
-    private LinkedList<ModAnnotation> annotations = Lists.newLinkedList();
-    private Set<String> interfaces = Sets.newHashSet();
+    private final LinkedList<ModAnnotation> annotations = Lists.newLinkedList();
+    private final Set<String> interfaces = Sets.newHashSet();
 
     static enum AnnotationType
     {
-        CLASS, FIELD, METHOD, SUBTYPE;
+        CLASS, FIELD, METHOD, SUBTYPE
     }
 
     public ASMModParser(InputStream stream) throws IOException
@@ -67,8 +68,7 @@ public class ASMModParser
         this.asmType = Type.getObjectType(typeQName);
         this.classVersion = classVersion;
         this.asmSuperType = !Strings.isNullOrEmpty(superClassQName) ? Type.getObjectType(superClassQName) : null;
-        for (String intf : interfaces)
-            this.interfaces.add(intf);
+        this.interfaces.addAll(Arrays.asList(interfaces));
     }
 
     public void startClassAnnotation(String annotationName)

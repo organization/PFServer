@@ -155,7 +155,7 @@ public class SplashProgress
 
         // Enable if we have the flag, and there's either no optifine, or optifine has added a key to the blackboard ("optifine.ForgeSplashCompatible")
         // Optifine authors - add this key to the blackboard if you feel your modifications are now compatible with this code.
-        enabled =            getBool("enabled",      defaultEnabled) && ( (!FMLClientHandler.instance().hasOptifine()) || Launch.blackboard.containsKey("optifine.ForgeSplashCompatible"));
+        enabled =            getBool("enabled", true) && ( (!FMLClientHandler.instance().hasOptifine()) || Launch.blackboard.containsKey("optifine.ForgeSplashCompatible"));
         rotate =             getBool("rotate",       false);
         showMemory =         getBool("showMemory",   true);
         logoOffset =         getInt("logoOffset",    0);
@@ -378,7 +378,7 @@ public class SplashProgress
                             isDisplayVSyncForced = true;
                             PFServer.LOGGER.info("Using alternative sync timing : {} frames of Display.update took {} nanos", TIMING_FRAME_COUNT, updateTiming);
                         }
-                        try { Thread.sleep(16); } catch (InterruptedException ie) {}
+                        try { Thread.sleep(16); } catch (InterruptedException ignored) {}
                     } else
                     {
                         if (framecount ==TIMING_FRAME_COUNT) {
@@ -551,14 +551,9 @@ public class SplashProgress
                 }
             }
         });
-        thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread t, Throwable e)
-            {
-                PFServer.LOGGER.error("Splash thread Exception", e);
-                threadError = e;
-            }
+        thread.setUncaughtExceptionHandler((t, e) -> {
+            PFServer.LOGGER.error("Splash thread Exception", e);
+            threadError = e;
         });
         thread.start();
         checkThreadState();

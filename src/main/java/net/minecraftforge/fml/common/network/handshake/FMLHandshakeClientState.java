@@ -209,5 +209,5 @@ enum FMLHandshakeClientState implements IHandshakeState<FMLHandshakeClientState>
         public void accept(ChannelHandlerContext ctx, FMLHandshakeMessage msg, Consumer<? super FMLHandshakeClientState> cons)
         {
         }
-    };
+    }
 }

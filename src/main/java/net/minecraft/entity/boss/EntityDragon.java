@@ -49,17 +49,17 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
 {
     private static final Logger LOGGER = LogManager.getLogger();
     public static final DataParameter<Integer> PHASE = EntityDataManager.<Integer>createKey(EntityDragon.class, DataSerializers.VARINT);
-    public double[][] ringBuffer = new double[64][3];
+    public final double[][] ringBuffer = new double[64][3];
     public int ringBufferIndex = -1;
-    public MultiPartEntityPart[] dragonPartArray;
-    public MultiPartEntityPart dragonPartHead = new MultiPartEntityPart(this, "head", 6.0F, 6.0F);
-    public MultiPartEntityPart dragonPartNeck = new MultiPartEntityPart(this, "neck", 6.0F, 6.0F);
-    public MultiPartEntityPart dragonPartBody = new MultiPartEntityPart(this, "body", 8.0F, 8.0F);
-    public MultiPartEntityPart dragonPartTail1 = new MultiPartEntityPart(this, "tail", 4.0F, 4.0F);
-    public MultiPartEntityPart dragonPartTail2 = new MultiPartEntityPart(this, "tail", 4.0F, 4.0F);
-    public MultiPartEntityPart dragonPartTail3 = new MultiPartEntityPart(this, "tail", 4.0F, 4.0F);
-    public MultiPartEntityPart dragonPartWing1 = new MultiPartEntityPart(this, "wing", 4.0F, 4.0F);
-    public MultiPartEntityPart dragonPartWing2 = new MultiPartEntityPart(this, "wing", 4.0F, 4.0F);
+    public final MultiPartEntityPart[] dragonPartArray;
+    public final MultiPartEntityPart dragonPartHead = new MultiPartEntityPart(this, "head", 6.0F, 6.0F);
+    public final MultiPartEntityPart dragonPartNeck = new MultiPartEntityPart(this, "neck", 6.0F, 6.0F);
+    public final MultiPartEntityPart dragonPartBody = new MultiPartEntityPart(this, "body", 8.0F, 8.0F);
+    public final MultiPartEntityPart dragonPartTail1 = new MultiPartEntityPart(this, "tail", 4.0F, 4.0F);
+    public final MultiPartEntityPart dragonPartTail2 = new MultiPartEntityPart(this, "tail", 4.0F, 4.0F);
+    public final MultiPartEntityPart dragonPartTail3 = new MultiPartEntityPart(this, "tail", 4.0F, 4.0F);
+    public final MultiPartEntityPart dragonPartWing1 = new MultiPartEntityPart(this, "wing", 4.0F, 4.0F);
+    public final MultiPartEntityPart dragonPartWing2 = new MultiPartEntityPart(this, "wing", 4.0F, 4.0F);
     public float prevAnimTime;
     public float animTime;
     public boolean slowed;
@@ -73,7 +73,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
     private final int[] neighbors = new int[24];
     private final PathHeap pathFindQueue = new PathHeap();
 
-    private Explosion explosionSource = new Explosion(null, this, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, true); // CraftBukkit - reusable source for CraftTNTPrimed.getSource()
+    private final Explosion explosionSource = new Explosion(null, this, Double.NaN, Double.NaN, Double.NaN, Float.NaN, true, true); // CraftBukkit - reusable source for CraftTNTPrimed.getSource()
 
     public EntityDragon(World worldIn)
     {
@@ -107,7 +107,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
     protected void entityInit()
     {
         super.entityInit();
-        this.getDataManager().register(PHASE, Integer.valueOf(PhaseList.HOVER.getId()));
+        this.getDataManager().register(PHASE, PhaseList.HOVER.getId());
     }
 
     public double[] getMovementOffsets(int p_70974_1_, float p_70974_2_)
@@ -464,12 +464,8 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
 
     private void attackEntitiesInList(List<Entity> p_70971_1_)
     {
-        for (int i = 0; i < p_70971_1_.size(); ++i)
-        {
-            Entity entity = p_70971_1_.get(i);
-
-            if (entity instanceof EntityLivingBase)
-            {
+        for (Entity entity : p_70971_1_) {
+            if (entity instanceof EntityLivingBase) {
                 entity.attackEntityFrom(DamageSource.causeMobDamage(this), 10.0F);
                 this.applyEnchantments(this, entity);
             }
@@ -492,7 +488,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
         boolean flag = false;
         boolean flag1 = false;
         // CraftBukkit start - Create a list to hold all the destroyed blocks
-        List<org.bukkit.block.Block> destroyedBlocks = new java.util.ArrayList<org.bukkit.block.Block>();
+        List<org.bukkit.block.Block> destroyedBlocks = new java.util.ArrayList<>();
         org.bukkit.craftbukkit.CraftWorld craftWorld = this.world.getWorld();
         // CraftBukkit end
         for (int k1 = i; k1 <= l; ++k1)
@@ -922,7 +918,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
         }
         else
         {
-            LOGGER.debug("Failed to find path from {} to {}", Integer.valueOf(startIdx), Integer.valueOf(finishIdx));
+            LOGGER.debug("Failed to find path from {} to {}", startIdx, finishIdx);
 
             if (andThen != null)
             {
@@ -1115,7 +1111,7 @@ public class EntityDragon extends EntityLiving implements IEntityMultiPart, IMob
     {
         if (PHASE.equals(key) && this.world.isRemote)
         {
-            this.phaseManager.setPhase(PhaseList.getById(((Integer)this.getDataManager().get(PHASE)).intValue()));
+            this.phaseManager.setPhase(PhaseList.getById((Integer) this.getDataManager().get(PHASE)));
         }
 
         super.notifyDataManagerChange(key);

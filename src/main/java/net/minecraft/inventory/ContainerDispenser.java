@@ -10,7 +10,7 @@ public class ContainerDispenser extends Container
 {
     public final IInventory dispenserInventory;
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerDispenser(IInventory playerInventory, IInventory dispenserInventoryIn)
     {

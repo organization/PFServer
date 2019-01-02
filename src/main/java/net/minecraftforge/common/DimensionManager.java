@@ -66,7 +66,7 @@ public class DimensionManager
     private static final BitSet dimensionMap = new BitSet(Long.SIZE << 4);
     private static final ConcurrentMap<World, World> weakWorldMap = new MapMaker().weakKeys().weakValues().makeMap();
     private static final Multiset<Integer> leakedWorlds = HashMultiset.create();
-    private static ArrayList<Integer> bukkitDims = new ArrayList<Integer>(); // used to keep track of Bukkit dimensions
+    private static final ArrayList<Integer> bukkitDims = new ArrayList<>(); // used to keep track of Bukkit dimensions
 
     /**
      * Returns a list of dimensions associated with this DimensionType.
@@ -166,9 +166,7 @@ public class DimensionManager
         {
             List<World> allWorlds = Lists.newArrayList(weakWorldMap.keySet());
             allWorlds.removeAll(worlds.values());
-            for (ListIterator<World> li = allWorlds.listIterator(); li.hasNext(); )
-            {
-                World w = li.next();
+            for (World w : allWorlds) {
                 leakedWorlds.add(System.identityHashCode(w));
             }
             for (World w : allWorlds)
@@ -213,7 +211,7 @@ public class DimensionManager
             PFServer.LOGGER.info("Unloading dimension {}", id);
         }
 
-        ArrayList<WorldServer> tmp = new ArrayList<WorldServer>();
+        ArrayList<WorldServer> tmp = new ArrayList<>();
         if (worlds.get( 0) != null)
             tmp.add(worlds.get( 0));
         if (worlds.get(-1) != null)
@@ -282,7 +280,7 @@ public class DimensionManager
         WorldInfo worldInfo = new WorldInfo(worldSettings, name);
         WorldServer world = (dim == 0 ? overworld : (WorldServer)(new WorldServerMulti(mcServer, new AnvilSaveHandler(mcServer.server.getWorldContainer(), name, true, mcServer.getDataFixer()), dim, overworld, mcServer.profiler, worldInfo, env, gen).init()));
 
-        mcServer.getPlayerList().setPlayerManager(mcServer.worldServerList.toArray(new WorldServer[mcServer.worldServerList.size()]));
+        mcServer.getPlayerList().setPlayerManager(mcServer.worldServerList.toArray(new WorldServer[0]));
         world.addEventListener(new ServerWorldEventHandler(mcServer, world));
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(world));
         mcServer.server.getPluginManager().callEvent(new org.bukkit.event.world.WorldLoadEvent(world.getWorld()));
@@ -379,7 +377,7 @@ public class DimensionManager
 
         if (unloadQueue.add(id))
         {
-            PFServer.LOGGER.debug("Queueing dimension {} to unload", id);;
+            PFServer.LOGGER.debug("Queueing dimension {} to unload", id);
         }
     }
 
@@ -564,7 +562,7 @@ public class DimensionManager
         world.initialize(worldSettings);
 
         world.provider.setDimension(dim); // Fix for TerrainControl injecting their own WorldProvider
-        mcServer.getPlayerList().setPlayerManager(mcServer.worldServerList.toArray(new WorldServer[mcServer.worldServerList.size()]));
+        mcServer.getPlayerList().setPlayerManager(mcServer.worldServerList.toArray(new WorldServer[0]));
 
         world.addEventListener(new ServerWorldEventHandler(mcServer, world));
         MinecraftForge.EVENT_BUS.post(new WorldEvent.Load(world));
@@ -595,7 +593,7 @@ public class DimensionManager
     public static void removeBukkitDimension(int dim)
     {
         if (bukkitDims.contains(dim))
-            bukkitDims.remove(bukkitDims.indexOf(dim));
+            bukkitDims.remove(dim);
     }
 
     public static ArrayList<Integer> getBukkitDimensionIDs()

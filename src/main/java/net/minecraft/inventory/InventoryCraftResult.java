@@ -32,7 +32,7 @@ public class InventoryCraftResult implements IInventory
     public void onOpen(CraftHumanEntity who) {}
     public void onClose(CraftHumanEntity who) {}
     public java.util.List<HumanEntity> getViewers() {
-        return new java.util.ArrayList<HumanEntity>();
+        return new java.util.ArrayList<>();
     }
 
     public void setMaxStackSize(int size) {

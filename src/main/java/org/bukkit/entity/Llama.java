@@ -27,7 +27,7 @@ public interface Llama extends ChestedHorse {
         /**
          * A gray llama.
          */
-        GRAY;
+        GRAY
     }
 
     /**

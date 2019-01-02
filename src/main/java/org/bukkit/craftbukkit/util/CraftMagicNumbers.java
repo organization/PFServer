@@ -12,6 +12,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -61,8 +62,7 @@ public final class CraftMagicNumbers{
 
     public static Item getItem(Material material) {
         // TODO: Don't use ID
-        Item item = Item.getItemById(material.getId());
-        return item;
+        return Item.getItemById(material.getId());
     }
 
     @Deprecated
@@ -131,10 +131,9 @@ public final class CraftMagicNumbers{
     }
 
     public List<String> tabCompleteInternalStatisticOrAchievementName(String token, List<String> completions) {
-        List<String> matches = new ArrayList<String>();
-        Iterator iterator = StatList.ALL_STATS.iterator();
-        while (iterator.hasNext()) {
-            String statistic = ((net.minecraft.stats.StatBase) iterator.next()).statId;
+        List<String> matches = new ArrayList<>();
+        for (StatBase statBase : StatList.ALL_STATS) {
+            String statistic = (statBase).statId;
             if (statistic.startsWith(token)) {
                 matches.add(statistic);
             }

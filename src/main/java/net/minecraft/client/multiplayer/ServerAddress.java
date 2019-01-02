@@ -57,7 +57,7 @@ public class ServerAddress
                     String s = addrString.substring(1, i);
                     String s1 = addrString.substring(i + 1).trim();
 
-                    if (s1.startsWith(":") && !s1.isEmpty())
+                    if (s1.startsWith(":") && !false)
                     {
                         s1 = s1.substring(1);
                         astring = new String[] {s, s1};
@@ -94,7 +94,7 @@ public class ServerAddress
         {
             String s = "com.sun.jndi.dns.DnsContextFactory";
             Class.forName("com.sun.jndi.dns.DnsContextFactory");
-            Hashtable<String, String> hashtable = new Hashtable<String, String>();
+            Hashtable<String, String> hashtable = new Hashtable<>();
             hashtable.put("java.naming.factory.initial", "com.sun.jndi.dns.DnsContextFactory");
             hashtable.put("java.naming.provider.url", "dns:");
             hashtable.put("com.sun.jndi.dns.timeout.retries", "1");

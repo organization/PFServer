@@ -107,14 +107,14 @@ public enum ModelRotation implements net.minecraftforge.common.model.IModelState
 
     public static ModelRotation getModelRotation(int x, int y)
     {
-        return MAP_ROTATIONS.get(Integer.valueOf(combineXY(MathHelper.normalizeAngle(x, 360), MathHelper.normalizeAngle(y, 360))));
+        return MAP_ROTATIONS.get(combineXY(MathHelper.normalizeAngle(x, 360), MathHelper.normalizeAngle(y, 360)));
     }
 
     static
     {
         for (ModelRotation modelrotation : values())
         {
-            MAP_ROTATIONS.put(Integer.valueOf(modelrotation.combinedXY), modelrotation);
+            MAP_ROTATIONS.put(modelrotation.combinedXY, modelrotation);
         }
     }
 

@@ -9,7 +9,7 @@ public abstract class NodeProcessor
 {
     protected IBlockAccess blockaccess;
     protected EntityLiving entity;
-    protected final IntHashMap<PathPoint> pointMap = new IntHashMap<PathPoint>();
+    protected final IntHashMap<PathPoint> pointMap = new IntHashMap<>();
     protected int entitySizeX;
     protected int entitySizeY;
     protected int entitySizeZ;

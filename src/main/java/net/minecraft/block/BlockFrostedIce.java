@@ -18,22 +18,22 @@ public class BlockFrostedIce extends BlockIce
 
     public BlockFrostedIce()
     {
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(MathHelper.clamp(meta, 0, 3)));
+        return this.getDefaultState().withProperty(AGE, MathHelper.clamp(meta, 0, 3));
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if ((rand.nextInt(3) == 0 || this.countNeighbors(worldIn, pos) < 4) && worldIn.getLightFromNeighbors(pos) > 11 - ((Integer)state.getValue(AGE)).intValue() - state.getLightOpacity())
+        if ((rand.nextInt(3) == 0 || this.countNeighbors(worldIn, pos) < 4) && worldIn.getLightFromNeighbors(pos) > 11 - (Integer) state.getValue(AGE) - state.getLightOpacity())
         {
             this.slightlyMelt(worldIn, pos, state, rand, true);
         }
@@ -78,11 +78,11 @@ public class BlockFrostedIce extends BlockIce
 
     protected void slightlyMelt(World worldIn, BlockPos pos, IBlockState state, Random rand, boolean meltNeighbors)
     {
-        int i = ((Integer)state.getValue(AGE)).intValue();
+        int i = (Integer) state.getValue(AGE);
 
         if (i < 3)
         {
-            worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(i + 1)), 2);
+            worldIn.setBlockState(pos, state.withProperty(AGE, i + 1), 2);
             worldIn.scheduleUpdate(pos, this, MathHelper.getInt(rand, 20, 40));
         }
         else
@@ -107,7 +107,7 @@ public class BlockFrostedIce extends BlockIce
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE});
+        return new BlockStateContainer(this, AGE);
     }
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)

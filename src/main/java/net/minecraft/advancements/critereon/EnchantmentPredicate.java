@@ -38,18 +38,15 @@ public class EnchantmentPredicate
                 return false;
             }
 
-            int i = ((Integer)enchantmentsIn.get(this.enchantment)).intValue();
+            int i = (Integer) enchantmentsIn.get(this.enchantment);
 
-            if (this.levels != null && !this.levels.test((float)i))
-            {
-                return false;
-            }
+            return this.levels == null || this.levels.test((float) i);
         }
         else if (this.levels != null)
         {
             for (Integer integer : enchantmentsIn.values())
             {
-                if (this.levels.test((float)integer.intValue()))
+                if (this.levels.test((float) integer))
                 {
                     return true;
                 }

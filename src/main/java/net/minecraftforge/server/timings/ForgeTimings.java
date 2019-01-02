@@ -31,13 +31,13 @@ import java.util.Arrays;
 public class ForgeTimings<T>
 {
 
-    private WeakReference<T> object;
+    private final WeakReference<T> object;
 
-    private int[] rawTimingData;
+    private final int[] rawTimingData;
 
     public ForgeTimings(T object, int[] rawTimingData)
     {
-        this.object = new WeakReference<T>(object);
+        this.object = new WeakReference<>(object);
         this.rawTimingData = rawTimingData;
     }
 

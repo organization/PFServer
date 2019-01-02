@@ -57,13 +57,7 @@ public abstract class BlockFlower extends BlockBush
     {
         if (this.type == null)
         {
-            this.type = PropertyEnum.<EnumFlowerType>create("type", EnumFlowerType.class, new Predicate<EnumFlowerType>()
-            {
-                public boolean apply(@Nullable BlockFlower.EnumFlowerType p_apply_1_)
-                {
-                    return p_apply_1_.getBlockType() == BlockFlower.this.getBlockType();
-                }
-            });
+            this.type = PropertyEnum.<EnumFlowerType>create("type", EnumFlowerType.class, p_apply_1_ -> p_apply_1_.getBlockType() == BlockFlower.this.getBlockType());
         }
 
         return this.type;
@@ -76,7 +70,7 @@ public abstract class BlockFlower extends BlockBush
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {this.getTypeProperty()});
+        return new BlockStateContainer(this, this.getTypeProperty());
     }
 
     public EnumOffsetType getOffsetType()
@@ -173,14 +167,8 @@ public abstract class BlockFlower extends BlockBush
         {
             for (final EnumFlowerColor blockflower$enumflowercolor : EnumFlowerColor.values())
             {
-                Collection<EnumFlowerType> collection = Collections2.<EnumFlowerType>filter(Lists.newArrayList(values()), new Predicate<EnumFlowerType>()
-                {
-                    public boolean apply(@Nullable BlockFlower.EnumFlowerType p_apply_1_)
-                    {
-                        return p_apply_1_.getBlockType() == blockflower$enumflowercolor;
-                    }
-                });
-                TYPES_FOR_BLOCK[blockflower$enumflowercolor.ordinal()] = (EnumFlowerType[])collection.toArray(new EnumFlowerType[collection.size()]);
+                Collection<EnumFlowerType> collection = Collections2.<EnumFlowerType>filter(Lists.newArrayList(values()), p_apply_1_ -> p_apply_1_.getBlockType() == blockflower$enumflowercolor);
+                TYPES_FOR_BLOCK[blockflower$enumflowercolor.ordinal()] = (EnumFlowerType[])collection.toArray(new EnumFlowerType[0]);
             }
         }
     }

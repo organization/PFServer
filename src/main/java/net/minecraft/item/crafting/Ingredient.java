@@ -9,12 +9,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 public class Ingredient implements Predicate<ItemStack>
 {
     //Because Mojang caches things... we need to invalidate them.. so... here we go..
-    private static final java.util.Set<Ingredient> INSTANCES = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<Ingredient, Boolean>());
-    public static final Ingredient EMPTY = new Ingredient(new ItemStack[0])
+    private static final java.util.Set<Ingredient> INSTANCES = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>());
+    public static final Ingredient EMPTY = new Ingredient()
     {
         public boolean apply(@Nullable ItemStack p_apply_1_)
         {
@@ -47,7 +48,7 @@ public class Ingredient implements Predicate<ItemStack>
             else
                 lst.add(s);
         }
-        this.matchingStacksExploded = lst.toArray(new ItemStack[lst.size()]);
+        this.matchingStacksExploded = lst.toArray(new ItemStack[0]);
         this.isSimple = simple && this.matchingStacksExploded.length > 0;
         Ingredient.INSTANCES.add(this);
     }
@@ -151,10 +152,9 @@ public class Ingredient implements Predicate<ItemStack>
         net.minecraft.util.NonNullList<ItemStack> lst = net.minecraft.util.NonNullList.create();
         for (Ingredient part : parts)
         {
-            for (ItemStack stack : part.matchingStacks)
-                lst.add(stack);
+            lst.addAll(Arrays.asList(part.matchingStacks));
         }
-        return new Ingredient(lst.toArray(new ItemStack[lst.size()]));
+        return new Ingredient(lst.toArray(new ItemStack[0]));
     }
 
     public boolean isSimple()

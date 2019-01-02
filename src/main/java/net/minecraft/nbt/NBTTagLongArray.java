@@ -31,7 +31,7 @@ public class NBTTagLongArray extends NBTBase
         for (int i = 0; i < p_193586_0_.size(); ++i)
         {
             Long olong = p_193586_0_.get(i);
-            along[i] = olong == null ? 0L : olong.longValue();
+            along[i] = olong == null ? 0L : olong;
         }
 
         return along;

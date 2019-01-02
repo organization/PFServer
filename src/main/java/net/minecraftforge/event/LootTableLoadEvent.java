@@ -39,7 +39,7 @@ public class LootTableLoadEvent extends Event
 {
     private final ResourceLocation name;
     private LootTable table;
-    private LootTableManager lootTableManager;
+    private final LootTableManager lootTableManager;
 
     public LootTableLoadEvent(ResourceLocation name, LootTable table, LootTableManager lootTableManager)
     {

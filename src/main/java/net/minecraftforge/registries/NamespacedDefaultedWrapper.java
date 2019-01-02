@@ -14,7 +14,7 @@ import java.util.Set;
 class NamespacedDefaultedWrapper<V extends IForgeRegistryEntry<V>> extends RegistryNamespacedDefaultedByKey<ResourceLocation, V> implements ILockableRegistry
 {
     private boolean locked = false;
-    private ForgeRegistry<V> delegate;
+    private final ForgeRegistry<V> delegate;
 
     private NamespacedDefaultedWrapper(ForgeRegistry<V> owner)
     {
@@ -113,7 +113,7 @@ class NamespacedDefaultedWrapper<V extends IForgeRegistryEntry<V>> extends Regis
         @Override
         public void onCreate(IForgeRegistryInternal<V> owner, RegistryManager stage)
         {
-            owner.setSlaveMap(ID, new NamespacedDefaultedWrapper<V>((ForgeRegistry<V>)owner));
+            owner.setSlaveMap(ID, new NamespacedDefaultedWrapper<>((ForgeRegistry<V>) owner));
         }
     }
 }

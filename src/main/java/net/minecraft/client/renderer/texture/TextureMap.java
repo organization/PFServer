@@ -175,7 +175,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
             if (j1 < k)
             {
                 // FORGE: do not lower the mipmap level, just log the problematic textures
-                LOGGER.warn("Texture {} with size {}x{} will have visual artifacts at mip level {}, it can only support level {}. Please report to the mod author that the texture should be some multiple of 16x16.", resourcelocation, Integer.valueOf(textureatlassprite.getIconWidth()), Integer.valueOf(textureatlassprite.getIconHeight()), Integer.valueOf(MathHelper.log2(k)), Integer.valueOf(MathHelper.log2(j1)));
+                LOGGER.warn("Texture {} with size {}x{} will have visual artifacts at mip level {}, it can only support level {}. Please report to the mod author that the texture should be some multiple of 16x16.", resourcelocation, textureatlassprite.getIconWidth(), textureatlassprite.getIconHeight(), MathHelper.log2(k), MathHelper.log2(j1));
             }
 
             if (generateMipmaps(resourceManager, textureatlassprite))
@@ -198,7 +198,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         if (false) // FORGE: do not lower the mipmap level
         if (i1 < this.mipmapLevels)
         {
-            LOGGER.warn("{}: dropping miplevel from {} to {}, because of minimum power of two: {}", this.basePath, Integer.valueOf(this.mipmapLevels), Integer.valueOf(i1), Integer.valueOf(l));
+            LOGGER.warn("{}: dropping miplevel from {} to {}, because of minimum power of two: {}", this.basePath, this.mipmapLevels, i1, l);
             this.mipmapLevels = i1;
         }
 
@@ -216,7 +216,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
             throw stitcherexception;
         }
 
-        LOGGER.info("Created: {}x{} {}-atlas", Integer.valueOf(stitcher.getCurrentWidth()), Integer.valueOf(stitcher.getCurrentHeight()), this.basePath);
+        LOGGER.info("Created: {}x{} {}-atlas", stitcher.getCurrentWidth(), stitcher.getCurrentHeight(), this.basePath);
         bar.step("Allocating GL texture");
         TextureUtil.allocateTextureImpl(this.getGlTextureId(), this.mipmapLevels, stitcher.getCurrentWidth(), stitcher.getCurrentHeight());
         Map<String, TextureAtlasSprite> map = Maps.<String, TextureAtlasSprite>newHashMap(this.mapRegisteredSprites);
@@ -283,14 +283,14 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
             {
                 LOGGER.error("Using missing texture, unable to load {}", resourcelocation, ioexception);
                 flag = false;
-                return flag;
+                return false;
             }
             finally
             {
                 IOUtils.closeQuietly((Closeable)iresource);
             }
 
-            return flag;
+            return false;
         }
 
         try
@@ -302,28 +302,10 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Applying mipmap");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Sprite being mipmapped");
-            crashreportcategory.addDetail("Sprite name", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    return texture.getIconName();
-                }
-            });
-            crashreportcategory.addDetail("Sprite size", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    return texture.getIconWidth() + " x " + texture.getIconHeight();
-                }
-            });
-            crashreportcategory.addDetail("Sprite frames", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    return texture.getFrameCount() + " frames";
-                }
-            });
-            crashreportcategory.addCrashSection("Mipmap levels", Integer.valueOf(this.mipmapLevels));
+            crashreportcategory.addDetail("Sprite name", texture::getIconName);
+            crashreportcategory.addDetail("Sprite size", () -> texture.getIconWidth() + " x " + texture.getIconHeight());
+            crashreportcategory.addDetail("Sprite frames", () -> texture.getFrameCount() + " frames");
+            crashreportcategory.addCrashSection("Mipmap levels", this.mipmapLevels);
             throw new ReportedException(crashreport);
         }
     }

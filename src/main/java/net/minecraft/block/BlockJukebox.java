@@ -30,22 +30,22 @@ public class BlockJukebox extends BlockContainer
 
     public static void registerFixesJukebox(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackData(TileEntityJukebox.class, new String[] {"RecordItem"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackData(TileEntityJukebox.class, "RecordItem"));
     }
 
     protected BlockJukebox()
     {
         super(Material.WOOD, MapColor.DIRT);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_RECORD, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_RECORD, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.DECORATIONS);
     }
 
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (((Boolean)state.getValue(HAS_RECORD)).booleanValue())
+        if ((Boolean) state.getValue(HAS_RECORD))
         {
             this.dropRecord(worldIn, pos, state);
-            state = state.withProperty(HAS_RECORD, Boolean.valueOf(false));
+            state = state.withProperty(HAS_RECORD, Boolean.FALSE);
             worldIn.setBlockState(pos, state, 2);
             return true;
         }
@@ -62,7 +62,7 @@ public class BlockJukebox extends BlockContainer
         if (tileentity instanceof TileEntityJukebox)
         {
             ((TileEntityJukebox)tileentity).setRecord(recordStack.copy());
-            worldIn.setBlockState(pos, state.withProperty(HAS_RECORD, Boolean.valueOf(true)), 2);
+            worldIn.setBlockState(pos, state.withProperty(HAS_RECORD, Boolean.TRUE), 2);
         }
     }
 
@@ -143,17 +143,17 @@ public class BlockJukebox extends BlockContainer
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(HAS_RECORD, Boolean.valueOf(meta > 0));
+        return this.getDefaultState().withProperty(HAS_RECORD, meta > 0);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean)state.getValue(HAS_RECORD)).booleanValue() ? 1 : 0;
+        return (Boolean) state.getValue(HAS_RECORD) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {HAS_RECORD});
+        return new BlockStateContainer(this, HAS_RECORD);
     }
 
     public static class TileEntityJukebox extends TileEntity

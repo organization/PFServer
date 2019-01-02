@@ -218,10 +218,9 @@ public class Vec3d
     {
         float f = MathHelper.cos(pitch);
         float f1 = MathHelper.sin(pitch);
-        double d0 = this.x;
         double d1 = this.y * (double)f + this.z * (double)f1;
         double d2 = this.z * (double)f - this.y * (double)f1;
-        return new Vec3d(d0, d1, d2);
+        return new Vec3d(this.x, d1, d2);
     }
 
     public Vec3d rotateYaw(float yaw)
@@ -229,9 +228,8 @@ public class Vec3d
         float f = MathHelper.cos(yaw);
         float f1 = MathHelper.sin(yaw);
         double d0 = this.x * (double)f + this.z * (double)f1;
-        double d1 = this.y;
         double d2 = this.z * (double)f - this.x * (double)f1;
-        return new Vec3d(d0, d1, d2);
+        return new Vec3d(d0, this.y, d2);
     }
 
     public static Vec3d fromPitchYawVector(Vec2f p_189984_0_)

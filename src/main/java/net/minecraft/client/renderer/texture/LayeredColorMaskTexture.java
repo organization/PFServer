@@ -98,7 +98,7 @@ public class LayeredColorMaskTexture extends AbstractTexture
                     }
                     finally
                     {
-                        IOUtils.closeQuietly((Closeable)iresource1);
+                        IOUtils.closeQuietly((Closeable) null);
                     }
 
                     ++j;

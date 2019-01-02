@@ -9,6 +9,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.util.Objects;
+
 public class CraftPotionUtil {
 
     private static final BiMap<PotionType, String> regular = ImmutableBiMap.<PotionType, String>builder()
@@ -108,6 +110,6 @@ public class CraftPotionUtil {
 
     public static boolean equals(Potion mobEffect, PotionEffectType type) {
         PotionEffectType typeV = PotionEffectType.getById(Potion.getIdFromPotion(mobEffect));
-        return typeV.equals(type);
+        return Objects.equals(typeV, type);
     }
 }

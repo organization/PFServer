@@ -31,7 +31,7 @@ public class InitNoiseGensEvent<T extends InitNoiseGensEvent.Context> extends Wo
 {
     private final Random rand;
     private final T original;
-    private T newValues;
+    private final T newValues;
 
     @SuppressWarnings("unchecked")
     public InitNoiseGensEvent(World world, Random rand, T original)

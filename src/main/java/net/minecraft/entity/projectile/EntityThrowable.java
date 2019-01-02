@@ -184,33 +184,23 @@ public abstract class EntityThrowable extends Entity implements IProjectile
         double d0 = 0.0D;
         boolean flag = false;
 
-        for (int i = 0; i < list.size(); ++i)
-        {
-            Entity entity1 = list.get(i);
-
-            if (entity1.canBeCollidedWith())
-            {
-                if (entity1 == this.ignoreEntity)
-                {
+        for (Entity entity1 : list) {
+            if (entity1.canBeCollidedWith()) {
+                if (entity1 == this.ignoreEntity) {
                     flag = true;
-                }
-                else if (this.thrower != null && this.ticksExisted < 2 && this.ignoreEntity == null && this.thrower == entity1) // CraftBukkit - MC-88491
+                } else if (this.thrower != null && this.ticksExisted < 2 && this.ignoreEntity == null && this.thrower == entity1) // CraftBukkit - MC-88491
                 {
                     this.ignoreEntity = entity1;
                     flag = true;
-                }
-                else
-                {
+                } else {
                     flag = false;
                     AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
                     RayTraceResult raytraceresult1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
 
-                    if (raytraceresult1 != null)
-                    {
+                    if (raytraceresult1 != null) {
                         double d1 = vec3d.squareDistanceTo(raytraceresult1.hitVec);
 
-                        if (d1 < d0 || d0 == 0.0D)
-                        {
+                        if (d1 < d0 || d0 == 0.0D) {
                             entity = entity1;
                             d0 = d1;
                         }
@@ -259,7 +249,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
 
         for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)

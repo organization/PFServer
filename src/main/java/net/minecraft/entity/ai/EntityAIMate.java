@@ -17,10 +17,10 @@ public class EntityAIMate extends EntityAIBase
 {
     private final EntityAnimal animal;
     private final Class <? extends EntityAnimal > mateClass;
-    World world;
+    final World world;
     private EntityAnimal targetMate;
     int spawnBabyDelay;
-    double moveSpeed;
+    final double moveSpeed;
 
     public EntityAIMate(EntityAnimal animal, double speedIn)
     {

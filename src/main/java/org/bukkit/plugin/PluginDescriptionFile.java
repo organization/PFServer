@@ -167,39 +167,34 @@ import java.util.regex.Pattern;
  */
 public final class PluginDescriptionFile {
     private static final Pattern VALID_NAME = Pattern.compile("^[A-Za-z0-9 _.-]+$");
-    private static final ThreadLocal<Yaml> YAML = new ThreadLocal<Yaml>() {
-        @Override
-        protected Yaml initialValue() {
-            return new Yaml(new SafeConstructor() {
-                {
-                    yamlConstructors.put(null, new AbstractConstruct() {
-                        @Override
-                        public Object construct(final Node node) {
-                            if (!node.getTag().startsWith("!@")) {
-                                // Unknown tag - will fail
-                                return SafeConstructor.undefinedConstructor.construct(node);
-                            }
-                            // Unknown awareness - provide a graceful substitution
-                            return new PluginAwareness() {
-                                @Override
-                                public String toString() {
-                                    return node.toString();
-                                }
-                            };
-                        }
-                    });
-                    for (final PluginAwareness.Flags flag : PluginAwareness.Flags.values()) {
-                        yamlConstructors.put(new Tag("!@" + flag.name()), new AbstractConstruct() {
-                            @Override
-                            public PluginAwareness.Flags construct(final Node node) {
-                                return flag;
-                            }
-                        });
+    private static final ThreadLocal<Yaml> YAML = ThreadLocal.withInitial(() -> new Yaml(new SafeConstructor() {
+        {
+            yamlConstructors.put(null, new AbstractConstruct() {
+                @Override
+                public Object construct(final Node node) {
+                    if (!node.getTag().startsWith("!@")) {
+                        // Unknown tag - will fail
+                        return SafeConstructor.undefinedConstructor.construct(node);
                     }
+                    // Unknown awareness - provide a graceful substitution
+                    return new PluginAwareness() {
+                        @Override
+                        public String toString() {
+                            return node.toString();
+                        }
+                    };
                 }
             });
+            for (final PluginAwareness.Flags flag : PluginAwareness.Flags.values()) {
+                yamlConstructors.put(new Tag("!@" + flag.name()), new AbstractConstruct() {
+                    @Override
+                    public PluginAwareness.Flags construct(final Node node) {
+                        return flag;
+                    }
+                });
+            }
         }
-    };
+    }));
     String rawName = null;
     private String name = null;
     private String main = null;
@@ -979,7 +974,7 @@ public final class PluginDescriptionFile {
         }
 
         if (map.get("awareness") instanceof Iterable) {
-            Set<PluginAwareness> awareness = new HashSet<PluginAwareness>();
+            Set<PluginAwareness> awareness = new HashSet<>();
             try {
                 for (Object o : (Iterable<?>) map.get("awareness")) {
                     awareness.add((PluginAwareness) o);
@@ -1021,7 +1016,7 @@ public final class PluginDescriptionFile {
     }
 
     private Map<String, Object> saveMap() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("name", name);
         map.put("main", main);

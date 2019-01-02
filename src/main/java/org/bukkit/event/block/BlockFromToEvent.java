@@ -15,7 +15,7 @@ import org.bukkit.event.HandlerList;
 public class BlockFromToEvent extends BlockEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     protected Block to;
-    protected BlockFace face;
+    protected final BlockFace face;
     protected boolean cancel;
 
     public BlockFromToEvent(final Block block, final BlockFace face) {

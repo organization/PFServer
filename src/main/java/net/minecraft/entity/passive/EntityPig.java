@@ -95,7 +95,7 @@ public class EntityPig extends EntityAnimal
         {
             this.boosting = true;
             this.boostTime = 0;
-            this.totalBoostTime = ((Integer)this.dataManager.get(BOOST_TIME)).intValue();
+            this.totalBoostTime = (Integer) this.dataManager.get(BOOST_TIME);
         }
 
         super.notifyDataManagerChange(key);
@@ -104,8 +104,8 @@ public class EntityPig extends EntityAnimal
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(SADDLED, Boolean.valueOf(false));
-        this.dataManager.register(BOOST_TIME, Integer.valueOf(0));
+        this.dataManager.register(SADDLED, Boolean.FALSE);
+        this.dataManager.register(BOOST_TIME, 0);
     }
 
     public static void registerFixesPig(DataFixer fixer)
@@ -203,18 +203,18 @@ public class EntityPig extends EntityAnimal
 
     public boolean getSaddled()
     {
-        return ((Boolean)this.dataManager.get(SADDLED)).booleanValue();
+        return (Boolean) this.dataManager.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled)
     {
         if (saddled)
         {
-            this.dataManager.set(SADDLED, Boolean.valueOf(true));
+            this.dataManager.set(SADDLED, Boolean.TRUE);
         }
         else
         {
-            this.dataManager.set(SADDLED, Boolean.valueOf(false));
+            this.dataManager.set(SADDLED, Boolean.FALSE);
         }
     }
 
@@ -314,7 +314,7 @@ public class EntityPig extends EntityAnimal
             this.boosting = true;
             this.boostTime = 0;
             this.totalBoostTime = this.getRNG().nextInt(841) + 140;
-            this.getDataManager().set(BOOST_TIME, Integer.valueOf(this.totalBoostTime));
+            this.getDataManager().set(BOOST_TIME, this.totalBoostTime);
             return true;
         }
     }

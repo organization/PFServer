@@ -39,7 +39,7 @@ public class TileEntityHopper extends TileEntityLockableLoot implements IHopper,
     private int transferCooldown = -1;
     private long tickedGameTime;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -64,7 +64,7 @@ public class TileEntityHopper extends TileEntityLockableLoot implements IHopper,
     // CraftBukkit end
     public static void registerFixesHopper(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityHopper.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityHopper.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -112,8 +112,7 @@ public class TileEntityHopper extends TileEntityLockableLoot implements IHopper,
     public ItemStack decrStackSize(int index, int count)
     {
         this.fillWithLoot((EntityPlayer)null);
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.getItems(), index, count);
-        return itemstack;
+        return ItemStackHelper.getAndSplit(this.getItems(), index, count);
     }
 
     public void setInventorySlotContents(int index, ItemStack stack)

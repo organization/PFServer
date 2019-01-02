@@ -46,8 +46,8 @@ public class ServerLaunchWrapper {
         }
         catch (Exception e)
         {
-            System.err.printf("We appear to be missing one or more essential library files.\n" +
-            		"You will need to add them to your server before FML and Forge will run successfully.");
+            System.err.print("We appear to be missing one or more essential library files.\n" +
+                    "You will need to add them to your server before FML and Forge will run successfully.");
             e.printStackTrace(System.err);
             System.exit(1);
         }
@@ -63,7 +63,7 @@ public class ServerLaunchWrapper {
         }
         catch (Exception e)
         {
-            System.err.printf("A problem occurred running the Server launcher.");
+            System.err.print("A problem occurred running the Server launcher.");
             e.printStackTrace(System.err);
             System.exit(1);
         }

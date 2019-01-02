@@ -21,7 +21,7 @@ public class ItemWritableBook extends Item
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         playerIn.openBook(itemstack, handIn);
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 
     public static boolean isNBTValid(NBTTagCompound nbt)

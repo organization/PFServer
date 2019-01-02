@@ -6,8 +6,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelSign extends ModelBase
 {
-    public ModelRenderer signBoard = new ModelRenderer(this, 0, 0);
-    public ModelRenderer signStick;
+    public final ModelRenderer signBoard = new ModelRenderer(this, 0, 0);
+    public final ModelRenderer signStick;
 
     public ModelSign()
     {

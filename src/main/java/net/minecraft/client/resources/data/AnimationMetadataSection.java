@@ -77,7 +77,7 @@ public class AnimationMetadataSection implements IMetadataSection
 
         for (AnimationFrame animationframe : this.animationFrames)
         {
-            set.add(Integer.valueOf(animationframe.getFrameIndex()));
+            set.add(animationframe.getFrameIndex());
         }
 
         return set;

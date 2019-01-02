@@ -292,13 +292,10 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
         double d0 = Double.MAX_VALUE;
         VillageAggressor village$villageaggressor = null;
 
-        for (int i = 0; i < this.villageAgressors.size(); ++i)
-        {
-            VillageAggressor village$villageaggressor1 = this.villageAgressors.get(i);
+        for (VillageAggressor village$villageaggressor1 : this.villageAgressors) {
             double d1 = village$villageaggressor1.agressor.getDistanceSq(entitylivingbaseIn);
 
-            if (d1 <= d0)
-            {
+            if (d1 <= d0) {
                 village$villageaggressor = village$villageaggressor1;
                 d0 = d1;
             }
@@ -336,17 +333,8 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
 
     private void removeDeadAndOldAgressors()
     {
-        Iterator<VillageAggressor> iterator = this.villageAgressors.iterator();
 
-        while (iterator.hasNext())
-        {
-            VillageAggressor village$villageaggressor = iterator.next();
-
-            if (!village$villageaggressor.agressor.isEntityAlive() || Math.abs(this.tickCounter - village$villageaggressor.agressionTime) > 300)
-            {
-                iterator.remove();
-            }
-        }
+        this.villageAgressors.removeIf(village$villageaggressor -> !village$villageaggressor.agressor.isEntityAlive() || Math.abs(this.tickCounter - village$villageaggressor.agressionTime) > 300);
     }
 
     private void removeDeadAndOutOfRangeDoors()
@@ -427,7 +415,7 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
     public int getPlayerReputation(UUID playerName)
     {
         Integer integer = this.playerReputation.get(playerName);
-        return integer == null ? 0 : integer.intValue();
+        return integer == null ? 0 : integer;
     }
 
     private UUID findUUID(String name)
@@ -448,7 +436,7 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
     {
         int i = this.getPlayerReputation(playerName);
         int j = MathHelper.clamp(i + reputation, -30, 10);
-        this.playerReputation.put(playerName, Integer.valueOf(j));
+        this.playerReputation.put(playerName, j);
         return j;
     }
 
@@ -490,12 +478,12 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
 
             if (nbttagcompound1.hasKey("UUID"))
             {
-                this.playerReputation.put(UUID.fromString(nbttagcompound1.getString("UUID")), Integer.valueOf(nbttagcompound1.getInteger("S")));
+                this.playerReputation.put(UUID.fromString(nbttagcompound1.getString("UUID")), nbttagcompound1.getInteger("S"));
             }
             else
             {
                 //World is never set here, so this will always be offline UUIDs, sadly there is no way to convert this.
-                this.playerReputation.put(findUUID(nbttagcompound1.getString("Name")), Integer.valueOf(nbttagcompound1.getInteger("S")));
+                this.playerReputation.put(findUUID(nbttagcompound1.getString("Name")), nbttagcompound1.getInteger("S"));
             }
         }
         if (this.capabilities != null && compound.hasKey("ForgeCaps")) this.capabilities.deserializeNBT(compound.getCompoundTag("ForgeCaps"));
@@ -540,13 +528,12 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
             {
                 {
                     nbttagcompound1.setString("UUID", s.toString());
-                    nbttagcompound1.setInteger("S", ((Integer)this.playerReputation.get(s)).intValue());
+                    nbttagcompound1.setInteger("S", (Integer) this.playerReputation.get(s));
                     nbttaglist1.appendTag(nbttagcompound1);
                 }
             }
-            catch (RuntimeException var9)
+            catch (RuntimeException ignored)
             {
-                ;
             }
         }
 
@@ -574,7 +561,7 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
 
     class VillageAggressor
     {
-        public EntityLivingBase agressor;
+        public final EntityLivingBase agressor;
         public int agressionTime;
 
         VillageAggressor(EntityLivingBase agressorIn, int agressionTimeIn)
@@ -585,10 +572,10 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
     }
 
     /* ======================================== FORGE START =====================================*/
-    private net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities;
+    private final net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities;
     public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capabilities == null ? false : capabilities.hasCapability(capability, facing);
+        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
 
     @Nullable
@@ -599,7 +586,7 @@ public class Village implements net.minecraftforge.common.capabilities.ICapabili
 
     public void deserializeNBT(NBTTagCompound nbt)
     {
-        this.readVillageDataFromNBT(nbt);;
+        this.readVillageDataFromNBT(nbt);
     }
 
     public NBTTagCompound serializeNBT()

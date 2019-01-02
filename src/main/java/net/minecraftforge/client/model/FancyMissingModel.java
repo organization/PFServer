@@ -129,16 +129,15 @@ final class FancyMissingModel implements IModel
                     fontRenderer.setFillBlanks(true);
                     String[] lines = message.split("\\r?\\n");
                     List<String> splitLines = Lists.newArrayList();
-                    for (int y = 0; y < lines.length; y++)
-                    {
-                        splitLines.addAll(fontRenderer.listFormattedStringToWidth(lines[y], 0x80));
+                    for (String line : lines) {
+                        splitLines.addAll(fontRenderer.listFormattedStringToWidth(line, 0x80));
                     }
                     for (int y = 0; y < splitLines.size(); y++)
                     {
                         fontRenderer.drawString(splitLines.get(y), 0, (int)((y - splitLines.size() / 2f) * fontRenderer.FONT_HEIGHT) + 0x40, 0xFF00FFFF);
                     }
                     ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
-                    builder.addAll(missingModel.getQuads(state, side, rand));
+                    builder.addAll(missingModel.getQuads(state, null, rand));
                     builder.addAll(fontRenderer.build());
                     quads = builder.build();
                 }

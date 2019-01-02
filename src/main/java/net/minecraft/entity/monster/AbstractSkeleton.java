@@ -33,7 +33,7 @@ import java.util.Calendar;
 public abstract class AbstractSkeleton extends EntityMob implements IRangedAttackMob
 {
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.<Boolean>createKey(AbstractSkeleton.class, DataSerializers.BOOLEAN);
-    private final EntityAIAttackRangedBow<AbstractSkeleton> aiArrowAttack = new EntityAIAttackRangedBow<AbstractSkeleton>(this, 1.0D, 20, 15.0F);
+    private final EntityAIAttackRangedBow<AbstractSkeleton> aiArrowAttack = new EntityAIAttackRangedBow<>(this, 1.0D, 20, 15.0F);
     private final EntityAIAttackMelee aiAttackOnCollide = new EntityAIAttackMelee(this, 1.2D, false)
     {
         public void resetTask()
@@ -64,7 +64,7 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
     }
@@ -78,7 +78,7 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(SWINGING_ARMS, Boolean.valueOf(false));
+        this.dataManager.register(SWINGING_ARMS, Boolean.FALSE);
     }
 
     protected void playStepSound(BlockPos pos, Block blockIn)
@@ -167,7 +167,7 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
         {
             Calendar calendar = this.world.getCurrentDate();
 
-            if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.rand.nextFloat() < 0.25F)
+            if (calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) == 31 && this.rand.nextFloat() < 0.25F)
             {
                 this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(this.rand.nextFloat() < 0.1F ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
                 this.inventoryArmorDropChances[EntityEquipmentSlot.HEAD.getIndex()] = 0.0F;
@@ -263,11 +263,11 @@ public abstract class AbstractSkeleton extends EntityMob implements IRangedAttac
     @SideOnly(Side.CLIENT)
     public boolean isSwingingArms()
     {
-        return ((Boolean)this.dataManager.get(SWINGING_ARMS)).booleanValue();
+        return (Boolean) this.dataManager.get(SWINGING_ARMS);
     }
 
     public void setSwingingArms(boolean swingingArms)
     {
-        this.dataManager.set(SWINGING_ARMS, Boolean.valueOf(swingingArms));
+        this.dataManager.set(SWINGING_ARMS, swingingArms);
     }
 }

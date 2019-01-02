@@ -66,10 +66,10 @@ public class WorldServer extends World implements IThreadListener
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private final MinecraftServer mcServer;
-    public EntityTracker entityTracker;
+    public final EntityTracker entityTracker;
     private final PlayerChunkMap playerChunkMap;
     private final Set<NextTickListEntry> pendingTickListEntriesHashSet = Sets.<NextTickListEntry>newHashSet();
-    private final TreeSet<NextTickListEntry> pendingTickListEntriesTreeSet = new TreeSet<NextTickListEntry>();
+    private final TreeSet<NextTickListEntry> pendingTickListEntriesTreeSet = new TreeSet<>();
     private final Map<UUID, Entity> entitiesByUuid = Maps.<UUID, Entity>newHashMap();
     public boolean disableLevelSaving;
     private boolean allPlayersSleeping;
@@ -82,8 +82,8 @@ public class WorldServer extends World implements IThreadListener
     private final List<NextTickListEntry> pendingTickListEntriesThisTick = Lists.<NextTickListEntry>newArrayList();
 
     /** Stores the recently processed (lighting) chunks */
-    protected Set<ChunkPos> doneChunks = new java.util.HashSet<ChunkPos>();
-    public List<Teleporter> customTeleporters = new ArrayList<Teleporter>();
+    protected Set<ChunkPos> doneChunks = new java.util.HashSet<>();
+    public final List<Teleporter> customTeleporters = new ArrayList<>();
 
     public final int dimension;
 
@@ -413,7 +413,7 @@ public class WorldServer extends World implements IThreadListener
     {
         List<Biome.SpawnListEntry> list = this.getChunkProvider().getPossibleCreatures(creatureType, pos);
         list = net.minecraftforge.event.ForgeEventFactory.getPotentialSpawns(this, creatureType, pos, list);
-        return list != null && !list.isEmpty() ? list.contains(spawnListEntry) : false;
+        return (list != null && !list.isEmpty()) && list.contains(spawnListEntry);
     }
 
     public void updateAllPlayersSleepingFlag()
@@ -664,13 +664,7 @@ public class WorldServer extends World implements IThreadListener
     {
         BlockPos blockpos = this.getPrecipitationHeight(pos);
         AxisAlignedBB axisalignedbb = (new AxisAlignedBB(blockpos, new BlockPos(blockpos.getX(), this.getHeight(), blockpos.getZ()))).grow(3.0D);
-        List<EntityLivingBase> list = this.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, new com.google.common.base.Predicate<EntityLivingBase>()
-        {
-            public boolean apply(@Nullable EntityLivingBase p_apply_1_)
-            {
-                return p_apply_1_ != null && p_apply_1_.isEntityAlive() && WorldServer.this.canSeeSky(p_apply_1_.getPosition());
-            }
-        });
+        List<EntityLivingBase> list = this.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, p_apply_1_ -> p_apply_1_ != null && p_apply_1_.isEntityAlive() && WorldServer.this.canSeeSky(p_apply_1_.getPosition()));
 
         if (!list.isEmpty())
         {
@@ -792,15 +786,11 @@ public class WorldServer extends World implements IThreadListener
         super.tickPlayers();
         this.profiler.endStartSection("players");
 
-        for (int i = 0; i < this.playerEntities.size(); ++i)
-        {
-            Entity entity = this.playerEntities.get(i);
+        for (Entity entity : this.playerEntities) {
             Entity entity1 = entity.getRidingEntity();
 
-            if (entity1 != null)
-            {
-                if (!entity1.isDead && entity1.isPassenger(entity))
-                {
+            if (entity1 != null) {
+                if (!entity1.isDead && entity1.isPassenger(entity)) {
                     continue;
                 }
 
@@ -809,14 +799,10 @@ public class WorldServer extends World implements IThreadListener
 
             this.profiler.startSection("tick");
 
-            if (!entity.isDead)
-            {
-                try
-                {
+            if (!entity.isDead) {
+                try {
                     this.updateEntity(entity);
-                }
-                catch (Throwable throwable)
-                {
+                } catch (Throwable throwable) {
                     CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking player");
                     CrashReportCategory crashreportcategory = crashreport.makeCategory("Player being ticked");
                     entity.addEntityCrashInfo(crashreportcategory);
@@ -827,13 +813,11 @@ public class WorldServer extends World implements IThreadListener
             this.profiler.endSection();
             this.profiler.startSection("remove");
 
-            if (entity.isDead)
-            {
+            if (entity.isDead) {
                 int j = entity.chunkCoordX;
                 int k = entity.chunkCoordZ;
 
-                if (entity.addedToChunk && this.isChunkLoaded(j, k, true))
-                {
+                if (entity.addedToChunk && this.isChunkLoaded(j, k, true)) {
                     this.getChunkFromChunkCoords(j, k).removeEntity(entity);
                 }
 
@@ -1117,9 +1101,8 @@ public class WorldServer extends World implements IThreadListener
                 {
                     this.addWorldInfoToCrashReport(crashreport);
                 }
-                catch (Throwable var5)
+                catch (Throwable ignored)
                 {
-                    ;
                 }
 
                 throw new ReportedException(crashreport);
@@ -1317,7 +1300,7 @@ public class WorldServer extends World implements IThreadListener
     public boolean addEntity(Entity entityIn, CreatureSpawnEvent.SpawnReason spawnReason) {
         // World.spawnEntity(Entity) will call this, and we still want to perform
         // existing entity checking when it's called with a SpawnReason
-        return this.canAddEntity(entityIn) ? super.addEntity(entityIn, spawnReason) : false;
+        return this.canAddEntity(entityIn) && super.addEntity(entityIn, spawnReason);
     }
 
     public void loadEntities(Collection<Entity> entityCollection)
@@ -1498,7 +1481,7 @@ public class WorldServer extends World implements IThreadListener
     private boolean fireBlockEvent(BlockEventData event)
     {
         IBlockState iblockstate = this.getBlockState(event.getPosition());
-        return iblockstate.getBlock() == event.getBlock() ? iblockstate.onBlockEventReceived(this, event.getPosition(), event.getEventID(), event.getEventParameter()) : false;
+        return iblockstate.getBlock() == event.getBlock() && iblockstate.onBlockEventReceived(this, event.getPosition(), event.getEventID(), event.getEventParameter());
     }
 
     public void flush()
@@ -1582,9 +1565,8 @@ public class WorldServer extends World implements IThreadListener
         // CraftBukkit end
         SPacketParticles spacketparticles = new SPacketParticles(particleType, longDistance, (float)xCoord, (float)yCoord, (float)zCoord, (float)xOffset, (float)yOffset, (float)zOffset, (float)particleSpeed, numberOfParticles, particleArguments);
 
-        for (int i = 0; i < this.playerEntities.size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = (EntityPlayerMP)this.playerEntities.get(i);
+        for (EntityPlayer playerEntity : this.playerEntities) {
+            EntityPlayerMP entityplayermp = (EntityPlayerMP) playerEntity;
             if (sender != null && !entityplayermp.getBukkitEntity().canSee(sender.getBukkitEntity())) continue;
             this.sendPacketWithinDistance(entityplayermp, longDistance, xCoord, yCoord, zCoord, spacketparticles);
         }

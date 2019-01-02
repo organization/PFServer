@@ -100,11 +100,10 @@ public class NetworkSystem
                 {
                     try
                     {
-                        p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+                        p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.TRUE);
                     }
-                    catch (ChannelException var3)
+                    catch (ChannelException ignored)
                     {
-                        ;
                     }
 
                     p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(net.minecraftforge.fml.common.network.internal.FMLNetworkHandler.READ_TIMEOUT)).addLast("legacy_query", new LegacyPingHandler(NetworkSystem.this)).addLast("splitter", new NettyVarint21FrameDecoder()).addLast("decoder", new NettyPacketDecoder(EnumPacketDirection.SERVERBOUND)).addLast("prepender", new NettyVarint21FrameEncoder()).addLast("encoder", new NettyPacketEncoder(EnumPacketDirection.CLIENTBOUND));
@@ -188,25 +187,13 @@ public class NetworkSystem
                             {
                                 CrashReport crashreport = CrashReport.makeCrashReport(exception, "Ticking memory connection");
                                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Ticking connection");
-                                crashreportcategory.addDetail("Connection", new ICrashReportDetail<String>()
-                                {
-                                    public String call() throws Exception
-                                    {
-                                        return networkmanager.toString();
-                                    }
-                                });
+                                crashreportcategory.addDetail("Connection", networkmanager::toString);
                                 throw new ReportedException(crashreport);
                             }
 
                             LOGGER.warn("Failed to handle packet for {}", networkmanager.getRemoteAddress(), exception);
                             final TextComponentString textcomponentstring = new TextComponentString("Internal server error");
-                            networkmanager.sendPacket(new SPacketDisconnect(textcomponentstring), new GenericFutureListener < Future <? super Void >> ()
-                            {
-                                public void operationComplete(Future <? super Void > p_operationComplete_1_) throws Exception
-                                {
-                                    networkmanager.closeChannel(textcomponentstring);
-                                }
-                            });
+                            networkmanager.sendPacket(new SPacketDisconnect(textcomponentstring), p_operationComplete_1_ -> networkmanager.closeChannel(textcomponentstring));
                             networkmanager.disableAutoRead();
                         }
                     }

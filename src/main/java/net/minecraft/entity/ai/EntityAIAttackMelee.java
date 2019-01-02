@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 
 public class EntityAIAttackMelee extends EntityAIBase
 {
-    World world;
-    protected EntityCreature attacker;
+    final World world;
+    protected final EntityCreature attacker;
     protected int attackTick;
-    double speedTowardsTarget;
-    boolean longMemory;
+    final double speedTowardsTarget;
+    final boolean longMemory;
     Path path;
     private int delayCounter;
     private double targetX;
@@ -22,7 +22,7 @@ public class EntityAIAttackMelee extends EntityAIBase
     private double targetZ;
     protected final int attackInterval = 20;
     private int failedPathFindingPenalty = 0;
-    private boolean canPenalize = false;
+    private final boolean canPenalize = false;
 
     public EntityAIAttackMelee(EntityCreature creature, double speedIn, boolean useLongMemory)
     {

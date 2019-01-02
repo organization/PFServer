@@ -28,9 +28,8 @@ public class ZombieProfToType implements IFixableData
                     {
                         i = this.getVillagerProfession(compound.getInteger("VillagerProfession"));
                     }
-                    catch (RuntimeException var4)
+                    catch (RuntimeException ignored)
                     {
-                        ;
                     }
                 }
 

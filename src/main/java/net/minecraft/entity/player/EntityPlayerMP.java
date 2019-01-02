@@ -222,22 +222,18 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     public static void registerFixesPlayerMP(DataFixer p_191522_0_)
     {
-        p_191522_0_.registerWalker(FixTypes.PLAYER, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        p_191522_0_.registerWalker(FixTypes.PLAYER, (fixer, compound, versionIn) -> {
+            if (compound.hasKey("RootVehicle", 10))
             {
-                if (compound.hasKey("RootVehicle", 10))
+                NBTTagCompound nbttagcompound = compound.getCompoundTag("RootVehicle");
+
+                if (nbttagcompound.hasKey("Entity", 10))
                 {
-                    NBTTagCompound nbttagcompound = compound.getCompoundTag("RootVehicle");
-
-                    if (nbttagcompound.hasKey("Entity", 10))
-                    {
-                        nbttagcompound.setTag("Entity", fixer.process(FixTypes.ENTITY, nbttagcompound.getCompoundTag("Entity"), versionIn));
-                    }
+                    nbttagcompound.setTag("Entity", fixer.process(FixTypes.ENTITY, nbttagcompound.getCompoundTag("Entity"), versionIn));
                 }
-
-                return compound;
             }
+
+            return compound;
         });
     }
 
@@ -367,7 +363,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
             while (iterator.hasNext() && j < i)
             {
-                aint[j++] = ((Integer)iterator.next()).intValue();
+                aint[j++] = (Integer) iterator.next();
                 iterator.remove();
             }
 
@@ -507,7 +503,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     private void updateScorePoints(IScoreCriteria criteria, int points)
     {
-        for (Score score : this.world.getServer().getScoreboardManager().getScoreboardScores(criteria, this.getName(), new java.util.ArrayList<Score>())) // CraftBukkit - Use our scores instead
+        for (Score score : this.world.getServer().getScoreboardManager().getScoreboardScores(criteria, this.getName(), new java.util.ArrayList<>())) // CraftBukkit - Use our scores instead
         {
             // Score score = this.getWorldScoreboard().getOrCreateScore(this.getName(), scoreobjective);
             score.setScorePoints(points);
@@ -588,7 +584,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         this.setSpectatingEntity(this); // Remove spectated target
 
         // CraftBukkit - Get our scores instead
-        Collection<Score> collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreCriteria.DEATH_COUNT, this.getName(), new java.util.ArrayList<Score>());
+        Collection<Score> collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreCriteria.DEATH_COUNT, this.getName(), new java.util.ArrayList<>());
         for (Score score : collection)
         {
             // Score score = this.getWorldScoreboard().getOrCreateScore(this.getName(), scoreobjective);
@@ -624,7 +620,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
             this.addScore(p_191956_2_);
             // CraftBukkit - Get our scores instead
             // Collection<ScoreObjective> collection = this.getWorldScoreboard().getObjectivesFromCriteria(IScoreCriteria.TOTAL_KILL_COUNT);
-            Collection<Score> collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreCriteria.TOTAL_KILL_COUNT, this.getName(), new java.util.ArrayList<Score>());
+            Collection<Score> collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreCriteria.TOTAL_KILL_COUNT, this.getName(), new java.util.ArrayList<>());
             if (p_191956_1_ instanceof EntityPlayer)
             {
                 this.addStat(StatList.PLAYER_KILLS);
@@ -713,7 +709,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
             {
                 // CraftBukkit - Get our scores instead
                 // return this.getWorldScoreboard().getObjectivesFromCriteria(IScoreCriteria.TEAM_KILL[j]);
-                return this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreCriteria.TEAM_KILL[j], this.getName(), new java.util.ArrayList<Score>());
+                return this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreCriteria.TEAM_KILL[j], this.getName(), new java.util.ArrayList<>());
                 // CraftBukkit end
             }
         }
@@ -764,7 +760,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
     public boolean canAttackPlayer(EntityPlayer other)
     {
-        return !this.canPlayersAttack() ? false : super.canAttackPlayer(other);
+        return this.canPlayersAttack() && super.canAttackPlayer(other);
     }
 
     private boolean canPlayersAttack()
@@ -830,7 +826,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         }
         else
         {
-            return this.isSpectator() ? false : super.isSpectatedByPlayer(player);
+            return !this.isSpectator() && super.isSpectatedByPlayer(player);
         }
     }
 
@@ -982,7 +978,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         // CraftBukkit start - Inventory open hook
         if (false && guiOwner instanceof ILootContainer && ((ILootContainer)guiOwner).getLootTable() != null && this.isSpectator())
         {
-            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen", new Object[0])).setStyle((new Style()).setColor(TextFormatting.RED)), true);
+            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen")).setStyle((new Style()).setColor(TextFormatting.RED)), true);
         }
         else
         {
@@ -1028,7 +1024,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         // CraftBukkit end
         if (chestInventory instanceof ILootContainer && ((ILootContainer)chestInventory).getLootTable() != null && this.isSpectator())
         {
-            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen", new Object[0])).setStyle((new Style()).setColor(TextFormatting.RED)), true);
+            this.sendStatusMessage((new TextComponentTranslation("container.spectatorCantOpen")).setStyle((new Style()).setColor(TextFormatting.RED)), true);
         }
         else
         {
@@ -1043,7 +1039,7 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
                 if (ilockablecontainer.isLocked() && !this.canOpen(ilockablecontainer.getLockCode()) && !this.isSpectator())
                 {
-                    this.connection.sendPacket(new SPacketChat(new TextComponentTranslation("container.isLocked", new Object[] {chestInventory.getDisplayName()}), ChatType.GAME_INFO));
+                    this.connection.sendPacket(new SPacketChat(new TextComponentTranslation("container.isLocked", chestInventory.getDisplayName()), ChatType.GAME_INFO));
                     this.connection.sendPacket(new SPacketSoundEffect(SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, this.posX, this.posY, this.posZ, 1.0F, 1.0F));
                     ilockablecontainer.closeInventory(this);
                     return;
@@ -1545,8 +1541,8 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
         this.language = packetIn.getLang();
         this.chatVisibility = packetIn.getChatVisibility();
         this.chatColours = packetIn.isColorsEnabled();
-        this.getDataManager().set(PLAYER_MODEL_FLAG, Byte.valueOf((byte)packetIn.getModelPartFlags()));
-        this.getDataManager().set(MAIN_HAND, Byte.valueOf((byte)(packetIn.getMainHand() == EnumHandSide.LEFT ? 0 : 1)));
+        this.getDataManager().set(PLAYER_MODEL_FLAG, (byte) packetIn.getModelPartFlags());
+        this.getDataManager().set(MAIN_HAND, (byte) (packetIn.getMainHand() == EnumHandSide.LEFT ? 0 : 1));
     }
 
     public EnumChatVisibility getChatVisibility()
@@ -1583,11 +1579,11 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
     {
         if (entityIn instanceof EntityPlayer)
         {
-            this.connection.sendPacket(new SPacketDestroyEntities(new int[] {entityIn.getEntityId()}));
+            this.connection.sendPacket(new SPacketDestroyEntities(entityIn.getEntityId()));
         }
         else
         {
-            this.entityRemoveQueue.add(Integer.valueOf(entityIn.getEntityId()));
+            this.entityRemoveQueue.add(entityIn.getEntityId());
         }
     }
 

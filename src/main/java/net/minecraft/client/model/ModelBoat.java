@@ -11,9 +11,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelBoat extends ModelBase implements IMultipassModel
 {
-    public ModelRenderer[] boatSides = new ModelRenderer[5];
-    public ModelRenderer[] paddles = new ModelRenderer[2];
-    public ModelRenderer noWater;
+    public final ModelRenderer[] boatSides = new ModelRenderer[5];
+    public final ModelRenderer[] paddles = new ModelRenderer[2];
+    public final ModelRenderer noWater;
     private final int patchList = GLAllocation.generateDisplayLists(1);
 
     public ModelBoat()

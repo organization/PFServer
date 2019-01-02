@@ -45,27 +45,21 @@ public class CraftScheduler implements BukkitScheduler {
     /**
      * Tail of a linked-list. AtomicReference only matters when adding to queue
      */
-    private final AtomicReference<CraftTask> tail = new AtomicReference<CraftTask>(head);
+    private final AtomicReference<CraftTask> tail = new AtomicReference<>(head);
+    // If the tasks should run on the same tick they should be run FIFO
     /**
      * Main thread logic only
      */
-    private final PriorityQueue<CraftTask> pending = new PriorityQueue<CraftTask>(10,
-            new Comparator<CraftTask>() {
-                public int compare(final CraftTask o1, final CraftTask o2) {
-                    int value = Long.compare(o1.getNextRun(), o2.getNextRun());
-
-                    // If the tasks should run on the same tick they should be run FIFO
-                    return value != 0 ? value : Integer.compare(o1.getTaskId(), o2.getTaskId());
-                }
-            });
+    private final PriorityQueue<CraftTask> pending = new PriorityQueue<>(10,
+            Comparator.comparingLong(CraftTask::getNextRun).thenComparingInt(CraftTask::getTaskId));
     /**
      * Main thread logic only
      */
-    private final List<CraftTask> temp = new ArrayList<CraftTask>();
+    private final List<CraftTask> temp = new ArrayList<>();
     /**
      * These are tasks that are currently active. It's provided for 'viewing' the current state.
      */
-    private final ConcurrentHashMap<Integer, CraftTask> runners = new ConcurrentHashMap<Integer, CraftTask>();
+    private final ConcurrentHashMap<Integer, CraftTask> runners = new ConcurrentHashMap<>();
     /**
      * The sync task that is currently running on the main thread.
      */
@@ -151,7 +145,7 @@ public class CraftScheduler implements BukkitScheduler {
 
     public <T> Future<T> callSyncMethod(final Plugin plugin, final Callable<T> task) {
         validate(plugin, task);
-        final CraftFuture<T> future = new CraftFuture<T>(task, plugin, nextId());
+        final CraftFuture<T> future = new CraftFuture<>(task, plugin, nextId());
         handle(future, 0L);
         return future;
     }
@@ -237,19 +231,17 @@ public class CraftScheduler implements BukkitScheduler {
 
     public void cancelAllTasks() {
         final CraftTask task = new CraftTask(
-                new Runnable() {
-                    public void run() {
-                        Iterator<CraftTask> it = CraftScheduler.this.runners.values().iterator();
-                        while (it.hasNext()) {
-                            CraftTask task = it.next();
-                            task.cancel0();
-                            if (task.isSync()) {
-                                it.remove();
-                            }
+                () -> {
+                    Iterator<CraftTask> it = CraftScheduler.this.runners.values().iterator();
+                    while (it.hasNext()) {
+                        CraftTask task1 = it.next();
+                        task1.cancel0();
+                        if (task1.isSync()) {
+                            it.remove();
                         }
-                        CraftScheduler.this.pending.clear();
-                        CraftScheduler.this.temp.clear();
                     }
+                    CraftScheduler.this.pending.clear();
+                    CraftScheduler.this.temp.clear();
                 });
         handle(task, 0L);
         for (CraftTask taskPending = head.getNext(); taskPending != null; taskPending = taskPending.getNext()) {
@@ -291,7 +283,7 @@ public class CraftScheduler implements BukkitScheduler {
     }
 
     public List<BukkitWorker> getActiveWorkers() {
-        final ArrayList<BukkitWorker> workers = new ArrayList<BukkitWorker>();
+        final ArrayList<BukkitWorker> workers = new ArrayList<>();
         for (final CraftTask taskObj : runners.values()) {
             // Iterator will be a best-effort (may fail to grab very new values) if called from an async thread
             if (taskObj.isSync()) {
@@ -307,7 +299,7 @@ public class CraftScheduler implements BukkitScheduler {
     }
 
     public List<BukkitTask> getPendingTasks() {
-        final ArrayList<CraftTask> truePending = new ArrayList<CraftTask>();
+        final ArrayList<CraftTask> truePending = new ArrayList<>();
         for (CraftTask task = head.getNext(); task != null; task = task.getNext()) {
             if (task.getTaskId() != -1) {
                 // -1 is special code
@@ -315,7 +307,7 @@ public class CraftScheduler implements BukkitScheduler {
             }
         }
 
-        final ArrayList<BukkitTask> pending = new ArrayList<BukkitTask>();
+        final ArrayList<BukkitTask> pending = new ArrayList<>();
         for (CraftTask task : runners.values()) {
             if (task.getPeriod() >= CraftTask.NO_REPEATING) {
                 pending.add(task);

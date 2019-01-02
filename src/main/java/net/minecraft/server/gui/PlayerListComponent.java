@@ -25,7 +25,7 @@ public class PlayerListComponent extends JList implements ITickable
     {
         if (this.ticks++ % 20 == 0)
         {
-            Vector<String> vector = new Vector<String>();
+            Vector<String> vector = new Vector<>();
 
             for (int i = 0; i < this.server.getPlayerList().getPlayers().size(); ++i)
             {

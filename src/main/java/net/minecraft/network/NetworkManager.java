@@ -104,16 +104,16 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     }
 
     public void channelInactive(ChannelHandlerContext p_channelInactive_1_) throws Exception {
-        this.closeChannel(new TextComponentTranslation("disconnect.endOfStream", new Object[0]));
+        this.closeChannel(new TextComponentTranslation("disconnect.endOfStream"));
     }
 
     public void exceptionCaught(ChannelHandlerContext p_exceptionCaught_1_, Throwable p_exceptionCaught_2_) throws Exception {
         TextComponentTranslation textcomponenttranslation;
 
         if (p_exceptionCaught_2_ instanceof TimeoutException) {
-            textcomponenttranslation = new TextComponentTranslation("disconnect.timeout", new Object[0]);
+            textcomponenttranslation = new TextComponentTranslation("disconnect.timeout");
         } else {
-            textcomponenttranslation = new TextComponentTranslation("disconnect.genericReason", new Object[] {"Internal Exception: " + p_exceptionCaught_2_});
+            textcomponenttranslation = new TextComponentTranslation("disconnect.genericReason", "Internal Exception: " + p_exceptionCaught_2_);
         }
 
         LOGGER.debug(textcomponenttranslation.getUnformattedText(), p_exceptionCaught_2_);
@@ -124,8 +124,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
         if (this.channel.isOpen()) {
             try {
                 ((Packet<INetHandler>)p_channelRead0_2_).processPacket(this.packetListener);
-            } catch (ThreadQuickExitException var4) {
-                ;
+            } catch (ThreadQuickExitException ignored) {
             }
         }
     }
@@ -145,14 +144,15 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
             this.readWriteLock.writeLock().lock();
 
             try {
-                this.outboundPacketsQueue.add(new InboundHandlerTuplePacketListener(packetIn, new GenericFutureListener[0]));
+                this.outboundPacketsQueue.add(new InboundHandlerTuplePacketListener(packetIn));
             } finally {
                 this.readWriteLock.writeLock().unlock();
             }
         }
     }
 
-    public void sendPacket(Packet<?> packetIn, GenericFutureListener <? extends Future <? super Void >> listener, GenericFutureListener <? extends Future <? super Void >> ... listeners) {
+    @SafeVarargs
+    public final void sendPacket(Packet<?> packetIn, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {
         if (this.isChannelOpen()) {
             this.flushOutboundQueue();
             this.dispatchPacket(packetIn, (GenericFutureListener[])ArrayUtils.add(listeners, 0, listener));
@@ -189,20 +189,18 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
 
             channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
         } else {
-            this.channel.eventLoop().execute(new Runnable() {
-                public void run() {
-                    if (enumconnectionstate != enumconnectionstate1  && !( inPacket instanceof net.minecraftforge.fml.common.network.internal.FMLProxyPacket)) {
-                        NetworkManager.this.setConnectionState(enumconnectionstate);
-                    }
-
-                    ChannelFuture channelfuture1 = NetworkManager.this.channel.writeAndFlush(inPacket);
-
-                    if (futureListeners != null) {
-                        channelfuture1.addListeners(futureListeners);
-                    }
-
-                    channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+            this.channel.eventLoop().execute(() -> {
+                if (enumconnectionstate != enumconnectionstate1  && !( inPacket instanceof net.minecraftforge.fml.common.network.internal.FMLProxyPacket)) {
+                    NetworkManager.this.setConnectionState(enumconnectionstate);
                 }
+
+                ChannelFuture channelfuture1 = NetworkManager.this.channel.writeAndFlush(inPacket);
+
+                if (futureListeners != null) {
+                    channelfuture1.addListeners(futureListeners);
+                }
+
+                channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
             });
         }
     }
@@ -273,9 +271,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
             protected void initChannel(Channel p_initChannel_1_) throws Exception
             {
                 try {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
-                } catch (ChannelException var3) {
-                    ;
+                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.TRUE);
+                } catch (ChannelException ignored) {
                 }
 
                 p_initChannel_1_.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("splitter", new NettyVarint21FrameDecoder()).addLast("decoder", new NettyPacketDecoder(EnumPacketDirection.CLIENTBOUND)).addLast("prepender", new NettyVarint21FrameEncoder()).addLast("encoder", new NettyPacketEncoder(EnumPacketDirection.SERVERBOUND)).addLast("packet_handler", networkmanager);
@@ -363,7 +360,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
                 if (this.getExitMessage() != null) {
                     this.getNetHandler().onDisconnect(this.getExitMessage());
                 } else if (this.getNetHandler() != null) {
-                    this.getNetHandler().onDisconnect(new TextComponentTranslation("multiplayer.disconnect.generic", new Object[0]));
+                    this.getNetHandler().onDisconnect(new TextComponentTranslation("multiplayer.disconnect.generic"));
                 }
             }
         }
@@ -378,6 +375,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
             private final Packet<?> packet;
             private final GenericFutureListener <? extends Future <? super Void >> [] futureListeners;
 
+            @SafeVarargs
             public InboundHandlerTuplePacketListener(Packet<?> inPacket, GenericFutureListener <? extends Future <? super Void >> ... inFutureListeners) {
                 this.packet = inPacket;
                 this.futureListeners = inFutureListeners;

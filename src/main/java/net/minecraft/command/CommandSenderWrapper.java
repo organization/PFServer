@@ -46,12 +46,12 @@ public class CommandSenderWrapper implements ICommandSender
 
     public CommandSenderWrapper withPermissionLevel(int level)
     {
-        return this.permissionLevel != null && this.permissionLevel.intValue() <= level ? this : new CommandSenderWrapper(this.delegate, this.positionVector, this.position, level, this.entity, this.sendCommandFeedback);
+        return this.permissionLevel != null && this.permissionLevel <= level ? this : new CommandSenderWrapper(this.delegate, this.positionVector, this.position, level, this.entity, this.sendCommandFeedback);
     }
 
     public CommandSenderWrapper withSendCommandFeedback(boolean sendCommandFeedbackIn)
     {
-        return this.sendCommandFeedback == null || this.sendCommandFeedback.booleanValue() && !sendCommandFeedbackIn ? new CommandSenderWrapper(this.delegate, this.positionVector, this.position, this.permissionLevel, this.entity, sendCommandFeedbackIn) : this;
+        return this.sendCommandFeedback == null || this.sendCommandFeedback && !sendCommandFeedbackIn ? new CommandSenderWrapper(this.delegate, this.positionVector, this.position, this.permissionLevel, this.entity, sendCommandFeedbackIn) : this;
     }
 
     public CommandSenderWrapper computePositionVector()
@@ -71,7 +71,7 @@ public class CommandSenderWrapper implements ICommandSender
 
     public void sendMessage(ITextComponent component)
     {
-        if (this.sendCommandFeedback == null || this.sendCommandFeedback.booleanValue())
+        if (this.sendCommandFeedback == null || this.sendCommandFeedback)
         {
             this.delegate.sendMessage(component);
         }
@@ -79,7 +79,7 @@ public class CommandSenderWrapper implements ICommandSender
 
     public boolean canUseCommand(int permLevel, String commandName)
     {
-        return this.permissionLevel != null && this.permissionLevel.intValue() < permLevel ? false : this.delegate.canUseCommand(permLevel, commandName);
+        return (this.permissionLevel == null || this.permissionLevel >= permLevel) && this.delegate.canUseCommand(permLevel, commandName);
     }
 
     public BlockPos getPosition()
@@ -119,7 +119,7 @@ public class CommandSenderWrapper implements ICommandSender
 
     public boolean sendCommandFeedback()
     {
-        return this.sendCommandFeedback != null ? this.sendCommandFeedback.booleanValue() : this.delegate.sendCommandFeedback();
+        return this.sendCommandFeedback != null ? this.sendCommandFeedback : this.delegate.sendCommandFeedback();
     }
 
     public void setCommandStat(CommandResultStats.Type type, int amount)

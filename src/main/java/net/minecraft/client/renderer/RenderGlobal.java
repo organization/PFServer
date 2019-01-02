@@ -186,15 +186,9 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 this.entityOutlineShader.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
                 this.entityOutlineFramebuffer = this.entityOutlineShader.getFramebufferRaw("final");
             }
-            catch (IOException ioexception)
+            catch (IOException | JsonSyntaxException ioexception)
             {
                 LOGGER.warn("Failed to load shader: {}", resourcelocation, ioexception);
-                this.entityOutlineShader = null;
-                this.entityOutlineFramebuffer = null;
-            }
-            catch (JsonSyntaxException jsonsyntaxexception)
-            {
-                LOGGER.warn("Failed to load shader: {}", resourcelocation, jsonsyntaxexception);
                 this.entityOutlineShader = null;
                 this.entityOutlineFramebuffer = null;
             }
@@ -592,7 +586,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
                         if (flag)
                         {
-                            boolean flag1 = this.mc.getRenderViewEntity() instanceof EntityLivingBase ? ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping() : false;
+                            boolean flag1 = this.mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase) this.mc.getRenderViewEntity()).isPlayerSleeping();
 
                             if ((entity2 != this.mc.getRenderViewEntity() || this.mc.gameSettings.thirdPersonView != 0 || flag1) && (entity2.posY < 0.0D || entity2.posY >= 256.0D || this.world.isBlockLoaded(blockpos$pooledmutableblockpos.setPos(entity2))))
                             {
@@ -639,9 +633,8 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                     RenderHelper.disableStandardItemLighting();
                     this.renderManager.setRenderOutlines(true);
 
-                    for (int j = 0; j < list1.size(); ++j)
-                    {
-                        this.renderManager.renderEntityStatic(list1.get(j), partialTicks, false);
+                    for (Entity entity1 : list1) {
+                        this.renderManager.renderEntityStatic(entity1, partialTicks, false);
                     }
 
                     this.renderManager.setRenderOutlines(false);
@@ -1091,9 +1084,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         }
 
         this.mc.mcProfiler.func_194339_b(() ->
-        {
-            return "render_" + blockLayerIn;
-        });
+                "render_" + blockLayerIn);
         this.renderBlockLayer(blockLayerIn);
         this.mc.mcProfiler.endSection();
         return l;
@@ -2105,20 +2096,14 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while adding particle");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being added");
-            crashreportcategory.addCrashSection("ID", Integer.valueOf(id));
+            crashreportcategory.addCrashSection("ID", id);
 
             if (parameters != null)
             {
                 crashreportcategory.addCrashSection("Parameters", parameters);
             }
 
-            crashreportcategory.addDetail("Position", new ICrashReportDetail<String>()
-            {
-                public String call() throws Exception
-                {
-                    return CrashReportCategory.getCoordinateInfo(x, y, z);
-                }
-            });
+            crashreportcategory.addDetail("Position", () -> CrashReportCategory.getCoordinateInfo(x, y, z));
             throw new ReportedException(crashreport);
         }
     }
@@ -2405,7 +2390,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
                 float f5 = (float)(data >> 16 & 255) / 255.0F;
                 float f = (float)(data >> 8 & 255) / 255.0F;
-                float f1 = (float)(data >> 0 & 255) / 255.0F;
+                float f1 = (float)(data & 255) / 255.0F;
                 EnumParticleTypes enumparticletypes = type == 2007 ? EnumParticleTypes.SPELL_INSTANT : EnumParticleTypes.SPELL;
 
                 for (int j3 = 0; j3 < 100; ++j3)
@@ -2451,8 +2436,8 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                     double d17 = (double)blockPosIn.getX() + 0.5D + ((double)this.world.rand.nextFloat() - 0.5D) * 2.0D;
                     double d20 = (double)blockPosIn.getY() + 0.5D + ((double)this.world.rand.nextFloat() - 0.5D) * 2.0D;
                     double d23 = (double)blockPosIn.getZ() + 0.5D + ((double)this.world.rand.nextFloat() - 0.5D) * 2.0D;
-                    this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d17, d20, d23, 0.0D, 0.0D, 0.0D, new int[0]);
-                    this.world.spawnParticle(EnumParticleTypes.FLAME, d17, d20, d23, 0.0D, 0.0D, 0.0D, new int[0]);
+                    this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d17, d20, d23, 0.0D, 0.0D, 0.0D);
+                    this.world.spawnParticle(EnumParticleTypes.FLAME, d17, d20, d23, 0.0D, 0.0D, 0.0D);
                 }
 
                 return;
@@ -2479,7 +2464,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                 this.world.playSound(blockPosIn, SoundEvents.ENTITY_ENDERDRAGON_FIREBALL_EPLD, SoundCategory.HOSTILE, 1.0F, this.world.rand.nextFloat() * 0.1F + 0.9F, false);
                 break;
             case 3000:
-                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, true, (double)blockPosIn.getX() + 0.5D, (double)blockPosIn.getY() + 0.5D, (double)blockPosIn.getZ() + 0.5D, 0.0D, 0.0D, 0.0D, new int[0]);
+                this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, true, (double)blockPosIn.getX() + 0.5D, (double)blockPosIn.getY() + 0.5D, (double)blockPosIn.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
                 this.world.playSound(blockPosIn, SoundEvents.BLOCK_END_GATEWAY_SPAWN, SoundCategory.BLOCKS, 10.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F, false);
                 break;
             case 3001:
@@ -2491,12 +2476,12 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
     {
         if (progress >= 0 && progress < 10)
         {
-            DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(Integer.valueOf(breakerId));
+            DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(breakerId);
 
             if (destroyblockprogress == null || destroyblockprogress.getPosition().getX() != pos.getX() || destroyblockprogress.getPosition().getY() != pos.getY() || destroyblockprogress.getPosition().getZ() != pos.getZ())
             {
                 destroyblockprogress = new DestroyBlockProgress(breakerId, pos);
-                this.damagedBlocks.put(Integer.valueOf(breakerId), destroyblockprogress);
+                this.damagedBlocks.put(breakerId, destroyblockprogress);
             }
 
             destroyblockprogress.setPartialBlockDamage(progress);
@@ -2504,7 +2489,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
         }
         else
         {
-            this.damagedBlocks.remove(Integer.valueOf(breakerId));
+            this.damagedBlocks.remove(breakerId);
         }
     }
 

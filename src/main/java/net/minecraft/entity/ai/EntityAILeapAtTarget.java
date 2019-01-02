@@ -6,9 +6,9 @@ import net.minecraft.util.math.MathHelper;
 
 public class EntityAILeapAtTarget extends EntityAIBase
 {
-    EntityLiving leaper;
+    final EntityLiving leaper;
     EntityLivingBase leapTarget;
-    float leapMotionY;
+    final float leapMotionY;
 
     public EntityAILeapAtTarget(EntityLiving leapingEntity, float leapMotionYIn)
     {

@@ -21,7 +21,7 @@ public class ContainerBrewingStand extends Container
     private int prevFuel;
 
     private CraftInventoryView bukkitEntity = null;
-    private InventoryPlayer player;
+    private final InventoryPlayer player;
 
     public ContainerBrewingStand(InventoryPlayer playerInventory, IInventory tileBrewingStandIn)
     {
@@ -57,17 +57,12 @@ public class ContainerBrewingStand extends Container
     {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.listeners.size(); ++i)
-        {
-            IContainerListener icontainerlistener = this.listeners.get(i);
-
-            if (this.prevBrewTime != this.tileBrewingStand.getField(0))
-            {
+        for (IContainerListener icontainerlistener : this.listeners) {
+            if (this.prevBrewTime != this.tileBrewingStand.getField(0)) {
                 icontainerlistener.sendWindowProperty(this, 0, this.tileBrewingStand.getField(0));
             }
 
-            if (this.prevFuel != this.tileBrewingStand.getField(1))
-            {
+            if (this.prevFuel != this.tileBrewingStand.getField(1)) {
                 icontainerlistener.sendWindowProperty(this, 1, this.tileBrewingStand.getField(1));
             }
         }

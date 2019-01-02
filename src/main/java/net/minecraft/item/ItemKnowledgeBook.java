@@ -51,7 +51,7 @@ public class ItemKnowledgeBook extends Item
                     if (irecipe == null)
                     {
                         LOGGER.error("Invalid recipe: " + s);
-                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                        return new ActionResult<>(EnumActionResult.FAIL, itemstack);
                     }
 
                     list.add(irecipe);
@@ -61,12 +61,12 @@ public class ItemKnowledgeBook extends Item
                 playerIn.addStat(StatList.getObjectUseStats(this));
             }
 
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         }
         else
         {
             LOGGER.error("Tag not valid: " + nbttagcompound);
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+            return new ActionResult<>(EnumActionResult.FAIL, itemstack);
         }
     }
 }

@@ -21,7 +21,7 @@ public class StatBase
     private final IScoreCriteria objectiveCriteria;
     private Class <? extends IJsonSerializable > serializableClazz;
     private static final NumberFormat numberFormat = NumberFormat.getIntegerInstance(Locale.US);
-    public static IStatType simpleStatType = new IStatType()
+    public static final IStatType simpleStatType = new IStatType()
     {
         @SideOnly(Side.CLIENT)
         public String format(int number)
@@ -30,7 +30,7 @@ public class StatBase
         }
     };
     private static final DecimalFormat decimalFormat = new DecimalFormat("########0.00");
-    public static IStatType timeStatType = new IStatType()
+    public static final IStatType timeStatType = new IStatType()
     {
         @SideOnly(Side.CLIENT)
         public String format(int number)
@@ -59,7 +59,7 @@ public class StatBase
             }
         }
     };
-    public static IStatType distanceStatType = new IStatType()
+    public static final IStatType distanceStatType = new IStatType()
     {
         @SideOnly(Side.CLIENT)
         public String format(int number)
@@ -77,7 +77,7 @@ public class StatBase
             }
         }
     };
-    public static IStatType divideByTen = new IStatType()
+    public static final IStatType divideByTen = new IStatType()
     {
         @SideOnly(Side.CLIENT)
         public String format(int number)

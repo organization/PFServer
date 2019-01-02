@@ -80,9 +80,8 @@ public class ServerHangWatchdog implements Runnable
             {
                 Thread.sleep(i + this.maxTickTime - j);
             }
-            catch (InterruptedException var15)
+            catch (InterruptedException ignored)
             {
-                ;
             }
         }
     }

@@ -69,7 +69,6 @@ public class BlockFalling extends Block
 
                 for (blockpos = pos.down(); (worldIn.isAirBlock(blockpos) || canFallThrough(worldIn.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down())
                 {
-                    ;
                 }
 
                 if (blockpos.getY() > 0)

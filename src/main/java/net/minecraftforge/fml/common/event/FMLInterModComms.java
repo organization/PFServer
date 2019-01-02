@@ -44,7 +44,7 @@ import java.util.function.Function;
  */
 public class FMLInterModComms {
     private static final ImmutableList<IMCMessage> emptyIMCList = ImmutableList.of();
-    private static ArrayListMultimap<String, IMCMessage> modMessages = ArrayListMultimap.create();
+    private static final ArrayListMultimap<String, IMCMessage> modMessages = ArrayListMultimap.create();
 
     /**
      * Subscribe to this event to receive your messages (they are sent between

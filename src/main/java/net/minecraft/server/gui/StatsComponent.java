@@ -25,13 +25,7 @@ public class StatsComponent extends JComponent
         this.setPreferredSize(new Dimension(456, 246));
         this.setMinimumSize(new Dimension(456, 246));
         this.setMaximumSize(new Dimension(456, 246));
-        (new Timer(500, new ActionListener()
-        {
-            public void actionPerformed(ActionEvent p_actionPerformed_1_)
-            {
-                StatsComponent.this.tick();
-            }
-        })).start();
+        (new Timer(500, p_actionPerformed_1_ -> StatsComponent.this.tick())).start();
         this.setBackground(Color.BLACK);
     }
 

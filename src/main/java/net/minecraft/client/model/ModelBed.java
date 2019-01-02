@@ -6,9 +6,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelBed extends ModelBase
 {
-    public ModelRenderer headPiece;
-    public ModelRenderer footPiece;
-    public ModelRenderer[] legs = new ModelRenderer[4];
+    public final ModelRenderer headPiece;
+    public final ModelRenderer footPiece;
+    public final ModelRenderer[] legs = new ModelRenderer[4];
 
     public ModelBed()
     {

@@ -117,7 +117,7 @@ public class PotionUtils
                     int l = potioneffect.getAmplifier() + 1;
                     f += (float)(l * (k >> 16 & 255)) / 255.0F;
                     f1 += (float)(l * (k >> 8 & 255)) / 255.0F;
-                    f2 += (float)(l * (k >> 0 & 255)) / 255.0F;
+                    f2 += (float)(l * (k & 255)) / 255.0F;
                     j += l;
                 }
             }

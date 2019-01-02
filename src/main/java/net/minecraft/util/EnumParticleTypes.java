@@ -106,7 +106,7 @@ public enum EnumParticleTypes
     @Nullable
     public static EnumParticleTypes getParticleFromId(int particleId)
     {
-        return PARTICLES.get(Integer.valueOf(particleId));
+        return PARTICLES.get(particleId);
     }
 
     @Nullable
@@ -119,7 +119,7 @@ public enum EnumParticleTypes
     {
         for (EnumParticleTypes enumparticletypes : values())
         {
-            PARTICLES.put(Integer.valueOf(enumparticletypes.getParticleID()), enumparticletypes);
+            PARTICLES.put(enumparticletypes.getParticleID(), enumparticletypes);
             BY_NAME.put(enumparticletypes.getParticleName(), enumparticletypes);
         }
     }

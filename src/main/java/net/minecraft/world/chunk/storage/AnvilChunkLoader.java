@@ -97,7 +97,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
     {
         ChunkPos chunkpos = new ChunkPos(x, z);
         NBTTagCompound nbttagcompound = this.chunksToSave.get(chunkpos);
-        return nbttagcompound != null ? true : RegionFileCache.chunkExists(this.chunkSaveLocation, x, z);
+        return nbttagcompound != null || RegionFileCache.chunkExists(this.chunkSaveLocation, x, z);
     }
 
     @Nullable
@@ -112,7 +112,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
     {
         if (!compound.hasKey("Level", 10))
         {
-            LOGGER.error("Chunk file at {},{} is missing level data, skipping", Integer.valueOf(x), Integer.valueOf(z));
+            LOGGER.error("Chunk file at {},{} is missing level data, skipping", x, z);
             return null;
         }
         else
@@ -121,7 +121,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
             if (!nbttagcompound.hasKey("Sections", 9))
             {
-                LOGGER.error("Chunk file at {},{} is missing block data, skipping", Integer.valueOf(x), Integer.valueOf(z));
+                LOGGER.error("Chunk file at {},{} is missing block data, skipping", x, z);
                 return null;
             }
             else
@@ -130,7 +130,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
                 if (!chunk.isAtLocation(x, z))
                 {
-                    LOGGER.error("Chunk file at {},{} is in the wrong location; relocating. (Expected {}, {}, got {}, {})", Integer.valueOf(x), Integer.valueOf(z), Integer.valueOf(x), Integer.valueOf(z), Integer.valueOf(chunk.x), Integer.valueOf(chunk.z));
+                    LOGGER.error("Chunk file at {},{} is in the wrong location; relocating. (Expected {}, {}, got {}, {})", x, z, x, z, chunk.x, chunk.z);
                     nbttagcompound.setInteger("xPos", x);
                     nbttagcompound.setInteger("zPos", z);
 
@@ -232,7 +232,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                 this.chunksBeingSaved.remove(chunkpos);
             }
 
-            return lvt_3_1_;
+            return true;
         }
     }
 
@@ -268,37 +268,33 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
     public static void registerFixes(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.CHUNK, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.CHUNK, (fixer1, compound, versionIn) -> {
+            if (compound.hasKey("Level", 10))
             {
-                if (compound.hasKey("Level", 10))
+                NBTTagCompound nbttagcompound = compound.getCompoundTag("Level");
+
+                if (nbttagcompound.hasKey("Entities", 9))
                 {
-                    NBTTagCompound nbttagcompound = compound.getCompoundTag("Level");
+                    NBTTagList nbttaglist = nbttagcompound.getTagList("Entities", 10);
 
-                    if (nbttagcompound.hasKey("Entities", 9))
+                    for (int i = 0; i < nbttaglist.tagCount(); ++i)
                     {
-                        NBTTagList nbttaglist = nbttagcompound.getTagList("Entities", 10);
-
-                        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-                        {
-                            nbttaglist.set(i, fixer.process(FixTypes.ENTITY, (NBTTagCompound)nbttaglist.get(i), versionIn));
-                        }
-                    }
-
-                    if (nbttagcompound.hasKey("TileEntities", 9))
-                    {
-                        NBTTagList nbttaglist1 = nbttagcompound.getTagList("TileEntities", 10);
-
-                        for (int j = 0; j < nbttaglist1.tagCount(); ++j)
-                        {
-                            nbttaglist1.set(j, fixer.process(FixTypes.BLOCK_ENTITY, (NBTTagCompound)nbttaglist1.get(j), versionIn));
-                        }
+                        nbttaglist.set(i, fixer1.process(FixTypes.ENTITY, (NBTTagCompound)nbttaglist.get(i), versionIn));
                     }
                 }
 
-                return compound;
+                if (nbttagcompound.hasKey("TileEntities", 9))
+                {
+                    NBTTagList nbttaglist1 = nbttagcompound.getTagList("TileEntities", 10);
+
+                    for (int j = 0; j < nbttaglist1.tagCount(); ++j)
+                    {
+                        nbttaglist1.set(j, fixer1.process(FixTypes.BLOCK_ENTITY, (NBTTagCompound)nbttaglist1.get(j), versionIn));
+                    }
+                }
             }
+
+            return compound;
         });
     }
 

@@ -126,7 +126,7 @@ public class TextureUtil
                     f += getColorGamma(MIPMAP_BUFFER[i1] >> 24);
                     f1 += getColorGamma(MIPMAP_BUFFER[i1] >> 16);
                     f2 += getColorGamma(MIPMAP_BUFFER[i1] >> 8);
-                    f3 += getColorGamma(MIPMAP_BUFFER[i1] >> 0);
+                    f3 += getColorGamma(MIPMAP_BUFFER[i1]);
                 }
             }
 

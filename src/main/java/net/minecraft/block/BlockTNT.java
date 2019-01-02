@@ -29,7 +29,7 @@ public class BlockTNT extends Block
     public BlockTNT()
     {
         super(Material.TNT);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(EXPLODE, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.REDSTONE);
     }
 
@@ -39,7 +39,7 @@ public class BlockTNT extends Block
 
         if (worldIn.isBlockPowered(pos))
         {
-            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.valueOf(true)));
+            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
             worldIn.setBlockToAir(pos);
         }
     }
@@ -48,7 +48,7 @@ public class BlockTNT extends Block
     {
         if (worldIn.isBlockPowered(pos))
         {
-            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.valueOf(true)));
+            this.onBlockDestroyedByPlayer(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE));
             worldIn.setBlockToAir(pos);
         }
     }
@@ -72,7 +72,7 @@ public class BlockTNT extends Block
     {
         if (!worldIn.isRemote)
         {
-            if (((Boolean)state.getValue(EXPLODE)).booleanValue())
+            if ((Boolean) state.getValue(EXPLODE))
             {
                 EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(worldIn, (double)((float)pos.getX() + 0.5F), (double)pos.getY(), (double)((float)pos.getZ() + 0.5F), igniter);
                 worldIn.spawnEntity(entitytntprimed);
@@ -87,7 +87,7 @@ public class BlockTNT extends Block
 
         if (!itemstack.isEmpty() && (itemstack.getItem() == Items.FLINT_AND_STEEL || itemstack.getItem() == Items.FIRE_CHARGE))
         {
-            this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.valueOf(true)), playerIn);
+            this.explode(worldIn, pos, state.withProperty(EXPLODE, Boolean.TRUE), playerIn);
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 
             if (itemstack.getItem() == Items.FLINT_AND_STEEL)
@@ -118,7 +118,7 @@ public class BlockTNT extends Block
                 if (org.bukkit.craftbukkit.event.CraftEventFactory.callEntityChangeBlockEvent(entityarrow, pos, Blocks.AIR, 0).isCancelled()) {
                     return;
                 }
-                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, Boolean.valueOf(true)), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase)entityarrow.shootingEntity : null);
+                this.explode(worldIn, pos, worldIn.getBlockState(pos).withProperty(EXPLODE, Boolean.TRUE), entityarrow.shootingEntity instanceof EntityLivingBase ? (EntityLivingBase)entityarrow.shootingEntity : null);
                 worldIn.setBlockToAir(pos);
             }
         }
@@ -131,16 +131,16 @@ public class BlockTNT extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(EXPLODE, Boolean.valueOf((meta & 1) > 0));
+        return this.getDefaultState().withProperty(EXPLODE, (meta & 1) > 0);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean)state.getValue(EXPLODE)).booleanValue() ? 1 : 0;
+        return (Boolean) state.getValue(EXPLODE) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {EXPLODE});
+        return new BlockStateContainer(this, EXPLODE);
     }
 }

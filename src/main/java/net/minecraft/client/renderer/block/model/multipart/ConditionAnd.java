@@ -10,6 +10,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @SideOnly(Side.CLIENT)
 public class ConditionAnd implements ICondition
@@ -23,13 +25,6 @@ public class ConditionAnd implements ICondition
 
     public Predicate<IBlockState> getPredicate(final BlockStateContainer blockState)
     {
-        return Predicates.and(Iterables.transform(this.conditions, new Function<ICondition, Predicate<IBlockState>>()
-        {
-            @Nullable
-            public Predicate<IBlockState> apply(@Nullable ICondition p_apply_1_)
-            {
-                return p_apply_1_ == null ? null : p_apply_1_.getPredicate(blockState);
-            }
-        }));
+        return Predicates.and(StreamSupport.stream(this.conditions.spliterator(), false).map(p_apply_1_ -> p_apply_1_ == null ? null : p_apply_1_.getPredicate(blockState)).collect(Collectors.toList()));
     }
 }

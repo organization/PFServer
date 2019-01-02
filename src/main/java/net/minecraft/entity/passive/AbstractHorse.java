@@ -47,13 +47,7 @@ import java.util.UUID;
 
 public abstract class AbstractHorse extends EntityAnimal implements IInventoryChangedListener, IJumpingMount
 {
-    private static final Predicate<Entity> IS_HORSE_BREEDING = new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_ instanceof AbstractHorse && ((AbstractHorse)p_apply_1_).isBreeding();
-        }
-    };
+    private static final Predicate<Entity> IS_HORSE_BREEDING = p_apply_1_ -> p_apply_1_ instanceof AbstractHorse && ((AbstractHorse)p_apply_1_).isBreeding();
     public static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute)null, "horse.jumpStrength", 0.7D, 0.0D, 2.0D)).setDescription("Jump Strength").setShouldWatch(true);
     private static final DataParameter<Byte> STATUS = EntityDataManager.<Byte>createKey(AbstractHorse.class, DataSerializers.BYTE);
     private static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(AbstractHorse.class, DataSerializers.OPTIONAL_UNIQUE_ID);
@@ -101,26 +95,26 @@ public abstract class AbstractHorse extends EntityAnimal implements IInventoryCh
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(STATUS, Byte.valueOf((byte)0));
+        this.dataManager.register(STATUS, (byte) 0);
         this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
     }
 
     protected boolean getHorseWatchableBoolean(int p_110233_1_)
     {
-        return (((Byte)this.dataManager.get(STATUS)).byteValue() & p_110233_1_) != 0;
+        return ((Byte) this.dataManager.get(STATUS) & p_110233_1_) != 0;
     }
 
     protected void setHorseWatchableBoolean(int p_110208_1_, boolean p_110208_2_)
     {
-        byte b0 = ((Byte)this.dataManager.get(STATUS)).byteValue();
+        byte b0 = (Byte) this.dataManager.get(STATUS);
 
         if (p_110208_2_)
         {
-            this.dataManager.set(STATUS, Byte.valueOf((byte)(b0 | p_110208_1_)));
+            this.dataManager.set(STATUS, (byte) (b0 | p_110208_1_));
         }
         else
         {
-            this.dataManager.set(STATUS, Byte.valueOf((byte)(b0 & ~p_110208_1_)));
+            this.dataManager.set(STATUS, (byte) (b0 & ~p_110208_1_));
         }
     }
 
@@ -223,7 +217,7 @@ public abstract class AbstractHorse extends EntityAnimal implements IInventoryCh
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         Entity entity = source.getTrueSource();
-        return this.isBeingRidden() && entity != null && this.isRidingOrBeingRiddenBy(entity) ? false : super.attackEntityFrom(source, amount);
+        return (!this.isBeingRidden() || entity == null || !this.isRidingOrBeingRiddenBy(entity)) && super.attackEntityFrom(source, amount);
     }
 
     public boolean canBePushed()
@@ -917,7 +911,7 @@ public abstract class AbstractHorse extends EntityAnimal implements IInventoryCh
     public static void registerFixesAbstractHorse(DataFixer fixer, Class<?> entityClass)
     {
         EntityLiving.registerFixesMob(fixer, entityClass);
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(entityClass, new String[] {"SaddleItem"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(entityClass, "SaddleItem"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

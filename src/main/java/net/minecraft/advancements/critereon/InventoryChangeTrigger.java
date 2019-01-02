@@ -121,17 +121,7 @@ public class InventoryChangeTrigger implements ICriterionTrigger<InventoryChange
                             ++i;
                         }
 
-                        Iterator<ItemPredicate> iterator = list.iterator();
-
-                        while (iterator.hasNext())
-                        {
-                            ItemPredicate itempredicate = iterator.next();
-
-                            if (itempredicate.test(itemstack))
-                            {
-                                iterator.remove();
-                            }
-                        }
+                        list.removeIf(itempredicate -> itempredicate.test(itemstack));
                     }
                 }
 
@@ -147,14 +137,7 @@ public class InventoryChangeTrigger implements ICriterionTrigger<InventoryChange
                 {
                     return false;
                 }
-                else if (!list.isEmpty())
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                else return list.isEmpty();
             }
         }
 

@@ -46,7 +46,7 @@ public class EntityItemFrame extends EntityHanging
     protected void entityInit()
     {
         this.getDataManager().register(ITEM, ItemStack.EMPTY);
-        this.getDataManager().register(ROTATION, Integer.valueOf(0));
+        this.getDataManager().register(ROTATION, 0);
     }
 
     public float getCollisionBorderSize()
@@ -203,7 +203,7 @@ public class EntityItemFrame extends EntityHanging
 
     public int getRotation()
     {
-        return ((Integer)this.getDataManager().get(ROTATION)).intValue();
+        return (Integer) this.getDataManager().get(ROTATION);
     }
 
     public void setItemRotation(int rotationIn)
@@ -213,7 +213,7 @@ public class EntityItemFrame extends EntityHanging
 
     private void setRotation(int rotationIn, boolean p_174865_2_)
     {
-        this.getDataManager().set(ROTATION, Integer.valueOf(rotationIn % 8));
+        this.getDataManager().set(ROTATION, rotationIn % 8);
 
         if (p_174865_2_ && this.hangingPosition != null)
         {
@@ -223,7 +223,7 @@ public class EntityItemFrame extends EntityHanging
 
     public static void registerFixesItemFrame(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityItemFrame.class, new String[] {"Item"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityItemFrame.class, "Item"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

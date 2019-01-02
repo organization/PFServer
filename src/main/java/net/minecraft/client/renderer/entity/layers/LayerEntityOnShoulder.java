@@ -113,11 +113,11 @@ public class LayerEntityOnShoulder implements LayerRenderer<EntityPlayer>
     @SideOnly(Side.CLIENT)
     class DataHolder
     {
-        public UUID entityId;
-        public RenderLivingBase <? extends EntityLivingBase > renderer;
-        public ModelBase model;
-        public ResourceLocation textureLocation;
-        public Class<?> clazz;
+        public final UUID entityId;
+        public final RenderLivingBase <? extends EntityLivingBase > renderer;
+        public final ModelBase model;
+        public final ResourceLocation textureLocation;
+        public final Class<?> clazz;
 
         public DataHolder(UUID p_i47463_2_, RenderLivingBase <? extends EntityLivingBase > p_i47463_3_, ModelBase p_i47463_4_, ResourceLocation p_i47463_5_, Class<?> p_i47463_6_)
         {

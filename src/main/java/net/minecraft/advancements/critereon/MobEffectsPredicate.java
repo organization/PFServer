@@ -34,13 +34,13 @@ public class MobEffectsPredicate
         }
         else
         {
-            return entityIn instanceof EntityLivingBase ? this.test(((EntityLivingBase)entityIn).getActivePotionMap()) : false;
+            return entityIn instanceof EntityLivingBase && this.test(((EntityLivingBase) entityIn).getActivePotionMap());
         }
     }
 
     public boolean test(EntityLivingBase entityIn)
     {
-        return this == ANY ? true : this.test(entityIn.getActivePotionMap());
+        return this == ANY || this.test(entityIn.getActivePotionMap());
     }
 
     public boolean test(Map<Potion, PotionEffect> potions)
@@ -125,13 +125,13 @@ public class MobEffectsPredicate
                 {
                     return false;
                 }
-                else if (this.ambient != null && this.ambient.booleanValue() != effect.getIsAmbient())
+                else if (this.ambient != null && this.ambient != effect.getIsAmbient())
                 {
                     return false;
                 }
                 else
                 {
-                    return this.visible == null || this.visible.booleanValue() == effect.doesShowParticles();
+                    return this.visible == null || this.visible == effect.doesShowParticles();
                 }
             }
 

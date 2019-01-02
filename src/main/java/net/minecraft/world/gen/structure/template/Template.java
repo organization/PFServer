@@ -113,13 +113,7 @@ public class Template
 
     private void takeEntitiesFromWorld(World worldIn, BlockPos startPos, BlockPos endPos)
     {
-        List<Entity> list = worldIn.<Entity>getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(startPos, endPos), new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity p_apply_1_)
-            {
-                return !(p_apply_1_ instanceof EntityPlayer);
-            }
-        });
+        List<Entity> list = worldIn.<Entity>getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(startPos, endPos), p_apply_1_ -> !(p_apply_1_ instanceof EntityPlayer));
         this.entities.clear();
 
         for (Entity entity : list)
@@ -431,42 +425,38 @@ public class Template
 
     public static void registerFixes(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.STRUCTURE, new IDataWalker()
-        {
-            public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
+        fixer.registerWalker(FixTypes.STRUCTURE, (fixer1, compound, versionIn) -> {
+            if (compound.hasKey("entities", 9))
             {
-                if (compound.hasKey("entities", 9))
+                NBTTagList nbttaglist = compound.getTagList("entities", 10);
+
+                for (int i = 0; i < nbttaglist.tagCount(); ++i)
                 {
-                    NBTTagList nbttaglist = compound.getTagList("entities", 10);
+                    NBTTagCompound nbttagcompound = (NBTTagCompound)nbttaglist.get(i);
 
-                    for (int i = 0; i < nbttaglist.tagCount(); ++i)
+                    if (nbttagcompound.hasKey("nbt", 10))
                     {
-                        NBTTagCompound nbttagcompound = (NBTTagCompound)nbttaglist.get(i);
-
-                        if (nbttagcompound.hasKey("nbt", 10))
-                        {
-                            nbttagcompound.setTag("nbt", fixer.process(FixTypes.ENTITY, nbttagcompound.getCompoundTag("nbt"), versionIn));
-                        }
+                        nbttagcompound.setTag("nbt", fixer1.process(FixTypes.ENTITY, nbttagcompound.getCompoundTag("nbt"), versionIn));
                     }
                 }
-
-                if (compound.hasKey("blocks", 9))
-                {
-                    NBTTagList nbttaglist1 = compound.getTagList("blocks", 10);
-
-                    for (int j = 0; j < nbttaglist1.tagCount(); ++j)
-                    {
-                        NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist1.get(j);
-
-                        if (nbttagcompound1.hasKey("nbt", 10))
-                        {
-                            nbttagcompound1.setTag("nbt", fixer.process(FixTypes.BLOCK_ENTITY, nbttagcompound1.getCompoundTag("nbt"), versionIn));
-                        }
-                    }
-                }
-
-                return compound;
             }
+
+            if (compound.hasKey("blocks", 9))
+            {
+                NBTTagList nbttaglist1 = compound.getTagList("blocks", 10);
+
+                for (int j = 0; j < nbttaglist1.tagCount(); ++j)
+                {
+                    NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist1.get(j);
+
+                    if (nbttagcompound1.hasKey("nbt", 10))
+                    {
+                        nbttagcompound1.setTag("nbt", fixer1.process(FixTypes.BLOCK_ENTITY, nbttagcompound1.getCompoundTag("nbt"), versionIn));
+                    }
+                }
+            }
+
+            return compound;
         });
     }
 
@@ -609,7 +599,7 @@ public class Template
 
             private BasicPalette()
             {
-                this.ids = new ObjectIntIdentityMap<IBlockState>(16);
+                this.ids = new ObjectIntIdentityMap<>(16);
             }
 
             public int idFor(IBlockState state)

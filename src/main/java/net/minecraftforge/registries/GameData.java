@@ -338,7 +338,7 @@ public class GameData
                     //but somehow not in this list, so attempt to get real metadata. Doing this hear saves us 7 patches
                     if (integer == null && key != null)
                         integer = this.identityMap.get(key.getBlock().getStateFromMeta(key.getBlock().getMetaFromState(key)));
-                    return integer == null ? -1 : integer.intValue();
+                    return integer == null ? -1 : integer;
                 }
             };
             owner.setSlaveMap(BLOCKSTATE_TO_ID, idMap);
@@ -413,7 +413,7 @@ public class GameData
         }
         private static class DummyRecipe implements IRecipe
         {
-            private static ItemStack result = new ItemStack(Items.DIAMOND, 64);
+            private static final ItemStack result = new ItemStack(Items.DIAMOND, 64);
             private ResourceLocation name;
             private Recipe bukkitRecip;
 
@@ -535,16 +535,16 @@ public class GameData
         List<ResourceLocation> missingRegs = snapshot.keySet().stream().filter(name -> !RegistryManager.ACTIVE.registries.containsKey(name)).collect(Collectors.toList());
         if (missingRegs.size() > 0)
         {
-            String text = "Forge Mod Loader detected missing/unknown registrie(s).\n\n" +
+            StringBuilder text = new StringBuilder("Forge Mod Loader detected missing/unknown registrie(s).\n\n" +
                     "There are " + missingRegs.size() + " missing registries in this save.\n" +
                     "If you continue the missing registries will get removed.\n" +
                     "This may cause issues, it is advised that you create a world backup before continuing.\n\n" +
-                    "Missing Registries:\n";
+                    "Missing Registries:\n");
 
             for (ResourceLocation s : missingRegs)
-                text += s.toString() + "\n";
+                text.append(s.toString()).append("\n");
 
-            if (!StartupQuery.confirm(text))
+            if (!StartupQuery.confirm(text.toString()))
                 StartupQuery.abort();
         }
 
@@ -562,33 +562,31 @@ public class GameData
         });
 
         snapshot.forEach((key, value) ->
-        {
-            value.dummied.forEach(dummy ->
-            {
-                Map<ResourceLocation, Integer> m = missing.get(key);
-                ForgeRegistry<?> reg = STAGING.getRegistry(key);
+                value.dummied.forEach(dummy ->
+                {
+                    Map<ResourceLocation, Integer> m = missing.get(key);
+                    ForgeRegistry<?> reg = STAGING.getRegistry(key);
 
-                // Currently missing locally, we just inject and carry on
-                if (m.containsKey(dummy))
-                {
-                    if (reg.markDummy(dummy, m.get(dummy)))
-                        m.remove(dummy);
-                }
-                else if (isLocalWorld)
-                {
-                    if (ForgeRegistry.DEBUG)
-                        PFServer.LOGGER.debug("Registry {}: Resuscitating dummy entry {}", key, dummy);
-                }
-                else
-                {
-                    // The server believes this is a dummy block identity, but we seem to have one locally. This is likely a conflict
-                    // in mod setup - Mark this entry as a dummy
-                    int id = reg.getID(dummy);
-                    PFServer.LOGGER.warn("Registry {}: The ID {} @ {} is currently locally mapped - it will be replaced with a dummy for this session", dummy, key, id);
-                    reg.markDummy(dummy, id);
-                }
-            });
-        });
+                    // Currently missing locally, we just inject and carry on
+                    if (m.containsKey(dummy))
+                    {
+                        if (reg.markDummy(dummy, m.get(dummy)))
+                            m.remove(dummy);
+                    }
+                    else if (isLocalWorld)
+                    {
+                        if (ForgeRegistry.DEBUG)
+                            PFServer.LOGGER.debug("Registry {}: Resuscitating dummy entry {}", key, dummy);
+                    }
+                    else
+                    {
+                        // The server believes this is a dummy block identity, but we seem to have one locally. This is likely a conflict
+                        // in mod setup - Mark this entry as a dummy
+                        int id = reg.getID(dummy);
+                        PFServer.LOGGER.warn("Registry {}: The ID {} @ {} is currently locally mapped - it will be replaced with a dummy for this session", dummy, key, id);
+                        reg.markDummy(dummy, id);
+                    }
+                }));
 
         int count = missing.values().stream().mapToInt(Map::size).sum();
         if (count > 0)
@@ -604,7 +602,7 @@ public class GameData
                 RegistryEvent.MissingMappings<?> event = reg.getMissingEvent(name, m.getValue());
                 MinecraftForge.EVENT_BUS.post(event);
 
-                List<MissingMappings.Mapping<?>> lst = event.getAllMappings().stream().filter(e -> e.getAction() == MissingMappings.Action.DEFAULT).sorted((a, b) -> a.toString().compareTo(b.toString())).collect(Collectors.toList());
+                List<MissingMappings.Mapping<?>> lst = event.getAllMappings().stream().filter(e -> e.getAction() == MissingMappings.Action.DEFAULT).sorted(Comparator.comparing(Object::toString)).collect(Collectors.toList());
                 if (!lst.isEmpty())
                 {
                     PFServer.LOGGER.error("Unidentified mapping from registry {}", name);
@@ -640,7 +638,7 @@ public class GameData
                 try
                 {
                     String skip = System.getProperty("fml.doNotBackup");
-                    if (skip == null || !"true".equals(skip))
+                    if (!"true".equals(skip))
                     {
                         ZipperUtil.backupWorld();
                     }
@@ -672,7 +670,7 @@ public class GameData
             missing.forEach((name, m) ->
             {
                 ForgeRegistry<?> reg = STAGING.getRegistry(name);
-                m.forEach((rl, id) -> reg.markDummy(rl, id));
+                m.forEach(reg::markDummy);
             });
 
 
@@ -753,7 +751,7 @@ public class GameData
     public static void fireRegistryEvents(Predicate<ResourceLocation> filter)
     {
         List<ResourceLocation> keys = Lists.newArrayList(RegistryManager.ACTIVE.registries.keySet());
-        Collections.sort(keys, (o1, o2) -> o1.toString().compareToIgnoreCase(o2.toString()));
+        keys.sort((o1, o2) -> o1.toString().compareToIgnoreCase(o2.toString()));
         /*
         RegistryManager.ACTIVE.registries.forEach((name, reg) -> {
             if (filter.test(name))

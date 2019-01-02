@@ -55,7 +55,7 @@ public class BlockFire extends Block
     protected BlockFire()
     {
         super(Material.FIRE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(UPPER, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(NORTH, Boolean.FALSE).withProperty(EAST, Boolean.FALSE).withProperty(SOUTH, Boolean.FALSE).withProperty(WEST, Boolean.FALSE).withProperty(UPPER, Boolean.FALSE));
         this.setTickRandomly(true);
     }
 
@@ -103,8 +103,8 @@ public class BlockFire extends Block
     public void setFireInfo(Block blockIn, int encouragement, int flammability)
     {
         if (blockIn == Blocks.AIR) throw new IllegalArgumentException("Tried to set air on fire... This is bad.");
-        this.encouragements.put(blockIn, Integer.valueOf(encouragement));
-        this.flammabilities.put(blockIn, Integer.valueOf(flammability));
+        this.encouragements.put(blockIn, encouragement);
+        this.flammabilities.put(blockIn, flammability);
     }
 
     @Nullable
@@ -279,14 +279,14 @@ public class BlockFire extends Block
     public int getFlammability(Block blockIn)
     {
         Integer integer = this.flammabilities.get(blockIn);
-        return integer == null ? 0 : integer.intValue();
+        return integer == null ? 0 : integer;
     }
 
     @Deprecated // Use Block.getFireSpreadSpeed
     public int getEncouragement(Block blockIn)
     {
         Integer integer = this.encouragements.get(blockIn);
-        return integer == null ? 0 : integer.intValue();
+        return integer == null ? 0 : integer;
     }
 
     @Deprecated // Use tryCatchFire with face below
@@ -312,7 +312,7 @@ public class BlockFire extends Block
                     j = 15;
                 }
 
-                worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, Integer.valueOf(j)), 3);
+                worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, j), 3);
             }
             else
             {
@@ -321,7 +321,7 @@ public class BlockFire extends Block
 
             if (iblockstate.getBlock() == Blocks.TNT)
             {
-                Blocks.TNT.onBlockDestroyedByPlayer(worldIn, pos, iblockstate.withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
+                Blocks.TNT.onBlockDestroyedByPlayer(worldIn, pos, iblockstate.withProperty(BlockTNT.EXPLODE, Boolean.TRUE));
             }
         }
     }
@@ -353,7 +353,7 @@ public class BlockFire extends Block
                     j = 15;
                 }
 
-                worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, Integer.valueOf(j)), 3);
+                worldIn.setBlockState(pos, this.getDefaultState().withProperty(AGE, j), 3);
             }
             else
             {
@@ -362,7 +362,7 @@ public class BlockFire extends Block
 
             if (iblockstate.getBlock() == Blocks.TNT)
             {
-                Blocks.TNT.onBlockDestroyedByPlayer(worldIn, pos, iblockstate.withProperty(BlockTNT.EXPLODE, Boolean.valueOf(true)));
+                Blocks.TNT.onBlockDestroyedByPlayer(worldIn, pos, iblockstate.withProperty(BlockTNT.EXPLODE, Boolean.TRUE));
             }
         }
     }
@@ -522,7 +522,7 @@ public class BlockFire extends Block
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     @SideOnly(Side.CLIENT)
@@ -533,12 +533,12 @@ public class BlockFire extends Block
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, NORTH, EAST, SOUTH, WEST, UPPER});
+        return new BlockStateContainer(this, AGE, NORTH, EAST, SOUTH, WEST, UPPER);
     }
 
     /*================================= Forge Start ======================================*/

@@ -13,6 +13,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityInteractEvent;
 
 public class BlockPressurePlateWeighted extends BlockBasePressurePlate
@@ -28,7 +31,7 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
     protected BlockPressurePlateWeighted(Material materialIn, int p_i46380_2_, MapColor color)
     {
         super(materialIn, color);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(POWER, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(POWER, 0));
         this.maxWeight = p_i46380_2_;
     }
 
@@ -36,15 +39,12 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
     {
 //        int i = Math.min(worldIn.getEntitiesWithinAABB(Entity.class, PRESSURE_AABB.offset(pos)).size(), this.maxWeight);
         int i = 0;
-        java.util.Iterator iterator = worldIn.getEntitiesWithinAABB(Entity.class, BlockPressurePlateWeighted.PRESSURE_AABB.offset(pos)).iterator();
 
-        while (iterator.hasNext()) {
-            Entity entity = (Entity) iterator.next();
-
-            org.bukkit.event.Cancellable cancellable;
+        for (Entity entity : worldIn.getEntitiesWithinAABB(Entity.class, BlockPressurePlateWeighted.PRESSURE_AABB.offset(pos))) {
+            Cancellable cancellable;
 
             if (entity instanceof EntityPlayer) {
-                cancellable = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerInteractEvent((EntityPlayer) entity, org.bukkit.event.block.Action.PHYSICAL, pos, null, null, null);
+                cancellable = CraftEventFactory.callPlayerInteractEvent((EntityPlayer) entity, Action.PHYSICAL, pos, null, null, null);
             } else {
                 cancellable = new EntityInteractEvent(entity.getBukkitEntity(), worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ()));
                 worldIn.getServer().getPluginManager().callEvent((EntityInteractEvent) cancellable);
@@ -81,12 +81,12 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
 
     protected int getRedstoneStrength(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return (Integer) state.getValue(POWER);
     }
 
     protected IBlockState setRedstoneStrength(IBlockState state, int strength)
     {
-        return state.withProperty(POWER, Integer.valueOf(strength));
+        return state.withProperty(POWER, strength);
     }
 
     public int tickRate(World worldIn)
@@ -96,16 +96,16 @@ public class BlockPressurePlateWeighted extends BlockBasePressurePlate
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(POWER, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(POWER, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return (Integer) state.getValue(POWER);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
+        return new BlockStateContainer(this, POWER);
     }
 }

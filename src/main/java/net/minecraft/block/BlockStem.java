@@ -30,7 +30,7 @@ public class BlockStem extends BlockBush implements IGrowable
 
     protected BlockStem(Block crop)
     {
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)).withProperty(FACING, EnumFacing.UP));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0).withProperty(FACING, EnumFacing.UP));
         this.crop = crop;
         this.setTickRandomly(true);
         this.setCreativeTab((CreativeTabs)null);
@@ -38,12 +38,12 @@ public class BlockStem extends BlockBush implements IGrowable
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return STEM_AABB[((Integer)state.getValue(AGE)).intValue()];
+        return STEM_AABB[(Integer) state.getValue(AGE)];
     }
 
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        int i = ((Integer)state.getValue(AGE)).intValue();
+        int i = (Integer) state.getValue(AGE);
         state = state.withProperty(FACING, EnumFacing.UP);
 
         for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
@@ -74,11 +74,11 @@ public class BlockStem extends BlockBush implements IGrowable
 
             if(net.minecraftforge.common.ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt((int) ((100.0F / (this == Blocks.PUMPKIN_STEM ? worldIn.spigotConfig.pumpkinModifier : worldIn.spigotConfig.melonModifier)) * (25.0F / f)) + 1) == 0)) // Spigot
             {
-                int i = ((Integer)state.getValue(AGE)).intValue();
+                int i = (Integer) state.getValue(AGE);
 
                 if (i < 7)
                 {
-                    IBlockState newState = state.withProperty(AGE, Integer.valueOf(i + 1));
+                    IBlockState newState = state.withProperty(AGE, i + 1);
                     CraftEventFactory.handleBlockGrowEvent(worldIn, pos.getX(), pos.getY(), pos.getZ(), this, getMetaFromState(newState));
 //                    worldIn.setBlockState(pos, newState, 2);
                 }
@@ -109,7 +109,7 @@ public class BlockStem extends BlockBush implements IGrowable
 
     public void growStem(World worldIn, BlockPos pos, IBlockState state)
     {
-        int i = ((Integer)state.getValue(AGE)).intValue() + MathHelper.getInt(worldIn.rand, 2, 5);
+        int i = (Integer) state.getValue(AGE) + MathHelper.getInt(worldIn.rand, 2, 5);
         CraftEventFactory.handleBlockGrowEvent(worldIn, pos.getX(), pos.getY(), pos.getZ(), this, Math.min(7, i));
 //        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(Math.min(7, i))), 2);
     }
@@ -127,7 +127,7 @@ public class BlockStem extends BlockBush implements IGrowable
 
             if (item != null)
             {
-                int i = ((Integer)state.getValue(AGE)).intValue();
+                int i = (Integer) state.getValue(AGE);
 
                 for (int j = 0; j < 3; ++j)
                 {
@@ -166,7 +166,7 @@ public class BlockStem extends BlockBush implements IGrowable
 
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
-        return ((Integer)state.getValue(AGE)).intValue() != 7;
+        return (Integer) state.getValue(AGE) != 7;
     }
 
     public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
@@ -181,16 +181,16 @@ public class BlockStem extends BlockBush implements IGrowable
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(AGE)).intValue();
+        return (Integer) state.getValue(AGE);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {AGE, FACING});
+        return new BlockStateContainer(this, AGE, FACING);
     }
 }

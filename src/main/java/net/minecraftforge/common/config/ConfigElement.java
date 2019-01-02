@@ -40,7 +40,7 @@ public class ConfigElement implements IConfigElement
 {
     private Property prop;
     private Property.Type type;
-    private boolean isProperty;
+    private final boolean isProperty;
     private ConfigCategory category;
     private boolean categoriesFirst = true;
 
@@ -68,7 +68,7 @@ public class ConfigElement implements IConfigElement
     {
         if (!isProperty)
         {
-            List<IConfigElement> elements = new ArrayList<IConfigElement>();
+            List<IConfigElement> elements = new ArrayList<>();
             Iterator<ConfigCategory> ccI = category.getChildren().iterator();
             Iterator<Property> pI = category.getOrderedValues().iterator();
             @SuppressWarnings("unused")
@@ -235,14 +235,14 @@ public class ConfigElement implements IConfigElement
             {
                 Double[] da = new Double[aVal.length];
                 for(int i = 0; i < aVal.length; i++)
-                    da[i] = Double.valueOf(aVal[i].toString());
+                    da[i] = Double.valueOf(aVal[i]);
                 return da;
             }
             else if (type == Property.Type.INTEGER)
             {
                 Integer[] ia = new Integer[aVal.length];
                 for(int i = 0; i < aVal.length; i++)
-                    ia[i] = Integer.valueOf(aVal[i].toString());
+                    ia[i] = Integer.valueOf(aVal[i]);
                 return ia;
             }
             else
@@ -280,14 +280,14 @@ public class ConfigElement implements IConfigElement
             {
                 Double[] da = new Double[aVal.length];
                 for(int i = 0; i < aVal.length; i++)
-                    da[i] = Double.valueOf(aVal[i].toString());
+                    da[i] = Double.valueOf(aVal[i]);
                 return da;
             }
             else if (type == Property.Type.INTEGER)
             {
                 Integer[] ia = new Integer[aVal.length];
                 for(int i = 0; i < aVal.length; i++)
-                    ia[i] = Integer.valueOf(aVal[i].toString());
+                    ia[i] = Integer.valueOf(aVal[i]);
                 return ia;
             }
             else

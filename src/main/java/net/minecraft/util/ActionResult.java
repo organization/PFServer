@@ -24,6 +24,6 @@ public class ActionResult<T>
     //Just a generic helper function to make typecasing easier...
     public static <T> ActionResult<T> newResult(EnumActionResult result, T value)
     {
-        return new ActionResult<T>(result, value);
+        return new ActionResult<>(result, value);
     }
 }

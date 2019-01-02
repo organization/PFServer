@@ -21,12 +21,12 @@ public class EntityAIFollowOwner extends EntityAIBase
 {
     private final EntityTameable tameable;
     private EntityLivingBase owner;
-    World world;
+    final World world;
     private final double followSpeed;
     private final PathNavigate petPathfinder;
     private int timeToRecalcPath;
-    float maxDist;
-    float minDist;
+    final float maxDist;
+    final float minDist;
     private float oldWaterCost;
 
     public EntityAIFollowOwner(EntityTameable tameableIn, double followSpeedIn, float minDistIn, float maxDistIn)

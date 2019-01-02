@@ -4,11 +4,15 @@ package ibxm;
 public class Channel {
 	public int pattern_loop_row;
 
-	private Module module;
+	private final Module module;
 	private Instrument instrument;
 	private Sample sample;
-	private int[] global_volume, current_note;
-	private boolean linear_periods, fast_volume_slides, key_on, silent;
+	private final int[] global_volume;
+    private final int[] current_note;
+	private final boolean linear_periods;
+    private final boolean fast_volume_slides;
+    private boolean key_on;
+    private boolean silent;
 	private int sample_idx, sample_frac, step, left_gain, right_gain;
     @SuppressWarnings("unused") //Forge
 	private int volume, panning, fine_tune, period, porta_period, key_add;
@@ -18,7 +22,7 @@ public class Channel {
 	private int volume_envelope_tick, panning_envelope_tick;
 	private int effect_tick, trigger_tick, fade_out_volume, random_seed;
 
-	private int log_2_sampling_rate;
+	private final int log_2_sampling_rate;
 	private static final int LOG_2_29024 = LogTable.log_2( 29024 );
 	private static final int LOG_2_8287 = LogTable.log_2( 8287 );
 	private static final int LOG_2_8363 = LogTable.log_2( 8363 );

@@ -33,11 +33,11 @@ import static net.minecraftforge.common.config.Configuration.*;
 
 public class ConfigCategory implements Map<String, Property>
 {
-    private String name;
+    private final String name;
     private String comment;
     private String languagekey;
-    private ArrayList<ConfigCategory> children = new ArrayList<ConfigCategory>();
-    private Map<String, Property> properties = new TreeMap<String, Property>();
+    private final ArrayList<ConfigCategory> children = new ArrayList<>();
+    private final Map<String, Property> properties = new TreeMap<>();
     @SuppressWarnings("unused")
     private int propNumber = 0;
     public final ConfigCategory parent;
@@ -109,7 +109,7 @@ public class ConfigCategory implements Map<String, Property>
     {
         if (this.propertyOrder != null)
         {
-            ArrayList<Property> set = new ArrayList<Property>();
+            ArrayList<Property> set = new ArrayList<>();
             for (String key : this.propertyOrder)
                 if (properties.containsKey(key))
                     set.add(properties.get(key));
@@ -249,9 +249,8 @@ public class ConfigCategory implements Map<String, Property>
 
     private void write(BufferedWriter out, boolean new_line, String... data) throws IOException
     {
-        for (int x = 0; x < data.length; x++)
-        {
-            out.write(data[x]);
+        for (String datum : data) {
+            out.write(datum);
         }
         if (new_line) out.write(NEW_LINE);
     }
@@ -352,7 +351,7 @@ public class ConfigCategory implements Map<String, Property>
 
     private String getIndent(int indent)
     {
-        StringBuilder buf = new StringBuilder("");
+        StringBuilder buf = new StringBuilder();
         for (int x = 0; x < indent; x++)
         {
             buf.append("    ");

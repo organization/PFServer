@@ -52,7 +52,7 @@ public class WorldClient extends World
     private final Minecraft mc = Minecraft.getMinecraft();
     private final Set<ChunkPos> previousActiveChunkSet = Sets.<ChunkPos>newHashSet();
     private int ambienceTicks;
-    protected Set<ChunkPos> visibleChunks;
+    protected final Set<ChunkPos> visibleChunks;
 
     public WorldClient(NetHandlerPlayClient netHandler, WorldSettings settings, int dimension, EnumDifficulty difficulty, Profiler profilerIn)
     {
@@ -217,10 +217,7 @@ public class WorldClient extends World
     {
         super.onEntityAdded(entityIn);
 
-        if (this.entitySpawnQueue.contains(entityIn))
-        {
-            this.entitySpawnQueue.remove(entityIn);
-        }
+        this.entitySpawnQueue.remove(entityIn);
     }
 
     public void onEntityRemoved(Entity entityIn)
@@ -353,7 +350,7 @@ public class WorldClient extends World
 
         if (holdingBarrier && iblockstate.getBlock() == Blocks.BARRIER)
         {
-            this.spawnParticle(EnumParticleTypes.BARRIER, (double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), 0.0D, 0.0D, 0.0D, new int[0]);
+            this.spawnParticle(EnumParticleTypes.BARRIER, (double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -361,21 +358,17 @@ public class WorldClient extends World
     {
         this.loadedEntityList.removeAll(this.unloadedEntityList);
 
-        for (int i = 0; i < this.unloadedEntityList.size(); ++i)
-        {
-            Entity entity = this.unloadedEntityList.get(i);
+        for (Entity entity : this.unloadedEntityList) {
             int j = entity.chunkCoordX;
             int k = entity.chunkCoordZ;
 
-            if (entity.addedToChunk && this.isChunkLoaded(j, k, true))
-            {
+            if (entity.addedToChunk && this.isChunkLoaded(j, k, true)) {
                 this.getChunkFromChunkCoords(j, k).removeEntity(entity);
             }
         }
 
-        for (int i1 = 0; i1 < this.unloadedEntityList.size(); ++i1)
-        {
-            this.onEntityRemoved(this.unloadedEntityList.get(i1));
+        for (Entity entity : this.unloadedEntityList) {
+            this.onEntityRemoved(entity);
         }
 
         this.unloadedEntityList.clear();
@@ -414,34 +407,10 @@ public class WorldClient extends World
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport report)
     {
         CrashReportCategory crashreportcategory = super.addWorldInfoToCrashReport(report);
-        crashreportcategory.addDetail("Forced entities", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return WorldClient.this.entityList.size() + " total; " + WorldClient.this.entityList;
-            }
-        });
-        crashreportcategory.addDetail("Retry entities", new ICrashReportDetail<String>()
-        {
-            public String call()
-            {
-                return WorldClient.this.entitySpawnQueue.size() + " total; " + WorldClient.this.entitySpawnQueue;
-            }
-        });
-        crashreportcategory.addDetail("Server brand", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return WorldClient.this.mc.player.getServerBrand();
-            }
-        });
-        crashreportcategory.addDetail("Server type", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return WorldClient.this.mc.getIntegratedServer() == null ? "Non-integrated multiplayer server" : "Integrated singleplayer server";
-            }
-        });
+        crashreportcategory.addDetail("Forced entities", () -> WorldClient.this.entityList.size() + " total; " + WorldClient.this.entityList);
+        crashreportcategory.addDetail("Retry entities", () -> WorldClient.this.entitySpawnQueue.size() + " total; " + WorldClient.this.entitySpawnQueue);
+        crashreportcategory.addDetail("Server brand", () -> WorldClient.this.mc.player.getServerBrand());
+        crashreportcategory.addDetail("Server type", () -> WorldClient.this.mc.getIntegratedServer() == null ? "Non-integrated multiplayer server" : "Integrated singleplayer server");
         return crashreportcategory;
     }
 

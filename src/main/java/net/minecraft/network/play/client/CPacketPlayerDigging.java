@@ -70,6 +70,6 @@ public class CPacketPlayerDigging implements Packet<INetHandlerPlayServer>
         DROP_ALL_ITEMS,
         DROP_ITEM,
         RELEASE_USE_ITEM,
-        SWAP_HELD_ITEMS;
+        SWAP_HELD_ITEMS
     }
 }

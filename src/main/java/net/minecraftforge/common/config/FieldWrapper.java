@@ -17,10 +17,11 @@ import static net.minecraftforge.common.config.ConfigManager.*;
 
 public abstract class FieldWrapper implements IFieldWrapper
 {
-    protected String category, name;
+    protected final String category;
+    protected String name;
 
-    protected Field field;
-    protected Object instance;
+    protected final Field field;
+    protected final Object instance;
 
     public FieldWrapper(String category, Field field, Object instance)
     {
@@ -55,9 +56,7 @@ public abstract class FieldWrapper implements IFieldWrapper
             return true;
         else if (Enum.class.isAssignableFrom(field.getType()))
             return true;
-        else if (Map.class.isAssignableFrom(field.getType()))
-            return true;
-        return false;
+        else return Map.class.isAssignableFrom(field.getType());
     }
 
     private static class MapWrapper extends FieldWrapper
@@ -373,6 +372,7 @@ public abstract class FieldWrapper implements IFieldWrapper
 
     }
 
+    @SafeVarargs
     private static <T> T[] asArray(T... in)
     {
         return in;
@@ -380,8 +380,8 @@ public abstract class FieldWrapper implements IFieldWrapper
 
     public static class BeanEntry<K, V> implements Entry<K, V>
     {
-        private K key;
-        private V value;
+        private final K key;
+        private final V value;
 
         public BeanEntry(K key, V value)
         {

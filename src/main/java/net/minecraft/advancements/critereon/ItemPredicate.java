@@ -55,7 +55,7 @@ public class ItemPredicate
         {
             return false;
         }
-        else if (this.data != null && item.getMetadata() != this.data.intValue())
+        else if (this.data != null && item.getMetadata() != this.data)
         {
             return false;
         }
@@ -79,24 +79,15 @@ public class ItemPredicate
         {
             Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(item);
 
-            for (int i = 0; i < this.enchantments.length; ++i)
-            {
-                if (!this.enchantments[i].test(map))
-                {
+            for (EnchantmentPredicate enchantment : this.enchantments) {
+                if (!enchantment.test(map)) {
                     return false;
                 }
             }
 
             PotionType potiontype = PotionUtils.getPotionFromItem(item);
 
-            if (this.potion != null && this.potion != potiontype)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return this.potion == null || this.potion == potiontype;
         }
     }
 

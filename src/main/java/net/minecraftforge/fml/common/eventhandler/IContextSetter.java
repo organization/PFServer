@@ -27,5 +27,5 @@ import net.minecraftforge.fml.common.ModContainer;
 //So This should ONLY be used for Forge mod lifecycle events.
 public interface IContextSetter
 {
-    default void setModContainer(ModContainer mod){};
+    default void setModContainer(ModContainer mod){}
 }

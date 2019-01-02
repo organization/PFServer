@@ -52,7 +52,7 @@ public class BlockPistonExtension extends BlockDirectional
     public BlockPistonExtension()
     {
         super(Material.PISTON);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, EnumPistonType.DEFAULT).withProperty(SHORT, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, EnumPistonType.DEFAULT).withProperty(SHORT, Boolean.FALSE));
         this.setSoundType(SoundType.STONE);
         this.setHardness(0.5F);
     }
@@ -85,7 +85,7 @@ public class BlockPistonExtension extends BlockDirectional
 
     private AxisAlignedBB getArmShape(IBlockState state)
     {
-        boolean flag = ((Boolean)state.getValue(SHORT)).booleanValue();
+        boolean flag = (Boolean) state.getValue(SHORT);
 
         switch ((EnumFacing)state.getValue(FACING))
         {
@@ -133,7 +133,7 @@ public class BlockPistonExtension extends BlockDirectional
         pos = pos.offset(enumfacing);
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
-        if ((iblockstate.getBlock() == Blocks.PISTON || iblockstate.getBlock() == Blocks.STICKY_PISTON) && ((Boolean)iblockstate.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+        if ((iblockstate.getBlock() == Blocks.PISTON || iblockstate.getBlock() == Blocks.STICKY_PISTON) && (Boolean) iblockstate.getValue(BlockPistonBase.EXTENDED))
         {
             iblockstate.getBlock().dropBlockAsItem(worldIn, pos, iblockstate, 0);
             worldIn.setBlockToAir(pos);
@@ -229,7 +229,7 @@ public class BlockPistonExtension extends BlockDirectional
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, TYPE, SHORT});
+        return new BlockStateContainer(this, FACING, TYPE, SHORT);
     }
 
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)

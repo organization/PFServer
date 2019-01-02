@@ -74,11 +74,11 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     private int queuedLightChecks;
     private final ConcurrentLinkedQueue<BlockPos> tileEntityPosQueue;
     public boolean unloadQueued;
-    public gnu.trove.map.hash.TObjectIntHashMap<Class> entityCount = new gnu.trove.map.hash.TObjectIntHashMap<Class>(); // Spigot
+    public final gnu.trove.map.hash.TObjectIntHashMap<Class> entityCount = new gnu.trove.map.hash.TObjectIntHashMap<>(); // Spigot
 
     // CraftBukkit start - Neighbor loaded cache for chunk lighting and entity ticking
     private int neighbors = 0x1 << 12;
-    public long chunkKey;
+    public final long chunkKey;
 
     public boolean areNeighborsLoaded(final int radius) {
         switch (radius) {
@@ -270,23 +270,19 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
                     int k1 = 15;
                     int i1 = i + 16 - 1;
 
-                    while (true)
-                    {
+                    do {
                         int j1 = this.getBlockLightOpacity(j, i1, k);
 
-                        if (j1 == 0 && k1 != 15)
-                        {
+                        if (j1 == 0 && k1 != 15) {
                             j1 = 1;
                         }
 
                         k1 -= j1;
 
-                        if (k1 > 0)
-                        {
+                        if (k1 > 0) {
                             ExtendedBlockStorage extendedblockstorage = this.storageArrays[i1 >> 4];
 
-                            if (extendedblockstorage != NULL_BLOCK_STORAGE)
-                            {
+                            if (extendedblockstorage != NULL_BLOCK_STORAGE) {
                                 extendedblockstorage.setSkyLight(j, i1 & 15, k, k1);
                                 this.world.notifyLightSet(new BlockPos((this.x << 4) + j, i1, (this.z << 4) + k));
                             }
@@ -294,11 +290,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
 
                         --i1;
 
-                        if (i1 <= 0 || k1 <= 0)
-                        {
-                            break;
-                        }
-                    }
+                    } while (i1 > 0 && k1 > 0);
                 }
             }
         }
@@ -546,13 +538,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting block state");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being got");
-                crashreportcategory.addDetail("Location", new ICrashReportDetail<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return CrashReportCategory.getCoordinateInfo(x, y, z);
-                    }
-                });
+                crashreportcategory.addDetail("Location", () -> CrashReportCategory.getCoordinateInfo(x, y, z));
                 throw new ReportedException(crashreport);
             }
         }
@@ -762,7 +748,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
 
         if (i != this.x || j != this.z)
         {
-            LOGGER.warn("Wrong location! ({}, {}) should be ({}, {}), {}", Integer.valueOf(i), Integer.valueOf(j), Integer.valueOf(this.x), Integer.valueOf(this.z), entityIn);
+            LOGGER.warn("Wrong location! ({}, {}) should be ({}, {}), {}", i, j, this.x, this.z, entityIn);
             entityIn.setDead();
         }
 
@@ -1291,7 +1277,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     {
         if (this.storageArrays.length != newStorageArrays.length)
         {
-            LOGGER.warn("Could not set level chunk sections, array length is {} instead of {}", Integer.valueOf(newStorageArrays.length), Integer.valueOf(this.storageArrays.length));
+            LOGGER.warn("Could not set level chunk sections, array length is {} instead of {}", newStorageArrays.length, this.storageArrays.length);
         }
         else
         {
@@ -1357,7 +1343,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
         this.isTerrainPopulated = true;
         this.generateHeightMap();
 
-        List<TileEntity> invalidList = new java.util.ArrayList<TileEntity>();
+        List<TileEntity> invalidList = new java.util.ArrayList<>();
 
         for (TileEntity tileentity : this.tileEntities.values())
         {
@@ -1395,7 +1381,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     {
         if (this.blockBiomeArray.length != biomeArray.length)
         {
-            LOGGER.warn("Could not set level chunk biomes, array length is {} instead of {}", Integer.valueOf(biomeArray.length), Integer.valueOf(this.blockBiomeArray.length));
+            LOGGER.warn("Could not set level chunk biomes, array length is {} instead of {}", biomeArray.length, this.blockBiomeArray.length);
         }
         else
         {
@@ -1602,7 +1588,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     {
         if (this.heightMap.length != newHeightMap.length)
         {
-            LOGGER.warn("Could not set level chunk heightmap, array length is {} instead of {}", Integer.valueOf(newHeightMap.length), Integer.valueOf(this.heightMap.length));
+            LOGGER.warn("Could not set level chunk heightmap, array length is {} instead of {}", newHeightMap.length, this.heightMap.length);
         }
         else
         {
@@ -1675,7 +1661,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     {
         IMMEDIATE,
         QUEUED,
-        CHECK;
+        CHECK
     }
 
     /* ======================================== FORGE START =====================================*/
@@ -1720,7 +1706,7 @@ public class Chunk implements net.minecraftforge.common.capabilities.ICapability
     @Override
     public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capabilities == null ? false : capabilities.hasCapability(capability, facing);
+        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
     @Override
     @Nullable

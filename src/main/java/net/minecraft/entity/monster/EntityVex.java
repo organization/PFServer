@@ -73,7 +73,7 @@ public class EntityVex extends EntityMob
         this.tasks.addTask(8, new AIMoveRandom());
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityVex.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityVex.class));
         this.targetTasks.addTask(2, new AICopyOwnerTarget(this));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
@@ -88,7 +88,7 @@ public class EntityVex extends EntityMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(VEX_FLAGS, Byte.valueOf((byte)0));
+        this.dataManager.register(VEX_FLAGS, (byte) 0);
     }
 
     public static void registerFixesVex(DataFixer fixer)
@@ -146,13 +146,13 @@ public class EntityVex extends EntityMob
 
     private boolean getVexFlag(int mask)
     {
-        int i = ((Byte)this.dataManager.get(VEX_FLAGS)).byteValue();
+        int i = (Byte) this.dataManager.get(VEX_FLAGS);
         return (i & mask) != 0;
     }
 
     private void setVexFlag(int mask, boolean value)
     {
-        int i = ((Byte)this.dataManager.get(VEX_FLAGS)).byteValue();
+        int i = (Byte) this.dataManager.get(VEX_FLAGS);
 
         if (value)
         {
@@ -163,7 +163,7 @@ public class EntityVex extends EntityMob
             i = i & ~mask;
         }
 
-        this.dataManager.set(VEX_FLAGS, Byte.valueOf((byte)(i & 255)));
+        this.dataManager.set(VEX_FLAGS, (byte) (i & 255));
     }
 
     public boolean isCharging()

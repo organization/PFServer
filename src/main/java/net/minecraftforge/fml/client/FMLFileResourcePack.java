@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 
 public class FMLFileResourcePack extends FileResourcePack implements FMLContainerHolder {
 
-    private ModContainer container;
+    private final ModContainer container;
 
     public FMLFileResourcePack(ModContainer container)
     {

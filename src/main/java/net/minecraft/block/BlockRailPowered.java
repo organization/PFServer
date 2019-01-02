@@ -16,13 +16,7 @@ import javax.annotation.Nullable;
 
 public class BlockRailPowered extends BlockRailBase
 {
-    public static final PropertyEnum<EnumRailDirection> SHAPE = PropertyEnum.<EnumRailDirection>create("shape", EnumRailDirection.class, new Predicate<EnumRailDirection>()
-    {
-        public boolean apply(@Nullable BlockRailBase.EnumRailDirection p_apply_1_)
-        {
-            return p_apply_1_ != EnumRailDirection.NORTH_EAST && p_apply_1_ != EnumRailDirection.NORTH_WEST && p_apply_1_ != EnumRailDirection.SOUTH_EAST && p_apply_1_ != EnumRailDirection.SOUTH_WEST;
-        }
-    });
+    public static final PropertyEnum<EnumRailDirection> SHAPE = PropertyEnum.<EnumRailDirection>create("shape", EnumRailDirection.class, p_apply_1_ -> p_apply_1_ != EnumRailDirection.NORTH_EAST && p_apply_1_ != EnumRailDirection.NORTH_WEST && p_apply_1_ != EnumRailDirection.SOUTH_EAST && p_apply_1_ != EnumRailDirection.SOUTH_WEST);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
 
     private final boolean isActivator;
@@ -36,7 +30,7 @@ public class BlockRailPowered extends BlockRailBase
     {
         super(true);
         this.isActivator = isActivator;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumRailDirection.NORTH_SOUTH).withProperty(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumRailDirection.NORTH_SOUTH).withProperty(POWERED, Boolean.FALSE));
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -168,9 +162,9 @@ public class BlockRailPowered extends BlockRailBase
             {
                 if (p_176567_5_ != EnumRailDirection.NORTH_SOUTH || blockrailbase$enumraildirection != EnumRailDirection.EAST_WEST && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_EAST && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_WEST)
                 {
-                    if (((Boolean)iblockstate.getValue(POWERED)).booleanValue())
+                    if ((Boolean) iblockstate.getValue(POWERED))
                     {
-                        return worldIn.isBlockPowered(pos) ? true : this.findPoweredRailSignal(worldIn, pos, iblockstate, p_176567_3_, distance + 1);
+                        return worldIn.isBlockPowered(pos) || this.findPoweredRailSignal(worldIn, pos, iblockstate, p_176567_3_, distance + 1);
                     }
                     else
                     {
@@ -191,7 +185,7 @@ public class BlockRailPowered extends BlockRailBase
 
     protected void updateState(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
+        boolean flag = (Boolean) state.getValue(POWERED);
         boolean flag1 = worldIn.isBlockPowered(pos) || this.findPoweredRailSignal(worldIn, pos, state, true, 0) || this.findPoweredRailSignal(worldIn, pos, state, false, 0);
 
         if (flag1 != flag)
@@ -201,7 +195,7 @@ public class BlockRailPowered extends BlockRailBase
             if (newPower == power) {
                 return;
             }
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag1)), 3);
+            worldIn.setBlockState(pos, state.withProperty(POWERED, flag1), 3);
             worldIn.notifyNeighborsOfStateChange(pos.down(), this, false);
 
             if (((EnumRailDirection)state.getValue(SHAPE)).isAscending())
@@ -218,7 +212,7 @@ public class BlockRailPowered extends BlockRailBase
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(SHAPE, EnumRailDirection.byMetadata(meta & 7)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(SHAPE, EnumRailDirection.byMetadata(meta & 7)).withProperty(POWERED, (meta & 8) > 0);
     }
 
     public int getMetaFromState(IBlockState state)
@@ -226,7 +220,7 @@ public class BlockRailPowered extends BlockRailBase
         int i = 0;
         i = i | ((EnumRailDirection)state.getValue(SHAPE)).getMetadata();
 
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
+        if ((Boolean) state.getValue(POWERED))
         {
             i |= 8;
         }
@@ -373,6 +367,6 @@ public class BlockRailPowered extends BlockRailBase
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {SHAPE, POWERED});
+        return new BlockStateContainer(this, SHAPE, POWERED);
     }
 }

@@ -147,7 +147,7 @@ public class SpectatorMenu
 
             public ITextComponent getSpectatorName()
             {
-                return new TextComponentTranslation("spectatorMenu.close", new Object[0]);
+                return new TextComponentTranslation("spectatorMenu.close");
             }
 
             public void renderIcon(float brightness, int alpha)
@@ -181,7 +181,7 @@ public class SpectatorMenu
 
             public ITextComponent getSpectatorName()
             {
-                return this.direction < 0 ? new TextComponentTranslation("spectatorMenu.previous_page", new Object[0]) : new TextComponentTranslation("spectatorMenu.next_page", new Object[0]);
+                return this.direction < 0 ? new TextComponentTranslation("spectatorMenu.previous_page") : new TextComponentTranslation("spectatorMenu.next_page");
             }
 
             public void renderIcon(float brightness, int alpha)

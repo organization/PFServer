@@ -44,7 +44,7 @@ public class DedicatedPlayerList extends PlayerList
     public void setWhiteListEnabled(boolean whitelistEnabled)
     {
         super.setWhiteListEnabled(whitelistEnabled);
-        this.getServerInstance().setProperty("white-list", Boolean.valueOf(whitelistEnabled));
+        this.getServerInstance().setProperty("white-list", whitelistEnabled);
         this.getServerInstance().saveProperties();
     }
 

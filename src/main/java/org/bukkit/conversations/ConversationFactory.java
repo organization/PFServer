@@ -20,15 +20,15 @@ import java.util.Map;
  */
 public class ConversationFactory {
 
-    protected Plugin plugin;
+    protected final Plugin plugin;
     protected boolean isModal;
     protected boolean localEchoEnabled;
     protected ConversationPrefix prefix;
     protected Prompt firstPrompt;
     protected Map<Object, Object> initialSessionData;
     protected String playerOnlyMessage;
-    protected List<ConversationCanceller> cancellers;
-    protected List<ConversationAbandonedListener> abandonedListeners;
+    protected final List<ConversationCanceller> cancellers;
+    protected final List<ConversationAbandonedListener> abandonedListeners;
 
     /**
      * Constructs a ConversationFactory.
@@ -41,10 +41,10 @@ public class ConversationFactory {
         localEchoEnabled = true;
         prefix = new NullConversationPrefix();
         firstPrompt = Prompt.END_OF_CONVERSATION;
-        initialSessionData = new HashMap<Object, Object>();
+        initialSessionData = new HashMap<>();
         playerOnlyMessage = null;
-        cancellers = new ArrayList<ConversationCanceller>();
-        abandonedListeners = new ArrayList<ConversationAbandonedListener>();
+        cancellers = new ArrayList<>();
+        abandonedListeners = new ArrayList<>();
     }
 
     /**
@@ -189,8 +189,7 @@ public class ConversationFactory {
         }
 
         //Clone any initial session data
-        Map<Object, Object> copiedInitialSessionData = new HashMap<Object, Object>();
-        copiedInitialSessionData.putAll(initialSessionData);
+        Map<Object, Object> copiedInitialSessionData = new HashMap<>(initialSessionData);
 
         //Build and return a conversation
         Conversation conversation = new Conversation(plugin, forWhom, firstPrompt, copiedInitialSessionData);

@@ -21,7 +21,7 @@ public class TileEntityBannerRenderer extends TileEntitySpecialRenderer<TileEnti
     public void render(TileEntityBanner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         boolean flag = te.getWorld() != null;
-        boolean flag1 = !flag || te.getBlockType() == Blocks.STANDING_BANNER;
+        boolean flag1 = !true || te.getBlockType() == Blocks.STANDING_BANNER;
         int i = flag ? te.getBlockMetadata() : 0;
         long j = flag ? te.getWorld().getTotalWorldTime() : 0L;
         GlStateManager.pushMatrix();

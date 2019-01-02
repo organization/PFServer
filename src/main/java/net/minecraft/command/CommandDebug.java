@@ -43,7 +43,7 @@ public class CommandDebug extends CommandBase
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         // CraftBukkit start - only allow use when enabled (so that no blank profile results occur)
-        if (!server.profiler.ENABLED) {
+        if (!Profiler.ENABLED) {
             sender.sendMessage(new TextComponentString("Vanilla debug profiling is disabled."));
             sender.sendMessage(new TextComponentString("To enable, restart the server with `-DenableDebugMethodProfiler=true' before `-jar'."));
             sender.sendMessage(new TextComponentString("Use `/timings' for plugin timings."));
@@ -52,7 +52,7 @@ public class CommandDebug extends CommandBase
         // CraftBukkit end
         if (args.length < 1)
         {
-            throw new WrongUsageException("commands.debug.usage", new Object[0]);
+            throw new WrongUsageException("commands.debug.usage");
         }
         else
         {
@@ -60,10 +60,10 @@ public class CommandDebug extends CommandBase
             {
                 if (args.length != 1)
                 {
-                    throw new WrongUsageException("commands.debug.usage", new Object[0]);
+                    throw new WrongUsageException("commands.debug.usage");
                 }
 
-                notifyCommandListener(sender, this, "commands.debug.start", new Object[0]);
+                notifyCommandListener(sender, this, "commands.debug.start");
                 server.enableProfiling();
                 this.profileStartTime = MinecraftServer.getCurrentTimeMillis();
                 this.profileStartTick = server.getTickCounter();
@@ -72,17 +72,17 @@ public class CommandDebug extends CommandBase
             {
                 if (!"stop".equals(args[0]))
                 {
-                    throw new WrongUsageException("commands.debug.usage", new Object[0]);
+                    throw new WrongUsageException("commands.debug.usage");
                 }
 
                 if (args.length != 1)
                 {
-                    throw new WrongUsageException("commands.debug.usage", new Object[0]);
+                    throw new WrongUsageException("commands.debug.usage");
                 }
 
                 if (!server.profiler.profilingEnabled)
                 {
-                    throw new CommandException("commands.debug.notStarted", new Object[0]);
+                    throw new CommandException("commands.debug.notStarted");
                 }
 
                 long i = MinecraftServer.getCurrentTimeMillis();
@@ -91,7 +91,7 @@ public class CommandDebug extends CommandBase
                 int l = j - this.profileStartTick;
                 this.saveProfilerResults(k, l, server);
                 server.profiler.profilingEnabled = false;
-                notifyCommandListener(sender, this, "commands.debug.stop", new Object[] {String.format("%.2f", (float)k / 1000.0F), l});
+                notifyCommandListener(sender, this, "commands.debug.stop", String.format("%.2f", (float)k / 1000.0F), l);
             }
         }
     }
@@ -182,6 +182,6 @@ public class CommandDebug extends CommandBase
 
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[] {"start", "stop"}) : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "start", "stop") : Collections.emptyList();
     }
 }

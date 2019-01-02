@@ -50,7 +50,7 @@ public class EntityFireworkRocket extends Entity
     protected void entityInit()
     {
         this.dataManager.register(FIREWORK_ITEM, ItemStack.EMPTY);
-        this.dataManager.register(BOOSTED_ENTITY_ID, Integer.valueOf(0));
+        this.dataManager.register(BOOSTED_ENTITY_ID, 0);
     }
 
     @SideOnly(Side.CLIENT)
@@ -90,7 +90,7 @@ public class EntityFireworkRocket extends Entity
     public EntityFireworkRocket(World p_i47367_1_, ItemStack p_i47367_2_, EntityLivingBase p_i47367_3_)
     {
         this(p_i47367_1_, p_i47367_3_.posX, p_i47367_3_.posY, p_i47367_3_.posZ, p_i47367_2_);
-        this.dataManager.set(BOOSTED_ENTITY_ID, Integer.valueOf(p_i47367_3_.getEntityId()));
+        this.dataManager.set(BOOSTED_ENTITY_ID, p_i47367_3_.getEntityId());
         this.boostedEntity = p_i47367_3_;
     }
 
@@ -122,7 +122,7 @@ public class EntityFireworkRocket extends Entity
         {
             if (this.boostedEntity == null)
             {
-                Entity entity = this.world.getEntityByID(((Integer)this.dataManager.get(BOOSTED_ENTITY_ID)).intValue());
+                Entity entity = this.world.getEntityByID((Integer) this.dataManager.get(BOOSTED_ENTITY_ID));
 
                 if (entity instanceof EntityLivingBase)
                 {
@@ -161,7 +161,6 @@ public class EntityFireworkRocket extends Entity
 
         for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
-            ;
         }
 
         while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
@@ -259,7 +258,7 @@ public class EntityFireworkRocket extends Entity
 
     public boolean isAttachedToEntity()
     {
-        return ((Integer)this.dataManager.get(BOOSTED_ENTITY_ID)).intValue() > 0;
+        return (Integer) this.dataManager.get(BOOSTED_ENTITY_ID) > 0;
     }
 
     @SideOnly(Side.CLIENT)
@@ -277,7 +276,7 @@ public class EntityFireworkRocket extends Entity
 
     public static void registerFixesFireworkRocket(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityFireworkRocket.class, new String[] {"FireworksItem"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityFireworkRocket.class, "FireworksItem"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)

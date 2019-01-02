@@ -46,7 +46,7 @@ public class BlockCauldron extends Block
     public BlockCauldron()
     {
         super(Material.IRON, MapColor.STONE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 0));
     }
 
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
@@ -75,7 +75,7 @@ public class BlockCauldron extends Block
 
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        int i = ((Integer)state.getValue(LEVEL)).intValue();
+        int i = (Integer) state.getValue(LEVEL);
         float f = (float)pos.getY() + (6.0F + (float)(3 * i)) / 16.0F;
 
         if (!worldIn.isRemote && entityIn.isBurning() && i > 0 && entityIn.getEntityBoundingBox().minY <= (double)f)
@@ -98,7 +98,7 @@ public class BlockCauldron extends Block
         }
         else
         {
-            int i = ((Integer)state.getValue(LEVEL)).intValue();
+            int i = (Integer) state.getValue(LEVEL);
             Item item = itemstack.getItem();
 
             if (item == Items.WATER_BUCKET)
@@ -276,7 +276,7 @@ public class BlockCauldron extends Block
     }
 
     private boolean changeLevel(World world, BlockPos blockposition, IBlockState iblockdata, int i, Entity entity, CauldronLevelChangeEvent.ChangeReason reason) {
-        int newLevel = Integer.valueOf(MathHelper.clamp(i, 0, 3));
+        int newLevel = MathHelper.clamp(i, 0, 3);
         CauldronLevelChangeEvent event = new CauldronLevelChangeEvent(
                 world.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()),
                 (entity == null) ? null : entity.getBukkitEntity(), reason, iblockdata.getValue(BlockCauldron.LEVEL), newLevel
@@ -301,7 +301,7 @@ public class BlockCauldron extends Block
             {
                 IBlockState iblockstate = worldIn.getBlockState(pos);
 
-                if (((Integer)iblockstate.getValue(LEVEL)).intValue() < 3)
+                if ((Integer) iblockstate.getValue(LEVEL) < 3)
                 {
                     this.changeLevel(worldIn, pos, iblockstate.cycleProperty(LEVEL), 2);
                 }
@@ -326,22 +326,22 @@ public class BlockCauldron extends Block
 
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        return ((Integer)blockState.getValue(LEVEL)).intValue();
+        return (Integer) blockState.getValue(LEVEL);
     }
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(LEVEL, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(LEVEL, meta);
     }
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer)state.getValue(LEVEL)).intValue();
+        return (Integer) state.getValue(LEVEL);
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {LEVEL});
+        return new BlockStateContainer(this, LEVEL);
     }
 
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)

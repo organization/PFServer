@@ -33,10 +33,10 @@ import java.lang.reflect.Modifier;
  *
  */
 class ItemStackHolderRef {
-    private Field field;
-    private String itemName;
-    private int meta;
-    private String serializednbt;
+    private final Field field;
+    private final String itemName;
+    private final int meta;
+    private final String serializednbt;
 
 
     ItemStackHolderRef(Field field, String itemName, int meta, String serializednbt)

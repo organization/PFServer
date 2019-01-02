@@ -42,6 +42,6 @@ public interface Parrot extends Animals, Tameable, Sittable {
         /**
          * Gray colored parrot.
          */
-        GRAY;
+        GRAY
     }
 }

@@ -56,7 +56,7 @@ public class Stitcher
 
     public void doStitch()
     {
-        Holder[] astitcher$holder = this.setStitchHolders.toArray(new Holder[this.setStitchHolders.size()]);
+        Holder[] astitcher$holder = this.setStitchHolders.toArray(new Holder[0]);
         Arrays.sort(astitcher$holder);
         net.minecraftforge.fml.common.ProgressManager.ProgressBar bar = net.minecraftforge.fml.common.ProgressManager.push("Texture stitching", astitcher$holder.length);
 
@@ -110,19 +110,15 @@ public class Stitcher
         TextureAtlasSprite textureatlassprite = p_94310_1_.getAtlasSprite();
         boolean flag = textureatlassprite.getIconWidth() != textureatlassprite.getIconHeight();
 
-        for (int i = 0; i < this.stitchSlots.size(); ++i)
-        {
-            if (((Slot)this.stitchSlots.get(i)).addSlot(p_94310_1_))
-            {
+        for (Slot stitchSlot : this.stitchSlots) {
+            if (((Slot) stitchSlot).addSlot(p_94310_1_)) {
                 return true;
             }
 
-            if (flag)
-            {
+            if (flag) {
                 p_94310_1_.rotate();
 
-                if (((Slot)this.stitchSlots.get(i)).addSlot(p_94310_1_))
-                {
+                if (((Slot) stitchSlot).addSlot(p_94310_1_)) {
                     return true;
                 }
 

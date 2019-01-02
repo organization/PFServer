@@ -19,7 +19,7 @@ public interface MapView {
         FAR(3),
         FARTHEST(4);
 
-        private byte value;
+        private final byte value;
 
         private Scale(int value) {
             this.value = (byte) value;

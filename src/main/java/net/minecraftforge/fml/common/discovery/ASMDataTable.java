@@ -33,10 +33,10 @@ public class ASMDataTable
 {
     public final static class ASMData implements Cloneable
     {
-        private ModCandidate candidate;
-        private String annotationName;
-        private String className;
-        private String objectName;
+        private final ModCandidate candidate;
+        private final String annotationName;
+        private final String className;
+        private final String objectName;
         private int classVersion;
         private Map<String,Object> annotationInfo;
         public ASMData(ModCandidate candidate, String annotationName, String className, @Nullable String objectName, @Nullable Map<String,Object> info)
@@ -85,7 +85,7 @@ public class ASMDataTable
 
     private static class ModContainerPredicate implements Predicate<ASMData>
     {
-        private ModContainer container;
+        private final ModContainer container;
         public ModContainerPredicate(ModContainer container)
         {
             this.container = container;
@@ -99,8 +99,8 @@ public class ASMDataTable
     private final SetMultimap<String, ASMData> globalAnnotationData = HashMultimap.create();
     private Map<ModContainer, SetMultimap<String,ASMData>> containerAnnotationData;
 
-    private List<ModContainer> containers = Lists.newArrayList();
-    private SetMultimap<String,ModCandidate> packageMap = HashMultimap.create();
+    private final List<ModContainer> containers = Lists.newArrayList();
+    private final SetMultimap<String,ModCandidate> packageMap = HashMultimap.create();
 
     public SetMultimap<String,ASMData> getAnnotationsFor(ModContainer container)
     {

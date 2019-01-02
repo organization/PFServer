@@ -5,7 +5,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 
 public class EntityAICreeperSwell extends EntityAIBase
 {
-    EntityCreeper swellingCreeper;
+    final EntityCreeper swellingCreeper;
     EntityLivingBase creeperAttackTarget;
 
     public EntityAICreeperSwell(EntityCreeper entitycreeperIn)

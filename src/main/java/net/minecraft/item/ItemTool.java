@@ -21,7 +21,7 @@ public class ItemTool extends Item
     protected float efficiency;
     protected float attackDamage;
     protected float attackSpeed;
-    protected ToolMaterial toolMaterial;
+    protected final ToolMaterial toolMaterial;
 
     protected ItemTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn)
     {

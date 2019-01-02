@@ -481,7 +481,7 @@ public class ChunkGeneratorHell implements IChunkGenerator
 
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
-        return "Fortress".equals(structureName) && this.genNetherBridge != null ? this.genNetherBridge.isInsideStructure(pos) : false;
+        return ("Fortress".equals(structureName) && this.genNetherBridge != null) && this.genNetherBridge.isInsideStructure(pos);
     }
 
     public void recreateStructures(Chunk chunkIn, int x, int z)

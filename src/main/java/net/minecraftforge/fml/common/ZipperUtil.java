@@ -40,7 +40,7 @@ public class ZipperUtil {
     public static void zip(File directory, File zipfile) throws IOException
     {
         URI base = directory.toURI();
-        Deque<File> queue = new LinkedList<File>();
+        Deque<File> queue = new LinkedList<>();
         queue.push(directory);
         OutputStream out = new FileOutputStream(zipfile);
         Closeable res = null;

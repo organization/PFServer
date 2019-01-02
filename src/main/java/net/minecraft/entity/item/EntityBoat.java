@@ -99,14 +99,14 @@ public class EntityBoat extends Entity
 
     protected void entityInit()
     {
-        this.dataManager.register(TIME_SINCE_HIT, Integer.valueOf(0));
-        this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
-        this.dataManager.register(DAMAGE_TAKEN, Float.valueOf(0.0F));
-        this.dataManager.register(BOAT_TYPE, Integer.valueOf(Type.OAK.ordinal()));
+        this.dataManager.register(TIME_SINCE_HIT, 0);
+        this.dataManager.register(FORWARD_DIRECTION, 1);
+        this.dataManager.register(DAMAGE_TAKEN, 0.0F);
+        this.dataManager.register(BOAT_TYPE, Type.OAK.ordinal());
 
         for (DataParameter<Boolean> dataparameter : DATA_ID_PADDLE)
         {
-            this.dataManager.register(dataparameter, Boolean.valueOf(false));
+            this.dataManager.register(dataparameter, Boolean.FALSE);
         }
     }
 
@@ -370,18 +370,11 @@ public class EntityBoat extends Entity
         {
             boolean flag = !this.world.isRemote && !(this.getControllingPassenger() instanceof EntityPlayer);
 
-            for (int j = 0; j < list.size(); ++j)
-            {
-                Entity entity = list.get(j);
-
-                if (!entity.isPassenger(this))
-                {
-                    if (flag && this.getPassengers().size() < 2 && !entity.isRiding() && entity.width < this.width && entity instanceof EntityLivingBase && !(entity instanceof EntityWaterMob) && !(entity instanceof EntityPlayer))
-                    {
+            for (Entity entity : list) {
+                if (!entity.isPassenger(this)) {
+                    if (flag && this.getPassengers().size() < 2 && !entity.isRiding() && entity.width < this.width && entity instanceof EntityLivingBase && !(entity instanceof EntityWaterMob) && !(entity instanceof EntityPlayer)) {
                         entity.startRiding(this);
-                    }
-                    else
-                    {
+                    } else {
                         this.applyEntityCollision(entity);
                     }
                 }
@@ -424,8 +417,8 @@ public class EntityBoat extends Entity
 
     public void setPaddleState(boolean left, boolean right)
     {
-        this.dataManager.set(DATA_ID_PADDLE[0], Boolean.valueOf(left));
-        this.dataManager.set(DATA_ID_PADDLE[1], Boolean.valueOf(right));
+        this.dataManager.set(DATA_ID_PADDLE[0], left);
+        this.dataManager.set(DATA_ID_PADDLE[1], right);
     }
 
     @SideOnly(Side.CLIENT)
@@ -489,8 +482,7 @@ public class EntityBoat extends Entity
                     {
                         if (f < 1.0F)
                         {
-                            float f2 = (float)blockpos$pooledmutableblockpos.getY() + f;
-                            return f2;
+                            return (float)blockpos$pooledmutableblockpos.getY() + f;
                         }
 
                         break;
@@ -516,8 +508,7 @@ public class EntityBoat extends Entity
                 }
             }
 
-            float f1 = (float)(l + 1);
-            return f1;
+            return (float)(l + 1);
         }
         finally
         {
@@ -648,10 +639,9 @@ public class EntityBoat extends Entity
 
                         if (iblockstate.getMaterial() == Material.WATER && d0 < (double)BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos))
                         {
-                            if (((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() != 0)
+                            if ((Integer) iblockstate.getValue(BlockLiquid.LEVEL) != 0)
                             {
-                                Status entityboat$status = Status.UNDER_FLOWING_WATER;
-                                return entityboat$status;
+                                return Status.UNDER_FLOWING_WATER;
                             }
 
                             flag = true;
@@ -904,47 +894,47 @@ public class EntityBoat extends Entity
 
     public boolean getPaddleState(int side)
     {
-        return ((Boolean)this.dataManager.get(DATA_ID_PADDLE[side])).booleanValue() && this.getControllingPassenger() != null;
+        return (Boolean) this.dataManager.get(DATA_ID_PADDLE[side]) && this.getControllingPassenger() != null;
     }
 
     public void setDamageTaken(float damageTaken)
     {
-        this.dataManager.set(DAMAGE_TAKEN, Float.valueOf(damageTaken));
+        this.dataManager.set(DAMAGE_TAKEN, damageTaken);
     }
 
     public float getDamageTaken()
     {
-        return ((Float)this.dataManager.get(DAMAGE_TAKEN)).floatValue();
+        return (Float) this.dataManager.get(DAMAGE_TAKEN);
     }
 
     public void setTimeSinceHit(int timeSinceHit)
     {
-        this.dataManager.set(TIME_SINCE_HIT, Integer.valueOf(timeSinceHit));
+        this.dataManager.set(TIME_SINCE_HIT, timeSinceHit);
     }
 
     public int getTimeSinceHit()
     {
-        return ((Integer)this.dataManager.get(TIME_SINCE_HIT)).intValue();
+        return (Integer) this.dataManager.get(TIME_SINCE_HIT);
     }
 
     public void setForwardDirection(int forwardDirection)
     {
-        this.dataManager.set(FORWARD_DIRECTION, Integer.valueOf(forwardDirection));
+        this.dataManager.set(FORWARD_DIRECTION, forwardDirection);
     }
 
     public int getForwardDirection()
     {
-        return ((Integer)this.dataManager.get(FORWARD_DIRECTION)).intValue();
+        return (Integer) this.dataManager.get(FORWARD_DIRECTION);
     }
 
     public void setBoatType(Type boatType)
     {
-        this.dataManager.set(BOAT_TYPE, Integer.valueOf(boatType.ordinal()));
+        this.dataManager.set(BOAT_TYPE, boatType.ordinal());
     }
 
     public Type getBoatType()
     {
-        return Type.byId(((Integer)this.dataManager.get(BOAT_TYPE)).intValue());
+        return Type.byId((Integer) this.dataManager.get(BOAT_TYPE));
     }
 
     protected boolean canFitPassenger(Entity passenger)
@@ -974,7 +964,7 @@ public class EntityBoat extends Entity
         UNDER_WATER,
         UNDER_FLOWING_WATER,
         ON_LAND,
-        IN_AIR;
+        IN_AIR
     }
 
     public static enum Type

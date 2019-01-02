@@ -62,14 +62,14 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
         this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
     }
 
     protected void entityInit()
     {
         super.entityInit();
-        this.getDataManager().register(IS_DRINKING, Boolean.valueOf(false));
+        this.getDataManager().register(IS_DRINKING, Boolean.FALSE);
     }
 
     protected SoundEvent getAmbientSound()
@@ -89,12 +89,12 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
 
     public void setDrinkingPotion(boolean drinkingPotion)
     {
-        this.getDataManager().set(IS_DRINKING, Boolean.valueOf(drinkingPotion));
+        this.getDataManager().set(IS_DRINKING, drinkingPotion);
     }
 
     public boolean isDrinkingPotion()
     {
-        return ((Boolean)this.getDataManager().get(IS_DRINKING)).booleanValue();
+        return (Boolean) this.getDataManager().get(IS_DRINKING);
     }
 
     protected void applyEntityAttributes()

@@ -42,7 +42,7 @@ public class TileEntityBrewingStand extends TileEntityLockable implements ITicka
 
     private int lastTick = MinecraftServer.currentTick;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -173,7 +173,7 @@ public class TileEntityBrewingStand extends TileEntityLockable implements ITicka
 
                 for (int i = 0; i < BlockBrewingStand.HAS_BOTTLE.length; ++i)
                 {
-                    iblockstate = iblockstate.withProperty(BlockBrewingStand.HAS_BOTTLE[i], Boolean.valueOf(aboolean[i]));
+                    iblockstate = iblockstate.withProperty(BlockBrewingStand.HAS_BOTTLE[i], aboolean[i]);
                 }
 
                 this.world.setBlockState(this.pos, iblockstate, 2);
@@ -265,7 +265,7 @@ public class TileEntityBrewingStand extends TileEntityLockable implements ITicka
 
     public static void registerFixesBrewingStand(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityBrewingStand.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityBrewingStand.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -431,9 +431,9 @@ public class TileEntityBrewingStand extends TileEntityLockable implements ITicka
         }
     }
 
-    net.minecraftforge.items.IItemHandler handlerInput = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.UP);
-    net.minecraftforge.items.IItemHandler handlerOutput = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
-    net.minecraftforge.items.IItemHandler handlerSides = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.NORTH);
+    final net.minecraftforge.items.IItemHandler handlerInput = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.UP);
+    final net.minecraftforge.items.IItemHandler handlerOutput = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
+    final net.minecraftforge.items.IItemHandler handlerSides = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.NORTH);
 
     @SuppressWarnings("unchecked")
     @Override

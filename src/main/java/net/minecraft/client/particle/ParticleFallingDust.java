@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 @SideOnly(Side.CLIENT)
 public class ParticleFallingDust extends Particle
 {
-    float oSize;
+    final float oSize;
     final float rotSpeed;
 
     protected ParticleFallingDust(World p_i47135_1_, double p_i47135_2_, double p_i47135_4_, double p_i47135_6_, float p_i47135_8_, float p_i47135_9_, float p_i47135_10_)

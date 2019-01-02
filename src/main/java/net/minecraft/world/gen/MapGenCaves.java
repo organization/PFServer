@@ -293,8 +293,7 @@ public class MapGenCaves extends MapGenBase
     private boolean isExceptionBiome(net.minecraft.world.biome.Biome biome)
     {
         if (biome == net.minecraft.init.Biomes.BEACH) return true;
-        if (biome == net.minecraft.init.Biomes.DESERT) return true;
-        return false;
+        return biome == net.minecraft.init.Biomes.DESERT;
     }
 
     //Determine if the block at the specified location is the top block for the biome, we take into account

@@ -38,7 +38,7 @@ public class TileEntityChest extends TileEntityLockableLoot implements ITickable
     private int ticksSinceSync;
     private BlockChest.Type cachedChestType;
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public final List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
     
     public List<ItemStack> getContents() {
@@ -95,7 +95,7 @@ public class TileEntityChest extends TileEntityLockableLoot implements ITickable
 
     public static void registerFixesChest(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityChest.class, new String[] {"Items"}));
+        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityChest.class, "Items"));
     }
 
     public void readFromNBT(NBTTagCompound compound)

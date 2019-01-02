@@ -24,7 +24,7 @@ public class Teleporter implements net.minecraftforge.common.util.ITeleporter
 {
     protected final WorldServer world;
     protected final Random random;
-    protected final Long2ObjectMap<PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<PortalPosition>(4096);
+    protected final Long2ObjectMap<PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>(4096);
 
     public Teleporter(WorldServer worldIn)
     {

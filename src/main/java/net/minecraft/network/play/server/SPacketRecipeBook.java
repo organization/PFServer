@@ -120,6 +120,6 @@ public class SPacketRecipeBook implements Packet<INetHandlerPlayClient>
     {
         INIT,
         ADD,
-        REMOVE;
+        REMOVE
     }
 }

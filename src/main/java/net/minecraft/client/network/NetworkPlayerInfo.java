@@ -23,7 +23,7 @@ import java.util.Map;
 public class NetworkPlayerInfo
 {
     private final GameProfile gameProfile;
-    Map<Type, ResourceLocation> playerTextures = Maps.newEnumMap(Type.class);
+    final Map<Type, ResourceLocation> playerTextures = Maps.newEnumMap(Type.class);
     private GameType gameType;
     private int responseTime;
     private boolean playerTexturesLoaded;
@@ -116,28 +116,24 @@ public class NetworkPlayerInfo
             if (!this.playerTexturesLoaded)
             {
                 this.playerTexturesLoaded = true;
-                Minecraft.getMinecraft().getSkinManager().loadProfileTextures(this.gameProfile, new SkinManager.SkinAvailableCallback()
-                {
-                    public void skinAvailable(Type typeIn, ResourceLocation location, MinecraftProfileTexture profileTexture)
+                Minecraft.getMinecraft().getSkinManager().loadProfileTextures(this.gameProfile, (typeIn, location, profileTexture) -> {
+                    switch (typeIn)
                     {
-                        switch (typeIn)
-                        {
-                            case SKIN:
-                                NetworkPlayerInfo.this.playerTextures.put(Type.SKIN, location);
-                                NetworkPlayerInfo.this.skinType = profileTexture.getMetadata("model");
+                        case SKIN:
+                            NetworkPlayerInfo.this.playerTextures.put(Type.SKIN, location);
+                            NetworkPlayerInfo.this.skinType = profileTexture.getMetadata("model");
 
-                                if (NetworkPlayerInfo.this.skinType == null)
-                                {
-                                    NetworkPlayerInfo.this.skinType = "default";
-                                }
+                            if (NetworkPlayerInfo.this.skinType == null)
+                            {
+                                NetworkPlayerInfo.this.skinType = "default";
+                            }
 
-                                break;
-                            case CAPE:
-                                NetworkPlayerInfo.this.playerTextures.put(Type.CAPE, location);
-                                break;
-                            case ELYTRA:
-                                NetworkPlayerInfo.this.playerTextures.put(Type.ELYTRA, location);
-                        }
+                            break;
+                        case CAPE:
+                            NetworkPlayerInfo.this.playerTextures.put(Type.CAPE, location);
+                            break;
+                        case ELYTRA:
+                            NetworkPlayerInfo.this.playerTextures.put(Type.ELYTRA, location);
                     }
                 }, true);
             }

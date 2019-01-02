@@ -724,20 +724,14 @@ public class StructureOceanMonumentPieces
                         Iterator lvt_10_1_ = list1.iterator();
                         MonumentRoomFitHelper structureoceanmonumentpieces$monumentroomfithelper;
 
-                        while (true)
-                        {
-                            if (!lvt_10_1_.hasNext())
-                            {
+                        do {
+                            if (!lvt_10_1_.hasNext()) {
                                 continue label47;
                             }
 
-                            structureoceanmonumentpieces$monumentroomfithelper = (MonumentRoomFitHelper)lvt_10_1_.next();
+                            structureoceanmonumentpieces$monumentroomfithelper = (MonumentRoomFitHelper) lvt_10_1_.next();
 
-                            if (structureoceanmonumentpieces$monumentroomfithelper.fits(structureoceanmonumentpieces$roomdefinition))
-                            {
-                                break;
-                            }
-                        }
+                        } while (!structureoceanmonumentpieces$monumentroomfithelper.fits(structureoceanmonumentpieces$roomdefinition));
 
                         this.childPieces.add(structureoceanmonumentpieces$monumentroomfithelper.create(enumfacing, structureoceanmonumentpieces$roomdefinition, p_i45599_1_));
                     }
@@ -1664,9 +1658,9 @@ public class StructureOceanMonumentPieces
 
     static class RoomDefinition
         {
-            int index;
-            RoomDefinition[] connections = new RoomDefinition[6];
-            boolean[] hasOpening = new boolean[6];
+            final int index;
+            final RoomDefinition[] connections = new RoomDefinition[6];
+            final boolean[] hasOpening = new boolean[6];
             boolean claimed;
             boolean isSource;
             int scanIndex;

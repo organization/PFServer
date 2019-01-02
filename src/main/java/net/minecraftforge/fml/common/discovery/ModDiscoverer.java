@@ -32,11 +32,11 @@ import java.util.List;
 
 public class ModDiscoverer
 {
-    private List<ModCandidate> candidates = Lists.newArrayList();
+    private final List<ModCandidate> candidates = Lists.newArrayList();
 
-    private ASMDataTable dataTable = new ASMDataTable();
+    private final ASMDataTable dataTable = new ASMDataTable();
 
-    private List<File> nonModLibs = Lists.newArrayList();
+    private final List<File> nonModLibs = Lists.newArrayList();
 
     public void findClasspathMods(ModClassLoader modClassLoader)
     {

@@ -80,7 +80,7 @@ public class BiomeHills extends Biome
     {
         NORMAL,
         EXTRA_TREES,
-        MUTATED;
+        MUTATED
     }
 
     private static class EmeraldGenerator extends WorldGenerator

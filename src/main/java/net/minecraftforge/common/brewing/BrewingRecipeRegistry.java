@@ -29,7 +29,7 @@ import java.util.List;
 
 public class BrewingRecipeRegistry {
 
-    private static List<IBrewingRecipe> recipes = new ArrayList<IBrewingRecipe>();
+    private static final List<IBrewingRecipe> recipes = new ArrayList<>();
 
     static
     {

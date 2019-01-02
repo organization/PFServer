@@ -94,8 +94,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
     private float bossColorModifier;
     private float bossColorModifierPrev;
     private boolean cloudFog;
-    private boolean renderHand = true;
-    private boolean drawBlockOutline = true;
+    private final boolean renderHand = true;
+    private final boolean drawBlockOutline = true;
     private long timeWorldIcon;
     private long prevFrameTime = Minecraft.getSystemTime();
     private long renderEndNanoTime;
@@ -116,7 +116,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     private float fogColor1;
     private int debugViewDirection;
     private boolean debugView;
-    private double cameraZoom = 1.0D;
+    private final double cameraZoom = 1.0D;
     private double cameraYaw;
     private double cameraPitch;
     private ItemStack itemActivationItem;
@@ -211,15 +211,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.shaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
             this.useShader = true;
         }
-        catch (IOException ioexception)
+        catch (IOException | JsonSyntaxException ioexception)
         {
             LOGGER.warn("Failed to load shader: {}", resourceLocationIn, ioexception);
-            this.shaderIndex = SHADER_COUNT;
-            this.useShader = false;
-        }
-        catch (JsonSyntaxException jsonsyntaxexception)
-        {
-            LOGGER.warn("Failed to load shader: {}", resourceLocationIn, jsonsyntaxexception);
             this.shaderIndex = SHADER_COUNT;
             this.useShader = false;
         }
@@ -371,46 +365,29 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.pointedEntity = null;
                 Vec3d vec3d3 = null;
                 float f = 1.0F;
-                List<Entity> list = this.mc.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>()
-                {
-                    public boolean apply(@Nullable Entity p_apply_1_)
-                    {
-                        return p_apply_1_ != null && p_apply_1_.canBeCollidedWith();
-                    }
-                }));
+                List<Entity> list = this.mc.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, p_apply_1_ -> p_apply_1_ != null && p_apply_1_.canBeCollidedWith()));
                 double d2 = d1;
 
-                for (int j = 0; j < list.size(); ++j)
-                {
-                    Entity entity1 = list.get(j);
-                    AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow((double)entity1.getCollisionBorderSize());
+                for (Entity entity1 : list) {
+                    AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow((double) entity1.getCollisionBorderSize());
                     RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
 
-                    if (axisalignedbb.contains(vec3d))
-                    {
-                        if (d2 >= 0.0D)
-                        {
+                    if (axisalignedbb.contains(vec3d)) {
+                        if (d2 >= 0.0D) {
                             this.pointedEntity = entity1;
                             vec3d3 = raytraceresult == null ? vec3d : raytraceresult.hitVec;
                             d2 = 0.0D;
                         }
-                    }
-                    else if (raytraceresult != null)
-                    {
+                    } else if (raytraceresult != null) {
                         double d3 = vec3d.distanceTo(raytraceresult.hitVec);
 
-                        if (d3 < d2 || d2 == 0.0D)
-                        {
-                            if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity() && !entity1.canRiderInteract())
-                            {
-                                if (d2 == 0.0D)
-                                {
+                        if (d3 < d2 || d2 == 0.0D) {
+                            if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity() && !entity1.canRiderInteract()) {
+                                if (d2 == 0.0D) {
                                     this.pointedEntity = entity1;
                                     vec3d3 = raytraceresult.hitVec;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 this.pointedEntity = entity1;
                                 vec3d3 = raytraceresult.hitVec;
                                 d2 = d3;
@@ -1115,27 +1092,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 {
                     CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering screen");
                     CrashReportCategory crashreportcategory = crashreport.makeCategory("Screen render details");
-                    crashreportcategory.addDetail("Screen name", new ICrashReportDetail<String>()
-                    {
-                        public String call() throws Exception
-                        {
-                            return EntityRenderer.this.mc.currentScreen.getClass().getCanonicalName();
-                        }
-                    });
-                    crashreportcategory.addDetail("Mouse location", new ICrashReportDetail<String>()
-                    {
-                        public String call() throws Exception
-                        {
-                            return String.format("Scaled: (%d, %d). Absolute: (%d, %d)", k1, l1, Mouse.getX(), Mouse.getY());
-                        }
-                    });
-                    crashreportcategory.addDetail("Screen size", new ICrashReportDetail<String>()
-                    {
-                        public String call() throws Exception
-                        {
-                            return String.format("Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d", scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), EntityRenderer.this.mc.displayWidth, EntityRenderer.this.mc.displayHeight, scaledresolution.getScaleFactor());
-                        }
-                    });
+                    crashreportcategory.addDetail("Screen name", () -> EntityRenderer.this.mc.currentScreen.getClass().getCanonicalName());
+                    crashreportcategory.addDetail("Mouse location", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d)", k1, l1, Mouse.getX(), Mouse.getY()));
+                    crashreportcategory.addDetail("Screen size", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d", scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), EntityRenderer.this.mc.displayWidth, EntityRenderer.this.mc.displayHeight, scaledresolution.getScaleFactor()));
                     throw new ReportedException(crashreport);
                 }
             }
@@ -1506,12 +1465,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
                                 d2 = (double)blockpos2.getZ() + d4;
                             }
 
-                            this.mc.world.spawnParticle(EnumParticleTypes.WATER_DROP, (double)blockpos2.getX() + d3, (double)((float)blockpos2.getY() + 0.1F) + axisalignedbb.maxY, (double)blockpos2.getZ() + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                            this.mc.world.spawnParticle(EnumParticleTypes.WATER_DROP, (double)blockpos2.getX() + d3, (double)((float)blockpos2.getY() + 0.1F) + axisalignedbb.maxY, (double)blockpos2.getZ() + d4, 0.0D, 0.0D, 0.0D);
                         }
                     }
                     else
                     {
-                        this.mc.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)blockpos1.getX() + d3, (double)((float)blockpos1.getY() + 0.1F) - axisalignedbb.minY, (double)blockpos1.getZ() + d4, 0.0D, 0.0D, 0.0D, new int[0]);
+                        this.mc.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)blockpos1.getX() + d3, (double)((float)blockpos1.getY() + 0.1F) - axisalignedbb.minY, (double)blockpos1.getZ() + d4, 0.0D, 0.0D, 0.0D);
                     }
                 }
             }

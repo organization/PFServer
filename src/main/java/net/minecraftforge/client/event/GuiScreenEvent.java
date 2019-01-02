@@ -231,7 +231,7 @@ public class GuiScreenEvent extends Event
         {
             super(gui);
             this.setButton(button);
-            this.setButtonList(new ArrayList<GuiButton>(buttonList));
+            this.setButtonList(new ArrayList<>(buttonList));
         }
 
         /**

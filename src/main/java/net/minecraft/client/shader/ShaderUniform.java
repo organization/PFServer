@@ -190,7 +190,7 @@ public class ShaderUniform
     {
         if (p_148097_1_.length < this.uniformCount)
         {
-            LOGGER.warn("Uniform.set called with a too-small value array (expected {}, got {}). Ignoring.", Integer.valueOf(this.uniformCount), Integer.valueOf(p_148097_1_.length));
+            LOGGER.warn("Uniform.set called with a too-small value array (expected {}, got {}). Ignoring.", this.uniformCount, p_148097_1_.length);
         }
         else
         {
@@ -232,7 +232,6 @@ public class ShaderUniform
     {
         if (!this.dirty)
         {
-            ;
         }
 
         this.dirty = false;

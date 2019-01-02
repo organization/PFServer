@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class SimpleCommandMap implements CommandMap {
     private static final Pattern PATTERN_ON_SPACE = Pattern.compile(" ", Pattern.LITERAL);
-    protected final Map<String, Command> knownCommands = new HashMap<String, Command>();
+    protected final Map<String, Command> knownCommands = new HashMap<>();
     private final Server server;
 
     public SimpleCommandMap(final Server server) {
@@ -108,7 +108,7 @@ public class SimpleCommandMap implements CommandMap {
         }
         knownCommands.put(label, command);
 
-        return registered;
+        return true;
     }
 
     /**
@@ -150,8 +150,7 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     public Command getCommand(String name) {
-        Command target = knownCommands.get(name.toLowerCase(java.util.Locale.ENGLISH));
-        return target;
+        return knownCommands.get(name.toLowerCase(Locale.ENGLISH));
     }
 
     public List<String> tabComplete(CommandSender sender, String cmdLine) {
@@ -165,7 +164,7 @@ public class SimpleCommandMap implements CommandMap {
         int spaceIndex = cmdLine.indexOf(' ');
 
         if (spaceIndex == -1) {
-            ArrayList<String> completions = new ArrayList<String>();
+            ArrayList<String> completions = new ArrayList<>();
             Map<String, Command> knownCommands = this.knownCommands;
 
             final String prefix = (sender instanceof Player ? "/" : "");
@@ -184,7 +183,7 @@ public class SimpleCommandMap implements CommandMap {
                 }
             }
 
-            Collections.sort(completions, String.CASE_INSENSITIVE_ORDER);
+            completions.sort(String.CASE_INSENSITIVE_ORDER);
             return completions;
         }
 
@@ -199,7 +198,7 @@ public class SimpleCommandMap implements CommandMap {
             return null;
         }
 
-        String argLine = cmdLine.substring(spaceIndex + 1, cmdLine.length());
+        String argLine = cmdLine.substring(spaceIndex + 1);
         String[] args = PATTERN_ON_SPACE.split(argLine, -1);
 
         try {
@@ -226,7 +225,7 @@ public class SimpleCommandMap implements CommandMap {
             }
 
             String[] commandStrings = entry.getValue();
-            List<String> targets = new ArrayList<String>();
+            List<String> targets = new ArrayList<>();
             StringBuilder bad = new StringBuilder();
 
             for (String commandString : commandStrings) {
@@ -250,7 +249,7 @@ public class SimpleCommandMap implements CommandMap {
 
             // We register these as commands so they have absolute priority.
             if (targets.size() > 0) {
-                knownCommands.put(alias.toLowerCase(java.util.Locale.ENGLISH), new FormattedCommandAlias(alias.toLowerCase(java.util.Locale.ENGLISH), targets.toArray(new String[targets.size()])));
+                knownCommands.put(alias.toLowerCase(java.util.Locale.ENGLISH), new FormattedCommandAlias(alias.toLowerCase(java.util.Locale.ENGLISH), targets.toArray(new String[0])));
             } else {
                 knownCommands.remove(alias.toLowerCase(java.util.Locale.ENGLISH));
             }

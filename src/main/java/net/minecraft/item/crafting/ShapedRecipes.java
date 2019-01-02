@@ -240,7 +240,6 @@ public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryE
 
         for (i = 0; i < str.length() && str.charAt(i) == ' '; ++i)
         {
-            ;
         }
 
         return i;
@@ -252,7 +251,6 @@ public class ShapedRecipes extends net.minecraftforge.registries.IForgeRegistryE
 
         for (i = str.length() - 1; i >= 0 && str.charAt(i) == ' '; --i)
         {
-            ;
         }
 
         return i;

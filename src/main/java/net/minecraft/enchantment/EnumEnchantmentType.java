@@ -99,6 +99,6 @@ public enum EnumEnchantmentType
     }
     public boolean canEnchantItem(Item itemIn)
     {
-        return this.delegate == null ? false : this.delegate.apply(itemIn);
+        return this.delegate != null && this.delegate.apply(itemIn);
     }
 }

@@ -217,7 +217,7 @@ public class PlayerAdvancements
 
                 if (advancement.getDisplay() != null && advancement.getDisplay().shouldAnnounceToChat() && this.player.world.getGameRules().getBoolean("announceAdvancements"))
                 {
-                    this.server.getPlayerList().sendMessage(new TextComponentTranslation("chat.type.advancement." + advancement.getDisplay().getFrame().getName(), new Object[] {this.player.getDisplayName(), advancement.getDisplayText()}));
+                    this.server.getPlayerList().sendMessage(new TextComponentTranslation("chat.type.advancement." + advancement.getDisplay().getFrame().getName(), this.player.getDisplayName(), advancement.getDisplayText()));
                 }
 
                 net.minecraftforge.common.ForgeHooks.onAdvancement(this.player, advancement);

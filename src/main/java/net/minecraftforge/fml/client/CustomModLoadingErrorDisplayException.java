@@ -72,7 +72,7 @@ public abstract class CustomModLoadingErrorDisplayException extends EnhancedRunt
      */
     public abstract void drawScreen(GuiErrorScreen errorScreen, FontRenderer fontRenderer, int mouseRelX, int mouseRelY, float tickTime);
 
-    @Override public void printStackTrace(EnhancedRuntimeException.WrappedPrintStream s){}; // Do Nothing unless the modder wants to.
+    @Override public void printStackTrace(EnhancedRuntimeException.WrappedPrintStream s){} // Do Nothing unless the modder wants to.
 
     @Override
     public final GuiScreen createGui()

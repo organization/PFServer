@@ -123,7 +123,7 @@ public class SnapshotJson implements Comparable<SnapshotJson>
             latest = null;
             return null;
         }
-        Collections.sort(versions, SORTER);
+        versions.sort(SORTER);
         return latest = versions.isEmpty() ? null : versions.get(0).timestamp;
     }
 
@@ -140,8 +140,8 @@ public class SnapshotJson implements Comparable<SnapshotJson>
 
     public static class Entry
     {
-        private String timestamp;
-        private String md5;
+        private final String timestamp;
+        private final String md5;
 
         public Entry(String timestamp, String md5)
         {

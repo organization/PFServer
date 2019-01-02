@@ -100,10 +100,10 @@ public class FMLCommonHandler
     private boolean noForge;
     private List<String> brandings;
     private List<String> brandingsNoMC;
-    private List<ICrashCallable> crashCallables = Lists.newArrayList(Loader.instance().getCallableCrashInformation());
-    private Set<SaveHandler> handlerSet = Collections.newSetFromMap(new MapMaker().weakKeys().<SaveHandler,Boolean>makeMap());
+    private final List<ICrashCallable> crashCallables = Lists.newArrayList(Loader.instance().getCallableCrashInformation());
+    private final Set<SaveHandler> handlerSet = Collections.newSetFromMap(new MapMaker().weakKeys().<SaveHandler,Boolean>makeMap());
     private WeakReference<SaveHandler> handlerToCheck;
-    private EventBus eventBus = MinecraftForge.EVENT_BUS;
+    private final EventBus eventBus = MinecraftForge.EVENT_BUS;
     private volatile CountDownLatch exitLatch = null;
 
     private FMLCommonHandler()
@@ -117,7 +117,7 @@ public class FMLCommonHandler
                 Joiner joiner = Joiner.on("\n  ");
                 for(String coreMod : CoreModManager.getTransformers().keySet())
                 {
-                    builder.append("\n" + coreMod + "\n  ").append(joiner.join(CoreModManager.getTransformers().get(coreMod)));
+                    builder.append("\n").append(coreMod).append("\n  ").append(joiner.join(CoreModManager.getTransformers().get(coreMod)));
                 }
                 return builder.toString();
             }
@@ -386,7 +386,7 @@ public class FMLCommonHandler
             return;
         }
         handlerSet.add(handler);
-        handlerToCheck = new WeakReference<SaveHandler>(handler); // for confirmBackupLevelDatUse
+        handlerToCheck = new WeakReference<>(handler); // for confirmBackupLevelDatUse
         Map<String,NBTBase> additionalProperties = Maps.newHashMap();
         worldInfo.setAdditionalProperties(additionalProperties);
         for (ModContainer mc : Loader.instance().getModList())

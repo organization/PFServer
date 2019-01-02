@@ -174,17 +174,12 @@ public class ItemMap extends ItemMapBase
                                             {
                                                 label175:
                                                 {
-                                                    while (true)
-                                                    {
+                                                    do {
                                                         --k4;
                                                         iblockstate = chunk.getBlockState(i4 + i3, k4, j4 + j3);
                                                         blockpos$mutableblockpos.setPos((chunk.x << 4) + i4 + i3, k4, (chunk.z << 4) + j4 + j3);
 
-                                                        if (iblockstate.getMapColor(worldIn, blockpos$mutableblockpos) != MapColor.AIR || k4 <= 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                    }
+                                                    } while (iblockstate.getMapColor(worldIn, blockpos$mutableblockpos) == MapColor.AIR && k4 > 0);
 
                                                     if (k4 > 0 && iblockstate.getMaterial().isLiquid())
                                                     {
@@ -488,7 +483,7 @@ public class ItemMap extends ItemMapBase
             if (mapdata != null)
             {
                 tooltip.add(I18n.translateToLocalFormatted("filled_map.scale", 1 << mapdata.scale));
-                tooltip.add(I18n.translateToLocalFormatted("filled_map.level", mapdata.scale, Integer.valueOf(4)));
+                tooltip.add(I18n.translateToLocalFormatted("filled_map.level", mapdata.scale, 4));
             }
             else
             {

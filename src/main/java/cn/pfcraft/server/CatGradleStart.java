@@ -20,7 +20,7 @@ public class CatGradleStart {
         (new CatGradleStart()).launch(args);
     }
 
-    protected static Logger LOGGER        = LogManager.getLogger("GradleStart");
+    protected static final Logger LOGGER        = LogManager.getLogger("GradleStart");
 
     Map<String, String>     argMap        = Maps.newHashMap();
     List<String>            extras        = Lists.newArrayList();
@@ -42,7 +42,7 @@ public class CatGradleStart {
 
     private String[] getArgs()
     {
-        ArrayList<String> list = new ArrayList<String>(22);
+        ArrayList<String> list = new ArrayList<>(22);
 
         for (Map.Entry<String, String> e : argMap.entrySet())
         {
@@ -65,7 +65,7 @@ public class CatGradleStart {
             list.addAll(extras);
         }
 
-        String[] out = list.toArray(new String[list.size()]);
+        String[] out = list.toArray(new String[0]);
 
         StringBuilder b = new StringBuilder();
         b.append('[');

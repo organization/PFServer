@@ -21,7 +21,7 @@ public class StructureOceanMonument extends MapGenStructure
     private int spacing;
     private int separation;
     public static final List<Biome> WATER_BIOMES = Arrays.<Biome>asList(Biomes.OCEAN, Biomes.DEEP_OCEAN, Biomes.RIVER, Biomes.FROZEN_OCEAN, Biomes.FROZEN_RIVER);
-    public static final List<Biome> SPAWN_BIOMES = Arrays.<Biome>asList(Biomes.DEEP_OCEAN);
+    public static final List<Biome> SPAWN_BIOMES = Collections.<Biome>singletonList(Biomes.DEEP_OCEAN);
     private static final List<Biome.SpawnListEntry> MONUMENT_ENEMIES = Lists.<Biome.SpawnListEntry>newArrayList();
 
     public StructureOceanMonument()
@@ -82,12 +82,7 @@ public class StructureOceanMonument extends MapGenStructure
                 return false;
             }
 
-            boolean flag = this.world.getBiomeProvider().areBiomesViable(i * 16 + 8, j * 16 + 8, 29, WATER_BIOMES);
-
-            if (flag)
-            {
-                return true;
-            }
+            return this.world.getBiomeProvider().areBiomesViable(i * 16 + 8, j * 16 + 8, 29, WATER_BIOMES);
         }
 
         return false;
@@ -158,7 +153,7 @@ public class StructureOceanMonument extends MapGenStructure
 
             public boolean isValidForPostProcess(ChunkPos pair)
             {
-                return this.processed.contains(pair) ? false : super.isValidForPostProcess(pair);
+                return !this.processed.contains(pair) && super.isValidForPostProcess(pair);
             }
 
             public void notifyPostProcessAt(ChunkPos pair)

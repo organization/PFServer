@@ -113,6 +113,6 @@ public class BiomeTaiga extends Biome
     {
         NORMAL,
         MEGA,
-        MEGA_SPRUCE;
+        MEGA_SPRUCE
     }
 }

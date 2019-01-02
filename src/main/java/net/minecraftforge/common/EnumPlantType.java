@@ -54,6 +54,6 @@ public enum EnumPlantType
         { 
             if (t.name().equalsIgnoreCase(name)) return t;
         }
-        return EnumHelper.addEnum(EnumPlantType.class, name, new Class[0], new Object[0]);
+        return EnumHelper.addEnum(EnumPlantType.class, name, new Class[0]);
     }
 }

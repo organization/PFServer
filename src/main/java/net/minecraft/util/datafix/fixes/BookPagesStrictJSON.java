@@ -45,9 +45,8 @@ public class BookPagesStrictJSON implements IFixableData
                                     itextcomponent = new TextComponentString("");
                                 }
                             }
-                            catch (JsonParseException var10)
+                            catch (JsonParseException ignored)
                             {
-                                ;
                             }
 
                             if (itextcomponent == null)
@@ -56,9 +55,8 @@ public class BookPagesStrictJSON implements IFixableData
                                 {
                                     itextcomponent = ITextComponent.Serializer.jsonToComponent(s);
                                 }
-                                catch (JsonParseException var9)
+                                catch (JsonParseException ignored)
                                 {
-                                    ;
                                 }
                             }
 
@@ -68,9 +66,8 @@ public class BookPagesStrictJSON implements IFixableData
                                 {
                                     itextcomponent = ITextComponent.Serializer.fromJsonLenient(s);
                                 }
-                                catch (JsonParseException var8)
+                                catch (JsonParseException ignored)
                                 {
-                                    ;
                                 }
                             }
 

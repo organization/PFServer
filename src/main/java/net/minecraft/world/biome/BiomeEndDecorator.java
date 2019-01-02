@@ -40,7 +40,7 @@ public class BiomeEndDecorator extends BiomeDecorator
     {
         Random random = new Random(p_185426_0_.getSeed());
         long i = random.nextLong() & 65535L;
-        return SPIKE_CACHE.getUnchecked(Long.valueOf(i));
+        return SPIKE_CACHE.getUnchecked(i);
     }
 
     static class SpikeCacheLoader extends CacheLoader<Long, WorldGenSpikes.EndSpike[]>
@@ -51,15 +51,15 @@ public class BiomeEndDecorator extends BiomeDecorator
 
             public WorldGenSpikes.EndSpike[] load(Long p_load_1_) throws Exception
             {
-                List<Integer> list = Lists.newArrayList(ContiguousSet.create(Range.closedOpen(Integer.valueOf(0), Integer.valueOf(10)), DiscreteDomain.integers()));
-                Collections.shuffle(list, new Random(p_load_1_.longValue()));
+                List<Integer> list = Lists.newArrayList(ContiguousSet.create(Range.closedOpen(0, 10), DiscreteDomain.integers()));
+                Collections.shuffle(list, new Random(p_load_1_));
                 WorldGenSpikes.EndSpike[] aworldgenspikes$endspike = new WorldGenSpikes.EndSpike[10];
 
                 for (int i = 0; i < 10; ++i)
                 {
                     int j = (int)(42.0D * Math.cos(2.0D * (-Math.PI + (Math.PI / 10D) * (double)i)));
                     int k = (int)(42.0D * Math.sin(2.0D * (-Math.PI + (Math.PI / 10D) * (double)i)));
-                    int l = ((Integer)list.get(i)).intValue();
+                    int l = (Integer) list.get(i);
                     int i1 = 2 + l / 3;
                     int j1 = 76 + l * 3;
                     boolean flag = l == 1 || l == 2;

@@ -182,6 +182,6 @@ public class ItemCameraTransforms
         HEAD,
         GUI,
         GROUND,
-        FIXED;
+        FIXED
     }
 }

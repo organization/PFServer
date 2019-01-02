@@ -17,11 +17,11 @@ public class BlockPlaceEvent extends BlockEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     protected boolean cancel;
     protected boolean canBuild;
-    protected Block placedAgainst;
-    protected BlockState replacedBlockState;
-    protected ItemStack itemInHand;
-    protected Player player;
-    protected EquipmentSlot hand;
+    protected final Block placedAgainst;
+    protected final BlockState replacedBlockState;
+    protected final ItemStack itemInHand;
+    protected final Player player;
+    protected final EquipmentSlot hand;
 
     @Deprecated
     public BlockPlaceEvent(final Block placedBlock, final BlockState replacedBlockState, final Block placedAgainst, final ItemStack itemInHand, final Player thePlayer, final boolean canBuild) {

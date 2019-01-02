@@ -29,12 +29,12 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
     private static final Logger LOGGER = LogManager.getLogger();
     private static final DynamicTexture TEXTURE_BRIGHTNESS = new DynamicTexture(16, 16);
     protected ModelBase mainModel;
-    protected FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);
-    protected List<LayerRenderer<T>> layerRenderers = Lists.<LayerRenderer<T>>newArrayList();
+    protected final FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);
+    protected final List<LayerRenderer<T>> layerRenderers = Lists.<LayerRenderer<T>>newArrayList();
     protected boolean renderMarker;
 
-    public static float NAME_TAG_RANGE = 64.0f;
-    public static float NAME_TAG_RANGE_SNEAK = 32.0f;
+    public static final float NAME_TAG_RANGE = 64.0f;
+    public static final float NAME_TAG_RANGE_SNEAK = 32.0f;
 
     public RenderLivingBase(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn)
     {
@@ -59,7 +59,6 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
         for (f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F)
         {
-            ;
         }
 
         while (f >= 180.0F)
@@ -76,7 +75,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre<T>(entity, this, partialTicks, x, y, z))) return;
+        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre<>(entity, this, partialTicks, x, y, z))) return;
         GlStateManager.pushMatrix();
         GlStateManager.disableCull();
         this.mainModel.swingProgress = this.getSwingProgress(entity, partialTicks);
@@ -201,7 +200,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         GlStateManager.enableCull();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<T>(entity, this, partialTicks, x, y, z));
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<>(entity, this, partialTicks, x, y, z));
     }
 
     public float prepareScale(T entitylivingbaseIn, float partialTicks)
@@ -414,7 +413,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         {
             String s = TextFormatting.getTextWithoutFormattingCodes(entityLiving.getName());
 
-            if (s != null && ("Dinnerbone".equals(s) || "Grumm".equals(s)) && (!(entityLiving instanceof EntityPlayer) || ((EntityPlayer)entityLiving).isWearing(EnumPlayerModelParts.CAPE)))
+            if (("Dinnerbone".equals(s) || "Grumm".equals(s)) && (!(entityLiving instanceof EntityPlayer) || ((EntityPlayer) entityLiving).isWearing(EnumPlayerModelParts.CAPE)))
             {
                 GlStateManager.translate(0.0F, entityLiving.height + 0.1F, 0.0F);
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
@@ -462,7 +461,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
     public void renderName(T entity, double x, double y, double z)
     {
-        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Specials.Pre<T>(entity, this, x, y, z))) return;
+        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Specials.Pre<>(entity, this, x, y, z))) return;
         if (this.canRenderName(entity))
         {
             double d0 = entity.getDistanceSq(this.renderManager.renderViewEntity);
@@ -475,7 +474,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                 this.renderEntityName(entity, x, y, z, s, d0);
             }
         }
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Specials.Post<T>(entity, this, x, y, z));
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Specials.Post<>(entity, this, x, y, z));
     }
 
     protected boolean canRenderName(T entity)

@@ -44,17 +44,10 @@ public class HoverEvent
             {
                 if (this.value != null)
                 {
-                    if (!this.value.equals(hoverevent.value))
-                    {
-                        return false;
-                    }
+                    return this.value.equals(hoverevent.value);
                 }
-                else if (hoverevent.value != null)
-                {
-                    return false;
-                }
+                else return hoverevent.value == null;
 
-                return true;
             }
         }
         else

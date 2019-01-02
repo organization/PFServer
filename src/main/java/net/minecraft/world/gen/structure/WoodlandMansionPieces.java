@@ -110,7 +110,6 @@ public class WoodlandMansionPieces
 
                 while (this.cleanEdges(this.baseGrid))
                 {
-                    ;
                 }
 
                 this.floorRooms = new SimpleGrid[3];
@@ -255,11 +254,11 @@ public class WoodlandMansionPieces
                 else
                 {
                     Tuple<Integer, Integer> tuple = (Tuple)list.get(this.random.nextInt(list.size()));
-                    int l1 = woodlandmansionpieces$simplegrid.get(((Integer)tuple.getFirst()).intValue(), ((Integer)tuple.getSecond()).intValue());
-                    woodlandmansionpieces$simplegrid.set(((Integer)tuple.getFirst()).intValue(), ((Integer)tuple.getSecond()).intValue(), l1 | 4194304);
-                    EnumFacing enumfacing1 = this.get1x2RoomDirection(this.baseGrid, ((Integer)tuple.getFirst()).intValue(), ((Integer)tuple.getSecond()).intValue(), 1, l1 & 65535);
-                    int i2 = ((Integer)tuple.getFirst()).intValue() + enumfacing1.getFrontOffsetX();
-                    int i1 = ((Integer)tuple.getSecond()).intValue() + enumfacing1.getFrontOffsetZ();
+                    int l1 = woodlandmansionpieces$simplegrid.get((Integer) tuple.getFirst(), (Integer) tuple.getSecond());
+                    woodlandmansionpieces$simplegrid.set((Integer) tuple.getFirst(), (Integer) tuple.getSecond(), l1 | 4194304);
+                    EnumFacing enumfacing1 = this.get1x2RoomDirection(this.baseGrid, (Integer) tuple.getFirst(), (Integer) tuple.getSecond(), 1, l1 & 65535);
+                    int i2 = (Integer) tuple.getFirst() + enumfacing1.getFrontOffsetX();
+                    int i1 = (Integer) tuple.getSecond() + enumfacing1.getFrontOffsetZ();
 
                     for (int j1 = 0; j1 < this.thirdFloorGrid.height; ++j1)
                     {
@@ -269,7 +268,7 @@ public class WoodlandMansionPieces
                             {
                                 this.thirdFloorGrid.set(k1, j1, 5);
                             }
-                            else if (k1 == ((Integer)tuple.getFirst()).intValue() && j1 == ((Integer)tuple.getSecond()).intValue())
+                            else if (k1 == (Integer) tuple.getFirst() && j1 == (Integer) tuple.getSecond())
                             {
                                 this.thirdFloorGrid.set(k1, j1, 3);
                             }
@@ -294,7 +293,7 @@ public class WoodlandMansionPieces
                     if (list1.isEmpty())
                     {
                         this.thirdFloorGrid.set(0, 0, this.thirdFloorGrid.width, this.thirdFloorGrid.height, 5);
-                        woodlandmansionpieces$simplegrid.set(((Integer)tuple.getFirst()).intValue(), ((Integer)tuple.getSecond()).intValue(), l1);
+                        woodlandmansionpieces$simplegrid.set((Integer) tuple.getFirst(), (Integer) tuple.getSecond(), l1);
                     }
                     else
                     {
@@ -303,7 +302,6 @@ public class WoodlandMansionPieces
 
                         while (this.cleanEdges(this.thirdFloorGrid))
                         {
-                            ;
                         }
                     }
                 }
@@ -329,8 +327,8 @@ public class WoodlandMansionPieces
 
                 for (Tuple<Integer, Integer> tuple : list)
                 {
-                    int k = ((Integer)tuple.getFirst()).intValue();
-                    int l = ((Integer)tuple.getSecond()).intValue();
+                    int k = (Integer) tuple.getFirst();
+                    int l = (Integer) tuple.getSecond();
 
                     if (p_191116_2_.get(k, l) == 0)
                     {
@@ -484,21 +482,19 @@ public class WoodlandMansionPieces
                     Rotation rotation = this.placeSettings.getRotation();
                     IBlockState iblockstate = Blocks.CHEST.getDefaultState();
 
-                    if ("ChestWest".equals(function))
-                    {
-                        iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.WEST));
-                    }
-                    else if ("ChestEast".equals(function))
-                    {
-                        iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.EAST));
-                    }
-                    else if ("ChestSouth".equals(function))
-                    {
-                        iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.SOUTH));
-                    }
-                    else if ("ChestNorth".equals(function))
-                    {
-                        iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.NORTH));
+                    switch (function) {
+                        case "ChestWest":
+                            iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.WEST));
+                            break;
+                        case "ChestEast":
+                            iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.EAST));
+                            break;
+                        case "ChestSouth":
+                            iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.SOUTH));
+                            break;
+                        case "ChestNorth":
+                            iblockstate = iblockstate.withProperty(BlockChest.FACING, rotation.rotate(EnumFacing.NORTH));
+                            break;
                     }
 
                     this.generateChest(worldIn, sbb, rand, pos, LootTableList.CHESTS_WOODLAND_MANSION, iblockstate);
@@ -561,7 +557,6 @@ public class WoodlandMansionPieces
 
                 if (!p_191125_3_.isEmpty())
                 {
-                    ;
                 }
 
                 SimpleGrid woodlandmansionpieces$simplegrid = p_191125_4_.baseGrid;
@@ -598,7 +593,6 @@ public class WoodlandMansionPieces
 
                 if (!p_191125_3_.isEmpty())
                 {
-                    ;
                 }
 
                 RoomCollection[] awoodlandmansionpieces$roomcollection = new RoomCollection[3];
@@ -752,41 +746,29 @@ public class WoodlandMansionPieces
                 int j = p_191130_6_;
                 EnumFacing enumfacing = p_191130_4_;
 
-                while (true)
-                {
-                    if (!Grid.isHouse(p_191130_3_, i + p_191130_4_.getFrontOffsetX(), j + p_191130_4_.getFrontOffsetZ()))
-                    {
+                do {
+                    if (!Grid.isHouse(p_191130_3_, i + p_191130_4_.getFrontOffsetX(), j + p_191130_4_.getFrontOffsetZ())) {
                         this.traverseTurn(p_191130_1_, p_191130_2_);
                         p_191130_4_ = p_191130_4_.rotateY();
 
-                        if (i != p_191130_7_ || j != p_191130_8_ || enumfacing != p_191130_4_)
-                        {
+                        if (i != p_191130_7_ || j != p_191130_8_ || enumfacing != p_191130_4_) {
                             this.traverseWallPiece(p_191130_1_, p_191130_2_);
                         }
-                    }
-                    else if (Grid.isHouse(p_191130_3_, i + p_191130_4_.getFrontOffsetX(), j + p_191130_4_.getFrontOffsetZ()) && Grid.isHouse(p_191130_3_, i + p_191130_4_.getFrontOffsetX() + p_191130_4_.rotateYCCW().getFrontOffsetX(), j + p_191130_4_.getFrontOffsetZ() + p_191130_4_.rotateYCCW().getFrontOffsetZ()))
-                    {
+                    } else if (Grid.isHouse(p_191130_3_, i + p_191130_4_.getFrontOffsetX(), j + p_191130_4_.getFrontOffsetZ()) && Grid.isHouse(p_191130_3_, i + p_191130_4_.getFrontOffsetX() + p_191130_4_.rotateYCCW().getFrontOffsetX(), j + p_191130_4_.getFrontOffsetZ() + p_191130_4_.rotateYCCW().getFrontOffsetZ())) {
                         this.traverseInnerTurn(p_191130_1_, p_191130_2_);
                         i += p_191130_4_.getFrontOffsetX();
                         j += p_191130_4_.getFrontOffsetZ();
                         p_191130_4_ = p_191130_4_.rotateYCCW();
-                    }
-                    else
-                    {
+                    } else {
                         i += p_191130_4_.getFrontOffsetX();
                         j += p_191130_4_.getFrontOffsetZ();
 
-                        if (i != p_191130_7_ || j != p_191130_8_ || enumfacing != p_191130_4_)
-                        {
+                        if (i != p_191130_7_ || j != p_191130_8_ || enumfacing != p_191130_4_) {
                             this.traverseWallPiece(p_191130_1_, p_191130_2_);
                         }
                     }
 
-                    if (i == p_191130_7_ && j == p_191130_8_ && enumfacing == p_191130_4_)
-                    {
-                        break;
-                    }
-                }
+                } while (i != p_191130_7_ || j != p_191130_8_ || enumfacing != p_191130_4_);
             }
 
             private void createRoof(List<MansionTemplate> p_191123_1_, BlockPos p_191123_2_, Rotation p_191123_3_, SimpleGrid p_191123_4_, @Nullable WoodlandMansionPieces.SimpleGrid p_191123_5_)

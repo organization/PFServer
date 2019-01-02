@@ -433,7 +433,7 @@ public class FMLClientHandler implements IFMLSidedHandler
     {
         if (optifineContainer!=null)
         {
-            return Arrays.asList(String.format("Optifine %s",optifineContainer.getVersion()));
+            return Collections.singletonList(String.format("Optifine %s", optifineContainer.getVersion()));
         } else {
             return ImmutableList.<String>of();
         }
@@ -728,7 +728,7 @@ public class FMLClientHandler implements IFMLSidedHandler
             JsonObject jsonData = extraServerListData.get(originalResponse);
             String type = jsonData.get("type").getAsString();
             JsonArray modDataArray = jsonData.get("modList").getAsJsonArray();
-            boolean moddedClientAllowed = jsonData.has("clientModsAllowed") ? jsonData.get("clientModsAllowed").getAsBoolean() : true;
+            boolean moddedClientAllowed = !jsonData.has("clientModsAllowed") || jsonData.get("clientModsAllowed").getAsBoolean();
             Builder<String, String> modListBldr = ImmutableMap.builder();
             for (JsonElement obj : modDataArray)
             {
@@ -770,7 +770,7 @@ public class FMLClientHandler implements IFMLSidedHandler
                 idx = 0;
                 tooltip = String.format("Compatible FML modded server\n%d mods present", extendedData.modData.size());
             }
-            else if ("FML".equals(extendedData.type) && !extendedData.isCompatible)
+            else if ("FML".equals(extendedData.type) && !false)
             {
                 idx = 16;
                 tooltip = String.format("Incompatible FML modded server\n%d mods present", extendedData.modData.size());
@@ -778,17 +778,17 @@ public class FMLClientHandler implements IFMLSidedHandler
             else if ("BUKKIT".equals(extendedData.type))
             {
                 idx = 32;
-                tooltip = String.format("Bukkit modded server");
+                tooltip = "Bukkit modded server";
             }
             else if ("VANILLA".equals(extendedData.type))
             {
                 idx = 48;
-                tooltip = String.format("Vanilla server");
+                tooltip = "Vanilla server";
             }
             else
             {
                 idx = 64;
-                tooltip = String.format("Unknown server data");
+                tooltip = "Unknown server data";
             }
             blocked = extendedData.isBlocked;
         }
@@ -846,7 +846,7 @@ public class FMLClientHandler implements IFMLSidedHandler
 
     public void setPlayClient(NetHandlerPlayClient netHandlerPlayClient)
     {
-        this.currentPlayClient = new WeakReference<NetHandlerPlayClient>(netHandlerPlayClient);
+        this.currentPlayClient = new WeakReference<>(netHandlerPlayClient);
     }
 
     @Override
@@ -854,11 +854,11 @@ public class FMLClientHandler implements IFMLSidedHandler
     {
         if (side == Side.CLIENT)
         {
-            bus.post(new FMLNetworkEvent.CustomPacketRegistrationEvent<NetHandlerPlayClient>(manager, channelSet, channel, side, NetHandlerPlayClient.class));
+            bus.post(new FMLNetworkEvent.CustomPacketRegistrationEvent<>(manager, channelSet, channel, side, NetHandlerPlayClient.class));
         }
         else
         {
-            bus.post(new FMLNetworkEvent.CustomPacketRegistrationEvent<NetHandlerPlayServer>(manager, channelSet, channel, side, NetHandlerPlayServer.class));
+            bus.post(new FMLNetworkEvent.CustomPacketRegistrationEvent<>(manager, channelSet, channel, side, NetHandlerPlayServer.class));
         }
     }
 
@@ -886,9 +886,9 @@ public class FMLClientHandler implements IFMLSidedHandler
         throw new RuntimeException("Unknown INetHandler: " + net);
     }
 
-    private SetMultimap<String,ResourceLocation> missingTextures = HashMultimap.create();
-    private Set<String> badTextureDomains = Sets.newHashSet();
-    private Table<String, String, Set<ResourceLocation>> brokenTextures = HashBasedTable.create();
+    private final SetMultimap<String,ResourceLocation> missingTextures = HashMultimap.create();
+    private final Set<String> badTextureDomains = Sets.newHashSet();
+    private final Table<String, String, Set<ResourceLocation>> brokenTextures = HashBasedTable.create();
 
     public void trackMissingTexture(ResourceLocation resourceLocation)
     {

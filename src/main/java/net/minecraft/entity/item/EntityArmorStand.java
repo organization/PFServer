@@ -54,13 +54,7 @@ public class EntityArmorStand extends EntityLivingBase
     public static final DataParameter<Rotations> RIGHT_ARM_ROTATION = EntityDataManager.<Rotations>createKey(EntityArmorStand.class, DataSerializers.ROTATIONS);
     public static final DataParameter<Rotations> LEFT_LEG_ROTATION = EntityDataManager.<Rotations>createKey(EntityArmorStand.class, DataSerializers.ROTATIONS);
     public static final DataParameter<Rotations> RIGHT_LEG_ROTATION = EntityDataManager.<Rotations>createKey(EntityArmorStand.class, DataSerializers.ROTATIONS);
-    private static final Predicate<Entity> IS_RIDEABLE_MINECART = new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_ instanceof EntityMinecart && ((EntityMinecart)p_apply_1_).canBeRidden();
-        }
-    };
+    private static final Predicate<Entity> IS_RIDEABLE_MINECART = p_apply_1_ -> p_apply_1_ instanceof EntityMinecart && ((EntityMinecart)p_apply_1_).canBeRidden();
     private final NonNullList<ItemStack> handItems;
     private final NonNullList<ItemStack> armorItems;
     private boolean canInteract;
@@ -74,7 +68,7 @@ public class EntityArmorStand extends EntityLivingBase
     public Rotations leftLegRotation;
     public Rotations rightLegRotation;
 
-    private java.util.ArrayList<org.bukkit.inventory.ItemStack> drops = new java.util.ArrayList<>(); // PFServer
+    private final java.util.ArrayList<org.bukkit.inventory.ItemStack> drops = new java.util.ArrayList<>(); // PFServer
 
     public EntityArmorStand(World worldIn)
     {
@@ -122,7 +116,7 @@ public class EntityArmorStand extends EntityLivingBase
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(STATUS, Byte.valueOf((byte)0));
+        this.dataManager.register(STATUS, (byte) 0);
         this.dataManager.register(HEAD_ROTATION, DEFAULT_HEAD_ROTATION);
         this.dataManager.register(BODY_ROTATION, DEFAULT_BODY_ROTATION);
         this.dataManager.register(LEFT_ARM_ROTATION, DEFAULT_LEFTARM_ROTATION);
@@ -215,7 +209,7 @@ public class EntityArmorStand extends EntityLivingBase
 
     public static void registerFixesArmorStand(DataFixer fixer)
     {
-        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(EntityArmorStand.class, new String[] {"ArmorItems", "HandItems"}));
+        fixer.registerWalker(FixTypes.ENTITY, new ItemStackDataLists(EntityArmorStand.class, "ArmorItems", "HandItems"));
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
@@ -367,12 +361,8 @@ public class EntityArmorStand extends EntityLivingBase
     {
         List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox(), IS_RIDEABLE_MINECART);
 
-        for (int i = 0; i < list.size(); ++i)
-        {
-            Entity entity = list.get(i);
-
-            if (this.getDistanceSq(entity) <= 0.2D)
-            {
+        for (Entity entity : list) {
+            if (this.getDistanceSq(entity) <= 0.2D) {
                 entity.applyEntityCollision(this);
             }
         }
@@ -835,44 +825,44 @@ public class EntityArmorStand extends EntityLivingBase
 
     public void setSmall(boolean small)
     {
-        this.dataManager.set(STATUS, Byte.valueOf(this.setBit(((Byte)this.dataManager.get(STATUS)).byteValue(), 1, small)));
+        this.dataManager.set(STATUS, this.setBit((Byte) this.dataManager.get(STATUS), 1, small));
         this.setSize(0.5F, 1.975F);
     }
 
     public boolean isSmall()
     {
-        return (((Byte)this.dataManager.get(STATUS)).byteValue() & 1) != 0;
+        return ((Byte) this.dataManager.get(STATUS) & 1) != 0;
     }
 
     public void setShowArms(boolean showArms)
     {
-        this.dataManager.set(STATUS, Byte.valueOf(this.setBit(((Byte)this.dataManager.get(STATUS)).byteValue(), 4, showArms)));
+        this.dataManager.set(STATUS, this.setBit((Byte) this.dataManager.get(STATUS), 4, showArms));
     }
 
     public boolean getShowArms()
     {
-        return (((Byte)this.dataManager.get(STATUS)).byteValue() & 4) != 0;
+        return ((Byte) this.dataManager.get(STATUS) & 4) != 0;
     }
 
     public void setNoBasePlate(boolean noBasePlate)
     {
-        this.dataManager.set(STATUS, Byte.valueOf(this.setBit(((Byte)this.dataManager.get(STATUS)).byteValue(), 8, noBasePlate)));
+        this.dataManager.set(STATUS, this.setBit((Byte) this.dataManager.get(STATUS), 8, noBasePlate));
     }
 
     public boolean hasNoBasePlate()
     {
-        return (((Byte)this.dataManager.get(STATUS)).byteValue() & 8) != 0;
+        return ((Byte) this.dataManager.get(STATUS) & 8) != 0;
     }
 
     public void setMarker(boolean marker)
     {
-        this.dataManager.set(STATUS, Byte.valueOf(this.setBit(((Byte)this.dataManager.get(STATUS)).byteValue(), 16, marker)));
+        this.dataManager.set(STATUS, this.setBit((Byte) this.dataManager.get(STATUS), 16, marker));
         this.setSize(0.5F, 1.975F);
     }
 
     public boolean hasMarker()
     {
-        return (((Byte)this.dataManager.get(STATUS)).byteValue() & 16) != 0;
+        return ((Byte) this.dataManager.get(STATUS) & 16) != 0;
     }
 
     private byte setBit(byte p_184797_1_, int p_184797_2_, boolean p_184797_3_)

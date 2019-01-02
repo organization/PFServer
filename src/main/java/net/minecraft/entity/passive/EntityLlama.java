@@ -53,7 +53,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
     public void setStrength(int strengthIn)
     {
-        this.dataManager.set(DATA_STRENGTH_ID, Integer.valueOf(Math.max(1, Math.min(5, strengthIn))));
+        this.dataManager.set(DATA_STRENGTH_ID, Math.max(1, Math.min(5, strengthIn)));
     }
 
     private void setRandomStrength()
@@ -64,7 +64,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
     public int getStrength()
     {
-        return ((Integer)this.dataManager.get(DATA_STRENGTH_ID)).intValue();
+        return (Integer) this.dataManager.get(DATA_STRENGTH_ID);
     }
 
     public void writeEntityToNBT(NBTTagCompound compound)
@@ -118,19 +118,19 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(DATA_STRENGTH_ID, Integer.valueOf(0));
-        this.dataManager.register(DATA_COLOR_ID, Integer.valueOf(-1));
-        this.dataManager.register(DATA_VARIANT_ID, Integer.valueOf(0));
+        this.dataManager.register(DATA_STRENGTH_ID, 0);
+        this.dataManager.register(DATA_COLOR_ID, -1);
+        this.dataManager.register(DATA_VARIANT_ID, 0);
     }
 
     public int getVariant()
     {
-        return MathHelper.clamp(((Integer)this.dataManager.get(DATA_VARIANT_ID)).intValue(), 0, 3);
+        return MathHelper.clamp((Integer) this.dataManager.get(DATA_VARIANT_ID), 0, 3);
     }
 
     public void setVariant(int variantIn)
     {
-        this.dataManager.set(DATA_VARIANT_ID, Integer.valueOf(variantIn));
+        this.dataManager.set(DATA_VARIANT_ID, variantIn);
     }
 
     protected int getInventorySize()
@@ -343,7 +343,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
     private void setColor(@Nullable EnumDyeColor color)
     {
-        this.dataManager.set(DATA_COLOR_ID, Integer.valueOf(color == null ? -1 : color.getMetadata()));
+        this.dataManager.set(DATA_COLOR_ID, color == null ? -1 : color.getMetadata());
     }
 
     private void setColorByItem(ItemStack stack)
@@ -361,7 +361,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
     @Nullable
     public EnumDyeColor getColor()
     {
-        int i = ((Integer)this.dataManager.get(DATA_COLOR_ID)).intValue();
+        int i = (Integer) this.dataManager.get(DATA_COLOR_ID);
         return i == -1 ? null : EnumDyeColor.byMetadata(i);
     }
 
@@ -551,7 +551,7 @@ public class EntityLlama extends AbstractChestHorse implements IRangedAttackMob
 
     static class GroupData implements IEntityLivingData
         {
-            public int variant;
+            public final int variant;
 
             private GroupData(int variantIn)
             {

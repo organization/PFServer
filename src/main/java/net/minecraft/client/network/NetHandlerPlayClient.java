@@ -1119,7 +1119,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
         if (i >= 0 && i < SPacketChangeGameState.MESSAGE_NAMES.length && SPacketChangeGameState.MESSAGE_NAMES[i] != null)
         {
-            entityplayer.sendStatusMessage(new TextComponentTranslation(SPacketChangeGameState.MESSAGE_NAMES[i], new Object[0]), false);
+            entityplayer.sendStatusMessage(new TextComponentTranslation(SPacketChangeGameState.MESSAGE_NAMES[i]), false);
         }
 
         if (i == 1)
@@ -1146,9 +1146,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             else if (j == 1)
             {
                 this.gameController.displayGuiScreen(new GuiWinGame(true, () ->
-                {
-                    this.gameController.player.connection.sendPacket(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
-                }));
+                        this.gameController.player.connection.sendPacket(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN))));
             }
         }
         else if (i == 5)
@@ -1161,15 +1159,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             }
             else if (f == 101.0F)
             {
-                this.gameController.ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("demo.help.movement", new Object[] {gamesettings.keyBindForward.getDisplayName(), gamesettings.keyBindLeft.getDisplayName(), gamesettings.keyBindBack.getDisplayName(), gamesettings.keyBindRight.getDisplayName()}));
+                this.gameController.ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("demo.help.movement", gamesettings.keyBindForward.getDisplayName(), gamesettings.keyBindLeft.getDisplayName(), gamesettings.keyBindBack.getDisplayName(), gamesettings.keyBindRight.getDisplayName()));
             }
             else if (f == 102.0F)
             {
-                this.gameController.ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("demo.help.jump", new Object[] {gamesettings.keyBindJump.getDisplayName()}));
+                this.gameController.ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("demo.help.jump", gamesettings.keyBindJump.getDisplayName()));
             }
             else if (f == 103.0F)
             {
-                this.gameController.ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("demo.help.inventory", new Object[] {gamesettings.keyBindInventory.getDisplayName()}));
+                this.gameController.ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("demo.help.inventory", gamesettings.keyBindInventory.getDisplayName()));
             }
         }
         else if (i == 6)
@@ -1186,7 +1184,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
         else if (i == 10)
         {
-            this.clientWorldController.spawnParticle(EnumParticleTypes.MOB_APPEARANCE, entityplayer.posX, entityplayer.posY, entityplayer.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.clientWorldController.spawnParticle(EnumParticleTypes.MOB_APPEARANCE, entityplayer.posX, entityplayer.posY, entityplayer.posZ, 0.0D, 0.0D, 0.0D);
             this.clientWorldController.playSound(entityplayer, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ELDER_GUARDIAN_CURSE, SoundCategory.HOSTILE, 1.0F, 1.0F);
         }
     }
@@ -1262,7 +1260,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         for (Entry<StatBase, Integer> entry : packetIn.getStatisticMap().entrySet())
         {
             StatBase statbase = entry.getKey();
-            int k = ((Integer)entry.getValue()).intValue();
+            int k = (Integer) entry.getValue();
             this.gameController.player.getStatFileWriter().unlockAchievement(this.gameController.player, statbase, k);
         }
 
@@ -1314,9 +1312,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
 
         RecipeBookClient.ALL_RECIPES.forEach((p_194023_1_) ->
-        {
-            p_194023_1_.updateKnownRecipes(recipebook);
-        });
+                p_194023_1_.updateKnownRecipes(recipebook));
 
         if (this.gameController.currentScreen instanceof IRecipeShownListener)
         {
@@ -1533,9 +1529,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                         return;
                     }
                 }
-                catch (UnsupportedEncodingException var7)
+                catch (UnsupportedEncodingException ignored)
                 {
-                    ;
                 }
 
                 this.netManager.sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.FAILED_DOWNLOAD));
@@ -1555,43 +1550,28 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                 }
                 else
                 {
-                    this.gameController.addScheduledTask(new Runnable()
-                    {
-                        public void run()
-                        {
-                            NetHandlerPlayClient.this.gameController.displayGuiScreen(new GuiYesNo(new GuiYesNoCallback()
-                            {
-                                public void confirmClicked(boolean result, int id)
-                                {
-                                    NetHandlerPlayClient.this.gameController = Minecraft.getMinecraft();
-                                    ServerData serverdata1 = NetHandlerPlayClient.this.gameController.getCurrentServerData();
+                    this.gameController.addScheduledTask(() -> NetHandlerPlayClient.this.gameController.displayGuiScreen(new GuiYesNo((result, id) -> {
+                        NetHandlerPlayClient.this.gameController = Minecraft.getMinecraft();
+                        ServerData serverdata1 = NetHandlerPlayClient.this.gameController.getCurrentServerData();
 
-                                    if (result)
-                                    {
-                                        if (serverdata1 != null)
-                                        {
-                                            serverdata1.setResourceMode(ServerData.ServerResourceMode.ENABLED);
-                                        }
+                        if (result) {
+                            if (serverdata1 != null) {
+                                serverdata1.setResourceMode(ServerData.ServerResourceMode.ENABLED);
+                            }
 
-                                        NetHandlerPlayClient.this.netManager.sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.ACCEPTED));
-                                        Futures.addCallback(NetHandlerPlayClient.this.gameController.getResourcePackRepository().downloadResourcePack(s, s1), NetHandlerPlayClient.this.createDownloadCallback());
-                                    }
-                                    else
-                                    {
-                                        if (serverdata1 != null)
-                                        {
-                                            serverdata1.setResourceMode(ServerData.ServerResourceMode.DISABLED);
-                                        }
+                            NetHandlerPlayClient.this.netManager.sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.ACCEPTED));
+                            Futures.addCallback(NetHandlerPlayClient.this.gameController.getResourcePackRepository().downloadResourcePack(s, s1), NetHandlerPlayClient.this.createDownloadCallback());
+                        } else {
+                            if (serverdata1 != null) {
+                                serverdata1.setResourceMode(ServerData.ServerResourceMode.DISABLED);
+                            }
 
-                                        NetHandlerPlayClient.this.netManager.sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.DECLINED));
-                                    }
-
-                                    ServerList.saveSingleServer(serverdata1);
-                                    NetHandlerPlayClient.this.gameController.displayGuiScreen((GuiScreen)null);
-                                }
-                            }, I18n.format("multiplayer.texturePrompt.line1"), I18n.format("multiplayer.texturePrompt.line2"), 0));
+                            NetHandlerPlayClient.this.netManager.sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.DECLINED));
                         }
-                    });
+
+                        ServerList.saveSingleServer(serverdata1);
+                        NetHandlerPlayClient.this.gameController.displayGuiScreen((GuiScreen) null);
+                    }, I18n.format("multiplayer.texturePrompt.line1"), I18n.format("multiplayer.texturePrompt.line2"), 0)));
                 }
             }
         }
@@ -1676,67 +1656,56 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
 
-        if ("MC|TrList".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer = packetIn.getBufferData();
+        switch (packetIn.getChannelName()) {
+            case "MC|TrList":
+                PacketBuffer packetbuffer = packetIn.getBufferData();
 
-            try
-            {
-                int k = packetbuffer.readInt();
-                GuiScreen guiscreen = this.gameController.currentScreen;
+                try {
+                    int k = packetbuffer.readInt();
+                    GuiScreen guiscreen = this.gameController.currentScreen;
 
-                if (guiscreen != null && guiscreen instanceof GuiMerchant && k == this.gameController.player.openContainer.windowId)
-                {
-                    IMerchant imerchant = ((GuiMerchant)guiscreen).getMerchant();
-                    MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
-                    imerchant.setRecipes(merchantrecipelist);
+                    if (guiscreen != null && guiscreen instanceof GuiMerchant && k == this.gameController.player.openContainer.windowId) {
+                        IMerchant imerchant = ((GuiMerchant) guiscreen).getMerchant();
+                        MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
+                        imerchant.setRecipes(merchantrecipelist);
+                    }
+                } catch (IOException ioexception) {
+                    LOGGER.error("Couldn't load trade info", (Throwable) ioexception);
+                } finally {
+                    if (false) // Forge: let packet handle releasing buffer
+                        packetbuffer.release();
                 }
-            }
-            catch (IOException ioexception)
-            {
-                LOGGER.error("Couldn't load trade info", (Throwable)ioexception);
-            }
-            finally
-            {
-                if (false) // Forge: let packet handle releasing buffer
-                packetbuffer.release();
-            }
-        }
-        else if ("MC|Brand".equals(packetIn.getChannelName()))
-        {
-            this.gameController.player.setServerBrand(packetIn.getBufferData().readString(32767));
-        }
-        else if ("MC|BOpen".equals(packetIn.getChannelName()))
-        {
-            EnumHand enumhand = (EnumHand)packetIn.getBufferData().readEnumValue(EnumHand.class);
-            ItemStack itemstack = enumhand == EnumHand.OFF_HAND ? this.gameController.player.getHeldItemOffhand() : this.gameController.player.getHeldItemMainhand();
+                break;
+            case "MC|Brand":
+                this.gameController.player.setServerBrand(packetIn.getBufferData().readString(32767));
+                break;
+            case "MC|BOpen":
+                EnumHand enumhand = (EnumHand) packetIn.getBufferData().readEnumValue(EnumHand.class);
+                ItemStack itemstack = enumhand == EnumHand.OFF_HAND ? this.gameController.player.getHeldItemOffhand() : this.gameController.player.getHeldItemMainhand();
 
-            if (itemstack.getItem() == Items.WRITTEN_BOOK)
-            {
-                this.gameController.displayGuiScreen(new GuiScreenBook(this.gameController.player, itemstack, false));
-            }
-        }
-        else if ("MC|DebugPath".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer1 = packetIn.getBufferData();
-            int l = packetbuffer1.readInt();
-            float f1 = packetbuffer1.readFloat();
-            Path path = Path.read(packetbuffer1);
-            ((DebugRendererPathfinding)this.gameController.debugRenderer.pathfinding).addPath(l, path, f1);
-        }
-        else if ("MC|DebugNeighborsUpdate".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer2 = packetIn.getBufferData();
-            long i1 = packetbuffer2.readVarLong();
-            BlockPos blockpos = packetbuffer2.readBlockPos();
-            ((DebugRendererNeighborsUpdate)this.gameController.debugRenderer.neighborsUpdate).addUpdate(i1, blockpos);
-        }
-        else if ("MC|StopSound".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer3 = packetIn.getBufferData();
-            String s = packetbuffer3.readString(32767);
-            String s1 = packetbuffer3.readString(256);
-            this.gameController.getSoundHandler().stop(s1, SoundCategory.getByName(s));
+                if (itemstack.getItem() == Items.WRITTEN_BOOK) {
+                    this.gameController.displayGuiScreen(new GuiScreenBook(this.gameController.player, itemstack, false));
+                }
+                break;
+            case "MC|DebugPath":
+                PacketBuffer packetbuffer1 = packetIn.getBufferData();
+                int l = packetbuffer1.readInt();
+                float f1 = packetbuffer1.readFloat();
+                Path path = Path.read(packetbuffer1);
+                ((DebugRendererPathfinding) this.gameController.debugRenderer.pathfinding).addPath(l, path, f1);
+                break;
+            case "MC|DebugNeighborsUpdate":
+                PacketBuffer packetbuffer2 = packetIn.getBufferData();
+                long i1 = packetbuffer2.readVarLong();
+                BlockPos blockpos = packetbuffer2.readBlockPos();
+                ((DebugRendererNeighborsUpdate) this.gameController.debugRenderer.neighborsUpdate).addUpdate(i1, blockpos);
+                break;
+            case "MC|StopSound":
+                PacketBuffer packetbuffer3 = packetIn.getBufferData();
+                String s = packetbuffer3.readString(32767);
+                String s1 = packetbuffer3.readString(256);
+                this.gameController.getSoundHandler().stop(s1, SoundCategory.getByName(s));
+                break;
         }
     }
 

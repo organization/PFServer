@@ -394,7 +394,7 @@ public class ChunkGeneratorOverworld implements IChunkGenerator
         boolean flag = false;
         ChunkPos chunkpos = new ChunkPos(x, z);
 
-        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
+        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, false);
 
         if (this.mapFeaturesEnabled)
         {
@@ -430,7 +430,7 @@ public class ChunkGeneratorOverworld implements IChunkGenerator
         }
 
         if (biome != Biomes.DESERT && biome != Biomes.DESERT_HILLS && this.settings.useWaterLakes && !flag && this.rand.nextInt(this.settings.waterLakeChance) == 0)
-        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE))
+        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, false, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE))
         {
             int i1 = this.rand.nextInt(16) + 8;
             int j1 = this.rand.nextInt(256);
@@ -439,7 +439,7 @@ public class ChunkGeneratorOverworld implements IChunkGenerator
         }
 
         if (!flag && this.rand.nextInt(this.settings.lavaLakeChance / 10) == 0 && this.settings.useLavaLakes)
-        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA))
+        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, false, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAVA))
         {
             int i2 = this.rand.nextInt(16) + 8;
             int l2 = this.rand.nextInt(this.rand.nextInt(248) + 8);
@@ -555,7 +555,7 @@ public class ChunkGeneratorOverworld implements IChunkGenerator
         }
         else
         {
-            return "Temple".equals(structureName) && this.scatteredFeatureGenerator != null ? this.scatteredFeatureGenerator.isInsideStructure(pos) : false;
+            return ("Temple".equals(structureName) && this.scatteredFeatureGenerator != null) && this.scatteredFeatureGenerator.isInsideStructure(pos);
         }
     }
 

@@ -69,7 +69,7 @@ public class BlockStone extends Block
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {VARIANT});
+        return new BlockStateContainer(this, VARIANT);
     }
 
     public static enum EnumType implements IStringSerializable

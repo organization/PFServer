@@ -186,7 +186,7 @@ public class IntegratedServer extends MinecraftServer
 
             if (this.mc.gameSettings.renderDistanceChunks != this.getPlayerList().getViewDistance())
             {
-                LOGGER.info("Changing view distance to {}, from {}", Integer.valueOf(this.mc.gameSettings.renderDistanceChunks), Integer.valueOf(this.getPlayerList().getViewDistance()));
+                LOGGER.info("Changing view distance to {}, from {}", this.mc.gameSettings.renderDistanceChunks, this.getPlayerList().getViewDistance());
                 this.getPlayerList().setViewDistance(this.mc.gameSettings.renderDistanceChunks);
             }
 
@@ -275,35 +275,25 @@ public class IntegratedServer extends MinecraftServer
     public CrashReport addServerInfoToCrashReport(CrashReport report)
     {
         report = super.addServerInfoToCrashReport(report);
-        report.getCategory().addDetail("Type", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                return "Integrated Server (map_client.txt)";
-            }
-        });
-        report.getCategory().addDetail("Is Modded", new ICrashReportDetail<String>()
-        {
-            public String call() throws Exception
-            {
-                String s = ClientBrandRetriever.getClientModName();
+        report.getCategory().addDetail("Type", () -> "Integrated Server (map_client.txt)");
+        report.getCategory().addDetail("Is Modded", () -> {
+            String s = ClientBrandRetriever.getClientModName();
 
-                if (!s.equals("vanilla"))
+            if (!s.equals("vanilla"))
+            {
+                return "Definitely; Client brand changed to '" + s + "'";
+            }
+            else
+            {
+                s = IntegratedServer.this.getServerModName();
+
+                if (!"vanilla".equals(s))
                 {
-                    return "Definitely; Client brand changed to '" + s + "'";
+                    return "Definitely; Server brand changed to '" + s + "'";
                 }
                 else
                 {
-                    s = IntegratedServer.this.getServerModName();
-
-                    if (!"vanilla".equals(s))
-                    {
-                        return "Definitely; Server brand changed to '" + s + "'";
-                    }
-                    else
-                    {
-                        return Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and both client + server brands are untouched.";
-                    }
+                    return Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and both client + server brands are untouched.";
                 }
             }
         });
@@ -341,9 +331,8 @@ public class IntegratedServer extends MinecraftServer
             {
                 i = HttpUtil.getSuitableLanPort();
             }
-            catch (IOException var5)
+            catch (IOException ignored)
             {
-                ;
             }
 
             if (i <= 0)
@@ -385,16 +374,12 @@ public class IntegratedServer extends MinecraftServer
     public void initiateShutdown()
     {
         if (isServerRunning())
-        Futures.getUnchecked(this.addScheduledTask(new Runnable()
-        {
-            public void run()
+        Futures.getUnchecked(this.addScheduledTask(() -> {
+            for (EntityPlayerMP entityplayermp : Lists.newArrayList(IntegratedServer.this.getPlayerList().getPlayers()))
             {
-                for (EntityPlayerMP entityplayermp : Lists.newArrayList(IntegratedServer.this.getPlayerList().getPlayers()))
+                if (!entityplayermp.getUniqueID().equals(IntegratedServer.this.mc.player.getUniqueID()))
                 {
-                    if (!entityplayermp.getUniqueID().equals(IntegratedServer.this.mc.player.getUniqueID()))
-                    {
-                        IntegratedServer.this.getPlayerList().playerLoggedOut(entityplayermp);
-                    }
+                    IntegratedServer.this.getPlayerList().playerLoggedOut(entityplayermp);
                 }
             }
         }));

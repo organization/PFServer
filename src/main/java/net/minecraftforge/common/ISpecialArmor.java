@@ -144,7 +144,7 @@ public interface ISpecialArmor
                 totalToughness = 0;
             }
 
-            ArrayList<ArmorProperties> dmgVals = new ArrayList<ArmorProperties>();
+            ArrayList<ArmorProperties> dmgVals = new ArrayList<>();
             for (int slot = 0; slot < inventory.size(); slot++)
             {
                 ItemStack stack = inventory.get(slot);
@@ -179,7 +179,7 @@ public interface ISpecialArmor
             }
             if (dmgVals.size() > 0)
             {
-                ArmorProperties[] props = dmgVals.toArray(new ArmorProperties[dmgVals.size()]);
+                ArmorProperties[] props = dmgVals.toArray(new ArmorProperties[0]);
                 StandardizeList(props, damage);
                 int level = props[0].Priority;
                 double ratio = 0;

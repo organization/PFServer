@@ -11,7 +11,7 @@ public class ModelShulker extends ModelBase
 {
     public final ModelRenderer base;
     public final ModelRenderer lid;
-    public ModelRenderer head;
+    public final ModelRenderer head;
 
     public ModelShulker()
     {

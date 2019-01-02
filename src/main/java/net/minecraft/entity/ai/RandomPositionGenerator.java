@@ -151,7 +151,6 @@ public class RandomPositionGenerator
 
             for (blockpos = p_191378_0_.up(); blockpos.getY() < p_191378_1_.world.getHeight() && p_191378_1_.world.getBlockState(blockpos).getMaterial().isSolid(); blockpos = blockpos.up())
             {
-                ;
             }
 
             return blockpos;

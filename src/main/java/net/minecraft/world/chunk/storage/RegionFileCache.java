@@ -126,6 +126,6 @@ public class RegionFileCache
     public static boolean chunkExists(File worldDir, int chunkX, int chunkZ)
     {
         RegionFile regionfile = getRegionFileIfExists(worldDir, chunkX, chunkZ);
-        return regionfile != null ? regionfile.isChunkSaved(chunkX & 31, chunkZ & 31) : false;
+        return regionfile != null && regionfile.isChunkSaved(chunkX & 31, chunkZ & 31);
     }
 }

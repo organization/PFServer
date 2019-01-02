@@ -20,13 +20,13 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    protected ItemStack item;
-    protected Action action;
-    protected Block blockClicked;
-    protected BlockFace blockFace;
+    protected final ItemStack item;
+    protected final Action action;
+    protected final Block blockClicked;
+    protected final BlockFace blockFace;
     private Result useClickedBlock;
     private Result useItemInHand;
-    private EquipmentSlot hand;
+    private final EquipmentSlot hand;
 
     public PlayerInteractEvent(final Player who, final Action action, final ItemStack item, final Block clickedBlock, final BlockFace clickedFace) {
         this(who, action, item, clickedBlock, clickedFace, EquipmentSlot.HAND);

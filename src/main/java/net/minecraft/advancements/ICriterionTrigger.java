@@ -55,7 +55,7 @@ public interface ICriterionTrigger<T extends ICriterionInstance>
                     }
                     else
                     {
-                        return !this.advancement.equals(listener.advancement) ? false : this.criterionName.equals(listener.criterionName);
+                        return this.advancement.equals(listener.advancement) && this.criterionName.equals(listener.criterionName);
                     }
                 }
                 else

@@ -11,32 +11,8 @@ import javax.annotation.Nullable;
 @SideOnly(Side.CLIENT)
 public interface ICondition
 {
-    ICondition TRUE = new ICondition()
-    {
-        public Predicate<IBlockState> getPredicate(BlockStateContainer blockState)
-        {
-            return new Predicate<IBlockState>()
-            {
-                public boolean apply(@Nullable IBlockState p_apply_1_)
-                {
-                    return true;
-                }
-            };
-        }
-    };
-    ICondition FALSE = new ICondition()
-    {
-        public Predicate<IBlockState> getPredicate(BlockStateContainer blockState)
-        {
-            return new Predicate<IBlockState>()
-            {
-                public boolean apply(@Nullable IBlockState p_apply_1_)
-                {
-                    return false;
-                }
-            };
-        }
-    };
+    ICondition TRUE = blockState -> p_apply_1_ -> true;
+    ICondition FALSE = blockState -> p_apply_1_ -> false;
 
     Predicate<IBlockState> getPredicate(BlockStateContainer blockState);
 }

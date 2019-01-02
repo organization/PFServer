@@ -65,9 +65,8 @@ public class FolderResourcePack extends AbstractResourcePack
                 return file1;
             }
         }
-        catch (IOException var3)
+        catch (IOException ignored)
         {
-            ;
         }
 
         return null;

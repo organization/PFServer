@@ -907,7 +907,7 @@ public class Property
      */
     public int[] getIntList()
     {
-        ArrayList<Integer> nums = new ArrayList<Integer>();
+        ArrayList<Integer> nums = new ArrayList<>();
 
         for (String value : values)
         {
@@ -915,7 +915,7 @@ public class Property
             {
                 nums.add(Integer.parseInt(value));
             }
-            catch (NumberFormatException e){}
+            catch (NumberFormatException ignored){}
         }
 
         int[] primitives = new int[nums.size()];
@@ -957,14 +957,14 @@ public class Property
      */
     public boolean[] getBooleanList()
     {
-        ArrayList<Boolean> tmp = new ArrayList<Boolean>();
+        ArrayList<Boolean> tmp = new ArrayList<>();
         for (String value : values)
         {
             try
             {
                 tmp.add(Boolean.parseBoolean(value));
             }
-            catch (NumberFormatException e){}
+            catch (NumberFormatException ignored){}
         }
 
         boolean[] primitives = new boolean[tmp.size()];
@@ -1003,14 +1003,14 @@ public class Property
      */
     public double[] getDoubleList()
     {
-        ArrayList<Double> tmp = new ArrayList<Double>();
+        ArrayList<Double> tmp = new ArrayList<>();
         for (String value : values)
         {
             try
             {
                 tmp.add(Double.parseDouble(value));
             }
-            catch (NumberFormatException e) {}
+            catch (NumberFormatException ignored) {}
         }
 
         double[] primitives = new double[tmp.size()];

@@ -32,15 +32,11 @@ public final class WorldEntitySpawner
     private int getEntityCount(WorldServer server, Class oClass)
     {
         int i = 0;
-        Iterator<ChunkPos> it = this.eligibleChunksForSpawning.iterator();
-        while ( it.hasNext() )
-        {
-            ChunkPos coord = it.next();
+        for (ChunkPos coord : this.eligibleChunksForSpawning) {
             int x = coord.x;
             int z = coord.z;
-            if ( !((ChunkProviderServer)server.chunkProvider).droppedChunksSet.contains( coord ) && server.isChunkLoaded( x, z, true ) )
-            {
-                i += Objects.requireNonNull(server.getChunkProvider().getLoadedChunk(x, z)).entityCount.get( oClass );
+            if (!((ChunkProviderServer) server.chunkProvider).droppedChunksSet.contains(coord) && server.isChunkLoaded(x, z, true)) {
+                i += Objects.requireNonNull(server.getChunkProvider().getLoadedChunk(x, z)).entityCount.get(oClass);
             }
         }
         return i;

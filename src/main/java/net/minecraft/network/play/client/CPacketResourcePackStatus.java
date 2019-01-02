@@ -39,6 +39,6 @@ public class CPacketResourcePackStatus implements Packet<INetHandlerPlayServer>
         SUCCESSFULLY_LOADED,
         DECLINED,
         FAILED_DOWNLOAD,
-        ACCEPTED;
+        ACCEPTED
     }
 }

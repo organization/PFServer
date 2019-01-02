@@ -19,7 +19,7 @@ public abstract class TabCompleter
     protected boolean didComplete;
     protected boolean requestedCompletions;
     protected int completionIdx;
-    protected List<String> completions = Lists.<String>newArrayList();
+    protected final List<String> completions = Lists.<String>newArrayList();
 
     public TabCompleter(GuiTextField textFieldIn, boolean hasTargetBlockIn)
     {

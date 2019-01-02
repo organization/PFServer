@@ -278,15 +278,10 @@ public class GuiEnchantment extends GuiContainer
         {
             this.last = itemstack;
 
-            while (true)
-            {
-                this.flipT += (float)(this.random.nextInt(4) - this.random.nextInt(4));
+            do {
+                this.flipT += (float) (this.random.nextInt(4) - this.random.nextInt(4));
 
-                if (this.flip > this.flipT + 1.0F || this.flip < this.flipT - 1.0F)
-                {
-                    break;
-                }
-            }
+            } while (!(this.flip > this.flipT + 1.0F) && !(this.flip < this.flipT - 1.0F));
         }
 
         ++this.ticks;

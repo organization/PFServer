@@ -8,13 +8,17 @@ public class IBXM {
 	public static final int FP_ONE = 1 << FP_SHIFT;
 	public static final int FP_MASK = FP_ONE - 1;
 
-	private int sampling_rate, resampling_quality, volume_ramp_length;
+	private final int sampling_rate;
+    private int resampling_quality;
+    private final int volume_ramp_length;
 	private int tick_length_samples, current_tick_samples;
-	private int[] mixing_buffer, volume_ramp_buffer;
+	private final int[] mixing_buffer;
+    private final int[] volume_ramp_buffer;
 
 	private Module module;
 	private Channel[] channels;
-	private int[] global_volume, note;
+	private final int[] global_volume;
+    private final int[] note;
 	private int current_sequence_index, next_sequence_index;
 	private int current_row, next_row;
 	private int tick_counter, ticks_per_row;

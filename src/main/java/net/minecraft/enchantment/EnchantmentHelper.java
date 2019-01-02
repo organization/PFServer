@@ -67,7 +67,7 @@ public class EnchantmentHelper
             NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
             Enchantment enchantment = Enchantment.getEnchantmentByID(nbttagcompound.getShort("id"));
             int j = nbttagcompound.getShort("lvl");
-            map.put(enchantment, Integer.valueOf(j));
+            map.put(enchantment, j);
         }
 
         return map;
@@ -83,7 +83,7 @@ public class EnchantmentHelper
 
             if (enchantment != null)
             {
-                int i = ((Integer)entry.getValue()).intValue();
+                int i = (Integer) entry.getValue();
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setShort("id", (short)Enchantment.getEnchantmentID(enchantment));
                 nbttagcompound.setShort("lvl", (short)i);
@@ -402,15 +402,8 @@ public class EnchantmentHelper
 
     public static void removeIncompatible(List<EnchantmentData> p_185282_0_, EnchantmentData p_185282_1_)
     {
-        Iterator<EnchantmentData> iterator = p_185282_0_.iterator();
 
-        while (iterator.hasNext())
-        {
-            if (!p_185282_1_.enchantment.isCompatibleWith((iterator.next()).enchantment))
-            {
-                iterator.remove();
-            }
-        }
+        p_185282_0_.removeIf(enchantmentData -> !p_185282_1_.enchantment.isCompatibleWith((enchantmentData).enchantment));
     }
 
     public static List<EnchantmentData> getEnchantmentDatas(int p_185291_0_, ItemStack p_185291_1_, boolean allowTreasure)

@@ -40,8 +40,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EventBus implements IEventExceptionHandler
 {
     private static int maxID = 0;
-    private ConcurrentHashMap<Object, ArrayList<IEventListener>> listeners = new ConcurrentHashMap<Object, ArrayList<IEventListener>>();
-    private Map<Object,ModContainer> listenerOwners = new MapMaker().weakKeys().weakValues().makeMap();
+    private final ConcurrentHashMap<Object, ArrayList<IEventListener>> listeners = new ConcurrentHashMap<>();
+    private final Map<Object,ModContainer> listenerOwners = new MapMaker().weakKeys().weakValues().makeMap();
     private final int busID = maxID++;
     private IEventExceptionHandler exceptionHandler;
     private boolean shutdown;
@@ -112,7 +112,7 @@ public class EventBus implements IEventExceptionHandler
                 }
                 catch (NoSuchMethodException e)
                 {
-                    ; // Eat the error, this is not unexpected
+                    // Eat the error, this is not unexpected
                 }
             }
         }
@@ -130,17 +130,12 @@ public class EventBus implements IEventExceptionHandler
             IEventListener listener = asm;
             if (IContextSetter.class.isAssignableFrom(eventType))
             {
-                listener = new IEventListener()
-                {
-                    @Override
-                    public void invoke(Event event)
-                    {
-                        ModContainer old = Loader.instance().activeModContainer();
-                        Loader.instance().setActiveModContainer(owner);
-                        ((IContextSetter)event).setModContainer(owner);
-                        asm.invoke(event);
-                        Loader.instance().setActiveModContainer(old);
-                    }
+                listener = event1 -> {
+                    ModContainer old = Loader.instance().activeModContainer();
+                    Loader.instance().setActiveModContainer(owner);
+                    ((IContextSetter) event1).setModContainer(owner);
+                    asm.invoke(event1);
+                    Loader.instance().setActiveModContainer(old);
                 };
             }
 

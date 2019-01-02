@@ -41,14 +41,14 @@ public class DummyConfigElement implements IConfigElement
 {
     protected boolean isProperty = true;
     protected boolean isList = false;
-    protected ConfigGuiType type;
-    protected String name;
-    protected String langKey;
+    protected final ConfigGuiType type;
+    protected final String name;
+    protected final String langKey;
     protected Object value;
     protected Object defaultValue;
     protected Object[] values;
     protected Object[] defaultValues;
-    protected String[] validValues;
+    protected final String[] validValues;
     protected Pattern validStringPattern;
     protected Object minValue;
     protected Object maxValue;
@@ -74,7 +74,7 @@ public class DummyConfigElement implements IConfigElement
         
         public DummyCategoryElement(String name, String langKey, Class<? extends IConfigEntry> customListEntryClass)
         {
-            this(name, langKey, new ArrayList<IConfigElement>(), customListEntryClass);
+            this(name, langKey, new ArrayList<>(), customListEntryClass);
         }
         
         public DummyCategoryElement(String name, String langKey, List<IConfigElement> childElements, @Nullable Class<? extends IConfigEntry> customListEntryClass)

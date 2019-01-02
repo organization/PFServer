@@ -16,7 +16,7 @@ import java.util.List;
 public class GuiPageButtonList extends GuiListExtended
 {
     private final List<GuiEntry> entries = Lists.<GuiEntry>newArrayList();
-    private final IntHashMap<Gui> componentMap = new IntHashMap<Gui>();
+    private final IntHashMap<Gui> componentMap = new IntHashMap<>();
     private final List<GuiTextField> editBoxes = Lists.<GuiTextField>newArrayList();
     private final GuiListEntry[][] pages;
     private int page;

@@ -41,7 +41,7 @@ class ObjectHolderRef
     private Field field;
     private ResourceLocation injectedObject;
     private boolean isValid;
-    private ForgeRegistry<?> registry;
+    private final ForgeRegistry<?> registry;
 
     @SuppressWarnings("unchecked")
     ObjectHolderRef(Field field, ResourceLocation injectedObject, boolean extractFromExistingValues)
@@ -96,7 +96,7 @@ class ObjectHolderRef
     @Nullable
     private ForgeRegistry<?> getRegistryForType(Field field)
     {
-        Queue<Class<?>> typesToExamine = new LinkedList<Class<?>>();
+        Queue<Class<?>> typesToExamine = new LinkedList<>();
         typesToExamine.add(field.getType());
 
         ForgeRegistry<?> registry = null;

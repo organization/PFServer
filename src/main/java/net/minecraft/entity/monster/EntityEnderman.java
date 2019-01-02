@@ -67,14 +67,8 @@ public class EntityEnderman extends EntityMob
         this.tasks.addTask(10, new AIPlaceBlock(this));
         this.tasks.addTask(11, new AITakeBlock(this));
         this.targetTasks.addTask(1, new AIFindPlayer(this));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityEndermite.class, 10, true, false, new Predicate<EntityEndermite>()
-        {
-            public boolean apply(@Nullable EntityEndermite p_apply_1_)
-            {
-                return p_apply_1_.isSpawnedByPlayer();
-            }
-        }));
+        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityEndermite.class, 10, true, false, (Predicate<EntityEndermite>) EntityEndermite::isSpawnedByPlayer));
     }
 
     protected void applyEntityAttributes()
@@ -105,13 +99,13 @@ public class EntityEnderman extends EntityMob
         if (entityliving == null)
         {
             this.targetChangeTime = 0;
-            this.dataManager.set(SCREAMING, Boolean.valueOf(false));
+            this.dataManager.set(SCREAMING, Boolean.FALSE);
             iattributeinstance.removeModifier(ATTACKING_SPEED_BOOST);
         }
         else
         {
             this.targetChangeTime = this.ticksExisted;
-            this.dataManager.set(SCREAMING, Boolean.valueOf(true));
+            this.dataManager.set(SCREAMING, Boolean.TRUE);
 
             if (!iattributeinstance.hasModifier(ATTACKING_SPEED_BOOST))
             {
@@ -125,7 +119,7 @@ public class EntityEnderman extends EntityMob
     {
         super.entityInit();
         this.dataManager.register(CARRIED_BLOCK, Optional.absent());
-        this.dataManager.register(SCREAMING, Boolean.valueOf(false));
+        this.dataManager.register(SCREAMING, Boolean.FALSE);
     }
 
     public void playEndermanSound()
@@ -205,7 +199,7 @@ public class EntityEnderman extends EntityMob
             double d0 = vec3d1.lengthVector();
             vec3d1 = vec3d1.normalize();
             double d1 = vec3d.dotProduct(vec3d1);
-            return d1 > 1.0D - 0.025D / d0 ? player.canEntityBeSeen(this) : false;
+            return d1 > 1.0D - 0.025D / d0 && player.canEntityBeSeen(this);
         }
     }
 
@@ -373,7 +367,7 @@ public class EntityEnderman extends EntityMob
 
     public boolean isScreaming()
     {
-        return ((Boolean)this.dataManager.get(SCREAMING)).booleanValue();
+        return (Boolean) this.dataManager.get(SCREAMING);
     }
 
     static
@@ -411,13 +405,7 @@ public class EntityEnderman extends EntityMob
             public boolean shouldExecute()
             {
                 double d0 = this.getTargetDistance();
-                this.player = this.enderman.world.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, (Function)null, new Predicate<EntityPlayer>()
-                {
-                    public boolean apply(@Nullable EntityPlayer p_apply_1_)
-                    {
-                        return p_apply_1_ != null && AIFindPlayer.this.enderman.shouldAttackPlayer(p_apply_1_);
-                    }
-                });
+                this.player = this.enderman.world.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, (Function)null, p_apply_1_ -> p_apply_1_ != null && AIFindPlayer.this.enderman.shouldAttackPlayer(p_apply_1_));
                 return this.player != null;
             }
 
@@ -449,7 +437,7 @@ public class EntityEnderman extends EntityMob
                 }
                 else
                 {
-                    return this.targetEntity != null && ((EntityPlayer)this.targetEntity).isEntityAlive() ? true : super.shouldContinueExecuting();
+                    return this.targetEntity != null && ((EntityPlayer) this.targetEntity).isEntityAlive() || super.shouldContinueExecuting();
                 }
             }
 

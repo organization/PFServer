@@ -17,7 +17,7 @@ import java.util.List;
 public class ShapelessRecipe implements Recipe, Keyed {
     private final NamespacedKey key;
     private final ItemStack output;
-    private final List<ItemStack> ingredients = new ArrayList<ItemStack>();
+    private final List<ItemStack> ingredients = new ArrayList<>();
 
     @Deprecated
     public ShapelessRecipe(ItemStack result) {
@@ -227,7 +227,7 @@ public class ShapelessRecipe implements Recipe, Keyed {
      * @return The input list
      */
     public List<ItemStack> getIngredientList() {
-        ArrayList<ItemStack> result = new ArrayList<ItemStack>(ingredients.size());
+        ArrayList<ItemStack> result = new ArrayList<>(ingredients.size());
         for (ItemStack ingredient : ingredients) {
             result.add(ingredient.clone());
         }

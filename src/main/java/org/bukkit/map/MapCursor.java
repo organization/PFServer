@@ -180,7 +180,7 @@ public final class MapCursor {
         MANSION(8),
         TEMPLE(9);
 
-        private byte value;
+        private final byte value;
 
         private Type(int value) {
             this.value = (byte) value;

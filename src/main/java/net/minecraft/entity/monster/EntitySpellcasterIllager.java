@@ -28,7 +28,7 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(SPELL, Byte.valueOf((byte)0));
+        this.dataManager.register(SPELL, (byte) 0);
     }
 
     public void readEntityFromNBT(NBTTagCompound compound)
@@ -53,7 +53,7 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
     {
         if (this.world.isRemote)
         {
-            return ((Byte)this.dataManager.get(SPELL)).byteValue() > 0;
+            return (Byte) this.dataManager.get(SPELL) > 0;
         }
         else
         {
@@ -64,12 +64,12 @@ public abstract class EntitySpellcasterIllager extends AbstractIllager
     public void setSpellType(SpellType spellType)
     {
         this.activeSpell = spellType;
-        this.dataManager.set(SPELL, Byte.valueOf((byte)spellType.id));
+        this.dataManager.set(SPELL, (byte) spellType.id);
     }
 
     public SpellType getSpellType()
     {
-        return !this.world.isRemote ? this.activeSpell : SpellType.getFromId(((Byte)this.dataManager.get(SPELL)).byteValue());
+        return !this.world.isRemote ? this.activeSpell : SpellType.getFromId((Byte) this.dataManager.get(SPELL));
     }
 
     protected void updateAITasks()

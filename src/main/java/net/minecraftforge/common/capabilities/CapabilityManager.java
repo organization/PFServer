@@ -82,7 +82,7 @@ public enum CapabilityManager
         String realName = type.getName().intern();
         Preconditions.checkState(!providers.containsKey(realName), "Can not register a capability implementation multiple times: %s", realName);
 
-        Capability<T> cap = new Capability<T>(realName, storage, factory);
+        Capability<T> cap = new Capability<>(realName, storage, factory);
         providers.put(realName, cap);
 
         List<Function<Capability<?>, Object>> list = callbacks.get(realName);
@@ -96,8 +96,8 @@ public enum CapabilityManager
     }
 
     // INTERNAL
-    private IdentityHashMap<String, Capability<?>> providers = Maps.newIdentityHashMap();
-    private IdentityHashMap<String, List<Function<Capability<?>, Object>>> callbacks = Maps.newIdentityHashMap();
+    private final IdentityHashMap<String, Capability<?>> providers = Maps.newIdentityHashMap();
+    private final IdentityHashMap<String, List<Function<Capability<?>, Object>>> callbacks = Maps.newIdentityHashMap();
     public void injectCapabilities(ASMDataTable data)
     {
         for (ASMDataTable.ASMData entry : data.getAll(CapabilityInject.class.getName()))
@@ -116,61 +116,51 @@ public enum CapabilityManager
 
             if (entry.getObjectName().indexOf('(') > 0)
             {
-                list.add(new Function<Capability<?>, Object>()
-                {
-                    @Override
-                    public Object apply(Capability<?> input)
+                list.add(input -> {
+                    try
                     {
-                        try
+                        for (Method mtd : Class.forName(targetClass).getDeclaredMethods())
                         {
-                            for (Method mtd : Class.forName(targetClass).getDeclaredMethods())
+                            if (targetName.equals(mtd.getName() + Type.getMethodDescriptor(mtd)))
                             {
-                                if (targetName.equals(mtd.getName() + Type.getMethodDescriptor(mtd)))
+                                if ((mtd.getModifiers() & Modifier.STATIC) != Modifier.STATIC)
                                 {
-                                    if ((mtd.getModifiers() & Modifier.STATIC) != Modifier.STATIC)
-                                    {
-                                        PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
-                                        return null;
-                                    }
-
-                                    mtd.setAccessible(true);
-                                    mtd.invoke(null, input);
+                                    PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
                                     return null;
                                 }
+
+                                mtd.setAccessible(true);
+                                mtd.invoke(null, input);
+                                return null;
                             }
-                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Method Not Found)", capabilityName, targetClass, targetName);
                         }
-                        catch (Exception e)
-                        {
-                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
-                        }
-                        return null;
+                        PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Method Not Found)", capabilityName, targetClass, targetName);
                     }
+                    catch (Exception e)
+                    {
+                        PFServer.LOGGER.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
+                    }
+                    return null;
                 });
             }
             else
             {
-                list.add(new Function<Capability<?>, Object>()
-                {
-                    @Override
-                    public Object apply(Capability<?> input)
+                list.add(input -> {
+                    try
                     {
-                        try
+                        Field field = Class.forName(targetClass).getDeclaredField(targetName);
+                        if ((field.getModifiers() & Modifier.STATIC) != Modifier.STATIC)
                         {
-                            Field field = Class.forName(targetClass).getDeclaredField(targetName);
-                            if ((field.getModifiers() & Modifier.STATIC) != Modifier.STATIC)
-                            {
-                                PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
-                                return null;
-                            }
-                            EnumHelper.setFailsafeFieldValue(field, null, input);
+                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{} (Non-Static)", capabilityName, targetClass, targetName);
+                            return null;
                         }
-                        catch (Exception e)
-                        {
-                            PFServer.LOGGER.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
-                        }
-                        return null;
+                        EnumHelper.setFailsafeFieldValue(field, null, input);
                     }
+                    catch (Exception e)
+                    {
+                        PFServer.LOGGER.warn("Unable to inject capability {} at {}.{}", capabilityName, targetClass, targetName, e);
+                    }
+                    return null;
                 });
             }
         }

@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 
 public class SlotItemHandler extends Slot
 {
-    private static IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
+    private static final IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
     private final IItemHandler itemHandler;
     private final int index;
 

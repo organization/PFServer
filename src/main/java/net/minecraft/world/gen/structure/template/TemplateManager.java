@@ -91,7 +91,7 @@ public class TemplateManager
                 IOUtils.closeQuietly(inputstream);
             }
 
-            return flag;
+            return false;
         }
     }
 
@@ -117,7 +117,7 @@ public class TemplateManager
             IOUtils.closeQuietly(inputstream);
         }
 
-        return flag;
+        return false;
     }
 
     private void readTemplateFromStream(String id, InputStream stream) throws IOException
@@ -175,7 +175,7 @@ public class TemplateManager
                 IOUtils.closeQuietly(outputstream);
             }
 
-            return flag;
+            return false;
         }
         else
         {

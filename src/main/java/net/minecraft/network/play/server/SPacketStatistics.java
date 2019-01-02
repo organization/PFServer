@@ -43,7 +43,7 @@ public class SPacketStatistics implements Packet<INetHandlerPlayClient>
 
             if (statbase != null)
             {
-                this.statisticMap.put(statbase, Integer.valueOf(k));
+                this.statisticMap.put(statbase, k);
             }
         }
     }
@@ -55,7 +55,7 @@ public class SPacketStatistics implements Packet<INetHandlerPlayClient>
         for (Entry<StatBase, Integer> entry : this.statisticMap.entrySet())
         {
             buf.writeString((entry.getKey()).statId);
-            buf.writeVarInt(((Integer)entry.getValue()).intValue());
+            buf.writeVarInt((Integer) entry.getValue());
         }
     }
 

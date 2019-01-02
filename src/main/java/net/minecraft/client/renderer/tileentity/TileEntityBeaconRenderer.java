@@ -32,9 +32,7 @@ public class TileEntityBeaconRenderer extends TileEntitySpecialRenderer<TileEnti
             GlStateManager.disableFog();
             int i = 0;
 
-            for (int j = 0; j < beamSegments.size(); ++j)
-            {
-                TileEntityBeacon.BeamSegment tileentitybeacon$beamsegment = beamSegments.get(j);
+            for (TileEntityBeacon.BeamSegment tileentitybeacon$beamsegment : beamSegments) {
                 renderBeamSegment(x, y, z, partialTicks, textureScale, totalWorldTime, i, tileentitybeacon$beamsegment.getHeight(), tileentitybeacon$beamsegment.getColors());
                 i += tileentitybeacon$beamsegment.getHeight();
             }

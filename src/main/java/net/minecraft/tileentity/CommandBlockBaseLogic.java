@@ -1,6 +1,5 @@
 package net.minecraft.tileentity;
 
-import cn.pfcraft.server.PFServer;
 import com.google.common.base.Joiner;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.advancements.FunctionManager;
@@ -30,6 +29,7 @@ import org.bukkit.event.server.ServerCommandEvent;
 import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 
@@ -174,20 +174,8 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
                     {
                         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Executing command block");
                         CrashReportCategory crashreportcategory = crashreport.makeCategory("Command to be executed");
-                        crashreportcategory.addDetail("Command", new ICrashReportDetail<String>()
-                        {
-                            public String call() throws Exception
-                            {
-                                return CommandBlockBaseLogic.this.getCommand();
-                            }
-                        });
-                        crashreportcategory.addDetail("Name", new ICrashReportDetail<String>()
-                        {
-                            public String call() throws Exception
-                            {
-                                return CommandBlockBaseLogic.this.getName();
-                            }
-                        });
+                        crashreportcategory.addDetail("Command", CommandBlockBaseLogic.this::getCommand);
+                        crashreportcategory.addDetail("Name", CommandBlockBaseLogic.this::getName);
                         throw new ReportedException(crashreport);
                     }
                 }
@@ -242,7 +230,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
         command = event.getCommand();
 
         String[] args = command.split(" ");
-        ArrayList<String[]> commands = new ArrayList<String[]>();
+        ArrayList<String[]> commands = new ArrayList<>();
 
         String cmd = args[0];
         if (cmd.startsWith("minecraft:")) cmd = cmd.substring("minecraft:".length());
@@ -265,7 +253,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
             if (command.startsWith("/")) {
                 command = command.substring(1);
             }
-            String as[] = command.split(" ");
+            String[] as = command.split(" ");
             as = VanillaCommandWrapper.dropFirstArgument(as);
             if (!sender.getEntityWorld().getServer().getPermissionOverride(sender) && !((VanillaCommandWrapper) commandBlockCommand).testPermission(bSender)) {
                 return 0;
@@ -295,11 +283,11 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
             server.worlds[pos] = world;
         }
         try {
-            ArrayList<String[]> newCommands = new ArrayList<String[]>();
+            ArrayList<String[]> newCommands = new ArrayList<>();
             for (int i = 0; i < args.length; i++) {
                 if (EntitySelector.isSelectorDefault(args[i])) {
-                    for (int j = 0; j < commands.size(); j++) {
-                        newCommands.addAll(buildCommands(sender, commands.get(j), i));
+                    for (String[] command1 : commands) {
+                        newCommands.addAll(buildCommands(sender, command1, i));
                     }
                     ArrayList<String[]> temp = commands;
                     commands = newCommands;
@@ -314,9 +302,9 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
         int completed = 0;
 
         // Now dispatch all of the commands we ended up with
-        for (int i = 0; i < commands.size(); i++) {
+        for (String[] command1 : commands) {
             try {
-                if (commandMap.dispatch(bSender, joiner.join(java.util.Arrays.asList(commands.get(i))))) {
+                if (commandMap.dispatch(bSender, joiner.join(Arrays.asList(command1)))) {
                     completed++;
                 }
             } catch (Throwable exception) {
@@ -326,7 +314,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
                     CommandBlockBaseLogic listener = (CommandBlockBaseLogic) sender;
                     MinecraftServer.getServerInst().server.getLogger().log(Level.WARNING, String.format("CommandBlock at (%d,%d,%d) failed to handle command", listener.getPosition().getX(), listener.getPosition().getY(), listener.getPosition().getZ()), exception);
                 } else {
-                    MinecraftServer.getServerInst().server.getLogger().log(Level.WARNING, String.format("Unknown CommandBlock failed to handle command"), exception);
+                    MinecraftServer.getServerInst().server.getLogger().log(Level.WARNING, "Unknown CommandBlock failed to handle command", exception);
                 }
             }
         }
@@ -335,7 +323,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
     }
 
     private static ArrayList<String[]> buildCommands(ICommandSender sender, String[] args, int pos) throws CommandException {
-        ArrayList<String[]> commands = new ArrayList<String[]>();
+        ArrayList<String[]> commands = new ArrayList<>();
         java.util.List<EntityPlayer> players = (java.util.List<EntityPlayer>) EntitySelector.matchEntitiesDefault(sender, args[pos], EntityPlayer.class);
 
         if (players != null) {

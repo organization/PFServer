@@ -14,7 +14,7 @@ public abstract class ModelBase
     public float swingProgress;
     public boolean isRiding;
     public boolean isChild = true;
-    public List<ModelRenderer> boxList = Lists.<ModelRenderer>newArrayList();
+    public final List<ModelRenderer> boxList = Lists.<ModelRenderer>newArrayList();
     private final Map<String, TextureOffset> modelTextureMap = Maps.<String, TextureOffset>newHashMap();
     public int textureWidth = 64;
     public int textureHeight = 32;

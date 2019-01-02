@@ -76,33 +76,27 @@ public class BlockStateLoader
 
             Marker marker = GSON.fromJson(new String(data, StandardCharsets.UTF_8), Marker.class);  // Read "forge_marker" to determine what to load.
 
-            switch (marker.forge_marker)
-            {
-                case 1: // Version 1
-                    ForgeBlockStateV1 v1 = GSON.fromJson(reader, ForgeBlockStateV1.class);
-                    Map<String, VariantList> variants = Maps.newLinkedHashMap();
+            if (marker.forge_marker == 1) {
+                ForgeBlockStateV1 v1 = GSON.fromJson(reader, ForgeBlockStateV1.class);
+                Map<String, VariantList> variants = Maps.newLinkedHashMap();
 
-                    for (Entry<String, Collection<ForgeBlockStateV1.Variant>> entry : v1.variants.asMap().entrySet())
-                    {   // Convert Version1 variants into vanilla variants for the ModelBlockDefinition.
-                        List<Variant> mcVars = Lists.newArrayList();
-                        for (ForgeBlockStateV1.Variant var : entry.getValue())
-                        {
-                            boolean uvLock = var.getUvLock().orElse(false);
-                            int weight = var.getWeight().orElse(1);
+                for (Entry<String, Collection<ForgeBlockStateV1.Variant>> entry : v1.variants.asMap().entrySet()) {   // Convert Version1 variants into vanilla variants for the ModelBlockDefinition.
+                    List<Variant> mcVars = Lists.newArrayList();
+                    for (ForgeBlockStateV1.Variant var : entry.getValue()) {
+                        boolean uvLock = var.getUvLock().orElse(false);
+                        int weight = var.getWeight().orElse(1);
 
-                            if (var.isVanillaCompatible())
-                                mcVars.add(new Variant(var.getModel(), (ModelRotation)var.getState().orElse(ModelRotation.X0_Y0), uvLock, weight));
-                            else
-                                mcVars.add(new ForgeVariant(location, var.getModel(), var.getState().orElse(TRSRTransformation.identity()), uvLock, var.getSmooth(), var.getGui3d(), weight, var.getTextures(), var.getOnlyPartsVariant(), var.getCustomData()));
-                        }
-                        variants.put(entry.getKey(), new VariantList(mcVars));
+                        if (var.isVanillaCompatible())
+                            mcVars.add(new Variant(var.getModel(), (ModelRotation) var.getState().orElse(ModelRotation.X0_Y0), uvLock, weight));
+                        else
+                            mcVars.add(new ForgeVariant(location, var.getModel(), var.getState().orElse(TRSRTransformation.identity()), uvLock, var.getSmooth(), var.getGui3d(), weight, var.getTextures(), var.getOnlyPartsVariant(), var.getCustomData()));
                     }
+                    variants.put(entry.getKey(), new VariantList(mcVars));
+                }
 
-                    return new ModelBlockDefinition(variants, null);
-
-                default: //Unknown version.. try loading it as normal.
-                    return vanillaGSON.fromJson(reader, ModelBlockDefinition.class);
+                return new ModelBlockDefinition(variants, null);
             }
+            return vanillaGSON.fromJson(reader, ModelBlockDefinition.class);
         }
         catch (IOException e)
         {

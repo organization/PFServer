@@ -131,6 +131,6 @@ public enum Statistic {
         /**
          * Statistics of this type require an EntityType qualifier.
          */
-        ENTITY;
+        ENTITY
     }
 }

@@ -24,7 +24,7 @@ import org.objectweb.asm.Opcodes;
 
 public class ModAnnotationVisitor extends AnnotationVisitor
 {
-    private ASMModParser discoverer;
+    private final ASMModParser discoverer;
     private boolean array;
     private String name;
     private boolean isSubAnnotation;

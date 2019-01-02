@@ -27,7 +27,7 @@ import java.util.UUID;
 public class TileEntityItemStackRenderer
 {
     private static final TileEntityShulkerBox[] SHULKER_BOXES = new TileEntityShulkerBox[16];
-    public static TileEntityItemStackRenderer instance;
+    public static final TileEntityItemStackRenderer instance;
     private final TileEntityChest chestBasic = new TileEntityChest(BlockChest.Type.BASIC);
     private final TileEntityChest chestTrap = new TileEntityChest(BlockChest.Type.TRAP);
     private final TileEntityEnderChest enderChest = new TileEntityEnderChest();

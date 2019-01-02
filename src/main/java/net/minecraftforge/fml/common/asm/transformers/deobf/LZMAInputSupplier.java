@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LZMAInputSupplier extends ByteSource {
-    private InputStream compressedData;
+    private final InputStream compressedData;
 
     public LZMAInputSupplier(InputStream compressedData)
     {

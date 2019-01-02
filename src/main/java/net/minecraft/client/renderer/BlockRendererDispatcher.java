@@ -65,9 +65,8 @@ public class BlockRendererDispatcher implements IResourceManagerReloadListener
                     {
                         state = state.getActualState(blockAccess, pos);
                     }
-                    catch (Exception var8)
+                    catch (Exception ignored)
                     {
-                        ;
                     }
                 }
 

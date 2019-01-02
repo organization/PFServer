@@ -46,15 +46,15 @@ public class EntityRegistry
     public class EntityRegistration
     {
         @Deprecated
-        private Class<? extends Entity> entityClass;
-        private Function<World, ? extends Entity> factory;
-        private ModContainer container;
-        private ResourceLocation regName;
-        private String entityName;
-        private int modId;
-        private int trackingRange;
-        private int updateFrequency;
-        private boolean sendsVelocityUpdates;
+        private final Class<? extends Entity> entityClass;
+        private final Function<World, ? extends Entity> factory;
+        private final ModContainer container;
+        private final ResourceLocation regName;
+        private final String entityName;
+        private final int modId;
+        private final int trackingRange;
+        private final int updateFrequency;
+        private final boolean sendsVelocityUpdates;
         private Function<EntitySpawnMessage, Entity> customSpawnCallback;
         private boolean usesVanillaSpawning;
         @Deprecated //1.13
@@ -142,8 +142,8 @@ public class EntityRegistry
     private final ListMultimap<ModContainer, EntityRegistration> entityRegistrations = ArrayListMultimap.create();
     private final BiMap<Class<? extends Entity>, EntityRegistration> entityClassRegistrations = HashBiMap.create();
     private final Map<Class<? extends Entity>, EntityEntry> entityClassEntries = GameData.getEntityClassMap();
-    public static Map<Class<? extends Entity>, String> entityTypeMap = Maps.newHashMap(); // used by CraftCustomEntity
-    public static Map<String, Class<? extends Entity>> entityClassMap = Maps.newHashMap(); // user by CraftWorld
+    public static final Map<Class<? extends Entity>, String> entityTypeMap = Maps.newHashMap(); // used by CraftCustomEntity
+    public static final Map<String, Class<? extends Entity>> entityClassMap = Maps.newHashMap(); // user by CraftWorld
 
     public static EntityRegistry instance()
     {
@@ -391,7 +391,7 @@ public class EntityRegistry
         // fixup bad entity names from mods
         if (entityName.contains(".")) {
             if ((entityName.indexOf(".") + 1) < entityName.length())
-                entityName = entityName.substring(entityName.indexOf(".") + 1, entityName.length());
+                entityName = entityName.substring(entityName.indexOf(".") + 1);
         }
         entityName = entityName.replace("entity", "");
         if (entityName.startsWith("ent"))

@@ -31,7 +31,7 @@ public abstract class GuiSlot
     protected float amountScrolled;
     protected int selectedElement = -1;
     protected long lastClicked;
-    protected boolean visible = true;
+    protected final boolean visible = true;
     protected boolean showSelectionBox = true;
     protected boolean hasListHeader;
     public int headerPadding;

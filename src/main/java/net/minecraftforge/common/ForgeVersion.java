@@ -166,7 +166,7 @@ public class ForgeVersion
     // Gather a list of mods that have opted in to this update system by providing a URL.
     public static Map<ModContainer, URL> gatherMods()
     {
-        Map<ModContainer, URL> ret = new HashMap<ModContainer, URL>();
+        Map<ModContainer, URL> ret = new HashMap<>();
         for (ModContainer mod : Loader.instance().getActiveModList())
         {
             URL url = mod.getUpdateUrl();
@@ -176,7 +176,7 @@ public class ForgeVersion
         return ret;
     }
 
-    private static Map<ModContainer, CheckResult> results = new ConcurrentHashMap<ModContainer, CheckResult>();
+    private static final Map<ModContainer, CheckResult> results = new ConcurrentHashMap<>();
     private static final CheckResult PENDING_CHECK = new CheckResult(PENDING, null, null, null);
 
     public static CheckResult getResult(ModContainer mod)

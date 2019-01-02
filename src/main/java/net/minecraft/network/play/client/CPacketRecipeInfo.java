@@ -93,6 +93,6 @@ public class CPacketRecipeInfo implements Packet<INetHandlerPlayServer>
     public static enum Purpose
     {
         SHOWN,
-        SETTINGS;
+        SETTINGS
     }
 }

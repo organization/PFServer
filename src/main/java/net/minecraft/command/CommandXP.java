@@ -29,7 +29,7 @@ public class CommandXP extends CommandBase
     {
         if (args.length <= 0)
         {
-            throw new WrongUsageException("commands.xp.usage", new Object[0]);
+            throw new WrongUsageException("commands.xp.usage");
         }
         else
         {
@@ -58,12 +58,12 @@ public class CommandXP extends CommandBase
                 if (flag1)
                 {
                     entityplayer.addExperienceLevel(-i);
-                    notifyCommandListener(sender, this, "commands.xp.success.negative.levels", new Object[] {i, entityplayer.getName()});
+                    notifyCommandListener(sender, this, "commands.xp.success.negative.levels", i, entityplayer.getName());
                 }
                 else
                 {
                     entityplayer.addExperienceLevel(i);
-                    notifyCommandListener(sender, this, "commands.xp.success.levels", new Object[] {i, entityplayer.getName()});
+                    notifyCommandListener(sender, this, "commands.xp.success.levels", i, entityplayer.getName());
                 }
             }
             else
@@ -72,11 +72,11 @@ public class CommandXP extends CommandBase
 
                 if (flag1)
                 {
-                    throw new CommandException("commands.xp.failure.widthdrawXp", new Object[0]);
+                    throw new CommandException("commands.xp.failure.widthdrawXp");
                 }
 
                 entityplayer.addExperience(i);
-                notifyCommandListener(sender, this, "commands.xp.success", new Object[] {i, entityplayer.getName()});
+                notifyCommandListener(sender, this, "commands.xp.success", i, entityplayer.getName());
             }
         }
     }

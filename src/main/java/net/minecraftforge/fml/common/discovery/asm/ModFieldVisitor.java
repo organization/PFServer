@@ -26,8 +26,8 @@ import org.objectweb.asm.Opcodes;
 public class ModFieldVisitor extends FieldVisitor
 {
 
-    private String fieldName;
-    private ASMModParser discoverer;
+    private final String fieldName;
+    private final ASMModParser discoverer;
 
     public ModFieldVisitor(String name, ASMModParser discoverer)
     {

@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 public class OreIngredient extends Ingredient
 {
-    private NonNullList<ItemStack> ores;
+    private final NonNullList<ItemStack> ores;
     private IntList itemIds = null;
     private ItemStack[] array = null;
     private int lastSizeA = -1, lastSizeL = -1;
@@ -57,7 +57,7 @@ public class OreIngredient extends Ingredient
                 else
                     lst.add(itemstack);
             }
-            this.array = lst.toArray(new ItemStack[lst.size()]);
+            this.array = lst.toArray(new ItemStack[0]);
             this.lastSizeA = ores.size();
         }
         return this.array;
