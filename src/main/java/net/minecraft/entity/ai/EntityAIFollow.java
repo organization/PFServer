@@ -7,7 +7,6 @@ import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityAIFollow extends EntityAIBase

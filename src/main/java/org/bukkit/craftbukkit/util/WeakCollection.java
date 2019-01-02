@@ -160,7 +160,6 @@ public final class WeakCollection<T> implements Collection<T> {
     }
 
     private Collection<T> toCollection() {
-        ArrayList<T> collection = new ArrayList<>(this);
-        return collection;
+        return new ArrayList<>(this);
     }
 }

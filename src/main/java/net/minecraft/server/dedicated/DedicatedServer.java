@@ -6,7 +6,6 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

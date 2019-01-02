@@ -4,7 +4,6 @@ import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Doubles;
@@ -840,7 +839,7 @@ public abstract class CommandBase implements ICommand
 
         if (!possibleCompletions.isEmpty())
         {
-            for (String s1 : possibleCompletions.stream().map(Functions.toStringFunction()::apply).collect(Collectors.toList()))
+            for (String s1 : possibleCompletions.stream().map(Functions.toStringFunction()).collect(Collectors.toList()))
             {
                 if (doesStringStartWith(s, s1))
                 {

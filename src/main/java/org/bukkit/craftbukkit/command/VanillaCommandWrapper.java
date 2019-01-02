@@ -21,7 +21,6 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.minecart.CommandMinecart;
 
-import java.util.Iterator;
 import java.util.List;
 
 public final class VanillaCommandWrapper extends BukkitCommand {

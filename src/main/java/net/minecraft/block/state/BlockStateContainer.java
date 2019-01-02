@@ -137,7 +137,7 @@ public class BlockStateContainer
 
     public String toString()
     {
-        return MoreObjects.toStringHelper(this).add("block", Block.REGISTRY.getNameForObject(this.block)).add("properties", this.properties.values().stream().map(GET_NAME_FUNC::apply).collect(Collectors.toList())).toString();
+        return MoreObjects.toStringHelper(this).add("block", Block.REGISTRY.getNameForObject(this.block)).add("properties", this.properties.values().stream().map(GET_NAME_FUNC).collect(Collectors.toList())).toString();
     }
 
     @Nullable

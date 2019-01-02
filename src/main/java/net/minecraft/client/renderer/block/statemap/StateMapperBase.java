@@ -1,7 +1,6 @@
 package net.minecraft.client.renderer.block.statemap;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.UnmodifiableIterator;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;

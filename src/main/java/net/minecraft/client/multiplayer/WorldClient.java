@@ -10,7 +10,6 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.ParticleFirework;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;

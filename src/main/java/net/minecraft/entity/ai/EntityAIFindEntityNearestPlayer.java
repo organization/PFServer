@@ -9,8 +9,6 @@ import net.minecraft.scoreboard.Team;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
 
 public class EntityAIFindEntityNearestPlayer extends EntityAIBase

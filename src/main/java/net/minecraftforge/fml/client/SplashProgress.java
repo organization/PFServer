@@ -50,7 +50,6 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;

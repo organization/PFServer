@@ -6,8 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
 @SideOnly(Side.CLIENT)
 public interface ICondition
 {

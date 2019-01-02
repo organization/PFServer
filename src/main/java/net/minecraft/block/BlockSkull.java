@@ -3,7 +3,6 @@ package net.minecraft.block;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
@@ -41,7 +40,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.bukkit.craftbukkit.util.BlockStateListPopulator;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockSkull extends BlockContainer

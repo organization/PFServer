@@ -4,8 +4,6 @@ import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.IAnimals;
 
-import javax.annotation.Nullable;
-
 public interface IMob extends IAnimals
 {
     Predicate<Entity> MOB_SELECTOR = p_apply_1_ -> p_apply_1_ instanceof IMob;

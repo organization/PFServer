@@ -1,7 +1,5 @@
 package net.minecraft.server.management;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -802,7 +800,7 @@ public abstract class PlayerList
         org.bukkit.World fromWorld = playerIn.getBukkitEntity().getWorld();
         playerIn.queuedEndExit = false;
 
-        playerIn.connection = playerIn.connection;
+        //playerIn.connection = playerIn.connection;
         playerIn.copyFrom(playerIn, conqueredEnd);
         playerIn.dimension = dimension;
         playerIn.setEntityId(playerIn.getEntityId());

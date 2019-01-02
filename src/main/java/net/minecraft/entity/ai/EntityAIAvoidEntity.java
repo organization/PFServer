@@ -9,7 +9,6 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.Vec3d;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityAIAvoidEntity<T extends Entity> extends EntityAIBase

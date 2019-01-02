@@ -39,7 +39,6 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityWither extends EntityMob implements IRangedAttackMob

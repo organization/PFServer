@@ -113,7 +113,7 @@ public class SimpleNetworkWrapper {
     private SimpleIndexedCodec packetCodec;
     private static Class<?> defaultChannelPipeline;
     private static Method generateName;
-    {
+    static {
         try
         {
             defaultChannelPipeline = Class.forName("io.netty.channel.DefaultChannelPipeline");

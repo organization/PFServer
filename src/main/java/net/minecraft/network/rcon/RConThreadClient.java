@@ -10,7 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 @SideOnly(Side.SERVER)
 public class RConThreadClient extends RConThreadBase

@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenDesertWells;
 import net.minecraft.world.gen.feature.WorldGenFossils;
 
-import java.util.Iterator;
 import java.util.Random;
 
 public class BiomeDesert extends Biome

@@ -3,7 +3,6 @@ package net.minecraft.client.renderer.block.model.multipart;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.gson.*;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -123,16 +122,16 @@ public class Selector
                 {
                     if (json.has("OR"))
                     {
-                        return new ConditionOr(StreamSupport.stream(JsonUtils.getJsonArray(json, "OR").spliterator(), false).map(FUNCTION_OR_AND::apply).collect(Collectors.toList()));
+                        return new ConditionOr(StreamSupport.stream(JsonUtils.getJsonArray(json, "OR").spliterator(), false).map(FUNCTION_OR_AND).collect(Collectors.toList()));
                     }
                     else
                     {
-                        return (ICondition)(json.has("AND") ? new ConditionAnd(StreamSupport.stream(JsonUtils.getJsonArray(json, "AND").spliterator(), false).map(FUNCTION_OR_AND::apply).collect(Collectors.toList())) : makePropertyValue(set.iterator().next()));
+                        return (ICondition)(json.has("AND") ? new ConditionAnd(StreamSupport.stream(JsonUtils.getJsonArray(json, "AND").spliterator(), false).map(FUNCTION_OR_AND).collect(Collectors.toList())) : makePropertyValue(set.iterator().next()));
                     }
                 }
                 else
                 {
-                    return new ConditionAnd(set.stream().map(FUNCTION_PROPERTY_VALUE::apply).collect(Collectors.toList()));
+                    return new ConditionAnd(set.stream().map(FUNCTION_PROPERTY_VALUE).collect(Collectors.toList()));
                 }
             }
 

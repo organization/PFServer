@@ -20,7 +20,6 @@
 package net.minecraftforge.common.model.animation;
 
 import cn.pfcraft.server.PFServer;
-import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;

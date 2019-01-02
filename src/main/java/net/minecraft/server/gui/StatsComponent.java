@@ -6,8 +6,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 @SideOnly(Side.SERVER)

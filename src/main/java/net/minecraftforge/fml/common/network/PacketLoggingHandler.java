@@ -25,7 +25,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import net.minecraft.network.*;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class PacketLoggingHandler

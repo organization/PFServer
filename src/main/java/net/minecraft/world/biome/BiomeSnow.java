@@ -12,7 +12,6 @@ import net.minecraft.world.gen.feature.WorldGenIcePath;
 import net.minecraft.world.gen.feature.WorldGenIceSpike;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 
-import java.util.Iterator;
 import java.util.Random;
 
 public class BiomeSnow extends Biome
