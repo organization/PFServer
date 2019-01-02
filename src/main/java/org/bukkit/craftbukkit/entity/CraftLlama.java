@@ -5,6 +5,7 @@ import net.minecraft.entity.passive.EntityLlama;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryLlama;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Llama;
 import org.bukkit.inventory.LlamaInventory;
 
@@ -47,6 +48,11 @@ public class CraftLlama extends CraftChestedHorse implements Llama {
         if (strength == getStrength()) return;
         getHandle().setStrength(strength);
         getHandle().initHorseChest();
+    }
+
+    @Override
+    public Horse.Variant getVariant() {
+        return Horse.Variant.LLAMA;
     }
 
     @Override

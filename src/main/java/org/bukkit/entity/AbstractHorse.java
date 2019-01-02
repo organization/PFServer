@@ -9,6 +9,26 @@ import org.bukkit.inventory.InventoryHolder;
 public interface AbstractHorse extends Animals, Vehicle, InventoryHolder, Tameable {
 
     /**
+     * Gets the horse's variant.
+     * <p>
+     * A horse's variant defines its physical appearance and capabilities.
+     * Whether a horse is a regular horse, donkey, mule, or other kind of horse
+     * is determined using the variant.
+     *
+     * @return a {@link Horse.Variant} representing the horse's variant
+     * @deprecated different variants are different classes
+     */
+    @Deprecated
+    public Horse.Variant getVariant();
+
+    /**
+     * @param variant
+     * @deprecated you are required to spawn a different entity
+     */
+    @Deprecated
+    public void setVariant(Horse.Variant variant);
+
+    /**
      * Gets the domestication level of this horse.
      * <p>
      * A higher domestication level indicates that the horse is closer to

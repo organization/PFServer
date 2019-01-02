@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.entity.passive.EntityMule;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.Mule;
 
 public class CraftMule extends CraftChestedHorse implements Mule {
@@ -21,4 +22,8 @@ public class CraftMule extends CraftChestedHorse implements Mule {
         return EntityType.MULE;
     }
 
+    @Override
+    public Variant getVariant() {
+        return Variant.MULE;
+    }
 }

@@ -20,6 +20,11 @@ public class CraftHorse extends CraftAbstractHorse implements Horse {
     }
 
     @Override
+    public Variant getVariant() {
+        return Variant.HORSE;
+    }
+
+    @Override
     public Color getColor() {
         return Color.values()[getHandle().getHorseVariant() & 0xFF];
     }
@@ -42,13 +47,23 @@ public class CraftHorse extends CraftAbstractHorse implements Horse {
     }
 
     @Override
+    public boolean isCarryingChest() {
+        return false;
+    }
+
+    @Override
+    public void setCarryingChest(boolean chest) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
     public HorseInventory getInventory() {
         return new CraftInventoryHorse(getHandle().horseChest);
     }
 
     @Override
     public String toString() {
-        return "CraftHorse{variant=" + getType() + ", owner=" + getOwner() + '}';
+        return "CraftHorse{variant=" + getVariant() + ", owner=" + getOwner() + '}';
     }
 
     @Override
