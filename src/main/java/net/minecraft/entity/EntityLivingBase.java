@@ -99,8 +99,8 @@ public abstract class EntityLivingBase extends Entity
     public int maxHurtResistantTime = 20;
     public float prevCameraPitch;
     public float cameraPitch;
-    public final float randomUnused2;
-    public final float randomUnused1;
+    public float randomUnused2;
+    public float randomUnused1;
     public float renderYawOffset;
     public float prevRenderYawOffset;
     public float rotationYawHead;

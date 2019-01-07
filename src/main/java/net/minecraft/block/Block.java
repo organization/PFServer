@@ -59,7 +59,7 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
     protected boolean needsRandomTick;
     protected boolean hasTileEntity;
     protected SoundType blockSoundType;
-    public final float blockParticleGravity;
+    public float blockParticleGravity;
     protected final Material blockMaterial;
     protected final MapColor blockMapColor;
     @Deprecated // Forge: State/world/pos/entity sensitive version below
@@ -949,9 +949,9 @@ public class Block extends net.minecraftforge.registries.IForgeRegistryEntry.Imp
 
     /* ======================================== FORGE START =====================================*/
     //For ForgeInternal use Only!
-    protected final ThreadLocal<EntityPlayer> harvesters = new ThreadLocal();
+    protected ThreadLocal<EntityPlayer> harvesters = new ThreadLocal();
     private final ThreadLocal<IBlockState> silk_check_state = new ThreadLocal();
-    protected static final Random RANDOM = new Random(); // Useful for random things without a seed.
+    protected static Random RANDOM = new Random(); // Useful for random things without a seed.
 
     /**
      * Gets the slipperiness at the given location at the given state. Normally

@@ -139,14 +139,14 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     public float stepHeight;
     public boolean noClip;
     public float entityCollisionReduction;
-    protected final Random rand;
+    protected Random rand;
     public int ticksExisted;
     public int fire;
     public boolean inWater;
     public int hurtResistantTime;
     protected boolean firstUpdate;
     protected boolean isImmuneToFire;
-    protected final EntityDataManager dataManager;
+    protected EntityDataManager dataManager;
     protected static final DataParameter<Byte> FLAGS = EntityDataManager.<Byte>createKey(Entity.class, DataSerializers.BYTE);
     private static final DataParameter<Integer> AIR = EntityDataManager.<Integer>createKey(Entity.class, DataSerializers.VARINT);
     private static final DataParameter<String> CUSTOM_NAME = EntityDataManager.<String>createKey(Entity.class, DataSerializers.STRING);
@@ -255,7 +255,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
     /** Forge: Used to store custom data for each entity. */
     private NBTTagCompound customEntityData;
     public boolean captureDrops = false;
-    public final java.util.ArrayList<EntityItem> capturedDrops = new java.util.ArrayList<>();
+    public java.util.ArrayList<EntityItem> capturedDrops = new java.util.ArrayList<>();
     public net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities; // PFServer - private -> public
 
     public int getEntityId()
@@ -641,7 +641,7 @@ public abstract class Entity implements ICommandSender, net.minecraftforge.commo
                     // TODO: shouldn't be sending null for the block
                     org.bukkit.block.Block damager = null; // ((WorldServer) this.l).getWorld().getBlockAt(i, j, k);
                     org.bukkit.entity.Entity damagee = this.getBukkitEntity();
-                    EntityCombustEvent combustEvent = new org.bukkit.event.entity.EntityCombustByBlockEvent(null, damagee, 15);
+                    EntityCombustEvent combustEvent = new org.bukkit.event.entity.EntityCombustByBlockEvent(damager, damagee, 15);
                     this.world.getServer().getPluginManager().callEvent(combustEvent);
 
                     if (!combustEvent.isCancelled()) {

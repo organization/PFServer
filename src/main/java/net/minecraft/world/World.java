@@ -79,7 +79,7 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
      * Modders should change this variable to a higher value if it is less then the radius
      * of one of there entities.
      */
-    public static final double MAX_ENTITY_RADIUS = 2.0D;
+    public static double MAX_ENTITY_RADIUS = 2.0D;
 
     private int seaLevel = 63;
     protected boolean scheduledUpdatesAreImmediate;
@@ -103,11 +103,11 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     private int lastLightningBolt;
     public final Random rand = new Random();
     public WorldProvider provider;
-    protected final PathWorldListener pathListener = new PathWorldListener();
-    protected final List<IWorldEventListener> eventListeners;
+    protected PathWorldListener pathListener = new PathWorldListener();
+    protected List<IWorldEventListener> eventListeners;
     protected IChunkProvider chunkProvider;
     protected final ISaveHandler saveHandler;
-    public final WorldInfo worldInfo;
+    public WorldInfo worldInfo;
     protected boolean findingSpawnPoint;
     public MapStorage mapStorage;
     public VillageCollection villageCollection;
@@ -117,16 +117,16 @@ public abstract class World implements IBlockAccess, net.minecraftforge.common.c
     public final Profiler profiler;
     private final Calendar calendar;
     public Scoreboard worldScoreboard;
-    public final boolean isRemote;
+    public boolean isRemote;
     public boolean spawnHostileMobs;
     public boolean spawnPeacefulMobs;
     private boolean processingLoadedTiles;
     private final WorldBorder worldBorder;
-    final int[] lightUpdateBlockList;
+    int[] lightUpdateBlockList;
 
     public boolean restoringBlockSnapshots = false;
     public boolean captureBlockSnapshots = false;
-    public final java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot> capturedBlockSnapshots = new java.util.ArrayList<>();
+    public java.util.ArrayList<net.minecraftforge.common.util.BlockSnapshot> capturedBlockSnapshots = new java.util.ArrayList<>();
     private net.minecraftforge.common.capabilities.CapabilityDispatcher capabilities;
     private net.minecraftforge.common.util.WorldCapabilityData capabilityData;
 

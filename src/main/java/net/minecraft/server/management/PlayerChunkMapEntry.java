@@ -5,7 +5,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.*;
+import net.minecraft.network.play.server.SPacketBlockChange;
+import net.minecraft.network.play.server.SPacketChunkData;
+import net.minecraft.network.play.server.SPacketMultiBlockChange;
+import net.minecraft.network.play.server.SPacketUnloadChunk;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -20,7 +24,7 @@ public class PlayerChunkMapEntry
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private final PlayerChunkMap playerChunkMap;
-    public final List<EntityPlayerMP> players = Lists.<EntityPlayerMP>newArrayList();
+    public final List<EntityPlayerMP> players = Lists.newCopyOnWriteArrayList();
     private final ChunkPos pos;
     private short[] changedBlocks = new short[64];
     @Nullable
@@ -28,7 +32,7 @@ public class PlayerChunkMapEntry
     private int changes;
     private int changedSectionFilter;
     private long lastUpdateInhabitedTime;
-    private boolean sentToPlayers;
+    public boolean sentToPlayers;
     private final Runnable loadedRunnable = () -> {
         PlayerChunkMapEntry.this.chunk = PlayerChunkMapEntry.this.playerChunkMap.getWorldServer().getChunkProvider().loadChunk(PlayerChunkMapEntry.this.pos.x, PlayerChunkMapEntry.this.pos.z);
         PlayerChunkMapEntry.this.loading = false;
@@ -250,8 +254,8 @@ public class PlayerChunkMapEntry
                 else
                 {
                     this.sendPacket(new SPacketMultiBlockChange(this.changes, this.changedBlocks, this.chunk));
-                //} Keep this in the else until we figure out a fix for mojang's derpitude on the data packet so we don't double send crap.
-                //{// Forge: Send only the tile entities that are updated, Adding this brace lets us keep the indent and the patch small
+                    //} Keep this in the else until we figure out a fix for mojang's derpitude on the data packet so we don't double send crap.
+                    //{// Forge: Send only the tile entities that are updated, Adding this brace lets us keep the indent and the patch small
                     for (int l = 0; l < this.changes; ++l)
                     {
                         int i1 = (this.changedBlocks[l] >> 12 & 15) + this.pos.x * 16;

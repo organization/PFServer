@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 public class PFServer {
 
 	public static final String name = "PFServer";
-	private static final String version = "1.1.0";
+	private static final String version = "1.1.1";
 	private static final String native_verson = "v1_12_R1";
 	public static final Logger LOGGER = LogManager.getLogger("PFServer");
 	public static final String bukkit_version = "1.12.2-R0.1-SNAPSHOT";

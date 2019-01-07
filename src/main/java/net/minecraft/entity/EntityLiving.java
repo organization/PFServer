@@ -55,22 +55,22 @@ import java.util.UUID;
 
 public abstract class EntityLiving extends EntityLivingBase
 {
-    private static final DataParameter<Byte> AI_FLAGS = EntityDataManager.<Byte>createKey(EntityLiving.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> AI_FLAGS = EntityDataManager.createKey(EntityLiving.class, DataSerializers.BYTE);
     public int livingSoundTime;
     protected int experienceValue;
     private final EntityLookHelper lookHelper;
     protected EntityMoveHelper moveHelper;
     protected EntityJumpHelper jumpHelper;
     private final EntityBodyHelper bodyHelper;
-    protected final PathNavigate navigator;
+    protected PathNavigate navigator;
     public EntityAITasks tasks;
     public EntityAITasks targetTasks;
     private EntityLivingBase attackTarget;
     private final EntitySenses senses;
-    private final NonNullList<ItemStack> inventoryHands = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
-    public final float[] inventoryHandsDropChances = new float[2];
-    private final NonNullList<ItemStack> inventoryArmor = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
-    public final float[] inventoryArmorDropChances = new float[4];
+    private final NonNullList<ItemStack> inventoryHands = NonNullList.withSize(2, ItemStack.EMPTY);
+    public float[] inventoryHandsDropChances = new float[2];
+    private final NonNullList<ItemStack> inventoryArmor = NonNullList.withSize(4, ItemStack.EMPTY);
+    public float[] inventoryArmorDropChances = new float[4];
     // private boolean canPickUpLoot; // CraftBukkit - moved up to EntityLivingBase
     public boolean persistenceRequired;
     private final Map<PathNodeType, Float> mapPathPriority = Maps.newEnumMap(PathNodeType.class);
@@ -263,7 +263,7 @@ public abstract class EntityLiving extends EntityLivingBase
 
             for (int j = 0; j < this.inventoryArmor.size(); ++j)
             {
-                if (!((ItemStack)this.inventoryArmor.get(j)).isEmpty() && this.inventoryArmorDropChances[j] <= 1.0F)
+                if (!this.inventoryArmor.get(j).isEmpty() && this.inventoryArmorDropChances[j] <= 1.0F)
                 {
                     i += 1 + this.rand.nextInt(3);
                 }
@@ -271,7 +271,7 @@ public abstract class EntityLiving extends EntityLivingBase
 
             for (int k = 0; k < this.inventoryHands.size(); ++k)
             {
-                if (!((ItemStack)this.inventoryHands.get(k)).isEmpty() && this.inventoryHandsDropChances[k] <= 1.0F)
+                if (!this.inventoryHands.get(k).isEmpty() && this.inventoryHandsDropChances[k] <= 1.0F)
                 {
                     i += 1 + this.rand.nextInt(3);
                 }
@@ -1331,7 +1331,7 @@ public abstract class EntityLiving extends EntityLivingBase
 
             if (!this.world.isRemote && sendPacket && this.world instanceof WorldServer)
             {
-                ((WorldServer)this.world).getEntityTracker().sendToTracking(this, new SPacketEntityAttach(this, (Entity)null));
+                ((WorldServer)this.world).getEntityTracker().sendToTracking(this, new SPacketEntityAttach(this, null));
             }
         }
     }
@@ -1481,24 +1481,24 @@ public abstract class EntityLiving extends EntityLivingBase
 
     public void setNoAI(boolean disable)
     {
-        byte b0 = (Byte) this.dataManager.get(AI_FLAGS);
+        byte b0 = this.dataManager.get(AI_FLAGS);
         this.dataManager.set(AI_FLAGS, disable ? (byte) (b0 | 1) : (byte) (b0 & -2));
     }
 
     public void setLeftHanded(boolean leftHanded)
     {
-        byte b0 = (Byte) this.dataManager.get(AI_FLAGS);
+        byte b0 = this.dataManager.get(AI_FLAGS);
         this.dataManager.set(AI_FLAGS, leftHanded ? (byte) (b0 | 2) : (byte) (b0 & -3));
     }
 
     public boolean isAIDisabled()
     {
-        return ((Byte) this.dataManager.get(AI_FLAGS) & 1) != 0;
+        return (this.dataManager.get(AI_FLAGS) & 1) != 0;
     }
 
     public boolean isLeftHanded()
     {
-        return ((Byte) this.dataManager.get(AI_FLAGS) & 2) != 0;
+        return (this.dataManager.get(AI_FLAGS) & 2) != 0;
     }
 
     public EnumHandSide getPrimaryHand()
@@ -1506,7 +1506,7 @@ public abstract class EntityLiving extends EntityLivingBase
         return this.isLeftHanded() ? EnumHandSide.LEFT : EnumHandSide.RIGHT;
     }
 
-    public static enum SpawnPlacementType
+    public enum SpawnPlacementType
     {
         ON_GROUND,
         IN_AIR,
